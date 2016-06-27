@@ -1,0 +1,33 @@
+---
+- name: Enable fsckfix during boot
+  lineinfile: dest=/etc/default/rcS regexp='^FSCKFIX=' line="FSCKFIX=yes" backup=yes
+  tags:
+    - rcS
+
+- name: Remove /tmp/* files during boot
+  lineinfile: dest=/etc/default/rcS regexp='^TMPTIME=' line="TMPTIME=0" backup=yes
+  tags:
+    - rcS
+
+- name: Enable sysstat (sar)
+  lineinfile: dest=/etc/default/sysstat regexp='^ENABLED=' line='ENABLED="true"' backup=yes
+  tags:
+    - sysstat
+
+- name: Change shell to /bin/bash for new users (/etc/default/useradd)
+  lineinfile: dest=/etc/default/useradd regexp='^SHELL=' line='SHELL=/bin/bash' backup=yes
+  tags:
+    - sysstat
+
+- name: Change shell to /bin/bash for new users (/etc/default/useradd)
+  lineinfile: dest=/etc/tmpreaper.conf regexp='^SHOWWARNING=' line='SHOWWARNING=false' backup=yes
+  tags:
+    - tmpreaper
+
+- name: Modify Unattended upgrades settings
+  replace: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="{{ item.regexp }}" replace="{{ item.replace }}"
+  with_items:
+    - { regexp: '^//Unattended-Upgrade::Mail "root";', replace: 'Unattended-Upgrade::Mail "root";' }
+    - { regexp: '^//Unattended-Upgrade::Remove-Unused-Dependencies "false";', replace: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";' }
+  tags:
+    - unattended-upgrades

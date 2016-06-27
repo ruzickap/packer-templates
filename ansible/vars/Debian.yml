@@ -1,0 +1,32 @@
+---
+
+mc_wrapper_sh_path: /usr/share/mc/bin/mc-wrapper.sh
+
+vimrc_configuration_file: /etc/vim/vimrc
+
+bashrc_configuration_file: /etc/bash.bashrc
+
+logwatch_cron_daily_file: 00logwatch
+
+sysstat_cron_entry: '5-55/10 \* \* \* \*'
+
+#Ubuntu 14.04 needs "ssh", Ubuntu 16.04 is fine with sshd like "RedHat" based distros
+ssh_daemon: ssh
+
+distribution_specific_packages:
+  - cloud-initramfs-growroot
+  - debconf-utils
+  - dnsutils
+  - bsd-mailx
+  - linux-virtual
+  - mtr-tiny
+  - snmp
+  - snmpd
+  - sosreport
+  - tmpreaper
+  - update-notifier-common
+  - vim
+
+disable_distribution_specific_boot_services:
+
+enable_distribution_specific_boot_services:

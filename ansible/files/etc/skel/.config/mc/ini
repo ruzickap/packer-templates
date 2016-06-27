@@ -1,0 +1,10 @@
+[Midnight-Commander]
+auto_save_setup=0
+drop_menus=1
+use_internal_edit=1
+confirm_exit=0
+editor_return_does_auto_indent=0
+
+[Layout]
+menubar_visible=0
+message_visible=0

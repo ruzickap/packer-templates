@@ -1,0 +1,49 @@
+---
+
+#Password: vagrant
+root_password: $6$rounds=100000$Mmz1TJ0OPf8eiT9y$tGD.DPtZTsI96Kx.xeBXzLAeOHNHZDkFmZQzKe23Iv2QBQ9EBNIREp0Gr38gNowxE9X.Vapqkl5a7vx4tdZsl/
+
+skel_copy_users:
+  - /home/ubuntu
+  - /home/centos
+  - /home/vagrant
+  - /root
+
+common_packages:
+  - acpid
+  - atop
+  - bash-completion
+  - byobu
+  - cloud-init
+  - curl
+  - dstat
+  - ethtool
+  - haveged
+  - htop
+  - iftop
+  - iotop
+  - lftp
+  - logwatch
+  - lshw
+  - lsof
+  - man
+  - mc
+  - mlocate
+  - mutt
+  - nmap
+  - ntp
+  - ntpdate
+  - parted
+  - postfix
+  - rsync
+  - screen
+  - strace
+  - sysstat
+  - tcpdump
+  - tcpick
+  - telnet
+  - tmux
+  - traceroute
+
+enable_boot_services:
+  - acpid

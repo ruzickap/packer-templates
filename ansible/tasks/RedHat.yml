@@ -1,0 +1,112 @@
+---
+- name: Remove useless packages
+  package: name={{ item }} state=absent
+  with_items:
+    - "{{ remove_distribution_specific_packages }}"
+  when: remove_distribution_specific_packages
+  tags:
+    - packages
+
+- name: Add nice prompt for root user
+  blockinfile:
+    dest: /root/.bashrc
+    block: |
+      ps1_prompt() {
+          local ps1_exit=$?
+
+          if [ $ps1_exit -eq 0 ]; then
+              ps1_status='\$'
+          else
+              ps1_status=`echo -e "\[\\033[1;31m\]"'\\\$'"\[\\033[00m\]"`
+          fi
+
+          PS1="\[\\033[01;31m\]\u@\h\[\\033[00m\]:\[\\033[01;34m\]\w${ps1_status} \[\\033[00m\]"
+      }
+
+      PROMPT_COMMAND="ps1_prompt;$PROMPT_COMMAND"
+    backup: yes
+  tags:
+    - bashrc
+
+- name: Tweak auditlog pre-prepare audit all commands run in the system
+  blockinfile:
+    dest: /etc/audit/rules.d/audit.rules
+    block: |
+      # Log all executed commands
+      #-a exit,always -F arch=b64 -F euid=0 -S execve -k root-commands
+      #-a exit,always -F arch=b32 -F euid=0 -S execve -k root-commands
+  tags:
+    - audit
+
+- name: Disable selinux
+  selinux: state=disabled
+  tags:
+    - selinux
+
+- name: Backup grub settings
+  shell: cp /etc/default/grub /etc/default/grub.orig creates=/etc/default/grub.orig
+  tags:
+    - grub
+
+- name: Modify grub settings
+  replace: dest=/etc/default/grub regexp="{{ item.regexp }}" replace="{{ item.replace }}"
+  with_items:
+    - { regexp: '^GRUB_TIMEOUT=.*', replace: 'GRUB_TIMEOUT=1' }
+    - { regexp: '^GRUB_CMDLINE_LINUX=.*', replace: 'GRUB_CMDLINE_LINUX="rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 net.ifnames=0 no_timer_check"' }
+  notify: generate grub configuration
+  tags:
+    - grub
+
+- name: Change HW Clock configuration
+  replace: dest=/etc/sysconfig/ntpdate regexp='SYNC_HWCLOCK=no' replace='SYNC_HWCLOCK=yes' backup=yes
+  tags:
+    - ntp
+
+- name: Set NTP step stickers
+  copy: src=etc/ntp/step-tickers dest=/etc/ntp/step-tickers backup=yes
+  tags:
+    - ntp
+
+- name: Backup grub settings
+  shell: cp /etc/yum/yum-cron.conf /etc/yum/yum-cron.conf.orig creates=/etc/yum/yum-cron.conf.orig
+  tags:
+    - yum-cron
+
+- name: Configure yum-cron
+  replace: dest=/etc/yum/yum-cron.conf regexp="{{ item.regexp }}" replace="{{ item.replace }}"
+  with_items:
+    - { regexp: '^update_cmd.*', replace: 'update_cmd = security-severity:Critical' }
+    - { regexp: '^apply_updates.*', replace: 'apply_updates = yes' }
+  tags:
+    - yum-cron
+
+- name: Add /usr/local/bin/etc_issue.sh script
+  template: src=usr/local/bin/etc_issue.sh.j2 dest=/usr/local/bin/etc_issue.sh mode=0755
+  tags:
+    - issue
+
+- name: Create link /usr/local/bin/etc_issue.sh /etc/profile.d/etc_issue.sh
+  file: src=/usr/local/bin/etc_issue.sh dest=/etc/profile.d/etc_issue.sh state=link
+  tags:
+    - issue
+
+# https://access.redhat.com/solutions/1564823
+- name: Prevent systemd to log too many messages like "Starting Session 1398 of user root."
+  copy: src=etc/rsyslog.d/ignore-systemd-session-slice.conf dest=/etc/rsyslog.d/ignore-systemd-session-slice.conf
+  tags:
+    - syslog
+
+- name: Enable services during boot
+  service: name={{ item }} enabled=yes
+  with_items: "{{ enable_distribution_specific_boot_services }}"
+  when: enable_distribution_specific_boot_services
+  tags:
+    - services
+
+- name: Disable services during boot
+  service: name={{ item }} state=stopped
+  with_items:
+    - "{{ disable_distribution_specific_boot_services }}"
+  when: disable_distribution_specific_boot_services
+  tags:
+    - services

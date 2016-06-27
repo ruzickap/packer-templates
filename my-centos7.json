@@ -1,0 +1,72 @@
+{
+  "_comment": "Build with `NAME=my-CentOS-7-amd64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_ARCH=x86_64 CENTOS_TAG=1511 packer build my-centos7.json`",
+  "variables": {
+    "name": "{{ env `NAME` }}",
+    "centos_type": "{{ env `CENTOS_TYPE` }}",
+    "centos_version": "{{ env `CENTOS_VERSION` }}",
+    "centos_arch": "{{ env `CENTOS_ARCH` }}",
+    "centos_tag": "{{ env `CENTOS_TAG` }}",
+    "centos_mirror": "http://ftp.linux.cz/pub/linux/centos/",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "preseed_file_name": "my-ks.cfg",
+    "disk_size": "102400"
+  },
+
+  "builders":
+  [
+    {
+      "name": "{{ user `name` }}",
+      "type": "qemu",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/{{ user `centos_arch` }}/sha256sum.txt",
+      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/{{ user `centos_arch` }}/CentOS-{{ user `centos_version` }}-{{ user `centos_arch` }}-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
+      "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_wait_timeout": "60m",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+      "accelerator": "kvm",
+      "qemuargs": [[ "-m", "1024M" ]],
+      "boot_wait": "2s",
+      "boot_command":
+      [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
+      ],
+      "disk_size": "{{ user `disk_size` }}",
+      "http_directory": "http"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
+      "scripts": [
+        "scripts/linux-common/vagrant.sh"
+      ]
+    },
+    {
+      "type": "ansible",
+      "user": "vagrant",
+      "playbook_file": "ansible/main.yml",
+      "sftp_command": "/usr/libexec/openssh/sftp-server -e"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
+      "scripts": [
+        "scripts/centos/cleanup.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 9,
+        "vagrantfile_template": "Vagrantfile-linux.template",
+        "output": "{{ user `name` }}-{{.Provider}}.box"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,74 @@
+---
+
+mc_wrapper_sh_path: /usr/libexec/mc/mc-wrapper.sh
+
+vimrc_configuration_file: /etc/vimrc
+
+bashrc_configuration_file: /etc/bashrc
+
+logwatch_cron_daily_file: 0logwatch
+
+sysstat_cron_entry: '\*/10 \* \* \* \*'
+
+ssh_daemon: sshd
+
+epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+epel_repo_gpg_key_url: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+
+distribution_specific_packages:
+  - "@base"
+  - libselinux-python
+  - net-snmp
+  - net-snmp-utils
+  - sos
+  - tmpwatch
+  - tuned
+  - vim-enhanced
+  - yum-cron
+
+remove_distribution_specific_packages:
+  - aic94xx-firmware
+  - alsa-firmware
+  - alsa-lib
+  - alsa-tools-firmware
+  - biosdevname
+  - iprutils
+  - ivtv-firmware
+  - iwl100-firmware
+  - iwl1000-firmware
+  - iwl105-firmware
+  - iwl135-firmware
+  - iwl2000-firmware
+  - iwl2030-firmware
+  - iwl3160-firmware
+  - iwl3945-firmware
+  - iwl4965-firmware
+  - iwl5000-firmware
+  - iwl5150-firmware
+  - iwl6000-firmware
+  - iwl6000g2a-firmware
+  - iwl6000g2b-firmware
+  - iwl6050-firmware
+  - iwl7260-firmware
+  - libertas-sd8686-firmware
+  - libertas-sd8787-firmware
+  - libertas-usb8388-firmware
+  - linux-firmware
+
+enable_distribution_specific_boot_services:
+  - ntpd
+  - ntpdate
+  - snmpd
+  - yum-cron
+
+disable_distribution_specific_boot_services:
+  - abrt-ccpp
+  - abrtd
+  - abrt-oops
+  - abrt-vmcore
+  - abrt-xorg
+  - chronyd
+  - dmraid-activation
+  - kdump
+  - mdmonitor
+  - smartd

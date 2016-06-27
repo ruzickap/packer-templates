@@ -1,0 +1,10 @@
+
+Vagrant.configure("2") do |config|
+  config.vm.provider :libvirt do |domain|
+    domain.disk_bus = "virtio"
+    domain.nic_model_type = "virtio"
+    domain.video_type = "qxl"
+    domain.graphics_type = "spice"
+  end
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
+end

@@ -1,0 +1,1 @@
+HISTTIMEFORMAT="|%F %R| "
