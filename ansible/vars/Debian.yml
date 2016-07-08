@@ -23,6 +23,7 @@ distribution_specific_packages:
   - snmp
   - snmpd
   - sosreport
+  - tcpflow
   - tmpreaper
   - update-notifier-common
   - vim
