@@ -49,7 +49,8 @@
       "type": "ansible",
       "user": "vagrant",
       "playbook_file": "ansible/main.yml",
-      "sftp_command": "/usr/libexec/openssh/sftp-server -e"
+      "sftp_command": "/usr/libexec/openssh/sftp-server -e",
+      "extra_arguments": [ "-v" ]
     },
     {
       "type": "shell",

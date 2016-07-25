@@ -62,7 +62,8 @@
     {
       "type": "ansible",
       "user": "vagrant",
-      "playbook_file": "ansible/main.yml"
+      "playbook_file": "ansible/main.yml",
+      "extra_arguments": [ "-v" ]
     },
     {
       "type": "shell",

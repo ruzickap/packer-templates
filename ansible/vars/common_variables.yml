@@ -40,7 +40,6 @@ common_packages:
   - strace
   - sysstat
   - tcpdump
-  - tcp
   - telnet
   - tmux
   - traceroute
