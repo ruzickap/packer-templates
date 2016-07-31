@@ -3,7 +3,6 @@
 USER="peru"
 TMPDIR="/var/tmp/"
 
-
 create_atlas_box() {
   if wget -O /dev/null "https://atlas.hashicorp.com/api/v1/box/$USER/$NAME" 2>&1 | grep -q 'ERROR 404'; then
     #Create box, because it doesn't exists
@@ -43,7 +42,7 @@ render_template() {
 packer_build() {
   PACKER_FILE=$1; shift
 
-  ~/bin/packer build $PACKER_FILE
+  ~/bin/packer build -color=false $PACKER_FILE | tee "${TMPDIR}/${NAME}-packer.log"
   create_atlas_box
   upload_boxfile_to_atlas
   rm -v ${NAME}-libvirt.box
@@ -51,7 +50,7 @@ packer_build() {
 
 
 build_ubuntu_16_04() {
-  export UBUNTU_VERSION="16.04"
+  export UBUNTU_VERSION="16.04.1"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
@@ -87,7 +86,7 @@ build_my_ubuntu_14_04() {
 }
 
 build_my_ubuntu_16_04() {
-  export UBUNTU_VERSION="16.04"
+  export UBUNTU_VERSION="16.04.1"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"

@@ -32,6 +32,12 @@
           rpm_key: key="{{ epel_repo_gpg_key_url }}" state=present
       when: ansible_os_family == 'RedHat'
 
+    - name: Update apt cache (apt-get update)
+      apt: update_cache=yes
+      when: ansible_pkg_mgr == 'apt'
+      tags:
+        - packages
+
     - name: Install common packages
       package: name={{ item }}
       with_items:
