@@ -62,7 +62,7 @@ build_ubuntu_16_04() {
 }
 
 build_ubuntu_14_04() {
-  export UBUNTU_VERSION="14.04.4"
+  export UBUNTU_VERSION="14.04.5"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
@@ -74,7 +74,7 @@ build_ubuntu_14_04() {
 }
 
 build_my_ubuntu_14_04() {
-  export UBUNTU_VERSION="14.04.4"
+  export UBUNTU_VERSION="14.04.5"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"

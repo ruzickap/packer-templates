@@ -14,6 +14,7 @@ sysstat_cron_entry: '5-55/10 \* \* \* \*'
 ssh_daemon: ssh
 
 distribution_specific_packages:
+  - aptitude
   - cloud-initramfs-growroot
   - debconf-utils
   - dnsutils

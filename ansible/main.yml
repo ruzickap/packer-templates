@@ -21,22 +21,22 @@
     - name: Set hostname
       hostname: name=localhost
 
+    - name: Update repositories
+      apt: update_cache=yes
+      tags:
+        - packages
+      when: ansible_os_family == 'Debian'
+
     - block:
         - name: Install EPEL repo.
-          yum: name="{{ epel_repo_url }}" state=present
+          yum: name="{{ epel_repo_url }}"
           register: result
           until: '"failed" not in result'
           retries: 5
           delay: 10
         - name: Import EPEL GPG key.
-          rpm_key: key="{{ epel_repo_gpg_key_url }}" state=present
+          rpm_key: key="{{ epel_repo_gpg_key_url }}"
       when: ansible_os_family == 'RedHat'
-
-    - name: Update apt cache (apt-get update)
-      apt: update_cache=yes
-      when: ansible_pkg_mgr == 'apt'
-      tags:
-        - packages
 
     - name: Install common packages
       package: name={{ item }}
@@ -57,7 +57,7 @@
       tags:
         - mc
 
-    - name: Create directory "etc/skel/.config/mc"
+    - name: Create directory "/etc/skel/.config/mc"
       file: path=/etc/skel/.config/mc state=directory
 
     - name: Create directory for mc inside /etc/skel
@@ -71,6 +71,7 @@
       register: stat_skel_copy_users
       tags:
         - mc
+        - skel
 
     - name: Copy /etc/skel/.config/ directory to root
       command: cp -r /etc/skel/.config {{ item.stat.path }} creates={{ item.stat.path }}/.config
@@ -78,28 +79,46 @@
       with_items: "{{ stat_skel_copy_users.results }}"
       tags:
         - mc
+        - skel
 
     - name: Change owner for {{ item.stat.path }}/.config
-      file: path={{ item.stat.path }}/.config recurse=yes state=directory owner={{ item.stat.path | basename }} group={{ item.stat.path | basename }}
+      file:
+        path: "{{ item.stat.path }}/.config"
+        recurse: yes
+        state: directory
+        owner: "{{ item.stat.path | basename }}"
+        group: "{{ item.stat.path | basename }}"
       when: item.stat.exists
       with_items: "{{ stat_skel_copy_users.results }}"
       tags:
         - mc
+        - skel
 
     - name: Change rights for {{ item.stat.path }}/.config
-      file: path={{ item.stat.path }}/.config state=directory mode=700
+      file:
+        path: "{{ item.stat.path }}/.config"
+        state: directory
+        mode: 0700
       when: item.stat.exists
       with_items: "{{ stat_skel_copy_users.results }}"
       tags:
         - mc
+        - skel
 
     - name: Set format for history command (/etc/profile.d/history_format.sh)
-      copy: src=etc/profile.d/history_format.sh dest=/etc/profile.d/ mode=644
+      copy:
+        src: etc/profile.d/history_format.sh
+        dest: /etc/profile.d/
+        mode: 0644
       tags:
         - history_format
 
     - name: Add sar alias ({{ bashrc_configuration_file }})
-      lineinfile: dest={{ bashrc_configuration_file }} state=present regexp='^alias sar=' line="alias sar=\'LANG=C sar\'" backup=yes
+      lineinfile:
+        dest: "{{ bashrc_configuration_file }}"
+        regexp: '^alias sar='
+        line: "alias sar='LANG=C sar'"
+        backup: yes
       tags:
         - bashrc
 
@@ -142,7 +161,12 @@
         - logrotate
 
     - name: Change logwatch to display weekly status (/etc/logwatch/conf/logwatch.conf)
-      lineinfile: dest=/etc/logwatch/conf/logwatch.conf regexp='^Range =' line="Range = between -7 days and -1 days" create=yes backup=yes
+      lineinfile:
+        dest: /etc/logwatch/conf/logwatch.conf
+        regexp: '^Range ='
+        line: "Range = between -7 days and -1 days"
+        create: yes
+        backup: yes
       tags:
         - logwatch
 
@@ -153,24 +177,35 @@
         - cron
 
     - name: Place snmpd.conf file to the /etc/snmp/
-      copy: src=etc/snmp/snmpd.conf dest=/etc/snmp/ mode=600 backup=yes
+      copy:
+        src: etc/snmp/snmpd.conf
+        dest: /etc/snmp/
+        mode: 0600
+        backup: yes
       notify: reload snmpd
       tags:
         - snmpd
 
-    - name: Allow root SSH access
-      lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin yes" backup=yes
-      notify: reload sshd
-      tags:
-        - sshd
-
     - name: Configure sshd
       blockinfile:
+        backup: yes
         dest: /etc/ssh/sshd_config
         block: |
           ClientAliveInterval 60
           Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
           KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+      notify: reload sshd
+      tags:
+        - sshd
+
+    - name: Allow root SSH access and set "PasswordAuthentication yes" in /etc/ssh/sshd_config
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
+        - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication yes' }
       notify: reload sshd
       tags:
         - sshd
@@ -187,7 +222,12 @@
         - ssh
 
     - name: Tweak sysstat in cron.d
-      lineinfile: dest=/etc/cron.d/sysstat state=present regexp="^{{ sysstat_cron_entry }}(.*)" line='* * * * *\1' backrefs=yes backup=yes
+      lineinfile:
+        dest: /etc/cron.d/sysstat
+        regexp: "^{{ sysstat_cron_entry }}(.*)"
+        line: '* * * * *\1'
+        backrefs: yes
+        backup: yes
       tags:
         - cron
         - sysstat
@@ -198,17 +238,44 @@
         - cloud-init
 
     - name: Remove /dev/fd0 (floppy) from /etc/fstab (floppy is presend by default when using KVM provisioner)
-      mount: name=/media/floppy0 src=/dev/fd0 state=absent fstype=auto
+      mount:
+        name: /media/floppy0
+        src: /dev/fd0
+        fstype: auto
+        state: absent
       tags:
         - fstab
 
     - name: Ensure fstab uses nodiratime and noatime
-      replace: dest=/etc/fstab regexp='(\s)defaults' replace='\1 noatime,nodiratime,defaults'
+      replace:
+        dest: /etc/fstab
+        regexp: '(\s)defaults'
+        replace: '\1 noatime,nodiratime,defaults'
+        backup: yes
       tags:
         - fstab
 
-    - name: Disable services during boot
-      service: name={{ item }} state=stopped
+    - name: Check if /root/.ssh/authorized_keys exists
+      stat: path=/root/.ssh/authorized_keys
+      register: root_authorized_keys
+      tags:
+        - ssh
+
+    - name: Remove the Amazon AWS "disable root" feature
+      replace:
+        dest: /root/.ssh/authorized_keys
+        regexp: "^no-port-forwarding,no-agent-forwarding,no-X11-forwarding,command=\"echo \'Please login as the user \\\\\"{{ ansible_user }}\\\\\" rather than the user \\\\\"root\\\\\".\';echo;sleep 10\" ssh-.*"
+        backup: yes
+      when: root_authorized_keys.stat.exists
+      tags:
+        - ssh
+
+
+    - include: tasks/{{ ansible_os_family }}.yml
+
+
+    - name: Disable and stop services during boot
+      service: name={{ item }} state=stopped enabled=no
       with_items:
         - "{{ disable_distribution_specific_boot_services }}"
       when: disable_distribution_specific_boot_services
@@ -221,22 +288,3 @@
       when: enable_distribution_specific_boot_services
       tags:
         - services
-
-    - name: Set "PasswordAuthentication yes" in /etc/ssh/sshd_config
-      lineinfile: dest=/etc/ssh/sshd_config regexp="^PasswordAuthentication" line="PasswordAuthentication yes"
-      tags:
-        - sshd
-
-    - name: Check if /root/.ssh/authorized_keys exists
-      stat: path=/root/.ssh/authorized_keys
-      register: root_authorized_keys
-      tags:
-        - ssh
-
-    - name: Remove the Amazon AWS "disable root" feature
-      replace: dest=/root/.ssh/authorized_keys regexp='^no-port-forwarding,no-agent-forwarding,no-X11-forwarding,command="echo \'Please login as the user \\\\"{{ ansible_user }}\\\\" rather than the user \\\\"root\\\\".\';echo;sleep 10" ' backup=yes
-      when: root_authorized_keys.stat.exists
-      tags:
-        - ssh
-
-    - include: tasks/{{ ansible_os_family }}.yml
