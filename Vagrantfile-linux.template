@@ -1,4 +1,3 @@
-
 Vagrant.configure("2") do |config|
   config.vm.provider :libvirt do |libvirt|
     libvirt.disk_bus = "virtio"
@@ -6,5 +5,8 @@ Vagrant.configure("2") do |config|
     libvirt.video_type = "qxl"
     libvirt.graphics_type = "spice"
   end
+
+  config.vm.provider "libvirt"
+  #Disable NFS sharing (==> default: Mounting NFS shared folders...)
   config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
 end

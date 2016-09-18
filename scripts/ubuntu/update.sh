@@ -1,5 +1,7 @@
 #!/bin/bash -eux
 
+export DEBIAN_FRONTEND="noninteractive"
+
 # Update the box
-apt update
-apt -y upgrade
+apt-get update
+apt-get -y upgrade

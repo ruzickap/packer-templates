@@ -27,7 +27,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "1024M" ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "1G" ]],
       "boot_wait": "2s",
       "boot_command":
       [
@@ -48,6 +48,7 @@
     {
       "type": "ansible",
       "user": "vagrant",
+      "ansible_env_vars": [ "ANSIBLE_SSH_ARGS='-o ForwardAgent=no -o ControlMaster=auto -o ControlPersist=1h'" ],
       "playbook_file": "ansible/main.yml",
       "sftp_command": "/usr/libexec/openssh/sftp-server -e"
     },

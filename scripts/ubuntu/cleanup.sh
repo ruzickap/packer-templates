@@ -1,6 +1,7 @@
 #!/bin/bash -eux
 
 SSH_USER=${SSH_USERNAME:-vagrant}
+export DEBIAN_FRONTEND="noninteractive"
 
 # Make sure udev does not block our network - http://6.ptmc.org/?p=164
 echo "==> Cleaning up udev rules"
