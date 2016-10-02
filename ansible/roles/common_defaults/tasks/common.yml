@@ -1,0 +1,272 @@
+---
+
+- name: Set hostname
+  hostname: name=localhost
+
+- name: Update repositories
+  apt: update_cache=yes
+  tags:
+    - packages
+  when: ansible_os_family == 'Debian'
+
+- block:
+    - name: Install EPEL repo.
+      yum: name="{{ epel_repo_url }}"
+      register: result
+      until: '"failed" not in result'
+      retries: 5
+      delay: 10
+    - name: Import EPEL GPG key.
+      rpm_key: key="{{ epel_repo_gpg_key_url }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Install common packages
+  package: name={{ item }}
+  with_items:
+    - "{{ common_packages }}"
+    - "{{ distribution_specific_packages }}"
+  tags:
+    - packages
+
+# password is "vagrant"
+- name: Chnage root password
+  user: name=root password={{ root_password }}
+  tags:
+    - users
+
+- name: Disable mouse in mc (/etc/profile.d/mc.sh)
+  template: src=etc/profile.d/my-mc.sh.j2 dest=/etc/profile.d/my-mc.sh
+  tags:
+    - mc
+
+- name: Create directory "/etc/skel/.config/mc"
+  file: path=/etc/skel/.config/mc state=directory
+
+- name: Create directory for mc inside /etc/skel
+  copy: src=etc/skel/.config/mc/ini dest=/etc/skel/.config/mc/
+  tags:
+    - mc
+
+- name: Check if user dirctory exists
+  stat: path={{ item }}
+  with_items: "{{ skel_copy_users }}"
+  register: stat_skel_copy_users
+  tags:
+    - mc
+    - skel
+
+- name: Copy /etc/skel/.config/ directory to root
+  command: cp -r /etc/skel/.config {{ item.stat.path }} creates={{ item.stat.path }}/.config
+  when: item.stat.exists
+  with_items: "{{ stat_skel_copy_users.results }}"
+  tags:
+    - mc
+    - skel
+
+- name: Change owner for {{ item.stat.path }}/.config
+  file:
+    path: "{{ item.stat.path }}/.config"
+    recurse: yes
+    state: directory
+    owner: "{{ item.stat.path | basename }}"
+    group: "{{ item.stat.path | basename }}"
+  when: item.stat.exists
+  with_items: "{{ stat_skel_copy_users.results }}"
+  tags:
+    - mc
+    - skel
+
+- name: Change rights for {{ item.stat.path }}/.config
+  file:
+    path: "{{ item.stat.path }}/.config"
+    state: directory
+    mode: 0700
+  when: item.stat.exists
+  with_items: "{{ stat_skel_copy_users.results }}"
+  tags:
+    - mc
+    - skel
+
+- name: Set format for history command (/etc/profile.d/history_format.sh)
+  copy:
+    src: etc/profile.d/history_format.sh
+    dest: /etc/profile.d/
+    mode: 0644
+  tags:
+    - history_format
+
+- name: Add sar alias ({{ bashrc_configuration_file }})
+  lineinfile:
+    dest: "{{ bashrc_configuration_file }}"
+    regexp: '^alias sar='
+    line: "alias sar='LANG=C sar'"
+    backup: yes
+  tags:
+    - bashrc
+
+- name: Tweak vim ({{ vimrc_configuration_file }})
+  blockinfile:
+    marker: '" {mark} ANSIBLE MANAGED BLOCK'
+    dest: "{{ vimrc_configuration_file }}"
+    block: |
+      set laststatus=2
+      set statusline=%F%m%r%h%w\ (%{&ff}){\%Y}[%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+    backup: yes
+  tags:
+    - vimrc
+
+- name: Tweak screen (/etc/screenrc)
+  blockinfile:
+    dest: /etc/screenrc
+    block: |
+      defscrollback 10000
+      startup_message off
+      termcapinfo xterm ti@:te@
+      hardstatus alwayslastline '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+      vbell off
+    backup: yes
+  tags:
+    - screenrc
+
+- name: Tweak logrotate (/etc/logrotate.conf)
+  blockinfile:
+    dest: /etc/logrotate.conf
+    insertafter: "^create"
+    block: |
+      compress
+      compresscmd /usr/bin/xz
+      compressoptions -9
+      uncompresscmd /usr/bin/unxz
+      compressext .xz
+    backup: yes
+  tags:
+    - logrotate
+
+- name: Change logwatch to display weekly status (/etc/logwatch/conf/logwatch.conf)
+  lineinfile:
+    dest: /etc/logwatch/conf/logwatch.conf
+    regexp: '^Range ='
+    line: "Range = between -7 days and -1 days"
+    create: yes
+    backup: yes
+  tags:
+    - logwatch
+
+- name: Move logwatch cron entry from cron.daily to cron.weekly
+  command: mv /etc/cron.daily/{{ logwatch_cron_daily_file }} /etc/cron.weekly/ creates=/etc/cron.weekly/{{ logwatch_cron_daily_file }}
+  tags:
+    - logwatch
+    - cron
+
+- name: Place snmpd.conf file to the /etc/snmp/
+  copy:
+    src: etc/snmp/snmpd.conf
+    dest: /etc/snmp/
+    mode: 0600
+    backup: yes
+  notify: reload snmpd
+  tags:
+    - snmpd
+
+- name: Configure sshd
+  blockinfile:
+    backup: yes
+    dest: /etc/ssh/sshd_config
+    block: |
+      ClientAliveInterval 60
+      Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
+      KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+  notify: reload sshd
+  tags:
+    - sshd
+
+- name: Allow root SSH access and set "PasswordAuthentication yes" in /etc/ssh/sshd_config
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication yes' }
+  notify: reload sshd
+  tags:
+    - sshd
+
+- name: Configure ssh client
+  blockinfile:
+    dest: /etc/ssh/ssh_config
+    block: |
+      ServerAliveInterval 60
+      ServerAliveCountMax 5
+      TCPKeepAlive yes
+    backup: yes
+  tags:
+    - ssh
+
+- name: Tweak sysstat in cron.d
+  lineinfile:
+    dest: /etc/cron.d/sysstat
+    regexp: "^{{ sysstat_cron_entry }}(.*)"
+    line: '* * * * *\1'
+    backrefs: yes
+    backup: yes
+  tags:
+    - cron
+    - sysstat
+
+- name: Configure cloud-init
+  template: src=etc/cloud/cloud.cfg.d/91_my.cfg dest=/etc/cloud/cloud.cfg.d/
+  tags:
+    - cloud-init
+
+- name: Remove /dev/fd0 (floppy) from /etc/fstab (floppy is presend by default when using KVM provisioner)
+  mount:
+    name: /media/floppy0
+    src: /dev/fd0
+    fstype: auto
+    state: absent
+  tags:
+    - fstab
+
+- name: Ensure fstab uses nodiratime and noatime
+  replace:
+    dest: /etc/fstab
+    regexp: '(\s)defaults'
+    replace: '\1 noatime,nodiratime,defaults'
+    backup: yes
+  tags:
+    - fstab
+
+- name: Check if /root/.ssh/authorized_keys exists
+  stat: path=/root/.ssh/authorized_keys
+  register: root_authorized_keys
+  tags:
+    - ssh
+
+- name: Remove the Amazon AWS "disable root" feature
+  replace:
+    dest: /root/.ssh/authorized_keys
+    regexp: "^no-port-forwarding,no-agent-forwarding,no-X11-forwarding,command=\"echo \\'Please login as the user \\\\\"{{ ansible_user }}\\\\\" rather than the user \\\\\"root\\\\\".\\';echo;sleep 10\" ssh-.*"
+    backup: yes
+  when: root_authorized_keys.stat.exists
+  tags:
+    - ssh
+
+
+- include: "{{ ansible_os_family }}.yml"
+
+
+- name: Disable and stop services during boot
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+    - "{{ disable_distribution_specific_boot_services }}"
+  when: disable_distribution_specific_boot_services
+  tags:
+    - services
+
+- name: Enable services during boot
+  service: name={{ item }} enabled=yes
+  with_items: "{{ enable_distribution_specific_boot_services }}"
+  when: enable_distribution_specific_boot_services
+  tags:
+    - services
