@@ -1,0 +1,75 @@
+{
+  "_comment": "Build with `NAME=windows-server-2012-r2-standard-x64-eval WINDOWS_VERSION=2012 WINDOWS_TYPE=server packer build windows-server-2012-eval.json`",
+  "variables": {
+    "name": "{{ env `NAME` }}",
+    "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
+    "iso_checksum": "9ae482cb99b5eddab1d8a1635b2f8e51cf85a3a3ebbc7dc741c650663809a658",
+    "autounattend": "http/windows-{{ env `WINDOWS_TYPE` }}-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
+    "winrm_username": "vagrant",
+    "winrm_password": "vagrant",
+    "disk_size": "102400"
+  },
+
+  "builders":
+  [
+    {
+      "name": "{{ user `name` }}",
+      "type": "qemu",
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_urls": [ "{{ user `iso_url` }}" ],
+      "communicator": "winrm",
+      "winrm_username": "{{ user `winrm_username` }}",
+      "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "12h",
+
+      "shutdown_command": "c:\\remove_nic.bat & del c:\\remove_nic.bat & shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_timeout": "15m",
+
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "4G" ], [ "-smp", 2 ]],
+      "disk_size": "{{ user `disk_size` }}",
+
+      "floppy_files": [
+        "{{ user `autounattend` }}",
+        "scripts/win-common/fixnetwork.ps1",
+
+        "{{ user `virtio_win_iso_dir` }}/NetKVM/2k12R2/amd64/netkvm*.cat",
+        "{{ user `virtio_win_iso_dir` }}/NetKVM/2k12R2/amd64/netkvm*.inf",
+        "{{ user `virtio_win_iso_dir` }}/NetKVM/2k12R2/amd64/netkvm*.sys",
+        "{{ user `virtio_win_iso_dir` }}/NetKVM/2k12R2/amd64/netkvm*.dll",
+
+        "{{ user `virtio_win_iso_dir` }}/qxldod/2k12R2/amd64/qxldod*.cat",
+        "{{ user `virtio_win_iso_dir` }}/qxldod/2k12R2/amd64/qxldod*.inf",
+        "{{ user `virtio_win_iso_dir` }}/qxldod/2k12R2/amd64/qxldod*.sys",
+
+        "{{ user `virtio_win_iso_dir` }}/viostor/2k12R2/amd64/viostor*.cat",
+        "{{ user `virtio_win_iso_dir` }}/viostor/2k12R2/amd64/viostor*.inf",
+        "{{ user `virtio_win_iso_dir` }}/viostor/2k12R2/amd64/viostor*.sys"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/win-common/install_virtio_drivers.ps1"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/win-common/remove_nic.bat",
+      "destination": "c:\\remove_nic.bat"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 9,
+        "vagrantfile_template": "Vagrantfile-windows.template",
+        "output": "{{ user `name` }}-{{.Provider}}.box"
+      }
+    ]
+  ]
+}

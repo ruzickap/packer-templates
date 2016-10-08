@@ -1,7 +1,20 @@
 #!/bin/bash -e
+#Do not use -x - it will break the functionality
 
-USER="peru"
-TMPDIR="/var/tmp/"
+export USER="peru"
+export TMPDIR="/var/tmp/"
+export VIRTIO_WIN_ISO_URL="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso"
+export VIRTIO_WIN_ISO=$(basename $VIRTIO_WIN_ISO_URL)
+#export PACKER_LOG=1
+export LOG_DIR="./build_logs/"
+
+
+ansible_check() {
+  if ansible --version | grep -q '^ansible 1'; then
+    echo -e "\nPlease use Ansible 2.x"
+    exit 1
+  fi
+}
 
 create_atlas_box() {
   if wget -O /dev/null "https://atlas.hashicorp.com/api/v1/box/$USER/$NAME" 2>&1 | grep -q 'ERROR 404'; then
@@ -42,7 +55,7 @@ render_template() {
 packer_build() {
   PACKER_FILE=$1; shift
 
-  ~/bin/packer build -color=false $PACKER_FILE | tee "${TMPDIR}/${NAME}-packer.log"
+  ~/bin/packer build -color=false $PACKER_FILE | tee "${LOG_DIR}/${NAME}-packer.log"
   create_atlas_box
   upload_boxfile_to_atlas
   rm -v ${NAME}-libvirt.box
@@ -110,17 +123,39 @@ build_my_centos7() {
   packer_build my-centos${CENTOS_VERSION}.json
 }
 
+build_windows_2012_r2() {
+  export WINDOWS_VERSION="2012"
+  export WINDOWS_RELEASE="r2"
+  export WINDOWS_ARCH="x64"
+  export WINDOWS_TYPE="server"
+  export WINDOWS_EDITION="standard"
+  export NAME="windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+  export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
+  export DESCRIPTION=$(render_template windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
+
+  wget -c $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
+  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+
+  packer_build windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.json
+
+  sudo umount $VIRTIO_WIN_ISO_DIR
+  rmdir $VIRTIO_WIN_ISO_DIR
+}
+
 
 #######
 # Main
 #######
 
 main() {
+  ansible_check
   build_my_centos7
   build_my_ubuntu_16_04
   build_my_ubuntu_14_04
   build_ubuntu_16_04
   build_ubuntu_14_04
+  build_windows_2012_r2
 }
 
 main
