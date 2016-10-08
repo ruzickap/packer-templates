@@ -57,7 +57,7 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 
 ## Configuration
 
-#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}/Autounattend.xml)
 
 * UTC timezone
 * IEHarden disabled
