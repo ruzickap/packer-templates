@@ -1,5 +1,4 @@
 ---
-
 - name: Set hostname
   hostname: name=localhost
 
@@ -257,7 +256,10 @@
 
 
 - name: Disable and stop services during boot
-  service: name={{ item }} state=stopped enabled=no
+  service:
+    name: {{ item }}
+    state: stopped
+    enabled: no
   with_items:
     - "{{ disable_distribution_specific_boot_services }}"
   when: disable_distribution_specific_boot_services
