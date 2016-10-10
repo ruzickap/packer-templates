@@ -257,7 +257,7 @@
 
 - name: Disable and stop services during boot
   service:
-    name: {{ item }}
+    name: "{{ item }}"
     state: stopped
     enabled: no
   with_items:
