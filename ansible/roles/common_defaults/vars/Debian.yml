@@ -26,6 +26,7 @@ distribution_specific_packages:
   - sosreport
   - tcpflow
   - tmpreaper
+  - unattended-upgrades
   - update-notifier-common
   - vim
 

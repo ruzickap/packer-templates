@@ -1,6 +1,6 @@
 ---
-- name: Set hostname
-  hostname: name=localhost
+#- name: Set hostname
+#  hostname: name=localhost
 
 - name: Update repositories
   apt: update_cache=yes

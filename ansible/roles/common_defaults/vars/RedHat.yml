@@ -17,9 +17,12 @@ epel_repo_gpg_key_url: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distributio
 
 distribution_specific_packages:
   - "@base"
+  - audit
   - libselinux-python
   - net-snmp
   - net-snmp-utils
+  - openssh-clients
+  - selinux-policy
   - sos
   - tmpwatch
   - tuned

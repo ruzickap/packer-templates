@@ -48,10 +48,17 @@
   tags:
     - selinux
 
+- name: Check the presence of /etc/default/grub
+  stat: path=/etc/default/grub
+  register: grub_default
+  tags:
+    - grub
+
 - name: Backup grub settings
   shell: cp /etc/default/grub /etc/default/grub.orig creates=/etc/default/grub.orig
   tags:
     - grub
+  when: grub_default.stat.exists == True
 
 - name: Modify grub settings
   replace:
@@ -62,6 +69,7 @@
     - { regexp: '^GRUB_TIMEOUT=.*', replace: 'GRUB_TIMEOUT=1' }
     - { regexp: '^GRUB_CMDLINE_LINUX=.*', replace: 'GRUB_CMDLINE_LINUX="rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 net.ifnames=0 no_timer_check"' }
   notify: generate grub configuration
+  when: grub_default.stat.exists == True
   tags:
     - grub
 

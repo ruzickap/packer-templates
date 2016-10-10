@@ -23,6 +23,7 @@ common_packages:
   - iftop
   - iotop
   - lftp
+  - logrotate
   - logwatch
   - lshw
   - lsof
@@ -33,6 +34,7 @@ common_packages:
   - nmap
   - ntp
   - ntpdate
+  - openssh-server
   - parted
   - postfix
   - rsync
