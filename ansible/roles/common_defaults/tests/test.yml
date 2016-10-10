@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  become: yes
 
   roles:
     - common_defaults
