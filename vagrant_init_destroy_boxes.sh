@@ -1,7 +1,5 @@
 #!/bin/bash -x
 
-#BOXES_LIST="windows-10-enterprise-x64-eval-libvirt.box"
-#BOXES_LIST="windows-server-2012-r2-standard-x64-eval-libvirt.box"
 BOXES_LIST="*.box"
 TMPDIR="/tmp/"
 export VAGRANT_DEFAULT_PROVIDER=libvirt

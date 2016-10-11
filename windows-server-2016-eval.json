@@ -1,12 +1,12 @@
 {
-  "_comment": "Build with `NAME=windows-server-2012-r2-standard-x64-eval WINDOWS_VERSION=2012 WINDOWS_TYPE=server packer build windows-server-2012-eval.json`",
+  "_comment": "Build with `NAME=windows-server-2016-standard-x64-eval WINDOWS_VERSION=2016 WINDOWS_TYPE=server packer build windows-server-2016-eval.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
-    "iso_checksum": "9ae482cb99b5eddab1d8a1635b2f8e51cf85a3a3ebbc7dc741c650663809a658",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/1/6/F/16FA20E6-4662-482A-920B-1A45CF5AAE3C/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
+    "iso_checksum": "e634269ef78f1181859f88708c6d03c12a250f4b66d8cbd3de2e3c18da1f96ff",
     "autounattend": "http/windows-{{ env `WINDOWS_TYPE` }}-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
-    "virtio_driver_directory": "2k12R2",
+    "virtio_driver_directory": "2k16",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "disk_size": "102400"

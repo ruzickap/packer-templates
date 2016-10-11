@@ -17,16 +17,16 @@ Write-Host "*** Install RH certificate to TrustedPublisher certificate store"
 certutil.exe -f -addstore 'TrustedPublisher' c:\redhat.cer
 
 Write-Host "*** Install the Baloon Driver (Balloon)"
-pnputil -i -a "${driveLetter}:\Balloon\2k12R2\amd64\*.inf"
+pnputil -i -a "${driveLetter}:\Balloon\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install Virtio RNG driver (viorng)"
-pnputil -i -a "${driveLetter}:\viorng\2k12R2\amd64\*.inf"
+pnputil -i -a "${driveLetter}:\viorng\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install Virtio serial driver (vioserial)"
-pnputil -i -a "${driveLetter}:\vioserial\2k12R2\amd64\*.inf"
+pnputil -i -a "${driveLetter}:\vioserial\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install pvpanic device driver (pvpanic)"
-pnputil -i -a "${driveLetter}:\pvpanic\2k12R2\amd64\*.inf"
+pnputil -i -a "${driveLetter}:\pvpanic\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install Qemu Guest Agent (qemu-ga-x64.msi)"
 Start-Process "${driveLetter}:\guest-agent\qemu-ga-x64.msi" /qn -Wait
