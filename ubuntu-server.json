@@ -26,7 +26,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "1G" ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
       "boot_wait": "2s",
       "boot_command":
       [
@@ -53,7 +53,7 @@
       "scripts": [
         "scripts/ubuntu/update.sh",
         "scripts/linux-common/vagrant.sh",
-        "scripts/ubuntu/cleanup.sh"
+        "scripts/linux-common/cleanup.sh"
       ]
     }
   ],

@@ -256,51 +256,45 @@
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c winrm set winrm/config/client/auth @{Basic="true"}</CommandLine>
-                    <Description>Win RM client auth Basic</Description>
-                    <Order>10</Order>
-                    <RequiresUserInput>true</RequiresUserInput>
-                </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c winrm set winrm/config/listener?Address=*+Transport=HTTP @{Port="5985"}</CommandLine>
                     <Description>Win RM listener Address/Port</Description>
-                    <Order>11</Order>
+                    <Order>10</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c net stop winrm </CommandLine>
                     <Description>Stop Win RM Service </Description>
-                    <Order>12</Order>
+                    <Order>11</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c sc config winrm start= auto</CommandLine>
                     <Description>Win RM Autostart</Description>
-                    <Order>13</Order>
+                    <Order>12</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c net start winrm</CommandLine>
                     <Description>Start Win RM Service</Description>
-                    <Order>14</Order>
+                    <Order>13</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c netsh advfirewall firewall set rule name="Windows Remote Management (HTTP-In)" profile=public protocol=tcp localport=5985 remoteip=localsubnet new remoteip=any</CommandLine>
+                    <CommandLine>cmd.exe /c netsh advfirewall firewall add rule name="Port 5985 (WinRM)" dir=in protocol=tcp localport=5985 profile=public action=allow</CommandLine>
                     <Description>Win RM adv firewall enable</Description>
-                    <Order>15</Order>
+                    <Order>14</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c reg add "HKLM\System\CurrentControlSet\Control\Network\NewNetworkWindowOff"</CommandLine>
                     <Description>Network prompt</Description>
-                    <Order>16</Order>
+                    <Order>15</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c wmic useraccount where "name='vagrant'" set PasswordExpires=FALSE"</CommandLine>
                     <Description>Disable password expiration for vagrant user</Description>
-                    <Order>17</Order>
+                    <Order>16</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
             </FirstLogonCommands>

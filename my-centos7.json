@@ -27,7 +27,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "1G" ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
       "boot_wait": "2s",
       "boot_command":
       [
@@ -56,7 +56,7 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
       "scripts": [
-        "scripts/centos/cleanup.sh"
+        "scripts/linux-common/cleanup.sh"
       ]
     }
   ],

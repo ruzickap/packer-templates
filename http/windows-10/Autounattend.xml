@@ -26,31 +26,19 @@
                 <Disk wcm:action="add">
                     <CreatePartitions>
                         <CreatePartition wcm:action="add">
-                            <Type>Primary</Type>
                             <Order>1</Order>
-                            <Size>350</Size>
-                        </CreatePartition>
-                        <CreatePartition wcm:action="add">
-                            <Order>2</Order>
                             <Type>Primary</Type>
                             <Extend>true</Extend>
                         </CreatePartition>
                     </CreatePartitions>
                     <ModifyPartitions>
                         <ModifyPartition wcm:action="add">
-                            <Active>true</Active>
+                            <Extend>false</Extend>
                             <Format>NTFS</Format>
-                            <Label>boot</Label>
+                            <Letter>C</Letter>
                             <Order>1</Order>
                             <PartitionID>1</PartitionID>
-                        </ModifyPartition>
-
-                        <ModifyPartition wcm:action="add">
-                            <Format>NTFS</Format>
-                            <Label>Windows 2016</Label>
-                            <Letter>C</Letter>
-                            <Order>2</Order>
-                            <PartitionID>2</PartitionID>
+                            <Label>Windows 10</Label>
                         </ModifyPartition>
                     </ModifyPartitions>
                     <DiskID>0</DiskID>
@@ -63,18 +51,22 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Server 2016 SERVERSTANDARD</Value>
+                            <Value>Windows 10 Enterprise Evaluation</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
                         <DiskID>0</DiskID>
-                        <PartitionID>2</PartitionID>
+                        <PartitionID>1</PartitionID>
                     </InstallTo>
                 </OSImage>
             </ImageInstall>
 
             <UserData>
+                <!-- Product Key from http://technet.microsoft.com/en-us/library/jj612867.aspx -->
                 <ProductKey>
+                    <!-- Do not uncomment the Key element if you are using trial ISOs -->
+                    <!-- You must uncomment the Key element (and optionally insert your own key) if you are using retail or volume license ISOs -->
+                    <!--<Key>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</Key>-->
                     <WillShowUI>OnError</WillShowUI>
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
@@ -92,7 +84,7 @@
             <OEMInformation>
                 <HelpCustomized>false</HelpCustomized>
             </OEMInformation>
-            <ComputerName>win2012r2</ComputerName>
+            <ComputerName>win10</ComputerName>
             <TimeZone>UTC</TimeZone>
             <RegisteredOwner/>
         </component>
@@ -107,6 +99,18 @@
         </component>
 
         <component name="Microsoft-Windows-IE-InternetExplorer" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <DisableAccelerators>true</DisableAccelerators>
+            <DisableOOBAccelerators>true</DisableOOBAccelerators>
+            <SuggestedSitesEnabled>false</SuggestedSitesEnabled>
+            <Home_Page>about:home</Home_Page>
+            <QuickLinkList>
+                <QuickLinkItem wcm:action="add">
+                    <QuickLinkName>Google</QuickLinkName>
+                    <QuickLinkUrl>http://www.google.com</QuickLinkUrl>
+                    <QLID>1</QLID>
+                </QuickLinkItem>
+            </QuickLinkList>
+
             <SearchScopes>
                 <Scope wcm:action="add">
                     <ScopeDefault>true</ScopeDefault>
@@ -115,9 +119,6 @@
                     <ScopeUrl>http://www.google.com/search?q={searchTerms}</ScopeUrl>
                 </Scope>
             </SearchScopes>
-            <DisableAccelerators>true</DisableAccelerators>
-            <DisableFirstRunWizard>true</DisableFirstRunWizard>
-            <Home_Page>about:blank</Home_Page>
         </component>
 
         <component name="Microsoft-Windows-TerminalServices-LocalSessionManager" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -308,5 +309,5 @@
         </component>
 
     </settings>
-    <cpi:offlineImage cpi:source="wim:d:/sources/install.wim#Windows Server 2016 SERVERSTANDARD" xmlns:cpi="urn:schemas-microsoft-com:cpi"/>
+    <cpi:offlineImage cpi:source="wim:d:/sources/install.wim#Windows 10 Enterprise Evaluation" xmlns:cpi="urn:schemas-microsoft-com:cpi"/>
 </unattend>

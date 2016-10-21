@@ -59,6 +59,12 @@
       ]
     },
     {
+      "type": "windows-shell",
+      "scripts": [
+        "./scripts/win-common/clean.bat"
+      ]
+    },
+    {
       "type": "file",
       "source": "scripts/win-common/remove_nic.bat",
       "destination": "c:\\remove_nic.bat"
