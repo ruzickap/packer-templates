@@ -175,6 +175,7 @@
       ClientAliveInterval 60
       Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
       KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+    validate: sshd -tf %s
   notify: reload sshd
   tags:
     - sshd
@@ -184,6 +185,7 @@
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
+  validate: sshd -tf %s
   with_items:
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication yes' }

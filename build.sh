@@ -42,11 +42,19 @@ upload_boxfile_to_atlas() {
   echo "*** Uploading \"${NAME}-libvirt.box\" to $UPLOAD_PATH as version [$VERSION]"
   curl -s -X PUT --upload-file ${NAME}-libvirt.box $UPLOAD_PATH
   curl -s https://atlas.hashicorp.com/api/v1/box/$USER/$NAME/version/$VERSION/release -X PUT -d access_token="$ATLAS_TOKEN" > /dev/null
+  # Check if uploaded file really exists
+  if curl --output /dev/null --silent --head --fail "https://atlas.hashicorp.com/$USER/boxes/$NAME/versions/$VERSION/providers/libvirt.box"; then
+    echo "*** File \"https://atlas.hashicorp.com/$USER/boxes/$NAME/versions/$VERSION/providers/libvirt.box\" is reachable and exists..."
+  else
+    echo "*** File \"https://atlas.hashicorp.com/$USER/boxes/$NAME/versions/$VERSION/providers/libvirt.box\" does not exists !!!"
+    exit 1
+  fi
   #Remove previous version (always keep just one - latest version - recently uploaded)
   if [ "$CURRENT_VERSION" != "null" ]; then
     echo "*** Removing previous version: https://atlas.hashicorp.com/api/v1/box/$USER/$NAME/version/$CURRENT_VERSION"
     curl -s https://atlas.hashicorp.com/api/v1/box/$USER/$NAME/version/$CURRENT_VERSION -X DELETE -d access_token="$ATLAS_TOKEN" > /dev/null
   fi
+
 }
 
 render_template() {
@@ -62,6 +70,16 @@ packer_build() {
   rm -v ${NAME}-libvirt.box
 }
 
+build_ubuntu_16_10() {
+  export UBUNTU_VERSION="16.10"
+  export UBUNTU_ARCH="amd64"
+  export UBUNTU_TYPE="desktop"
+  export NAME="ubuntu-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
+  export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
+  export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
+
+  packer_build ubuntu-${UBUNTU_TYPE}.json
+}
 
 build_ubuntu_16_04() {
   export UBUNTU_VERSION="16.04.1"
@@ -139,6 +157,43 @@ build_windows_2012_r2() {
   rmdir $VIRTIO_WIN_ISO_DIR
 }
 
+build_windows_2016() {
+  export WINDOWS_VERSION="2016"
+  export WINDOWS_ARCH="x64"
+  export WINDOWS_TYPE="server"
+  export WINDOWS_EDITION="standard"
+  export NAME="windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+  export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
+  export DESCRIPTION=$(render_template windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
+
+  wget -c -q $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
+  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+
+  packer_build windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.json
+
+  sudo umount $VIRTIO_WIN_ISO_DIR
+  rmdir $VIRTIO_WIN_ISO_DIR
+}
+
+build_windows_10() {
+  export WINDOWS_VERSION="10"
+  export WINDOWS_ARCH="x64"
+  export WINDOWS_EDITION="enterprise"
+  export NAME="windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+  export SHORT_DESCRIPTION="Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
+  export DESCRIPTION=$(render_template windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
+
+  wget -c $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
+  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+
+  packer_build windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.json
+
+  sudo umount $VIRTIO_WIN_ISO_DIR
+  rmdir $VIRTIO_WIN_ISO_DIR
+}
+
 
 #######
 # Main
@@ -146,12 +201,15 @@ build_windows_2012_r2() {
 
 main() {
   ansible_check
+  build_windows_10
+  build_windows_2012_r2
+  build_windows_2016
   build_my_centos7
   build_my_ubuntu_16_04
   build_my_ubuntu_14_04
   build_ubuntu_16_04
   build_ubuntu_14_04
-  build_windows_2012_r2
+  build_ubuntu_16_10
 }
 
 main

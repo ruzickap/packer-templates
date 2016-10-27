@@ -48,9 +48,6 @@ fi
 echo "==> Cleaning up tmp"
 rm -rf /tmp/*
 
-#Remove the SSH host keys
-rm -f /etc/ssh/*key*
-
 # Remove Bash history
 unset HISTFILE
 rm -f /root/.bash_history

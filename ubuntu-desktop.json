@@ -1,0 +1,65 @@
+{
+  "_comment": "Build with `NAME=ubuntu-16.10-desktop-amd64 UBUNTU_TYPE=desktop packer build ubuntu-desktop.json`",
+  "variables": {
+    "name": "{{ env `NAME` }}",
+    "ubuntu_type": "{{ env `UBUNTU_TYPE` }}",
+    "iso_checksum": "f8589513e78bcc502cbdee10563e5a8b0baf7e29ba9c6b935fdff6526bd6300d",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "preseed_file_name": "preseed.cfg",
+    "disk_size": "102400"
+
+  },
+
+  "builders":
+  [
+    {
+      "name": "{{ user `name` }}",
+      "type": "qemu",
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_urls": [ "http://archive.ubuntu.com/ubuntu/dists/yakkety/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_wait_timeout": "2h",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+      "accelerator": "kvm",
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
+      "boot_wait": "2s",
+      "boot_command":
+      [
+        "<esc>",
+        "linux initrd=initrd.gz ",
+        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-{{ user `ubuntu_type` }}/{{ user `preseed_file_name` }} ",
+        "auto=true ",
+        "net.ifnames=0 ",
+        "hostname=localhost ",
+        "<enter>"
+      ],
+      "disk_size": "{{ user `disk_size` }}",
+      "http_directory": "http"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
+      "scripts": [
+        "scripts/ubuntu/update.sh",
+        "scripts/linux-common/vagrant.sh",
+        "scripts/linux-common/cleanup.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 9,
+        "vagrantfile_template": "Vagrantfile-linux.template",
+        "output": "{{ user `name` }}-{{.Provider}}.box"
+      }
+    ]
+  ]
+}
