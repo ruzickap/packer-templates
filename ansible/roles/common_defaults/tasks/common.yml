@@ -185,7 +185,7 @@
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-  validate: sshd -tf %s
+    validate: sshd -tf %s
   with_items:
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin yes' }
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication yes' }
