@@ -1,6 +1,6 @@
 ---
-- name: reload sshd
-  service: name={{ ssh_daemon }} state=reloaded
+- name: restart sshd
+  service: name={{ ssh_daemon }} state=restarted
 
 - name: reload snmpd
   service: name=snmpd state=restarted
