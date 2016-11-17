@@ -1,0 +1,164 @@
+windows-10-enterprise-x64-eval output will be in this color.
+
+==> windows-10-enterprise-x64-eval: Downloading or copying ISO
+    windows-10-enterprise-x64-eval: Downloading or copying: http://care.dlservice.microsoft.com/dl/download/2/5/4/254230E8-AEA5-43C5-94F6-88CE222A5846/14393.0.160715-1616.RS1_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO
+==> windows-10-enterprise-x64-eval: Creating floppy disk...
+    windows-10-enterprise-x64-eval: Copying: http/windows-10/Autounattend.xml
+    windows-10-enterprise-x64-eval: Copying: scripts/win-common/fixnetwork.ps1
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.sys
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.dll
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.sys
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.sys
+==> windows-10-enterprise-x64-eval: Creating hard drive...
+==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 4083.
+==> windows-10-enterprise-x64-eval: Looking for available port between 5900 and 6000
+==> windows-10-enterprise-x64-eval: Found available VNC port: 5988
+==> windows-10-enterprise-x64-eval: Starting VM, booting from CD-ROM
+==> windows-10-enterprise-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
+==> windows-10-enterprise-x64-eval: Waiting 10s for boot...
+==> windows-10-enterprise-x64-eval: Connecting to VM via VNC
+==> windows-10-enterprise-x64-eval: Typing the boot command over VNC...
+==> windows-10-enterprise-x64-eval: Waiting for WinRM to become available...
+==> windows-10-enterprise-x64-eval: Connected to WinRM!
+==> windows-10-enterprise-x64-eval: Provisioning with Powershell...
+==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/install_virtio_drivers.ps1
+    windows-10-enterprise-x64-eval: *** Install Virtio drivers for better compatibility with KVM hypervisor
+    windows-10-enterprise-x64-eval: *** Download virtio-win.iso
+    windows-10-enterprise-x64-eval: *** Mount virtio-win.iso
+    windows-10-enterprise-x64-eval: *** Export certificate
+    windows-10-enterprise-x64-eval: *** Install RH certificate to TrustedPublisher certificate store
+    windows-10-enterprise-x64-eval: TrustedPublisher "Trusted Publishers"
+    windows-10-enterprise-x64-eval: Certificate "Red Hat, Inc." added to store.
+    windows-10-enterprise-x64-eval: CertUtil: -addstore command completed successfully.
+    windows-10-enterprise-x64-eval: *** Install the Baloon Driver (Balloon)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            balloon.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem5.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: *** Install Virtio RNG driver (viorng)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            viorng.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem6.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: *** Install Virtio serial driver (vioserial)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            vioser.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem7.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: *** Install pvpanic device driver (pvpanic)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            pvpanic.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem8.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: *** Install Qemu Guest Agent (qemu-ga-x64.msi)
+    windows-10-enterprise-x64-eval: *** Unmount virtio-win.iso
+    windows-10-enterprise-x64-eval: *** Remove temporary files c:\redhat.cer and c:\virtio-win.iso
+==> windows-10-enterprise-x64-eval: Provisioning with windows-shell...
+==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>rmdir /q /s "C:\Users\vagrant\AppData\Local\Temp\Low"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files  1>&2
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>for %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmp850F.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp850F.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp850F.tmp"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmp8771.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp8771.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp8771.tmp"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "wmsetup.log" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Windows\TEMP" directories  1>&2
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>for / %i in ("C:\Windows\TEMP\*.*") do rmdir /q /s "%~i"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Windows\TEMP" files  1>&2
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>for %i in ("C:\Windows\TEMP\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "FXSAPIDebugLogFile.txt" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\FXSAPIDebugLogFile.txt"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\FXSAPIDebugLogFile.txt"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "FXSTIFFDebugLogFile.txt" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\FXSTIFFDebugLogFile.txt"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\FXSTIFFDebugLogFile.txt"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "MpCmdRun.log" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\MpCmdRun.log"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\MpCmdRun.log"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "script.bat" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.bat"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "script.ps1" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.ps1"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\script.ps1"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem8973.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem8973.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem8973.tmp"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Removing potentially corrupt recycle bin
+    windows-10-enterprise-x64-eval: ==> Removing potentially corrupt recycle bin
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
+    windows-10-enterprise-x64-eval: ==> Script exiting with errorlevel 0
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
+==> windows-10-enterprise-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat
+==> windows-10-enterprise-x64-eval: Gracefully halting virtual machine...
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo "*** Downloading devcon64.exe from https://github.com/PlagueHO/devcon-choco-package/raw/master/devcon.portable/devcon64.exe"
+    windows-10-enterprise-x64-eval: "*** Downloading devcon64.exe from https://github.com/PlagueHO/devcon-choco-package/raw/master/devcon.portable/devcon64.exe"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>powershell -command "$client = new-object System.Net.WebClient; $client.DownloadFile('https://github.com/PlagueHO/devcon-choco-package/raw/master/devcon.portable/devcon64.exe', 'c:\devcon64.exe')"
+==> windows-10-enterprise-x64-eval: Converting hard drive...
+==> windows-10-enterprise-x64-eval: Running post-processor: vagrant
+==> windows-10-enterprise-x64-eval (vagrant): Creating Vagrant box for 'libvirt' provider
+    windows-10-enterprise-x64-eval (vagrant): Copying from artifact: output-windows-10-enterprise-x64-eval/packer-windows-10-enterprise-x64-eval
+    windows-10-enterprise-x64-eval (vagrant): Using custom Vagrantfile: Vagrantfile-windows.template
+    windows-10-enterprise-x64-eval (vagrant): Compressing: Vagrantfile
+    windows-10-enterprise-x64-eval (vagrant): Compressing: box.img
+    windows-10-enterprise-x64-eval (vagrant): Compressing: metadata.json
+Build 'windows-10-enterprise-x64-eval' finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> windows-10-enterprise-x64-eval: 'libvirt' provider box: windows-10-enterprise-x64-eval-libvirt.box

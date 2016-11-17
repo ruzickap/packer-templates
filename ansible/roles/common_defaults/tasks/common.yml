@@ -58,11 +58,13 @@
   command: cp -r /etc/skel/.config {{ item.stat.path }} creates={{ item.stat.path }}/.config
   when: item.stat.exists
   with_items: "{{ stat_skel_copy_users.results }}"
+  loop_control:
+    label: "{{ item.item }}"
   tags:
     - mc
     - skel
 
-- name: Change owner for {{ item.stat.path }}/.config
+- name: Change owner for skel_copy_users/.config
   file:
     path: "{{ item.stat.path }}/.config"
     recurse: yes
@@ -71,17 +73,21 @@
     group: "{{ item.stat.path | basename }}"
   when: item.stat.exists
   with_items: "{{ stat_skel_copy_users.results }}"
+  loop_control:
+    label: "{{ item.item }}"
   tags:
     - mc
     - skel
 
-- name: Change rights for {{ item.stat.path }}/.config
+- name: Change rights for skel_copy_users/.config
   file:
     path: "{{ item.stat.path }}/.config"
     state: directory
     mode: 0700
   when: item.stat.exists
   with_items: "{{ stat_skel_copy_users.results }}"
+  loop_control:
+    label: "{{ item.item }}"
   tags:
     - mc
     - skel
