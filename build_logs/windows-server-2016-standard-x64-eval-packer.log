@@ -5,20 +5,20 @@ windows-server-2016-standard-x64-eval output will be in this color.
 ==> windows-server-2016-standard-x64-eval: Creating floppy disk...
     windows-server-2016-standard-x64-eval: Copying: http/windows-server-2016/Autounattend.xml
     windows-server-2016-standard-x64-eval: Copying: scripts/win-common/fixnetwork.ps1
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.cat
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.inf
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.sys
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.dll
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.cat
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.inf
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.sys
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.cat
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.inf
-    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.ZNrPLv6SUywindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.sys
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.cat
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.inf
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.sys
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm*.dll
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.cat
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.inf
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod*.sys
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.cat
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.inf
+    windows-server-2016-standard-x64-eval: Copying: /var/tmp/tmp.GEFqywRejdwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor*.sys
 ==> windows-server-2016-standard-x64-eval: Creating hard drive...
-==> windows-server-2016-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3738.
+==> windows-server-2016-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3636.
 ==> windows-server-2016-standard-x64-eval: Looking for available port between 5900 and 6000
-==> windows-server-2016-standard-x64-eval: Found available VNC port: 5995
+==> windows-server-2016-standard-x64-eval: Found available VNC port: 5977
 ==> windows-server-2016-standard-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-server-2016-standard-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
 ==> windows-server-2016-standard-x64-eval: Waiting 10s for boot...
@@ -89,9 +89,13 @@ windows-server-2016-standard-x64-eval output will be in this color.
     windows-server-2016-standard-x64-eval: *** Remove temporary files c:\redhat.cer and c:\virtio-win.iso
 ==> windows-server-2016-standard-x64-eval: Provisioning with windows-shell...
 ==> windows-server-2016-standard-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
+    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
+    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
     windows-server-2016-standard-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
     windows-server-2016-standard-x64-eval:
     windows-server-2016-standard-x64-eval: C:\Users\vagrant>rmdir /q /s "C:\Users\vagrant\AppData\Local\Temp\1"
@@ -124,10 +128,6 @@ windows-server-2016-standard-x64-eval output will be in this color.
     windows-server-2016-standard-x64-eval:
     windows-server-2016-standard-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
     windows-server-2016-standard-x64-eval: ==> Script exiting with errorlevel 0
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
 ==> windows-server-2016-standard-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat
 ==> windows-server-2016-standard-x64-eval: Gracefully halting virtual machine...
     windows-server-2016-standard-x64-eval:

@@ -58,7 +58,7 @@
     {
       "type": "shell",
       "environment_vars": [ "DEBIAN_FRONTEND=noninteractive" ],
-      "inline": [ "sudo -E apt-get install -y aptitude python" ]
+      "inline": [ "sudo -E apt-get install -y aptitude python > /dev/null" ]
     },
     {
       "type": "ansible",

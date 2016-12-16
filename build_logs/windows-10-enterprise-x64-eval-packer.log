@@ -5,20 +5,20 @@ windows-10-enterprise-x64-eval output will be in this color.
 ==> windows-10-enterprise-x64-eval: Creating floppy disk...
     windows-10-enterprise-x64-eval: Copying: http/windows-10/Autounattend.xml
     windows-10-enterprise-x64-eval: Copying: scripts/win-common/fixnetwork.ps1
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.sys
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.dll
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.sys
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.vPtxdBsgg0windows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.sys
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.sys
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.dll
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.sys
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.cat
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.inf
+    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.sys
 ==> windows-10-enterprise-x64-eval: Creating hard drive...
-==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 4083.
+==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 3340.
 ==> windows-10-enterprise-x64-eval: Looking for available port between 5900 and 6000
-==> windows-10-enterprise-x64-eval: Found available VNC port: 5988
+==> windows-10-enterprise-x64-eval: Found available VNC port: 5926
 ==> windows-10-enterprise-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-10-enterprise-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
 ==> windows-10-enterprise-x64-eval: Waiting 10s for boot...
@@ -90,7 +90,9 @@ windows-10-enterprise-x64-eval output will be in this color.
 ==> windows-10-enterprise-x64-eval: Provisioning with windows-shell...
 ==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
     windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
     windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
     windows-10-enterprise-x64-eval:
@@ -100,11 +102,11 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>for %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmp850F.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp850F.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp850F.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpEF20.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpEF20.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpEF20.tmp"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmp8771.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp8771.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmp8771.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpF4AE.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpF4AE.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpF4AE.tmp"
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "wmsetup.log" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
     windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
@@ -131,16 +133,17 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "script.ps1" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.ps1"
     windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\script.ps1"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem8973.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem8973.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem8973.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem179A.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem179A.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem179A.tmp"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem548B.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem548B.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem548B.tmp"
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Removing potentially corrupt recycle bin
     windows-10-enterprise-x64-eval: ==> Removing potentially corrupt recycle bin
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
     windows-10-enterprise-x64-eval: ==> Script exiting with errorlevel 0
-    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
-    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
     windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
 ==> windows-10-enterprise-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat

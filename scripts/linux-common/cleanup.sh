@@ -62,7 +62,7 @@ echo "==> Clearing last login information"
 >/var/log/btmp
 
 # Zero out the free space to save space in the final image
-dd if=/dev/zero of=/EMPTY_FILE bs=1M  || echo "dd exit code $? is suppressed"
+dd if=/dev/zero of=/EMPTY_FILE bs=1M &> /dev/null  || echo "dd exit code $? is suppressed"
 rm -f /EMPTY_FILE
 
 # Make sure we wait until all the data is written to disk, otherwise

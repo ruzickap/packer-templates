@@ -3,6 +3,8 @@
 BOXES_LIST="*.box"
 TMPDIR="/tmp/"
 export VAGRANT_DEFAULT_PROVIDER=libvirt
+unset http_proxy
+unset https_proxy
 
 vagrant_box_add() {
   VAGRANT_BOX_FILE=$1; shift

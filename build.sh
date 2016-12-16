@@ -127,7 +127,7 @@ build_my_ubuntu_16_04() {
 
 build_my_centos7() {
   export CENTOS_VERSION="7"
-  export CENTOS_TAG="1511"
+  export CENTOS_TAG="1611"
   export CENTOS_ARCH="x86_64"
   export CENTOS_TYPE="NetInstall"
   export NAME="my-centos-${CENTOS_VERSION}-${CENTOS_ARCH}"
@@ -187,9 +187,7 @@ build_windows_10() {
   wget -c $VIRTIO_WIN_ISO_URL -P $TMPDIR
   export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
   sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
-
   packer_build windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.json
-
   sudo umount $VIRTIO_WIN_ISO_DIR
   rmdir $VIRTIO_WIN_ISO_DIR
 }

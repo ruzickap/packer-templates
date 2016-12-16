@@ -1,5 +1,5 @@
 {
-  "_comment": "Build with `NAME=my-CentOS-7-amd64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_ARCH=x86_64 CENTOS_TAG=1511 packer build my-centos7.json`",
+  "_comment": "Build with `NAME=my-CentOS-7-amd64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_ARCH=x86_64 CENTOS_TAG=1611 packer build my-centos7.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
