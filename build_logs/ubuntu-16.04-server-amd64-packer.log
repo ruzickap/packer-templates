@@ -3,10 +3,9 @@ ubuntu-16.04-server-amd64 output will be in this color.
 ==> ubuntu-16.04-server-amd64: Downloading or copying ISO
     ubuntu-16.04-server-amd64: Downloading or copying: http://releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-amd64.iso
 ==> ubuntu-16.04-server-amd64: Creating hard drive...
-==> ubuntu-16.04-server-amd64: Starting HTTP server on port 8064
-==> ubuntu-16.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 2468.
-==> ubuntu-16.04-server-amd64: Looking for available port between 5900 and 6000
-==> ubuntu-16.04-server-amd64: Found available VNC port: 5999
+==> ubuntu-16.04-server-amd64: Starting HTTP server on port 8677
+==> ubuntu-16.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 3267.
+==> ubuntu-16.04-server-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> ubuntu-16.04-server-amd64: Starting VM, booting from CD-ROM
 ==> ubuntu-16.04-server-amd64: Overriding defaults Qemu arguments with QemuArgs...
 ==> ubuntu-16.04-server-amd64: Waiting 2s for boot...
@@ -23,11 +22,11 @@ ubuntu-16.04-server-amd64 output will be in this color.
 ==> ubuntu-16.04-server-amd64: Provisioning with shell script: scripts/linux-common/vagrant.sh
     ubuntu-16.04-server-amd64: [sudo] password for vagrant: + date
     ubuntu-16.04-server-amd64: + SSH_USER=vagrant
-    ubuntu-16.04-server-amd64: ==> Giving vagrant sudo powers
-    ubuntu-16.04-server-amd64: ==> Installing vagrant key
     ubuntu-16.04-server-amd64: + SSH_USER_HOME=/home/vagrant
+    ubuntu-16.04-server-amd64: ==> Giving vagrant sudo powers
     ubuntu-16.04-server-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     ubuntu-16.04-server-amd64: + echo '==> Giving vagrant sudo powers'
+    ubuntu-16.04-server-amd64: ==> Installing vagrant key
     ubuntu-16.04-server-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
     ubuntu-16.04-server-amd64: + echo '==> Installing vagrant key'
     ubuntu-16.04-server-amd64: + mkdir /home/vagrant/.ssh
@@ -40,13 +39,13 @@ ubuntu-16.04-server-amd64 output will be in this color.
     ubuntu-16.04-server-amd64: + SSH_USER=vagrant
     ubuntu-16.04-server-amd64: + echo '==> Cleaning up udev rules'
     ubuntu-16.04-server-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
-    ubuntu-16.04-server-amd64: ==> Cleaning up udev rules
     ubuntu-16.04-server-amd64: + service rsyslog stop
+    ubuntu-16.04-server-amd64: ==> Cleaning up udev rules
     ubuntu-16.04-server-amd64: + '[' -f /etc/os-release ']'
     ubuntu-16.04-server-amd64: + grep -iq debian /etc/os-release
     ubuntu-16.04-server-amd64: + export DEBIAN_FRONTEND=noninteractive
-    ubuntu-16.04-server-amd64: ==> Cleaning up leftover dhcp leases
     ubuntu-16.04-server-amd64: + DEBIAN_FRONTEND=noninteractive
+    ubuntu-16.04-server-amd64: ==> Cleaning up leftover dhcp leases
     ubuntu-16.04-server-amd64: + echo 'pre-up sleep 2'
     ubuntu-16.04-server-amd64: + echo '==> Cleaning up leftover dhcp leases'
     ubuntu-16.04-server-amd64: + '[' -d /var/lib/dhcp3 ']'
@@ -64,7 +63,7 @@ ubuntu-16.04-server-amd64 output will be in this color.
     ubuntu-16.04-server-amd64: Reading state information...
     ubuntu-16.04-server-amd64: + echo '==> Cleaning up tmp'
     ubuntu-16.04-server-amd64: ==> Cleaning up tmp
-    ubuntu-16.04-server-amd64: + rm -rf /tmp/script_8455.sh /tmp/ssh-Kw9r86xra3 /tmp/systemd-private-2927729502314fb3b370e6303361aa0f-systemd-timesyncd.service-N69KmE
+    ubuntu-16.04-server-amd64: + rm -rf /tmp/script_5617.sh /tmp/ssh-iC3jnMX2qU /tmp/systemd-private-d12daa31308445c4af4554d0f579a9a9-systemd-timesyncd.service-x4uDp5
     ubuntu-16.04-server-amd64: + unset HISTFILE
     ubuntu-16.04-server-amd64: + rm -f /root/.bash_history
     ubuntu-16.04-server-amd64: + rm -f /home/vagrant/.bash_history
@@ -84,17 +83,17 @@ ubuntu-16.04-server-amd64 output will be in this color.
     ubuntu-16.04-server-amd64: + read f
     ubuntu-16.04-server-amd64: + echo -ne ''
     ubuntu-16.04-server-amd64: + read f
-    ubuntu-16.04-server-amd64: + echo -ne ''
-    ubuntu-16.04-server-amd64: + read f
-    ubuntu-16.04-server-amd64: + echo -ne ''
-    ubuntu-16.04-server-amd64: + read f
-    ubuntu-16.04-server-amd64: + echo -ne ''
-    ubuntu-16.04-server-amd64: + read f
-    ubuntu-16.04-server-amd64: + echo -ne ''
-    ubuntu-16.04-server-amd64: + read f
-    ubuntu-16.04-server-amd64: + echo -ne ''
-    ubuntu-16.04-server-amd64: + read f
     ubuntu-16.04-server-amd64: ==> Clearing last login information
+    ubuntu-16.04-server-amd64: + echo -ne ''
+    ubuntu-16.04-server-amd64: + read f
+    ubuntu-16.04-server-amd64: + echo -ne ''
+    ubuntu-16.04-server-amd64: + read f
+    ubuntu-16.04-server-amd64: + echo -ne ''
+    ubuntu-16.04-server-amd64: + read f
+    ubuntu-16.04-server-amd64: + echo -ne ''
+    ubuntu-16.04-server-amd64: + read f
+    ubuntu-16.04-server-amd64: + echo -ne ''
+    ubuntu-16.04-server-amd64: + read f
     ubuntu-16.04-server-amd64: + echo -ne ''
     ubuntu-16.04-server-amd64: + read f
     ubuntu-16.04-server-amd64: + echo -ne ''

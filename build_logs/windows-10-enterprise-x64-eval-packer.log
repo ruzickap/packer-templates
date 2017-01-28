@@ -3,22 +3,26 @@ windows-10-enterprise-x64-eval output will be in this color.
 ==> windows-10-enterprise-x64-eval: Downloading or copying ISO
     windows-10-enterprise-x64-eval: Downloading or copying: http://care.dlservice.microsoft.com/dl/download/2/5/4/254230E8-AEA5-43C5-94F6-88CE222A5846/14393.0.160715-1616.RS1_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO
 ==> windows-10-enterprise-x64-eval: Creating floppy disk...
-    windows-10-enterprise-x64-eval: Copying: http/windows-10/Autounattend.xml
-    windows-10-enterprise-x64-eval: Copying: scripts/win-common/fixnetwork.ps1
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.sys
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm*.dll
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod*.sys
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.cat
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.inf
-    windows-10-enterprise-x64-eval: Copying: /var/tmp/tmp.ejFpLEqgOawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor*.sys
+    windows-10-enterprise-x64-eval: Copying files flatly from floppy_files
+    windows-10-enterprise-x64-eval: Copying file: http/windows-10/Autounattend.xml
+    windows-10-enterprise-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.sys
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvmco.dll
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.sys
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.ULANHRXgcXwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.sys
+    windows-10-enterprise-x64-eval: Done copying files from floppy_files
+    windows-10-enterprise-x64-eval: Collecting paths from floppy_dirs
+    windows-10-enterprise-x64-eval: Resulting paths from floppy_dirs : []
+    windows-10-enterprise-x64-eval: Done copying paths from floppy_dirs
 ==> windows-10-enterprise-x64-eval: Creating hard drive...
-==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 3340.
-==> windows-10-enterprise-x64-eval: Looking for available port between 5900 and 6000
-==> windows-10-enterprise-x64-eval: Found available VNC port: 5926
+==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 4247.
+==> windows-10-enterprise-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-10-enterprise-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-10-enterprise-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
 ==> windows-10-enterprise-x64-eval: Waiting 10s for boot...
@@ -29,6 +33,7 @@ windows-10-enterprise-x64-eval output will be in this color.
 ==> windows-10-enterprise-x64-eval: Provisioning with Powershell...
 ==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/install_virtio_drivers.ps1
     windows-10-enterprise-x64-eval: *** Install Virtio drivers for better compatibility with KVM hypervisor
+    windows-10-enterprise-x64-eval: #< CLIXML
     windows-10-enterprise-x64-eval: *** Download virtio-win.iso
     windows-10-enterprise-x64-eval: *** Mount virtio-win.iso
     windows-10-enterprise-x64-eval: *** Export certificate
@@ -36,13 +41,25 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: TrustedPublisher "Trusted Publishers"
     windows-10-enterprise-x64-eval: Certificate "Red Hat, Inc." added to store.
     windows-10-enterprise-x64-eval: CertUtil: -addstore command completed successfully.
+    windows-10-enterprise-x64-eval: *** Install the VirtIO SCSI pass-through controller Driver (vioscsi)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            vioscsi.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem5.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: *** Install the Baloon Driver (Balloon)
     windows-10-enterprise-x64-eval: Microsoft PnP Utility
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: Processing inf :            balloon.inf
     windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
     windows-10-enterprise-x64-eval: Driver package added successfully.
-    windows-10-enterprise-x64-eval: Published name :            oem5.inf
+    windows-10-enterprise-x64-eval: Published name :            oem6.inf
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: Total attempted:              1
@@ -54,7 +71,7 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: Processing inf :            viorng.inf
     windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
     windows-10-enterprise-x64-eval: Driver package added successfully.
-    windows-10-enterprise-x64-eval: Published name :            oem6.inf
+    windows-10-enterprise-x64-eval: Published name :            oem7.inf
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: Total attempted:              1
@@ -66,7 +83,19 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: Processing inf :            vioser.inf
     windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
     windows-10-enterprise-x64-eval: Driver package added successfully.
-    windows-10-enterprise-x64-eval: Published name :            oem7.inf
+    windows-10-enterprise-x64-eval: Published name :            oem8.inf
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Total attempted:              1
+    windows-10-enterprise-x64-eval: Number successfully imported: 1
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: *** Install Virtio Input driver (vioinput)
+    windows-10-enterprise-x64-eval: Microsoft PnP Utility
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: Processing inf :            vioinput.inf
+    windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
+    windows-10-enterprise-x64-eval: Driver package added successfully.
+    windows-10-enterprise-x64-eval: Published name :            oem9.inf
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: Total attempted:              1
@@ -78,7 +107,7 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: Processing inf :            pvpanic.inf
     windows-10-enterprise-x64-eval: Successfully installed the driver on a device on the system.
     windows-10-enterprise-x64-eval: Driver package added successfully.
-    windows-10-enterprise-x64-eval: Published name :            oem8.inf
+    windows-10-enterprise-x64-eval: Published name :            oem10.inf
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: Total attempted:              1
@@ -87,12 +116,35 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: *** Install Qemu Guest Agent (qemu-ga-x64.msi)
     windows-10-enterprise-x64-eval: *** Unmount virtio-win.iso
     windows-10-enterprise-x64-eval: *** Remove temporary files c:\redhat.cer and c:\virtio-win.iso
+    windows-10-enterprise-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="information" RefId="1"><TN RefId="1"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>*** Install Virtio drivers for better compatibility with KVM hypervisor</ToString><Props><Obj N="MessageData" RefId="2"><TN RefId="2"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>*** Install Virtio drivers for better compatibility with KVM hypervisor</ToString><Props><S N="Message">*** Install Virtio drivers for better compatibility with KVM hypervisor</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:52:16.2095571+00:00</DT><Obj N="Tags" RefId="3"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="4"><TNRef RefId="1" /><ToString>*** Download virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="5"><TNRef RefId="2" /><ToString>*** Download virtio-win.iso</ToString><Props><S N="Message">*** Download virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:52:16.4595541+00:00</DT><Obj N="Tags" RefId="6"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="7"><TNRef RefId="1" /><ToString>*** Mount virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="8"><TNRef RefId="2" /><ToString>*** Mount virtio-win.iso</ToString><Props><S N="Message">*** Mount virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:24.3345588+00:00</DT><Obj N="Tags" RefId="9"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="10"><TNRef RefId="1" /><ToString>*** Export certificate</ToString><Props><Obj N="MessageData" RefId="11"><TNRef RefId="2" /><ToString>*** Export certificate</ToString><Props><S N="Message">*** Export certificate</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:28.725184+00:00</DT><Obj N="Tags" RefId="12"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="13"><TNRef RefId="1" /><ToString>*** Install RH certificate to TrustedPublisher certificate store</ToString><Props><Obj N="MessageData" RefId="14"><TNRef RefId="2" /><ToString>*** Install RH certificate to TrustedPublisher certificate store</ToString><Props><S N="Message">*** Install RH certificate to TrustedPublisher certificate store</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:28.8501703+00:00</DT><Obj N="Tags" RefId="15"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="16"><TNRef RefId="1" /><ToString>*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</ToString><Props><Obj N="MessageData" RefId="17"><TNRef RefId="2" /><ToString>*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</ToString><Props><S N="Message">*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:29.1472516+00:00</DT><Obj N="Tags" RefId="18"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="19"><TNRef RefId="1" /><ToString>*** Install the Baloon Driver (Balloon)</ToString><Props><Obj N="MessageData" RefId="20"><TNRef RefId="2" /><ToString>*** Install the Baloon Driver (Balloon)</ToString><Props><S N="Message">*** Install the Baloon Driver (Balloon)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:29.7407982+00:00</DT><Obj N="Tags" RefId="21"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="22"><TNRef RefId="1" /><ToString>*** Install Virtio RNG driver (viorng)</ToString><Props><Obj N="MessageData" RefId="23"><TNRef RefId="2" /><ToString>*** Install Virtio RNG driver (viorng)</ToString><Props><S N="Message">*** Install Virtio RNG driver (viorng)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:30.4595947+00:00</DT><Obj N="Tags" RefId="24"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="25"><TNRef RefId="1" /><ToString>*** Install Virtio serial driver (vioserial)</ToString><Props><Obj N="MessageData" RefId="26"><TNRef RefId="2" /><ToString>*** Install Virtio serial driver (vioserial)</ToString><Props><S N="Message">*** Install Virtio serial driver (vioserial)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:31.4751745+00:00</DT><Obj N="Tags" RefId="27"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="28"><TNRef RefId="1" /><ToString>*** Install Virtio Input driver (vioinput)</ToString><Props><Obj N="MessageData" RefId="29"><TNRef RefId="2" /><ToString>*** Install Virtio Input driver (vioinput)</ToString><Props><S N="Message">*** Install Virtio Input driver (vioinput)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:32.0845577+00:00</DT><Obj N="Tags" RefId="30"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="31"><TNRef RefId="1" /><ToString>*** Install pvpanic device driver (pvpanic)</ToString><Props><Obj N="MessageData" RefId="32"><TNRef RefId="2" /><ToString>*** Install pvpanic device driver (pvpanic)</ToString><Props><S N="Message">*** Install pvpanic device driver (pvpanic)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:32.5688734+00:00</DT><Obj N="Tags" RefId="33"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="34"><TNRef RefId="1" /><ToString>*** Install Qemu Guest Agent (qemu-ga-x64.msi)</ToString><Props><Obj N="MessageData" RefId="35"><TNRef RefId="2" /><ToString>*** Install Qemu Guest Agent (qemu-ga-x64.msi)</ToString><Props><S N="Message">*** Install Qemu Guest Agent (qemu-ga-x64.msi)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:54:33.1001344+00:00</DT><Obj N="Tags" RefId="36"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="37"><TNRef RefId="1" /><ToString>*** Unmount virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="38"><TNRef RefId="2" /><ToString>*** Unmount virtio-win.iso</ToString><Props><S N="Message">*** Unmount virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:55:08.740748+00:00</DT><Obj N="Tags" RefId="39"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj><Obj S="information" RefId="40"><TNRef RefId="1" /><ToString>*** Remove temporary files c:\redhat.cer and c:\virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="41"><TNRef RefId="2" /><ToString>*** Remove temporary files c:\redhat.cer and c:\virtio-win.iso</ToString><Props><S N="Message">*** Remove temporary files c:\redhat.cer and c:\virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:55:08.8656952+00:00</DT><Obj N="Tags" RefId="42"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">5652</U32><U32 N="NativeThreadId">5720</U32><U32 N="ManagedThreadId">5</U32></Props></Obj></Objs>
+==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/allow_build-in_administrator_account_open_edge.ps1
+    windows-10-enterprise-x64-eval: *** Allow built-in administrator account open Edge
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: EnableLUA    : 1
+    windows-10-enterprise-x64-eval: PSPath       : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policie
+    windows-10-enterprise-x64-eval: s\system
+    windows-10-enterprise-x64-eval: PSParentPath : Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\policie
+    windows-10-enterprise-x64-eval: s
+    windows-10-enterprise-x64-eval: PSChildName  : system
+    windows-10-enterprise-x64-eval: PSDrive      : HKLM
+    windows-10-enterprise-x64-eval: PSProvider   : Microsoft.PowerShell.Core\Registry
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: #< CLIXML
+    windows-10-enterprise-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="information" RefId="1"><TN RefId="1"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>*** Allow built-in administrator account open Edge</ToString><Props><Obj N="MessageData" RefId="2"><TN RefId="2"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>*** Allow built-in administrator account open Edge</ToString><Props><S N="Message">*** Allow built-in administrator account open Edge</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-01-28T11:55:10.3501558+00:00</DT><Obj N="Tags" RefId="3"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">WIN10\vagrant</S><S N="Computer">win10</S><U32 N="ProcessId">3312</U32><U32 N="NativeThreadId">1556</U32><U32 N="ManagedThreadId">5</U32></Props></Obj></Objs>
 ==> windows-10-enterprise-x64-eval: Provisioning with windows-shell...
+==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/enable_administrator_account.bat
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>echo "*** Enable Administrator account"
+    windows-10-enterprise-x64-eval: "*** Enable Administrator account"
+    windows-10-enterprise-x64-eval:
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>net user administrator /active:yes
+    windows-10-enterprise-x64-eval: The command completed successfully.
+    windows-10-enterprise-x64-eval:
 ==> windows-10-enterprise-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
     windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
-    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
     windows-10-enterprise-x64-eval:
@@ -102,11 +154,11 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>for %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpEF20.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpEF20.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpEF20.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpBCDD.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpBCDD.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpBCDD.tmp"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpF4AE.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpF4AE.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpF4AE.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tmpBED1.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpBED1.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\tmpBED1.tmp"
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "wmsetup.log" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
     windows-10-enterprise-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\wmsetup.log"
@@ -133,17 +185,15 @@ windows-10-enterprise-x64-eval output will be in this color.
     windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "script.ps1" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.ps1"
     windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\script.ps1"
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem179A.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem179A.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem179A.tmp"
-    windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem548B.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem548B.tmp"
-    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem548B.tmp"
+    windows-10-enterprise-x64-eval: C:\Users\vagrant>if /I not "tem501A.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\tem501A.tmp"
+    windows-10-enterprise-x64-eval: del /f /q /s "C:\Windows\TEMP\tem501A.tmp"
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>echo ==> Removing potentially corrupt recycle bin
     windows-10-enterprise-x64-eval: ==> Removing potentially corrupt recycle bin
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
     windows-10-enterprise-x64-eval: ==> Script exiting with errorlevel 0
+    windows-10-enterprise-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
     windows-10-enterprise-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
 ==> windows-10-enterprise-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat

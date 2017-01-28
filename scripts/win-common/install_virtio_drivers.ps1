@@ -16,6 +16,9 @@ $cert = (Get-AuthenticodeSignature "${driveLetter}:\Balloon\2k12R2\amd64\blnsvr.
 Write-Host "*** Install RH certificate to TrustedPublisher certificate store"
 certutil.exe -f -addstore 'TrustedPublisher' c:\redhat.cer
 
+Write-Host "*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)"
+pnputil -i -a "${driveLetter}:\vioscsi\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
+
 Write-Host "*** Install the Baloon Driver (Balloon)"
 pnputil -i -a "${driveLetter}:\Balloon\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
@@ -24,6 +27,9 @@ pnputil -i -a "${driveLetter}:\viorng\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install Virtio serial driver (vioserial)"
 pnputil -i -a "${driveLetter}:\vioserial\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
+
+Write-Host "*** Install Virtio Input driver (vioinput)"
+pnputil -i -a "${driveLetter}:\vioinput\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 
 Write-Host "*** Install pvpanic device driver (pvpanic)"
 pnputil -i -a "${driveLetter}:\pvpanic\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"

@@ -3,10 +3,9 @@ my-centos-7-x86_64 output will be in this color.
 ==> my-centos-7-x86_64: Downloading or copying ISO
     my-centos-7-x86_64: Downloading or copying: http://ftp.linux.cz/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso
 ==> my-centos-7-x86_64: Creating hard drive...
-==> my-centos-7-x86_64: Starting HTTP server on port 8268
-==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 3716.
-==> my-centos-7-x86_64: Looking for available port between 5900 and 6000
-==> my-centos-7-x86_64: Found available VNC port: 5978
+==> my-centos-7-x86_64: Starting HTTP server on port 8337
+==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 2397.
+==> my-centos-7-x86_64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-centos-7-x86_64: Starting VM, booting from CD-ROM
 ==> my-centos-7-x86_64: Overriding defaults Qemu arguments with QemuArgs...
 ==> my-centos-7-x86_64: Waiting 2s for boot...
@@ -16,11 +15,11 @@ my-centos-7-x86_64 output will be in this color.
 ==> my-centos-7-x86_64: Connected to SSH!
 ==> my-centos-7-x86_64: Provisioning with shell script: scripts/linux-common/vagrant.sh
     my-centos-7-x86_64: + date
+    my-centos-7-x86_64: ==> Giving vagrant sudo powers
     my-centos-7-x86_64: + SSH_USER=vagrant
     my-centos-7-x86_64: + SSH_USER_HOME=/home/vagrant
-    my-centos-7-x86_64: ==> Giving vagrant sudo powers
-    my-centos-7-x86_64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-centos-7-x86_64: ==> Installing vagrant key
+    my-centos-7-x86_64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-centos-7-x86_64: + echo '==> Giving vagrant sudo powers'
     my-centos-7-x86_64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
     my-centos-7-x86_64: + echo '==> Installing vagrant key'
@@ -31,25 +30,10 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     my-centos-7-x86_64: + chown -R vagrant:vagrant /home/vagrant/.ssh
 ==> my-centos-7-x86_64: Provisioning with Ansible...
-==> my-centos-7-x86_64: SSH proxy: serving on 127.0.0.1:38615
-==> my-centos-7-x86_64: Executing Ansible: ansible-playbook /home/ruzickap/data/github/packer-templates/ansible/site.yml -i /var/tmp/packer-provisioner-ansible059896561 --private-key /var/tmp/ansible-key246971738
     my-centos-7-x86_64:
     my-centos-7-x86_64: PLAY [all] *********************************************************************
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [setup] *******************************************************************
-    my-centos-7-x86_64: SSH proxy: accepted connection
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using none
-==> my-centos-7-x86_64: unauthorized key
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
-==> my-centos-7-x86_64: unauthorized key
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
-==> my-centos-7-x86_64: unauthorized key
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
-==> my-centos-7-x86_64: unauthorized key
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
-==> my-centos-7-x86_64: unauthorized key
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
-==> my-centos-7-x86_64: authentication attempt from 127.0.0.1:52480 to 127.0.0.1:38615 as vagrant using publickey
     my-centos-7-x86_64: ok: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Include OS-specific variables] *************************
@@ -71,14 +55,12 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Disable mouse in mc (/etc/profile.d/mc.sh)] ************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Create directory "/etc/skel/.config/mc"] ***************
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Create directory for mc inside /etc/skel] **************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Check if user dirctory exists] *************************
@@ -106,7 +88,6 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default] => (item=/root)
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Set format for history command (/etc/profile.d/history_format.sh)] ***
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Add sar alias (/etc/bashrc)] ***************************
@@ -128,7 +109,6 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Place snmpd.conf file to the /etc/snmp/] ***************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Configure sshd] ****************************************
@@ -145,7 +125,6 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Configure cloud-init] **********************************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Remove /dev/fd0 (floppy) from /etc/fstab (floppy is presend by default when using KVM provisioner)] ***
@@ -192,7 +171,6 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Set NTP step stickers] *********************************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Backup original /etc/yum/yum-cron.conf] ****************
@@ -209,14 +187,12 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^download_updates.*', u'replace': u'download_updates = yes'})
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Add /usr/local/bin/etc_issue.sh script] ****************
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Create link /usr/local/bin/etc_issue.sh /etc/profile.d/etc_issue.sh] ***
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Prevent systemd to log too many messages like "Starting Session 1398 of user root."] ***
-==> my-centos-7-x86_64: starting sftp subsystem
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Disable and stop services during boot] *****************
@@ -249,11 +225,10 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: PLAY RECAP *********************************************************************
     my-centos-7-x86_64: default                    : ok=51   changed=42   unreachable=0    failed=0
     my-centos-7-x86_64:
-==> my-centos-7-x86_64: shutting down the SSH proxy
 ==> my-centos-7-x86_64: Provisioning with shell script: scripts/linux-common/cleanup.sh
     my-centos-7-x86_64: + SSH_USER=vagrant
-    my-centos-7-x86_64: + echo '==> Cleaning up udev rules'
     my-centos-7-x86_64: ==> Cleaning up udev rules
+    my-centos-7-x86_64: + echo '==> Cleaning up udev rules'
     my-centos-7-x86_64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
     my-centos-7-x86_64: + service rsyslog stop
     my-centos-7-x86_64: Redirecting to /bin/systemctl stop  rsyslog.service
@@ -269,15 +244,11 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: Cleaning up list of fastest mirrors
     my-centos-7-x86_64: + echo '==> Cleaning up tmp'
     my-centos-7-x86_64: ==> Cleaning up tmp
-    my-centos-7-x86_64: + rm -rf /tmp/ks-script-1PsDNk /tmp/ks-script-L3lFrp /tmp/script_1911.sh /tmp/ssh-i73seWphLT /tmp/tmpiP4YJP /tmp/yum.log
+    my-centos-7-x86_64: + rm -rf /tmp/ks-script-4dFmsa /tmp/ks-script-WlLMyj /tmp/script_5195.sh /tmp/ssh-eG9nJa9XS0 /tmp/tmprJeRNL /tmp/yum.log
     my-centos-7-x86_64: + unset HISTFILE
     my-centos-7-x86_64: + rm -f /root/.bash_history
     my-centos-7-x86_64: + rm -f /home/vagrant/.bash_history
     my-centos-7-x86_64: + find /var/log -type f
-    my-centos-7-x86_64: + read f
-    my-centos-7-x86_64: + echo -ne ''
-    my-centos-7-x86_64: + read f
-    my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: ==> Clearing last login information
@@ -324,15 +295,15 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
+    my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
+    my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo '==> Clearing last login information'
     my-centos-7-x86_64: + dd if=/dev/zero of=/EMPTY_FILE bs=1M
-    my-centos-7-x86_64: dd: error writing ‘/EMPTY_FILE’: No space left on device
-    my-centos-7-x86_64: dd exit code 1 is suppressed
-    my-centos-7-x86_64: 101131+0 records in
-    my-centos-7-x86_64: 101130+0 records out
-    my-centos-7-x86_64: 106043052032 bytes (106 GB) copied, 3122.29 s, 34.0 MB/s
     my-centos-7-x86_64: + echo 'dd exit code 1 is suppressed'
     my-centos-7-x86_64: + rm -f /EMPTY_FILE
+    my-centos-7-x86_64: dd exit code 1 is suppressed
     my-centos-7-x86_64: + sync
 ==> my-centos-7-x86_64: Gracefully halting virtual machine...
 ==> my-centos-7-x86_64: Converting hard drive...

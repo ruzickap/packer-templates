@@ -56,12 +56,14 @@
       "type": "powershell",
       "environment_vars": [ "VIRTIO_DRIVER_DIRECTORY={{user `virtio_driver_directory`}}" ],
       "scripts": [
-        "./scripts/win-common/install_virtio_drivers.ps1"
+        "./scripts/win-common/install_virtio_drivers.ps1",
+        "./scripts/win-common/allow_build-in_administrator_account_open_edge.ps1"
       ]
     },
     {
       "type": "windows-shell",
       "scripts": [
+        "./scripts/win-common/enable_administrator_account.bat",
         "./scripts/win-common/clean.bat"
       ]
     },

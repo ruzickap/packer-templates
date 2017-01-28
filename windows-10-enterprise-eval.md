@@ -68,18 +68,22 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
 * WinRM enabled
 * New Network Window turned off
+* Administrator account enabled
+* EnableLUA
 
 #### Additional Drivers installed (needed by libvirt) - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 
 Installed during installation:
-* NetKVM: Virtio Network driver
+* NetKVM: VirtIO Network driver
 * qxldod: QXL graphics driver
-* viostor: Virtio Block driver
+* viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
 Installed when the OS is installed via script [install_virtio_drivers.ps1](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/install_virtio_drivers.ps1):
-* Balloon: Virtio Memory Balloon driver
-* viorng: Virtio RNG driver
-* vioser: Virtio serial driver
+* vioscsi: Support for VirtIO SCSI pass-through controller
+* Balloon: VirtIO Memory Balloon driver
+* viorng: VirtIO RNG Device driver
+* vioser: VirtIO Serial Driver
+* vioinput: VirtIO Input Driver - support for new QEMU input devices virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci, virtio-input-host-pci
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 

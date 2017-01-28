@@ -70,7 +70,7 @@ packer_build() {
   rm -v ${NAME}-libvirt.box
 }
 
-build_ubuntu_16_10() {
+build_ubuntu_16_10_desktop() {
   export UBUNTU_VERSION="16.10"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="desktop"
@@ -81,7 +81,7 @@ build_ubuntu_16_10() {
   packer_build ubuntu-${UBUNTU_TYPE}.json
 }
 
-build_ubuntu_16_04() {
+build_ubuntu_16_04_server() {
   export UBUNTU_VERSION="16.04.1"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
@@ -92,7 +92,7 @@ build_ubuntu_16_04() {
   packer_build ubuntu-${UBUNTU_TYPE}.json
 }
 
-build_ubuntu_14_04() {
+build_ubuntu_14_04_server() {
   export UBUNTU_VERSION="14.04.5"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
@@ -103,7 +103,7 @@ build_ubuntu_14_04() {
   packer_build ubuntu-${UBUNTU_TYPE}.json
 }
 
-build_my_ubuntu_14_04() {
+build_my_ubuntu_14_04_server() {
   export UBUNTU_VERSION="14.04.5"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
@@ -114,7 +114,7 @@ build_my_ubuntu_14_04() {
   packer_build my-ubuntu-${UBUNTU_TYPE}.json
 }
 
-build_my_ubuntu_16_04() {
+build_my_ubuntu_16_04_server() {
   export UBUNTU_VERSION="16.04.1"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
@@ -184,7 +184,7 @@ build_windows_10() {
   export SHORT_DESCRIPTION="Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
   export DESCRIPTION=$(render_template windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
 
-  wget -c $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  wget -c -q $VIRTIO_WIN_ISO_URL -P $TMPDIR
   export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
   sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
   packer_build windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.json
@@ -203,11 +203,11 @@ main() {
   build_windows_2012_r2
   build_windows_2016
   build_my_centos7
-  build_my_ubuntu_16_04
-  build_my_ubuntu_14_04
-  build_ubuntu_16_04
-  build_ubuntu_14_04
-  build_ubuntu_16_10
+  build_my_ubuntu_16_04_server
+  build_my_ubuntu_14_04_server
+  build_ubuntu_16_04_server
+  build_ubuntu_14_04_server
+  build_ubuntu_16_10_desktop
 }
 
 main
