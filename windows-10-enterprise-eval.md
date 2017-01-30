@@ -49,7 +49,7 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 ## VM Specifications
 
 * Libvirt Provider
-* VirtIO dynamic Hard Disk (up to 100 GiB)
+* VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
 * QXL Video Card (SPICE display)
 * Channel Device (com.redhat.spice.0)

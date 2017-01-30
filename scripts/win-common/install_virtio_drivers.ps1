@@ -1,7 +1,6 @@
 Write-Host "*** Install Virtio drivers for better compatibility with KVM hypervisor"
 
 Write-Host "*** Download virtio-win.iso"
-
 $client = new-object System.Net.WebClient
 $client.DownloadFile('https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso', 'c:\virtio-win.iso')
 
@@ -40,6 +39,22 @@ Start-Process "${driveLetter}:\guest-agent\qemu-ga-x64.msi" /qn -Wait
 Write-Host "*** Unmount virtio-win.iso"
 Dismount-DiskImage -ImagePath 'c:\virtio-win.iso'
 
-Write-Host "*** Remove temporary files c:\redhat.cer and c:\virtio-win.iso"
-del 'c:\virtio-win.iso'
-del 'c:\redhat.cer'
+Write-Host "*** Download vdagent"
+$client = new-object System.Net.WebClient
+$client.DownloadFile('https://www.spice-space.org/download/windows/vdagent/vdagent-win-0.8.0/vdagent-win-0.8.0.zip', 'c:\vdagent-win.zip')
+
+Write-Host "*** Create $env:ProgramFiles(x64)\SPICE Guest Tools\64 directory"
+New-Item "${env:ProgramFiles(x86)}\SPICE Guest Tools\64" -type directory | Out-Null
+
+Write-Host "*** Extract vdagent archive"
+Add-Type -A System.IO.Compression.FileSystem
+[IO.Compression.ZipFile]::ExtractToDirectory('c:\vdagent-win.zip', "c:\")
+Move-Item -Path "c:\vdagent-win-0.8.0\x86_64\*" -Destination "${env:ProgramFiles(x86)}\SPICE Guest Tools\64\"
+
+Write-Host "*** Install vdagent"
+& "${env:ProgramFiles(x86)}\SPICE Guest Tools\64\vdservice.exe" install
+
+Write-Host "*** Remove temporary files c:\redhat.cer, c:\virtio-win.iso and c:\vdagent-win*"
+rm -Force -Recurse 'c:\virtio-win.iso'
+rm -Force -Recurse 'c:\redhat.cer'
+rm -Force -Recurse 'c:\vdagent-win*'

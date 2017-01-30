@@ -10,13 +10,6 @@ export VERSION="$(date +%Y%m%d).01"
 export LOG_DIR="./build_logs/"
 
 
-ansible_check() {
-  if ansible --version | grep -q '^ansible 1'; then
-    echo -e "\nPlease use Ansible 2.x"
-    exit 1
-  fi
-}
-
 create_atlas_box() {
   if wget -O /dev/null "https://atlas.hashicorp.com/api/v1/box/$USER/$NAME" 2>&1 | grep -q 'ERROR 404'; then
     #Create box, because it doesn't exists
@@ -198,7 +191,7 @@ build_windows_10() {
 #######
 
 main() {
-  ansible_check
+  date
   build_windows_10
   build_windows_2012_r2
   build_windows_2016
@@ -208,6 +201,7 @@ main() {
   build_ubuntu_16_04_server
   build_ubuntu_14_04_server
   build_ubuntu_16_10_desktop
+  date
 }
 
 main

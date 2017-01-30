@@ -10,7 +10,7 @@
 
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
-    "disk_size": "102400"
+    "disk_size": "51200"
   },
 
   "builders":

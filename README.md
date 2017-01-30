@@ -31,7 +31,7 @@
 ## VM Specifications
 
 * Libvirt Provider
-* VirtIO dynamic Hard Disk (up to 100 GiB)
+* VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
 * QXL Video Card (SPICE display)
 
@@ -40,8 +40,8 @@
 
 #### Customized installation
 
-* there are usually many customization depends on distribution - all are described in Ansible [playbook](https://github.com/ruzickap/packer-templates/ansible/).
-* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/ansible/vars/common_variables.yml) and [Debian list](https://github.com/ruzickap/packer-templates/ansible/vars/Debian.yml) or [CentOS list](https://github.com/ruzickap/packer-templates/ansible/vars/RedHat.yml)
+* there are usually many customization depends on distribution - all are described in Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
+* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/main.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/Debian.yml) or [CentOS list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip
