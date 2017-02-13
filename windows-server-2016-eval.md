@@ -23,7 +23,7 @@ Here are the steps for Fedora 23 and 24 how to install Vagrant from the official
 \`\`\`
 dnf remove vagrant
 dnf install -y libvirt-daemon-kvm qemu-kvm libvirt-devel
-dnf install -y https://releases.hashicorp.com/vagrant/1.8.6/vagrant_1.8.6_x86_64.rpm
+dnf install -y https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.rpm
 vagrant plugin install vagrant-libvirt
 \`\`\`
 
@@ -66,7 +66,7 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 * Firewall allows Remote Desktop connections
 * AutoActivation skipped
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
-* WinRM enabled
+* WinRM (ssl) enabled
 * New Network Window turned off
 
 #### Additional Drivers installed (needed by libvirt) - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)

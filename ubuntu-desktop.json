@@ -7,8 +7,7 @@
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "preseed.cfg",
-    "disk_size": "102400"
-
+    "disk_size": "51200"
   },
 
   "builders":

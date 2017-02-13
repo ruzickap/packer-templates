@@ -25,6 +25,8 @@
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
+      "winrm_use_ssl": "true",
+      "winrm_insecure": "true",
 
       "shutdown_command": "c:\\remove_nic.bat & del c:\\remove_nic.bat & shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "shutdown_timeout": "15m",

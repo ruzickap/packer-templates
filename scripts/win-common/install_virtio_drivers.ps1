@@ -15,6 +15,9 @@ $cert = (Get-AuthenticodeSignature "${driveLetter}:\Balloon\2k12R2\amd64\blnsvr.
 Write-Host "*** Install RH certificate to TrustedPublisher certificate store"
 certutil.exe -f -addstore 'TrustedPublisher' c:\redhat.cer
 
+# Write-Host "*** Install the VirtIO SCSI controller Driver (vioscsi)"
+# pnputil -i -a "${driveLetter}:\viostor\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
+
 Write-Host "*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)"
 pnputil -i -a "${driveLetter}:\vioscsi\$Env:VIRTIO_DRIVER_DIRECTORY\amd64\*.inf"
 

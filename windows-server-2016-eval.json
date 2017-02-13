@@ -3,8 +3,8 @@
   "variables": {
     "name": "{{ env `NAME` }}",
     "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/1/6/F/16FA20E6-4662-482A-920B-1A45CF5AAE3C/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
-    "iso_checksum": "e634269ef78f1181859f88708c6d03c12a250f4b66d8cbd3de2e3c18da1f96ff",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/1/4/9/149D5452-9B29-4274-B6B3-5361DBDA30BC/14393.0.161119-1705.RS1_REFRESH_SERVER_EVAL_X64FRE_EN-US.ISO",
+    "iso_checksum": "1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f",
     "autounattend": "http/windows-{{ env `WINDOWS_TYPE` }}-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "virtio_driver_directory": "2k16",
     "winrm_username": "vagrant",
@@ -24,6 +24,8 @@
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
+      "winrm_use_ssl": "true",
+      "winrm_insecure": "true",
 
       "shutdown_command": "c:\\remove_nic.bat & del c:\\remove_nic.bat & shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
       "shutdown_timeout": "15m",
