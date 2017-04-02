@@ -1,27 +1,25 @@
-windows-server-2012-r2-standard-x64-eval output will be in this color.
-
 ==> windows-server-2012-r2-standard-x64-eval: Downloading or copying ISO
     windows-server-2012-r2-standard-x64-eval: Downloading or copying: http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO
 ==> windows-server-2012-r2-standard-x64-eval: Creating floppy disk...
     windows-server-2012-r2-standard-x64-eval: Copying files flatly from floppy_files
     windows-server-2012-r2-standard-x64-eval: Copying file: http/windows-server-2012/Autounattend.xml
     windows-server-2012-r2-standard-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.lWOLZbOyFiwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.3r5adXIxALwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
     windows-server-2012-r2-standard-x64-eval: Done copying files from floppy_files
     windows-server-2012-r2-standard-x64-eval: Collecting paths from floppy_dirs
     windows-server-2012-r2-standard-x64-eval: Resulting paths from floppy_dirs : []
     windows-server-2012-r2-standard-x64-eval: Done copying paths from floppy_dirs
 ==> windows-server-2012-r2-standard-x64-eval: Creating hard drive...
-==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3019.
+==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 4247.
 ==> windows-server-2012-r2-standard-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-server-2012-r2-standard-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-server-2012-r2-standard-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
@@ -92,10 +90,13 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
     windows-server-2012-r2-standard-x64-eval: Microsoft PnP Utility
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: Processing inf :            vioinput.inf
-    windows-server-2012-r2-standard-x64-eval: Adding the driver package failed : The system cannot find the file specified.
+    windows-server-2012-r2-standard-x64-eval: Successfully installed the driver on a device on the system.
+    windows-server-2012-r2-standard-x64-eval: Driver package added successfully.
+    windows-server-2012-r2-standard-x64-eval: Published name :            oem8.inf
+    windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: Total attempted:              1
-    windows-server-2012-r2-standard-x64-eval: Number successfully imported: 0
+    windows-server-2012-r2-standard-x64-eval: Number successfully imported: 1
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: *** Install pvpanic device driver (pvpanic)
     windows-server-2012-r2-standard-x64-eval: Microsoft PnP Utility
@@ -103,7 +104,7 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
     windows-server-2012-r2-standard-x64-eval: Processing inf :            pvpanic.inf
     windows-server-2012-r2-standard-x64-eval: Successfully installed the driver on a device on the system.
     windows-server-2012-r2-standard-x64-eval: Driver package added successfully.
-    windows-server-2012-r2-standard-x64-eval: Published name :            oem8.inf
+    windows-server-2012-r2-standard-x64-eval: Published name :            oem9.inf
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: Total attempted:              1
@@ -121,6 +122,7 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
 ==> windows-server-2012-r2-standard-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
+    windows-server-2012-r2-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
@@ -131,9 +133,6 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>for %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
     windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>if /I not "DMIB492.tmp" EQU "script.bat" echo del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\DMIB492.tmp"
-    windows-server-2012-r2-standard-x64-eval: del /f /q /s "C:\Users\vagrant\AppData\Local\Temp\DMIB492.tmp"
-    windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Windows\TEMP" directories  1>&2
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>for / %i in ("C:\Windows\TEMP\*.*") do rmdir /q /s "%~i"
@@ -142,8 +141,8 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>for %i in ("C:\Windows\TEMP\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
     windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>if /I not "DMI925C.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\DMI925C.tmp"
-    windows-server-2012-r2-standard-x64-eval: del /f /q /s "C:\Windows\TEMP\DMI925C.tmp"
+    windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>if /I not "DMI5A26.tmp" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\DMI5A26.tmp"
+    windows-server-2012-r2-standard-x64-eval: del /f /q /s "C:\Windows\TEMP\DMI5A26.tmp"
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>if /I not "script.bat" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.bat"
     windows-server-2012-r2-standard-x64-eval:
@@ -155,7 +154,6 @@ windows-server-2012-r2-standard-x64-eval output will be in this color.
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
     windows-server-2012-r2-standard-x64-eval: ==> Script exiting with errorlevel 0
-    windows-server-2012-r2-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
     windows-server-2012-r2-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
     windows-server-2012-r2-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
 ==> windows-server-2012-r2-standard-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat

@@ -27,9 +27,9 @@
   tags:
     - packages
 
-# password is "vagrant"
 - name: Chnage root password
-  user: name=root password={{ root_password }}
+  user: name=root password={{ root_password | password_hash('sha512') }}
+  changed_when: False
   tags:
     - users
 
@@ -178,6 +178,7 @@
     backup: yes
     dest: /etc/ssh/sshd_config
     block: |
+      UseDNS no
       ClientAliveInterval 60
       Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
       KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256

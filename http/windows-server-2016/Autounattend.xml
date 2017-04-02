@@ -92,7 +92,7 @@
             <OEMInformation>
                 <HelpCustomized>false</HelpCustomized>
             </OEMInformation>
-            <ComputerName>win2012r2</ComputerName>
+            <ComputerName>win2016</ComputerName>
             <TimeZone>UTC</TimeZone>
             <RegisteredOwner/>
         </component>

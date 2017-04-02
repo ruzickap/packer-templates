@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -eu
 
 export USER="peru"
 export TMPDIR="/var/tmp/"
@@ -57,7 +57,7 @@ render_template() {
 packer_build() {
   PACKER_FILE=$1; shift
 
-  ~/bin/packer build -color=false $PACKER_FILE | tee "${LOG_DIR}/${NAME}-packer.log"
+  packerio build -color=false $PACKER_FILE | tee "${LOG_DIR}/${NAME}-packer.log"
   create_atlas_box
   upload_boxfile_to_atlas
   rm -v ${NAME}-libvirt.box
@@ -75,7 +75,7 @@ build_ubuntu_16_10_desktop() {
 }
 
 build_ubuntu_16_04_server() {
-  export UBUNTU_VERSION="16.04.1"
+  export UBUNTU_VERSION="16.04.2"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
@@ -108,7 +108,7 @@ build_my_ubuntu_14_04_server() {
 }
 
 build_my_ubuntu_16_04_server() {
-  export UBUNTU_VERSION="16.04.1"
+  export UBUNTU_VERSION="16.04.2"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
   export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"

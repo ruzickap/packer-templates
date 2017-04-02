@@ -1,10 +1,8 @@
-my-centos-7-x86_64 output will be in this color.
-
 ==> my-centos-7-x86_64: Downloading or copying ISO
     my-centos-7-x86_64: Downloading or copying: http://ftp.linux.cz/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso
 ==> my-centos-7-x86_64: Creating hard drive...
-==> my-centos-7-x86_64: Starting HTTP server on port 8337
-==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 2397.
+==> my-centos-7-x86_64: Starting HTTP server on port 8485
+==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 3160.
 ==> my-centos-7-x86_64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-centos-7-x86_64: Starting VM, booting from CD-ROM
 ==> my-centos-7-x86_64: Overriding defaults Qemu arguments with QemuArgs...
@@ -17,8 +15,8 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: + date
     my-centos-7-x86_64: ==> Giving vagrant sudo powers
     my-centos-7-x86_64: + SSH_USER=vagrant
-    my-centos-7-x86_64: + SSH_USER_HOME=/home/vagrant
     my-centos-7-x86_64: ==> Installing vagrant key
+    my-centos-7-x86_64: + SSH_USER_HOME=/home/vagrant
     my-centos-7-x86_64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-centos-7-x86_64: + echo '==> Giving vagrant sudo powers'
     my-centos-7-x86_64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
@@ -52,7 +50,7 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default] => (item=[u'acpid', u'atop', u'bash-completion', u'byobu', u'cloud-init', u'curl', u'dstat', u'ethtool', u'haveged', u'htop', u'iftop', u'iotop', u'lftp', u'logrotate', u'logwatch', u'lshw', u'lsof', u'man', u'mc', u'mlocate', u'mutt', u'nmap', u'ntp', u'ntpdate', u'openssh-server', u'parted', u'postfix', u'rsync', u'screen', u'strace', u'sysstat', u'tcpdump', u'telnet', u'tmux', u'traceroute', u'@base', u'audit', u'libselinux-python', u'net-snmp', u'net-snmp-utils', u'openssh-clients', u'selinux-policy', u'sos', u'tmpwatch', u'tuned', u'vim-enhanced', u'yum-cron'])
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Chnage root password] **********************************
-    my-centos-7-x86_64: changed: [default]
+    my-centos-7-x86_64: ok: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Disable mouse in mc (/etc/profile.d/mc.sh)] ************
     my-centos-7-x86_64: changed: [default]
@@ -223,11 +221,11 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: PLAY RECAP *********************************************************************
-    my-centos-7-x86_64: default                    : ok=51   changed=42   unreachable=0    failed=0
+    my-centos-7-x86_64: default                    : ok=51   changed=41   unreachable=0    failed=0
     my-centos-7-x86_64:
 ==> my-centos-7-x86_64: Provisioning with shell script: scripts/linux-common/cleanup.sh
-    my-centos-7-x86_64: + SSH_USER=vagrant
     my-centos-7-x86_64: ==> Cleaning up udev rules
+    my-centos-7-x86_64: + SSH_USER=vagrant
     my-centos-7-x86_64: + echo '==> Cleaning up udev rules'
     my-centos-7-x86_64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
     my-centos-7-x86_64: + service rsyslog stop
@@ -242,20 +240,20 @@ my-centos-7-x86_64 output will be in this color.
     my-centos-7-x86_64: Cleaning repos: base epel extras updates
     my-centos-7-x86_64: Cleaning up everything
     my-centos-7-x86_64: Cleaning up list of fastest mirrors
-    my-centos-7-x86_64: + echo '==> Cleaning up tmp'
     my-centos-7-x86_64: ==> Cleaning up tmp
-    my-centos-7-x86_64: + rm -rf /tmp/ks-script-4dFmsa /tmp/ks-script-WlLMyj /tmp/script_5195.sh /tmp/ssh-eG9nJa9XS0 /tmp/tmprJeRNL /tmp/yum.log
+    my-centos-7-x86_64: + echo '==> Cleaning up tmp'
+    my-centos-7-x86_64: + rm -rf /tmp/ks-script-9R4fhT /tmp/ks-script-Q4TN15 /tmp/script_5493.sh /tmp/ssh-U63bB5nT2c /tmp/tmpk8aHIS /tmp/yum.log
     my-centos-7-x86_64: + unset HISTFILE
     my-centos-7-x86_64: + rm -f /root/.bash_history
     my-centos-7-x86_64: + rm -f /home/vagrant/.bash_history
     my-centos-7-x86_64: + find /var/log -type f
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
+    my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
+    my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: ==> Clearing last login information
-    my-centos-7-x86_64: + read f
-    my-centos-7-x86_64: + echo -ne ''
-    my-centos-7-x86_64: + read f
-    my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
