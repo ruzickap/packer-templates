@@ -1,6 +1,6 @@
 # [My CentOS ${CENTOS_VERSION}](https://www.centos.org/)
 
-## Modified CentOS ${CENTOS_VERSION} ${UBUNTU_ARCH} box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Modified CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
 
 ---
 

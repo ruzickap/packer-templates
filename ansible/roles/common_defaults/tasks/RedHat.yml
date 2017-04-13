@@ -83,8 +83,8 @@
     - ntp
 
 - name: Set NTP step stickers
-  copy:
-    src: etc/ntp/step-tickers
+  template:
+    src: etc/ntp/step-tickers.j2
     dest: /etc/ntp/step-tickers
     backup: yes
   tags:

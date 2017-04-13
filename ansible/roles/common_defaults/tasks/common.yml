@@ -9,13 +9,13 @@
   when: ansible_os_family == 'Debian'
 
 - block:
-    - name: Install EPEL repo.
+    - name: Install EPEL repo
       yum: name="{{ epel_repo_url }}"
       register: result
       until: '"failed" not in result'
       retries: 5
       delay: 10
-    - name: Import EPEL GPG key.
+    - name: Import EPEL GPG key
       rpm_key: key="{{ epel_repo_gpg_key_url }}"
   when: ansible_os_family == 'RedHat'
 

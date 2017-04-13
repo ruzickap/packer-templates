@@ -1,0 +1,5 @@
+# List of NTP servers used by the ntpdate service.
+
+{% for server in ntp_servers %}
+{{ server }}
+{% endfor %}
