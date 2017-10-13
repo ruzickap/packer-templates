@@ -183,6 +183,8 @@
       Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc
       KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
     validate: sshd -tf %s
+  # RHEL6/CentOS6 workaround
+  when: ansible_distribution != 'CentOS' and ansible_distribution_major_version|int > 6
   notify: restart sshd
   tags:
     - sshd
@@ -261,6 +263,7 @@
     - ssh
 
 
+#- include_tasks: "{{ ansible_os_family }}.yml"
 - include: "{{ ansible_os_family }}.yml"
 
 
@@ -272,6 +275,8 @@
   with_items:
     - "{{ disable_distribution_specific_boot_services }}"
   when: disable_distribution_specific_boot_services
+  # Workaround for RHEL7 / CentOS6
+  failed_when: false
   tags:
     - services
 

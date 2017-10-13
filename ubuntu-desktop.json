@@ -1,9 +1,9 @@
 {
-  "_comment": "Build with `NAME=ubuntu-16.10-desktop-amd64 UBUNTU_TYPE=desktop packer build ubuntu-desktop.json`",
+  "_comment": "Build with `NAME=ubuntu-17.04-desktop-amd64 UBUNTU_TYPE=desktop packer build ubuntu-desktop.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "ubuntu_type": "{{ env `UBUNTU_TYPE` }}",
-    "iso_checksum": "f8589513e78bcc502cbdee10563e5a8b0baf7e29ba9c6b935fdff6526bd6300d",
+    "iso_checksum": "43ac1c9803294eff75c0d970da6a7d8b3c01bcd61e71e1a0c6eafb8c0e38cc2e",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "preseed.cfg",
@@ -17,7 +17,7 @@
       "type": "qemu",
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
-      "iso_urls": [ "http://archive.ubuntu.com/ubuntu/dists/yakkety/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "iso_urls": [ "http://archive.ubuntu.com/ubuntu/dists/zesty/main/installer-amd64/current/images/netboot/mini.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "2h",

@@ -4,12 +4,18 @@
   tags:
     - packages
 
+#/etc/default/rcS exists in Ubunut 16.04 bu not in 17.04
+- name: Check if /etc/default/rcS exists
+  stat: path=/etc/default/rcS
+  register: rcS_stat
+
 - name: Enable fsckfix during boot
   lineinfile:
     dest: /etc/default/rcS
     regexp: '^FSCKFIX='
     line: "FSCKFIX=yes"
     backup: yes
+  when: rcS_stat.stat.exists == True
   tags:
     - rcS
 
@@ -19,6 +25,7 @@
     regexp: '^TMPTIME='
     line: "TMPTIME=0"
     backup: yes
+  when: rcS_stat.stat.exists == True
   tags:
     - rcS
 

@@ -3,8 +3,8 @@
   "variables": {
     "name": "{{ env `NAME` }}",
     "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/2/5/4/254230E8-AEA5-43C5-94F6-88CE222A5846/14393.0.160715-1616.RS1_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO",
-    "iso_checksum": "f32f451fb702a8660f1cf4ebf714ca38e44b193d54521dd6a9d567fcc3655f97",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/B/8/B/B8B452EC-DD2D-4A8F-A88C-D2180C177624/15063.0.170317-1834.RS2_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO",
+    "iso_checksum": "0327731203f0c8ac0dfb607b7cfc5a91ba9a76cdc9a9852a8345a8b267d34f83",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "virtio_driver_directory": "w10",
 
@@ -55,22 +55,21 @@
   ],
   "provisioners": [
     {
-      "type": "powershell",
-      "environment_vars": [ "VIRTIO_DRIVER_DIRECTORY={{user `virtio_driver_directory`}}" ],
-      "scripts": [
-        "./scripts/win-common/install_virtio_drivers.ps1",
-        "./scripts/win-common/allow_build-in_administrator_account_open_edge.ps1"
+      "type": "ansible",
+      "user": "vagrant",
+      "playbook_file": "ansible/win.yml",
+      "extra_arguments": [
+        "--connection", "packer",
+        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory={{user `virtio_driver_directory`}}"
       ]
     },
     {
-      "type": "windows-shell",
-      "scripts": [
-        "./scripts/win-common/enable_administrator_account.bat",
-        "./scripts/win-common/clean.bat"
-      ]
+      "type": "windows-restart",
+      "restart_timeout": "1h"
     },
     {
       "type": "file",
+      "pause_before": "1m",
       "source": "scripts/win-common/remove_nic.bat",
       "destination": "c:\\remove_nic.bat"
     }

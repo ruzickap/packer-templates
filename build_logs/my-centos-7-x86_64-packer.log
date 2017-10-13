@@ -1,8 +1,8 @@
 ==> my-centos-7-x86_64: Downloading or copying ISO
-    my-centos-7-x86_64: Downloading or copying: http://ftp.linux.cz/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1611.iso
+    my-centos-7-x86_64: Downloading or copying: http://ftp.linux.cz/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1708.iso
 ==> my-centos-7-x86_64: Creating hard drive...
-==> my-centos-7-x86_64: Starting HTTP server on port 8485
-==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 3160.
+==> my-centos-7-x86_64: Starting HTTP server on port 8208
+==> my-centos-7-x86_64: Found port for communicator (SSH, WinRM, etc): 3586.
 ==> my-centos-7-x86_64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-centos-7-x86_64: Starting VM, booting from CD-ROM
 ==> my-centos-7-x86_64: Overriding defaults Qemu arguments with QemuArgs...
@@ -14,8 +14,8 @@
 ==> my-centos-7-x86_64: Provisioning with shell script: scripts/linux-common/vagrant.sh
     my-centos-7-x86_64: + date
     my-centos-7-x86_64: ==> Giving vagrant sudo powers
-    my-centos-7-x86_64: + SSH_USER=vagrant
     my-centos-7-x86_64: ==> Installing vagrant key
+    my-centos-7-x86_64: + SSH_USER=vagrant
     my-centos-7-x86_64: + SSH_USER_HOME=/home/vagrant
     my-centos-7-x86_64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-centos-7-x86_64: + echo '==> Giving vagrant sudo powers'
@@ -28,10 +28,11 @@
     my-centos-7-x86_64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     my-centos-7-x86_64: + chown -R vagrant:vagrant /home/vagrant/.ssh
 ==> my-centos-7-x86_64: Provisioning with Ansible...
+==> my-centos-7-x86_64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-centos-7-x86_64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible417861697 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key200177130
     my-centos-7-x86_64:
     my-centos-7-x86_64: PLAY [all] *********************************************************************
     my-centos-7-x86_64:
-    my-centos-7-x86_64: TASK [setup] *******************************************************************
+    my-centos-7-x86_64: TASK [Gathering Facts] *********************************************************
     my-centos-7-x86_64: ok: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Include OS-specific variables] *************************
@@ -40,14 +41,60 @@
     my-centos-7-x86_64: TASK [common_defaults : Update repositories] ***********************************
     my-centos-7-x86_64: skipping: [default]
     my-centos-7-x86_64:
-    my-centos-7-x86_64: TASK [common_defaults : Install EPEL repo.] ************************************
+    my-centos-7-x86_64: TASK [common_defaults : Install EPEL repo] *************************************
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
-    my-centos-7-x86_64: TASK [common_defaults : Import EPEL GPG key.] **********************************
+    my-centos-7-x86_64: TASK [common_defaults : Import EPEL GPG key] ***********************************
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Install common packages] *******************************
-    my-centos-7-x86_64: changed: [default] => (item=[u'acpid', u'atop', u'bash-completion', u'byobu', u'cloud-init', u'curl', u'dstat', u'ethtool', u'haveged', u'htop', u'iftop', u'iotop', u'lftp', u'logrotate', u'logwatch', u'lshw', u'lsof', u'man', u'mc', u'mlocate', u'mutt', u'nmap', u'ntp', u'ntpdate', u'openssh-server', u'parted', u'postfix', u'rsync', u'screen', u'strace', u'sysstat', u'tcpdump', u'telnet', u'tmux', u'traceroute', u'@base', u'audit', u'libselinux-python', u'net-snmp', u'net-snmp-utils', u'openssh-clients', u'selinux-policy', u'sos', u'tmpwatch', u'tuned', u'vim-enhanced', u'yum-cron'])
+    my-centos-7-x86_64: changed: [default] => (item=acpid)
+    my-centos-7-x86_64: changed: [default] => (item=atop)
+    my-centos-7-x86_64: ok: [default] => (item=bash-completion)
+    my-centos-7-x86_64: changed: [default] => (item=byobu)
+    my-centos-7-x86_64: changed: [default] => (item=cloud-init)
+    my-centos-7-x86_64: ok: [default] => (item=curl)
+    my-centos-7-x86_64: changed: [default] => (item=dstat)
+    my-centos-7-x86_64: ok: [default] => (item=ethtool)
+    my-centos-7-x86_64: changed: [default] => (item=haveged)
+    my-centos-7-x86_64: changed: [default] => (item=htop)
+    my-centos-7-x86_64: changed: [default] => (item=iftop)
+    my-centos-7-x86_64: changed: [default] => (item=iotop)
+    my-centos-7-x86_64: changed: [default] => (item=lftp)
+    my-centos-7-x86_64: ok: [default] => (item=logrotate)
+    my-centos-7-x86_64: changed: [default] => (item=logwatch)
+    my-centos-7-x86_64: changed: [default] => (item=lshw)
+    my-centos-7-x86_64: ok: [default] => (item=lsof)
+    my-centos-7-x86_64: ok: [default] => (item=man)
+    my-centos-7-x86_64: changed: [default] => (item=mc)
+    my-centos-7-x86_64: ok: [default] => (item=mlocate)
+    my-centos-7-x86_64: changed: [default] => (item=mutt)
+    my-centos-7-x86_64: changed: [default] => (item=nmap)
+    my-centos-7-x86_64: changed: [default] => (item=ntp)
+    my-centos-7-x86_64: ok: [default] => (item=ntpdate)
+    my-centos-7-x86_64: ok: [default] => (item=openssh-server)
+    my-centos-7-x86_64: ok: [default] => (item=parted)
+    my-centos-7-x86_64: ok: [default] => (item=postfix)
+    my-centos-7-x86_64: ok: [default] => (item=rsync)
+    my-centos-7-x86_64: ok: [default] => (item=screen)
+    my-centos-7-x86_64: ok: [default] => (item=strace)
+    my-centos-7-x86_64: ok: [default] => (item=sysstat)
+    my-centos-7-x86_64: ok: [default] => (item=tcpdump)
+    my-centos-7-x86_64: changed: [default] => (item=telnet)
+    my-centos-7-x86_64: ok: [default] => (item=tmux)
+    my-centos-7-x86_64: ok: [default] => (item=traceroute)
+    my-centos-7-x86_64: ok: [default] => (item=@base)
+    my-centos-7-x86_64: ok: [default] => (item=audit)
+    my-centos-7-x86_64: ok: [default] => (item=libselinux-python)
+    my-centos-7-x86_64: changed: [default] => (item=net-snmp)
+    my-centos-7-x86_64: changed: [default] => (item=net-snmp-utils)
+    my-centos-7-x86_64: ok: [default] => (item=openssh-clients)
+    my-centos-7-x86_64: ok: [default] => (item=selinux-policy)
+    my-centos-7-x86_64: ok: [default] => (item=sos)
+    my-centos-7-x86_64: changed: [default] => (item=tmpwatch)
+    my-centos-7-x86_64: ok: [default] => (item=tuned)
+    my-centos-7-x86_64: ok: [default] => (item=vim-enhanced)
+    my-centos-7-x86_64: changed: [default] => (item=yum-cron)
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Chnage root password] **********************************
     my-centos-7-x86_64: ok: [default]
@@ -110,7 +157,7 @@
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Configure sshd] ****************************************
-    my-centos-7-x86_64: changed: [default]
+    my-centos-7-x86_64: skipping: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Allow root SSH access and set "PasswordAuthentication yes" in /etc/ssh/sshd_config] ***
     my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^PermitRootLogin', u'line': u'PermitRootLogin yes'})
@@ -138,13 +185,39 @@
     my-centos-7-x86_64: skipping: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : include] ***********************************************
-    my-centos-7-x86_64: included: /home/ruzickap/data/github/packer-templates/ansible/roles/common_defaults/tasks/RedHat.yml for default
+    my-centos-7-x86_64: included: /home/pruzicka/data/github/packer-templates/ansible/roles/common_defaults/tasks/RedHat.yml for default
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Upgrade packages] **************************************
     my-centos-7-x86_64: ok: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Remove useless packages] *******************************
-    my-centos-7-x86_64: changed: [default] => (item=[u'aic94xx-firmware', u'alsa-firmware', u'alsa-lib', u'alsa-tools-firmware', u'biosdevname', u'iprutils', u'ivtv-firmware', u'iwl100-firmware', u'iwl1000-firmware', u'iwl105-firmware', u'iwl135-firmware', u'iwl2000-firmware', u'iwl2030-firmware', u'iwl3160-firmware', u'iwl3945-firmware', u'iwl4965-firmware', u'iwl5000-firmware', u'iwl5150-firmware', u'iwl6000-firmware', u'iwl6000g2a-firmware', u'iwl6000g2b-firmware', u'iwl6050-firmware', u'iwl7260-firmware', u'libertas-sd8686-firmware', u'libertas-sd8787-firmware', u'libertas-usb8388-firmware', u'linux-firmware'])
+    my-centos-7-x86_64: ok: [default] => (item=aic94xx-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=alsa-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=alsa-lib)
+    my-centos-7-x86_64: ok: [default] => (item=alsa-tools-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=biosdevname)
+    my-centos-7-x86_64: ok: [default] => (item=iprutils)
+    my-centos-7-x86_64: ok: [default] => (item=ivtv-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl100-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl1000-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl105-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl135-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl2000-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl2030-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl3160-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl3945-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl4965-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl5000-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl5150-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl6000-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl6000g2a-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl6000g2b-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl6050-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=iwl7260-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=libertas-sd8686-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=libertas-sd8787-firmware)
+    my-centos-7-x86_64: ok: [default] => (item=libertas-usb8388-firmware)
+    my-centos-7-x86_64: changed: [default] => (item=linux-firmware)
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Add nice prompt for root user] *************************
     my-centos-7-x86_64: changed: [default]
@@ -163,7 +236,7 @@
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Modify grub settings] **********************************
     my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^GRUB_TIMEOUT=.*', u'replace': u'GRUB_TIMEOUT=1'})
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^GRUB_CMDLINE_LINUX=.*', u'replace': u'GRUB_CMDLINE_LINUX="rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 net.ifnames=0 no_timer_check"'})
+    my-centos-7-x86_64: ok: [default] => (item={u'regexp': u'nofb quiet splash=quiet', u'replace': u'nofb quiet rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 no_timer_check splash=quiet'})
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Change HW Clock configuration] *************************
     my-centos-7-x86_64: changed: [default]
@@ -171,18 +244,16 @@
     my-centos-7-x86_64: TASK [common_defaults : Set NTP step stickers] *********************************
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
-    my-centos-7-x86_64: TASK [common_defaults : Backup original /etc/yum/yum-cron.conf] ****************
-    my-centos-7-x86_64: changed: [default] => (item=yum-cron.conf)
-    my-centos-7-x86_64: changed: [default] => (item=yum-cron-hourly.conf)
+    my-centos-7-x86_64: TASK [common_defaults : Backup original /etc/yum/yum-cron.conf and /etc/yum/yum-cron-hourly.conf if exists] ***
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Configure yum-cron] ************************************
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
+    my-centos-7-x86_64: skipping: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Configure yum-cron] ************************************
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^update_cmd.*', u'replace': u'update_cmd = security-severity:Critical'})
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^update_messages.*', u'replace': u'update_messages = yes'})
-    my-centos-7-x86_64: changed: [default] => (item={u'regexp': u'^download_updates.*', u'replace': u'download_updates = yes'})
+    my-centos-7-x86_64: skipping: [default] => (item={u'regexp': u'^update_cmd.*', u'replace': u'update_cmd = security-severity:Critical'})
+    my-centos-7-x86_64: skipping: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
+    my-centos-7-x86_64: skipping: [default] => (item={u'regexp': u'^update_messages.*', u'replace': u'update_messages = yes'})
+    my-centos-7-x86_64: skipping: [default] => (item={u'regexp': u'^download_updates.*', u'replace': u'download_updates = yes'})
     my-centos-7-x86_64:
     my-centos-7-x86_64: TASK [common_defaults : Add /usr/local/bin/etc_issue.sh script] ****************
     my-centos-7-x86_64: changed: [default]
@@ -221,7 +292,7 @@
     my-centos-7-x86_64: changed: [default]
     my-centos-7-x86_64:
     my-centos-7-x86_64: PLAY RECAP *********************************************************************
-    my-centos-7-x86_64: default                    : ok=51   changed=41   unreachable=0    failed=0
+    my-centos-7-x86_64: default                    : ok=47   changed=37   unreachable=0    failed=0
     my-centos-7-x86_64:
 ==> my-centos-7-x86_64: Provisioning with shell script: scripts/linux-common/cleanup.sh
     my-centos-7-x86_64: ==> Cleaning up udev rules
@@ -229,7 +300,7 @@
     my-centos-7-x86_64: + echo '==> Cleaning up udev rules'
     my-centos-7-x86_64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
     my-centos-7-x86_64: + service rsyslog stop
-    my-centos-7-x86_64: Redirecting to /bin/systemctl stop  rsyslog.service
+    my-centos-7-x86_64: Redirecting to /bin/systemctl stop rsyslog.service
     my-centos-7-x86_64: + '[' -f /etc/os-release ']'
     my-centos-7-x86_64: + grep -iq debian /etc/os-release
     my-centos-7-x86_64: + service auditd stop
@@ -239,21 +310,26 @@
     my-centos-7-x86_64: Loaded plugins: fastestmirror, langpacks
     my-centos-7-x86_64: Cleaning repos: base epel extras updates
     my-centos-7-x86_64: Cleaning up everything
+    my-centos-7-x86_64: Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
     my-centos-7-x86_64: Cleaning up list of fastest mirrors
-    my-centos-7-x86_64: ==> Cleaning up tmp
     my-centos-7-x86_64: + echo '==> Cleaning up tmp'
-    my-centos-7-x86_64: + rm -rf /tmp/ks-script-9R4fhT /tmp/ks-script-Q4TN15 /tmp/script_5493.sh /tmp/ssh-U63bB5nT2c /tmp/tmpk8aHIS /tmp/yum.log
+    my-centos-7-x86_64: ==> Cleaning up tmp
+    my-centos-7-x86_64: + rm -rf /tmp/ks-script-nl2hVm /tmp/ks-script-RsPwpw /tmp/script_9289.sh /tmp/ssh-1jjNay53gU /tmp/tmppsieC1 /tmp/yum.log
     my-centos-7-x86_64: + unset HISTFILE
     my-centos-7-x86_64: + rm -f /root/.bash_history
     my-centos-7-x86_64: + rm -f /home/vagrant/.bash_history
-    my-centos-7-x86_64: + find /var/log -type f
     my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + find /var/log -type f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: ==> Clearing last login information
+    my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
+    my-centos-7-x86_64: + read f
+    my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f
     my-centos-7-x86_64: + echo -ne ''
     my-centos-7-x86_64: + read f

@@ -1,8 +1,8 @@
 ==> my-ubuntu-14.04-server-amd64: Downloading or copying ISO
     my-ubuntu-14.04-server-amd64: Downloading or copying: http://releases.ubuntu.com/14.04.5/ubuntu-14.04.5-server-amd64.iso
 ==> my-ubuntu-14.04-server-amd64: Creating hard drive...
-==> my-ubuntu-14.04-server-amd64: Starting HTTP server on port 8480
-==> my-ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 3874.
+==> my-ubuntu-14.04-server-amd64: Starting HTTP server on port 8705
+==> my-ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 4434.
 ==> my-ubuntu-14.04-server-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-ubuntu-14.04-server-amd64: Starting VM, booting from CD-ROM
 ==> my-ubuntu-14.04-server-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -19,16 +19,17 @@
     my-ubuntu-14.04-server-amd64: Extracting templates from packages: 100%
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: Current default time zone: 'Etc/UTC'
-    my-ubuntu-14.04-server-amd64: Local time is now:      Sat Apr  1 09:30:54 UTC 2017.
-    my-ubuntu-14.04-server-amd64: Universal Time is now:  Sat Apr  1 09:30:54 UTC 2017.
+    my-ubuntu-14.04-server-amd64: Local time is now:      Thu Oct 12 08:25:11 UTC 2017.
+    my-ubuntu-14.04-server-amd64: Universal Time is now:  Thu Oct 12 08:25:11 UTC 2017.
     my-ubuntu-14.04-server-amd64: Run 'dpkg-reconfigure tzdata' if you wish to change it.
     my-ubuntu-14.04-server-amd64:
-    my-ubuntu-14.04-server-amd64: * Starting AppArmor profiles
     my-ubuntu-14.04-server-amd64: Skipping profile in /etc/apparmor.d/disable: usr.sbin.rsyslogd
-    my-ubuntu-14.04-server-amd64: ...done.
-    my-ubuntu-14.04-server-amd64: * Reloading AppArmor profiles
+    my-ubuntu-14.04-server-amd64:  * Starting AppArmor profiles
     my-ubuntu-14.04-server-amd64: Skipping profile in /etc/apparmor.d/disable: usr.sbin.rsyslogd
-    my-ubuntu-14.04-server-amd64: ...done.
+    my-ubuntu-14.04-server-amd64:    ...done.
+    my-ubuntu-14.04-server-amd64:  * Reloading AppArmor profiles
+    my-ubuntu-14.04-server-amd64: Skipping profile in /etc/apparmor.d/disable: usr.sbin.rsyslogd
+    my-ubuntu-14.04-server-amd64:    ...done.
 ==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: scripts/linux-common/vagrant.sh
     my-ubuntu-14.04-server-amd64: [sudo] password for vagrant: + date
     my-ubuntu-14.04-server-amd64: + SSH_USER=vagrant
@@ -45,12 +46,13 @@
     my-ubuntu-14.04-server-amd64: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-ubuntu-14.04-server-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     my-ubuntu-14.04-server-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
-==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell950744390
+==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell925277829
 ==> my-ubuntu-14.04-server-amd64: Provisioning with Ansible...
+==> my-ubuntu-14.04-server-amd64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-ubuntu-14.04-server-amd64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible167095549 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key305873046
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: PLAY [all] *********************************************************************
     my-ubuntu-14.04-server-amd64:
-    my-ubuntu-14.04-server-amd64: TASK [setup] *******************************************************************
+    my-ubuntu-14.04-server-amd64: TASK [Gathering Facts] *********************************************************
     my-ubuntu-14.04-server-amd64: ok: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Include OS-specific variables] *************************
@@ -59,14 +61,63 @@
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Update repositories] ***********************************
     my-ubuntu-14.04-server-amd64: changed: [default]
     my-ubuntu-14.04-server-amd64:
-    my-ubuntu-14.04-server-amd64: TASK [common_defaults : Install EPEL repo.] ************************************
+    my-ubuntu-14.04-server-amd64: TASK [common_defaults : Install EPEL repo] *************************************
     my-ubuntu-14.04-server-amd64: skipping: [default]
     my-ubuntu-14.04-server-amd64:
-    my-ubuntu-14.04-server-amd64: TASK [common_defaults : Import EPEL GPG key.] **********************************
+    my-ubuntu-14.04-server-amd64: TASK [common_defaults : Import EPEL GPG key] ***********************************
     my-ubuntu-14.04-server-amd64: skipping: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Install common packages] *******************************
-    my-ubuntu-14.04-server-amd64: changed: [default] => (item=[u'acpid', u'atop', u'bash-completion', u'byobu', u'cloud-init', u'curl', u'dstat', u'ethtool', u'haveged', u'htop', u'iftop', u'iotop', u'lftp', u'logrotate', u'logwatch', u'lshw', u'lsof', u'man', u'mc', u'mlocate', u'mutt', u'nmap', u'ntp', u'ntpdate', u'openssh-server', u'parted', u'postfix', u'rsync', u'screen', u'strace', u'sysstat', u'tcpdump', u'telnet', u'tmux', u'traceroute', u'aptitude', u'cloud-initramfs-growroot', u'debconf-utils', u'dnsutils', u'bsd-mailx', u'linux-virtual', u'mtr-tiny', u'snmp', u'snmpd', u'sosreport', u'tcpflow', u'tmpreaper', u'unattended-upgrades', u'update-notifier-common', u'vim'])
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=acpid)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=atop)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=bash-completion)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=byobu)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=cloud-init)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=curl)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=dstat)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=ethtool)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=haveged)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=htop)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=iftop)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=iotop)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=lftp)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=logrotate)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=logwatch)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=lshw)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=lsof)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=man)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=mc)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=mlocate)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=mutt)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=nmap)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=ntp)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=ntpdate)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=openssh-server)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=parted)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=postfix)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=rsync)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=screen)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=strace)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=sysstat)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=tcpdump)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=telnet)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=tmux)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=traceroute)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=aptitude)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=cloud-initramfs-growroot)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=debconf-utils)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=dnsutils)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=bsd-mailx)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=linux-virtual)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=mtr-tiny)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=snmp)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=snmpd)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=sosreport)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=tcpflow)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=tmpreaper)
+    my-ubuntu-14.04-server-amd64: ok: [default] => (item=unattended-upgrades)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=update-notifier-common)
+    my-ubuntu-14.04-server-amd64: changed: [default] => (item=vim)
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Chnage root password] **********************************
     my-ubuntu-14.04-server-amd64: ok: [default]
@@ -157,10 +208,13 @@
     my-ubuntu-14.04-server-amd64: skipping: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : include] ***********************************************
-    my-ubuntu-14.04-server-amd64: included: /home/ruzickap/data/github/packer-templates/ansible/roles/common_defaults/tasks/Debian.yml for default
+    my-ubuntu-14.04-server-amd64: included: /home/pruzicka/data/github/packer-templates/ansible/roles/common_defaults/tasks/Debian.yml for default
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Upgrade packages] **************************************
     my-ubuntu-14.04-server-amd64: changed: [default]
+    my-ubuntu-14.04-server-amd64:
+    my-ubuntu-14.04-server-amd64: TASK [common_defaults : Check if /etc/default/rcS exists] **********************
+    my-ubuntu-14.04-server-amd64: ok: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Enable fsckfix during boot] ****************************
     my-ubuntu-14.04-server-amd64: changed: [default]
@@ -182,8 +236,8 @@
     my-ubuntu-14.04-server-amd64: changed: [default] => (item={u'regexp': u'^//Unattended-Upgrade::Remove-Unused-Dependencies "false";', u'replace': u'Unattended-Upgrade::Remove-Unused-Dependencies "true";'})
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Autoremove unused packages] ****************************
-    my-ubuntu-14.04-server-amd64: ok: [default]
     my-ubuntu-14.04-server-amd64:  [WARNING]: Consider using apt module rather than running apt-get
+    my-ubuntu-14.04-server-amd64: ok: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Disable and stop services during boot] *****************
     my-ubuntu-14.04-server-amd64: skipping: [default] => (item=None)
@@ -198,7 +252,7 @@
     my-ubuntu-14.04-server-amd64: changed: [default]
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: PLAY RECAP *********************************************************************
-    my-ubuntu-14.04-server-amd64: default                    : ok=39   changed=32   unreachable=0    failed=0
+    my-ubuntu-14.04-server-amd64: default                    : ok=40   changed=32   unreachable=0    failed=0
     my-ubuntu-14.04-server-amd64:
 ==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
     my-ubuntu-14.04-server-amd64: ==> Cleaning up udev rules
@@ -206,15 +260,15 @@
     my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up udev rules'
     my-ubuntu-14.04-server-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
     my-ubuntu-14.04-server-amd64: + service rsyslog stop
-    my-ubuntu-14.04-server-amd64: + '[' -f /etc/os-release ']'
     my-ubuntu-14.04-server-amd64: rsyslog stop/waiting
+    my-ubuntu-14.04-server-amd64: + '[' -f /etc/os-release ']'
     my-ubuntu-14.04-server-amd64: + grep -iq debian /etc/os-release
     my-ubuntu-14.04-server-amd64: + export DEBIAN_FRONTEND=noninteractive
+    my-ubuntu-14.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-14.04-server-amd64: + DEBIAN_FRONTEND=noninteractive
     my-ubuntu-14.04-server-amd64: + echo 'pre-up sleep 2'
     my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up leftover dhcp leases'
     my-ubuntu-14.04-server-amd64: + '[' -d /var/lib/dhcp3 ']'
-    my-ubuntu-14.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-14.04-server-amd64: + '[' -d /var/lib/dhcp ']'
     my-ubuntu-14.04-server-amd64: + rm /var/lib/dhcp/dhclient.eth0.leases /var/lib/dhcp/dhclient.leases
     my-ubuntu-14.04-server-amd64: + apt-get -y autoremove --purge
@@ -227,9 +281,9 @@
     my-ubuntu-14.04-server-amd64: Reading package lists...
     my-ubuntu-14.04-server-amd64: Building dependency tree...
     my-ubuntu-14.04-server-amd64: Reading state information...
-    my-ubuntu-14.04-server-amd64: ==> Cleaning up tmp
     my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up tmp'
-    my-ubuntu-14.04-server-amd64: + rm -rf /tmp/script_6483.sh /tmp/ssh-yF6khYRpHo
+    my-ubuntu-14.04-server-amd64: + rm -rf /tmp/script_2047.sh /tmp/ssh-s1KtAmIKv5
+    my-ubuntu-14.04-server-amd64: ==> Cleaning up tmp
     my-ubuntu-14.04-server-amd64: + unset HISTFILE
     my-ubuntu-14.04-server-amd64: + rm -f /root/.bash_history
     my-ubuntu-14.04-server-amd64: + rm -f /home/vagrant/.bash_history
@@ -244,23 +298,25 @@
     my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f
     my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: + read f
-    my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: ==> Clearing last login information
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f
     my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f

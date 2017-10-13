@@ -1,8 +1,8 @@
 ==> ubuntu-desktop-amd64: Downloading or copying ISO
-    ubuntu-desktop-amd64: Downloading or copying: http://archive.ubuntu.com/ubuntu/dists/yakkety/main/installer-amd64/current/images/netboot/mini.iso
+    ubuntu-desktop-amd64: Downloading or copying: http://archive.ubuntu.com/ubuntu/dists/zesty/main/installer-amd64/current/images/netboot/mini.iso
 ==> ubuntu-desktop-amd64: Creating hard drive...
-==> ubuntu-desktop-amd64: Starting HTTP server on port 8919
-==> ubuntu-desktop-amd64: Found port for communicator (SSH, WinRM, etc): 3703.
+==> ubuntu-desktop-amd64: Starting HTTP server on port 8200
+==> ubuntu-desktop-amd64: Found port for communicator (SSH, WinRM, etc): 3858.
 ==> ubuntu-desktop-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> ubuntu-desktop-amd64: Starting VM, booting from CD-ROM
 ==> ubuntu-desktop-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -12,18 +12,20 @@
 ==> ubuntu-desktop-amd64: Waiting for SSH to become available...
 ==> ubuntu-desktop-amd64: Connected to SSH!
 ==> ubuntu-desktop-amd64: Provisioning with shell script: scripts/ubuntu/update.sh
+    ubuntu-desktop-amd64: sudo: unable to resolve host localhost.localdomain
     ubuntu-desktop-amd64: [sudo] password for vagrant: + export DEBIAN_FRONTEND=noninteractive
     ubuntu-desktop-amd64: + DEBIAN_FRONTEND=noninteractive
     ubuntu-desktop-amd64: + apt-get update
     ubuntu-desktop-amd64: + apt-get -y upgrade
 ==> ubuntu-desktop-amd64: Provisioning with shell script: scripts/linux-common/vagrant.sh
+    ubuntu-desktop-amd64: sudo: unable to resolve host localhost.localdomain
     ubuntu-desktop-amd64: [sudo] password for vagrant: + date
     ubuntu-desktop-amd64: + SSH_USER=vagrant
+    ubuntu-desktop-amd64: ==> Giving vagrant sudo powers
+    ubuntu-desktop-amd64: ==> Installing vagrant key
     ubuntu-desktop-amd64: + SSH_USER_HOME=/home/vagrant
     ubuntu-desktop-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     ubuntu-desktop-amd64: + echo '==> Giving vagrant sudo powers'
-    ubuntu-desktop-amd64: ==> Giving vagrant sudo powers
-    ubuntu-desktop-amd64: ==> Installing vagrant key
     ubuntu-desktop-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
     ubuntu-desktop-amd64: + echo '==> Installing vagrant key'
     ubuntu-desktop-amd64: + mkdir /home/vagrant/.ssh
@@ -33,10 +35,11 @@
     ubuntu-desktop-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     ubuntu-desktop-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
 ==> ubuntu-desktop-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
+    ubuntu-desktop-amd64: sudo: unable to resolve host localhost.localdomain
     ubuntu-desktop-amd64: + SSH_USER=vagrant
-    ubuntu-desktop-amd64: ==> Cleaning up udev rules
     ubuntu-desktop-amd64: + echo '==> Cleaning up udev rules'
     ubuntu-desktop-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
+    ubuntu-desktop-amd64: ==> Cleaning up udev rules
     ubuntu-desktop-amd64: + service rsyslog stop
     ubuntu-desktop-amd64: + '[' -f /etc/os-release ']'
     ubuntu-desktop-amd64: + grep -iq debian /etc/os-release
@@ -60,7 +63,7 @@
     ubuntu-desktop-amd64: Reading state information...
     ubuntu-desktop-amd64: ==> Cleaning up tmp
     ubuntu-desktop-amd64: + echo '==> Cleaning up tmp'
-    ubuntu-desktop-amd64: + rm -rf /tmp/script_9197.sh /tmp/ssh-TUAP8P8wrC /tmp/systemd-private-bbed9ee725f844d9a337fcf973576ab0-colord.service-f5KzuD /tmp/systemd-private-bbed9ee725f844d9a337fcf973576ab0-rtkit-daemon.service-30S6Eh /tmp/systemd-private-bbed9ee725f844d9a337fcf973576ab0-systemd-hostnamed.service-ouRMdo /tmp/systemd-private-bbed9ee725f844d9a337fcf973576ab0-systemd-timedated.service-74gKes /tmp/systemd-private-bbed9ee725f844d9a337fcf973576ab0-systemd-timesyncd.service-CaScYU
+    ubuntu-desktop-amd64: + rm -rf /tmp/script_296.sh /tmp/ssh-xfEr6QT4IS /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-colord.service-J3H9AC /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-rtkit-daemon.service-WOukL2 /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-systemd-hostnamed.service-mqoysz /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-systemd-resolved.service-Gr99QM /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-systemd-timedated.service-ksL5qk /tmp/systemd-private-c79bec1d1eb942c591aa7781995d3062-systemd-timesyncd.service-Ijswtt
     ubuntu-desktop-amd64: + unset HISTFILE
     ubuntu-desktop-amd64: + rm -f /root/.bash_history
     ubuntu-desktop-amd64: + rm -f /home/vagrant/.bash_history
@@ -84,14 +87,12 @@
     ubuntu-desktop-amd64: + read f
     ubuntu-desktop-amd64: + echo -ne ''
     ubuntu-desktop-amd64: + read f
+    ubuntu-desktop-amd64: + echo -ne ''
+    ubuntu-desktop-amd64: + read f
+    ubuntu-desktop-amd64: + echo -ne ''
+    ubuntu-desktop-amd64: + read f
+    ubuntu-desktop-amd64: + echo -ne ''
     ubuntu-desktop-amd64: ==> Clearing last login information
-    ubuntu-desktop-amd64: + echo -ne ''
-    ubuntu-desktop-amd64: + read f
-    ubuntu-desktop-amd64: + echo -ne ''
-    ubuntu-desktop-amd64: + read f
-    ubuntu-desktop-amd64: + echo -ne ''
-    ubuntu-desktop-amd64: + read f
-    ubuntu-desktop-amd64: + echo -ne ''
     ubuntu-desktop-amd64: + read f
     ubuntu-desktop-amd64: + echo -ne ''
     ubuntu-desktop-amd64: + read f
@@ -132,6 +133,7 @@
     ubuntu-desktop-amd64: dd exit code 1 is suppressed
     ubuntu-desktop-amd64: + sync
 ==> ubuntu-desktop-amd64: Gracefully halting virtual machine...
+    ubuntu-desktop-amd64: sudo: unable to resolve host localhost.localdomain
 ==> ubuntu-desktop-amd64: Converting hard drive...
 ==> ubuntu-desktop-amd64: Running post-processor: vagrant
 ==> ubuntu-desktop-amd64 (vagrant): Creating Vagrant box for 'libvirt' provider

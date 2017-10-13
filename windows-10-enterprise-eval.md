@@ -23,7 +23,7 @@ Here are the steps for Fedora 23 and 24 how to install Vagrant from the official
 \`\`\`
 dnf remove vagrant
 dnf install -y libvirt-daemon-kvm qemu-kvm libvirt-devel
-dnf install -y https://releases.hashicorp.com/vagrant/1.9.1/vagrant_1.9.1_x86_64.rpm
+dnf install -y https://releases.hashicorp.com/vagrant/2.0.0/vagrant_2.0.0_x86_64.rpm
 vagrant plugin install vagrant-libvirt
 \`\`\`
 
@@ -78,7 +78,7 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed when the OS is installed via script [install_virtio_drivers.ps1](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/install_virtio_drivers.ps1):
+Installed when the OS is installed via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml):
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver
@@ -92,4 +92,4 @@ Installed when the OS is installed via script [install_virtio_drivers.ps1](https
 
 * https://github.com/boxcutter/windows
 * https://github.com/joefitzgerald/packer-windows - [fixnetwork.ps1](https://github.com/joefitzgerald/packer-windows/blob/master/scripts/fixnetwork.ps1)
-* https://github.com/hashicorp/best-practices - [install_windows_updates.ps1](https://github.com/hashicorp/best-practices/blob/master/packer/scripts/windows/install_windows_updates.ps1)
+* https://github.com/hashicorp/best-practices

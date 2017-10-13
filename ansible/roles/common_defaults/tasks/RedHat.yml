@@ -67,7 +67,7 @@
     replace: "{{ item.replace }}"
   with_items:
     - { regexp: '^GRUB_TIMEOUT=.*', replace: 'GRUB_TIMEOUT=1' }
-    - { regexp: '^GRUB_CMDLINE_LINUX=.*', replace: 'GRUB_CMDLINE_LINUX="rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 net.ifnames=0 no_timer_check"' }
+    - { regexp: 'nofb quiet splash=quiet', replace: 'nofb quiet rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 no_timer_check splash=quiet' }
   notify: generate grub configuration
   when: grub_default.stat.exists == True
   tags:
@@ -90,21 +90,23 @@
   tags:
     - ntp
 
-- name: Backup original /etc/yum/yum-cron.conf
-  shell: cp /etc/yum/{{ item }} /etc/yum/{{ item }}.orig creates=/etc/yum/{{ item }}.orig
-  with_items:
-    - yum-cron.conf
-    - yum-cron-hourly.conf
+- name: Backup original /etc/yum/yum-cron.conf and /etc/yum/yum-cron-hourly.conf if exists
+  shell: cp {{ item }} {{ item }}.orig creates={{ item }}.orig
+  with_fileglob:
+    - /etc/yum/yum-cron.conf
+    - /etc/yum/yum-cron-hourly.conf
+  register: yum_cron_cp_status
   tags:
     - yum-cron
 
 - name: Configure yum-cron
   replace:
-    dest: /etc/yum/yum-cron.conf
+    path: /etc/yum/yum-cron.conf
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   with_items:
     - { regexp: '^apply_updates.*', replace: 'apply_updates = yes' }
+  when: yum_cron_cp_status.changed
   tags:
     - yum-cron
 
@@ -118,6 +120,7 @@
     - { regexp: '^apply_updates.*', replace: 'apply_updates = yes' }
     - { regexp: '^update_messages.*', replace: 'update_messages = yes' }
     - { regexp: '^download_updates.*', replace: 'download_updates = yes' }
+  when: yum_cron_cp_status.changed
   tags:
     - yum-cron
 

@@ -12,12 +12,12 @@
 TMP_FILE=`mktemp --suffix=_etc_issue`
 MY_ETC_ISSUE_FILE="${ETC_ISSUE_FILE:-$TMP_FILE}"
 
-DEV=$(/sbin/ip l | awk -F ': ' "/state UP/ { print \$2 }" | head -1)
+DEV=$(/sbin/ip r | awk '/^default/ { print $5}')
 
 echo > $MY_ETC_ISSUE_FILE
 [ $MY_ETC_ISSUE_FILE = "/etc/issue" ] || [ $USER = "root" ] && echo "* Server: $(dmidecode --string system-manufacturer) - $(dmidecode --string system-product-name)" >> $MY_ETC_ISSUE_FILE
 grep -q "localhost.localdomain" /proc/sys/kernel/hostname || echo "* Hostname: $(hostname --short), Domain: $(hostname --domain), FQDN: $(hostname --fqdn)" >> $MY_ETC_ISSUE_FILE
-[ -z $DEV ] || echo "* IP: $(/sbin/ip -4 addr show $DEV | awk "/^[[:space:]]+ inet/ { print \$2 }"), MAC: $(cat /sys/class/net/$DEV/address), GW: $(/sbin/ip -4 route list 0/0 | head -1 | awk "{ print \$3 }")" >> $MY_ETC_ISSUE_FILE
+[ -z $DEV ] || echo "* IP: $(/sbin/ip route get 1 | awk '{print $NF;exit}'), MAC: $(cat /sys/class/net/$DEV/address), GW: $(/sbin/ip -4 route list 0/0 | head -1 | awk "{ print \$3 }")" >> $MY_ETC_ISSUE_FILE
 echo "* OS: $(cat /etc/redhat-release) {{ ansible_architecture }}" >> $MY_ETC_ISSUE_FILE
 echo "* CPU: $(grep -i processor /proc/cpuinfo | wc -l) x$(grep 'model name' /proc/cpuinfo | uniq |awk -F":" '{print $2}')" >> $MY_ETC_ISSUE_FILE
 

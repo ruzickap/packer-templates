@@ -4,19 +4,22 @@
     windows-server-2016-standard-x64-eval: Copying files flatly from floppy_files
     windows-server-2016-standard-x64-eval: Copying file: http/windows-server-2016/Autounattend.xml
     windows-server-2016-standard-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.cat
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.inf
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.sys
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvmco.dll
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.cat
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.inf
-    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.f7SbQfgFDfwindows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.sys
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.cat
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.inf
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvm.sys
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/NetKVM/2k16/amd64/netkvmco.dll
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod.cat
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod.inf
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/qxldod/2k16/amd64/qxldod.sys
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.cat
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.inf
+    windows-server-2016-standard-x64-eval: Copying file: /var/tmp/tmp.sRvhfEkJo7windows-server-2016-standard-x64-eval-iso/viostor/2k16/amd64/viostor.sys
     windows-server-2016-standard-x64-eval: Done copying files from floppy_files
     windows-server-2016-standard-x64-eval: Collecting paths from floppy_dirs
     windows-server-2016-standard-x64-eval: Resulting paths from floppy_dirs : []
     windows-server-2016-standard-x64-eval: Done copying paths from floppy_dirs
 ==> windows-server-2016-standard-x64-eval: Creating hard drive...
-==> windows-server-2016-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 4204.
+==> windows-server-2016-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 2621.
 ==> windows-server-2016-standard-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-server-2016-standard-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-server-2016-standard-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
@@ -24,140 +27,168 @@
 ==> windows-server-2016-standard-x64-eval: Connecting to VM via VNC
 ==> windows-server-2016-standard-x64-eval: Typing the boot command over VNC...
 ==> windows-server-2016-standard-x64-eval: Waiting for WinRM to become available...
-==> windows-server-2016-standard-x64-eval: Connected to WinRM!
-==> windows-server-2016-standard-x64-eval: Provisioning with Powershell...
-==> windows-server-2016-standard-x64-eval: Provisioning with shell script: ./scripts/win-common/install_virtio_drivers.ps1
-    windows-server-2016-standard-x64-eval: *** Install Virtio drivers for better compatibility with KVM hypervisor
-    windows-server-2016-standard-x64-eval: *** Download virtio-win.iso
+    windows-server-2016-standard-x64-eval: WinRM connected.
     windows-server-2016-standard-x64-eval: #< CLIXML
-    windows-server-2016-standard-x64-eval: *** Mount virtio-win.iso
-    windows-server-2016-standard-x64-eval: *** Export certificate
-    windows-server-2016-standard-x64-eval: *** Install RH certificate to TrustedPublisher certificate store
-    windows-server-2016-standard-x64-eval: TrustedPublisher "Trusted Publishers"
-    windows-server-2016-standard-x64-eval: Certificate "Red Hat, Inc." added to store.
-    windows-server-2016-standard-x64-eval: CertUtil: -addstore command completed successfully.
-    windows-server-2016-standard-x64-eval: *** Install the VirtIO SCSI pass-through controller Driver (vioscsi)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+==> windows-server-2016-standard-x64-eval: Connected to WinRM!
+==> windows-server-2016-standard-x64-eval: Provisioning with Ansible...
+==> windows-server-2016-standard-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-server-2016-standard-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible184252130 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key586575823 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=2k16
+    windows-server-2016-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_EXE option, In favor of become which is a
+    windows-server-2016-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
+    windows-server-2016-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+    windows-server-2016-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of become which is a
+    windows-server-2016-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
+    windows-server-2016-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+    windows-server-2016-standard-x64-eval: [DEPRECATION WARNING]: win_msi is kept for backwards compatibility but usage is
+    windows-server-2016-standard-x64-eval:  discouraged. The module documentation details page may explain more about this
+    windows-server-2016-standard-x64-eval:  rationale.. This feature will be removed in a future release. Deprecation
+    windows-server-2016-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            vioscsi.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem4.inf
+    windows-server-2016-standard-x64-eval: PLAY [all] *********************************************************************
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Gathering Facts] *********************************************************
+    windows-server-2016-standard-x64-eval: ok: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Download virtio-win.iso] *************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install the Baloon Driver (Balloon)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: TASK [Mount virtio-win.iso] ****************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            balloon.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem5.inf
+    windows-server-2016-standard-x64-eval: TASK [Export Cert powershell] **************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Install RH certificate to TrustedPublisher certificate store] ************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Remove C:\redhat.cer] ****************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install Virtio RNG driver (viorng)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: TASK [Install the VirtIO SCSI pass-through controller Driver (vioscsi)] ********
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            viorng.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem6.inf
+    windows-server-2016-standard-x64-eval: TASK [Install the Baloon Driver (Balloon)] *************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Install Virtio RNG driver (viorng)] **************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Install Virtio serial driver (vioserial)] ********************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install Virtio serial driver (vioserial)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: TASK [Install Virtio Input driver (vioinput)] **********************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            vioser.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem7.inf
+    windows-server-2016-standard-x64-eval: TASK [Install pvpanic device driver (pvpanic)] *********************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Install Qemu Guest Agent (qemu-ga-x64.msi)] ******************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Unmount virtio-win.iso] **************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install Virtio Input driver (vioinput)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: TASK [Download vdagent] ********************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            vioinput.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem8.inf
+    windows-server-2016-standard-x64-eval: TASK [Create C:\Program Files (x86)\\SPICE Guest Tools directory] **************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Extract vdagent archive] *************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Move vdagent binaries to final destination (C:\Program Files (x86)\\SPICE Guest Tools)] ***
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install pvpanic device driver (pvpanic)
-    windows-server-2016-standard-x64-eval: Microsoft PnP Utility
+    windows-server-2016-standard-x64-eval: TASK [Delete unpacked vdagent binaries] ****************************************
+    windows-server-2016-standard-x64-eval: ok: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Processing inf :            pvpanic.inf
-    windows-server-2016-standard-x64-eval: Successfully installed the driver on a device on the system.
-    windows-server-2016-standard-x64-eval: Driver package added successfully.
-    windows-server-2016-standard-x64-eval: Published name :            oem9.inf
+    windows-server-2016-standard-x64-eval: TASK [Install vdagent] *********************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
+    windows-server-2016-standard-x64-eval: TASK [Start NTP service (w32time)] *********************************************
+    windows-server-2016-standard-x64-eval: ok: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: Total attempted:              1
-    windows-server-2016-standard-x64-eval: Number successfully imported: 1
+    windows-server-2016-standard-x64-eval: TASK [Configure NTP] ***********************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: *** Install Qemu Guest Agent (qemu-ga-x64.msi)
-    windows-server-2016-standard-x64-eval: *** Unmount virtio-win.iso
-    windows-server-2016-standard-x64-eval: *** Download vdagent
-    windows-server-2016-standard-x64-eval: *** Create C:\Program Files(x64)\SPICE Guest Tools\64 directory
-    windows-server-2016-standard-x64-eval: *** Extract vdagent archive
-    windows-server-2016-standard-x64-eval: *** Install vdagent
-    windows-server-2016-standard-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="information" RefId="1"><TN RefId="1"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>*** Install Virtio drivers for better compatibility with KVM hypervisor</ToString><Props><Obj N="MessageData" RefId="2"><TN RefId="2"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>*** Install Virtio drivers for better compatibility with KVM hypervisor</ToString><Props><S N="Message">*** Install Virtio drivers for better compatibility with KVM hypervisor</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:55:25.0655326+00:00</DT><Obj N="Tags" RefId="3"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="4"><TNRef RefId="1" /><ToString>*** Download virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="5"><TNRef RefId="2" /><ToString>*** Download virtio-win.iso</ToString><Props><S N="Message">*** Download virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:55:25.1905228+00:00</DT><Obj N="Tags" RefId="6"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="7"><TNRef RefId="1" /><ToString>*** Mount virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="8"><TNRef RefId="2" /><ToString>*** Mount virtio-win.iso</ToString><Props><S N="Message">*** Mount virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:41.8300145+00:00</DT><Obj N="Tags" RefId="9"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="10"><TNRef RefId="1" /><ToString>*** Export certificate</ToString><Props><Obj N="MessageData" RefId="11"><TNRef RefId="2" /><ToString>*** Export certificate</ToString><Props><S N="Message">*** Export certificate</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:47.5486931+00:00</DT><Obj N="Tags" RefId="12"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="13"><TNRef RefId="1" /><ToString>*** Install RH certificate to TrustedPublisher certificate store</ToString><Props><Obj N="MessageData" RefId="14"><TNRef RefId="2" /><ToString>*** Install RH certificate to TrustedPublisher certificate store</ToString><Props><S N="Message">*** Install RH certificate to TrustedPublisher certificate store</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:47.6737356+00:00</DT><Obj N="Tags" RefId="15"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="16"><TNRef RefId="1" /><ToString>*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</ToString><Props><Obj N="MessageData" RefId="17"><TNRef RefId="2" /><ToString>*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</ToString><Props><S N="Message">*** Install the VirtIO SCSI pass-through controller Driver (vioscsi)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:48.0642698+00:00</DT><Obj N="Tags" RefId="18"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="19"><TNRef RefId="1" /><ToString>*** Install the Baloon Driver (Balloon)</ToString><Props><Obj N="MessageData" RefId="20"><TNRef RefId="2" /><ToString>*** Install the Baloon Driver (Balloon)</ToString><Props><S N="Message">*** Install the Baloon Driver (Balloon)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:48.9705812+00:00</DT><Obj N="Tags" RefId="21"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="22"><TNRef RefId="1" /><ToString>*** Install Virtio RNG driver (viorng)</ToString><Props><Obj N="MessageData" RefId="23"><TNRef RefId="2" /><ToString>*** Install Virtio RNG driver (viorng)</ToString><Props><S N="Message">*** Install Virtio RNG driver (viorng)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:49.5330686+00:00</DT><Obj N="Tags" RefId="24"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="25"><TNRef RefId="1" /><ToString>*** Install Virtio serial driver (vioserial)</ToString><Props><Obj N="MessageData" RefId="26"><TNRef RefId="2" /><ToString>*** Install Virtio serial driver (vioserial)</ToString><Props><S N="Message">*** Install Virtio serial driver (vioserial)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:50.1893172+00:00</DT><Obj N="Tags" RefId="27"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="28"><TNRef RefId="1" /><ToString>*** Install Virtio Input driver (vioinput)</ToString><Props><Obj N="MessageData" RefId="29"><TNRef RefId="2" /><ToString>*** Install Virtio Input driver (vioinput)</ToString><Props><S N="Message">*** Install Virtio Input driver (vioinput)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:50.6423921+00:00</DT><Obj N="Tags" RefId="30"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="31"><TNRef RefId="1" /><ToString>*** Install pvpanic device driver (pvpanic)</ToString><Props><Obj N="MessageData" RefId="32"><TNRef RefId="2" /><ToString>*** Install pvpanic device driver (pvpanic)</ToString><Props><S N="Message">*** Install pvpanic device driver (pvpanic)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:51.2830676+00:00</DT><Obj N="Tags" RefId="33"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="34"><TNRef RefId="1" /><ToString>*** Install Qemu Guest Agent (qemu-ga-x64.msi)</ToString><Props><Obj N="MessageData" RefId="35"><TNRef RefId="2" /><ToString>*** Install Qemu Guest Agent (qemu-ga-x64.msi)</ToString><Props><S N="Message">*** Install Qemu Guest Agent (qemu-ga-x64.msi)</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:57:51.9236636+00:00</DT><Obj N="Tags" RefId="36"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="37"><TNRef RefId="1" /><ToString>*** Unmount virtio-win.iso</ToString><Props><Obj N="MessageData" RefId="38"><TNRef RefId="2" /><ToString>*** Unmount virtio-win.iso</ToString><Props><S N="Message">*** Unmount virtio-win.iso</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:27.5328019+00:00</DT><Obj N="Tags" RefId="39"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="40"><TNRef RefId="1" /><ToString>*** Download vdagent</ToString><Props><Obj N="MessageData" RefId="41"><TNRef RefId="2" /><ToString>*** Download vdagent</ToString><Props><S N="Message">*** Download vdagent</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:27.6421784+00:00</DT><Obj N="Tags" RefId="42"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="43"><TNRef RefId="1" /><ToString>*** Create C:\Program Files(x64)\SPICE Guest Tools\64 directory</ToString><Props><Obj N="MessageData" RefId="44"><TNRef RefId="2" /><ToString>*** Create C:\Program Files(x64)\SPICE Guest Tools\64 directory</ToString><Props><S N="Message">*** Create C:\Program Files(x64)\SPICE Guest Tools\64 directory</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:32.5483729+00:00</DT><Obj N="Tags" RefId="45"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="46"><TNRef RefId="1" /><ToString>*** Extract vdagent archive</ToString><Props><Obj N="MessageData" RefId="47"><TNRef RefId="2" /><ToString>*** Extract vdagent archive</ToString><Props><S N="Message">*** Extract vdagent archive</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:32.564053+00:00</DT><Obj N="Tags" RefId="48"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="49"><TNRef RefId="1" /><ToString>*** Install vdagent</ToString><Props><Obj N="MessageData" RefId="50"><TNRef RefId="2" /><ToString>*** Install vdagent</ToString><Props><S N="Message">*** Install vdagent</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:33.1265182+00:00</DT><Obj N="Tags" RefId="51"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj><Obj S="information" RefId="52"><TNRef RefId="1" /><ToString>*** Remove temporary files c:\redhat.cer, c:\virtio-win.iso and c:\vdagent-win*</ToString><Props><Obj N="MessageData" RefId="53"><TNRef RefId="2" /><ToString>*** Remove temporary files c:\redhat.cer, c:\virtio-win.iso and c:\vdagent-win*</ToString><Props><S N="Message">*** Remove temporary files c:\redhat.cer, c:\virtio-win.iso and c:\vdagent-win*</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">C:\Windows\Temp\script.ps1</S><DT N="TimeGenerated">2017-04-01T07:58:33.1421242+00:00</DT><Obj N="Tags" RefId="54"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">WIN2016\vagrant</S><S N="Computer">win2016</S><U32 N="ProcessId">5836</U32><U32 N="NativeThreadId">5912</U32><U32 N="ManagedThreadId">9</U32></Props></Obj></Objs>
-    windows-server-2016-standard-x64-eval: Service installed successfully
-    windows-server-2016-standard-x64-eval: *** Remove temporary files c:\redhat.cer, c:\virtio-win.iso and c:\vdagent-win*
-==> windows-server-2016-standard-x64-eval: Provisioning with windows-shell...
-==> windows-server-2016-standard-x64-eval: Provisioning with shell script: ./scripts/win-common/clean.bat
+    windows-server-2016-standard-x64-eval: TASK [Enable Remote Desktop] ***************************************************
+    windows-server-2016-standard-x64-eval: ok: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories  1>&2
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" directories
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files
+    windows-server-2016-standard-x64-eval: TASK [Allow connections from computers running any version of Remote Desktop (less secure)] ***
+    windows-server-2016-standard-x64-eval: ok: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>for / %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do rmdir /q /s "%~i"
+    windows-server-2016-standard-x64-eval: TASK [Allow RDP traffic] *******************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>rmdir /q /s "C:\Users\vagrant\AppData\Local\Temp\1"
+    windows-server-2016-standard-x64-eval: TASK [Install windows updates] *************************************************
+    windows-server-2016-standard-x64-eval: changed: [default]
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Users\vagrant\AppData\Local\Temp" files  1>&2
+    windows-server-2016-standard-x64-eval: PLAY RECAP *********************************************************************
+    windows-server-2016-standard-x64-eval: default                    : ok=26   changed=21   unreachable=0    failed=0
     windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>for %i in ("C:\Users\vagrant\AppData\Local\Temp\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Windows\TEMP" directories  1>&2
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>for / %i in ("C:\Windows\TEMP\*.*") do rmdir /q /s "%~i"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Cleaning "C:\Windows\TEMP" files  1>&2
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>for %i in ("C:\Windows\TEMP\*.*") do if /I not "%~nxi" EQU "script.bat" echo del /f /q /s "%~i"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>if /I not "MpCmdRun.log" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\MpCmdRun.log"
-    windows-server-2016-standard-x64-eval: del /f /q /s "C:\Windows\TEMP\MpCmdRun.log"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>if /I not "script.bat" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.bat"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>if /I not "script.ps1" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\script.ps1"
-    windows-server-2016-standard-x64-eval: del /f /q /s "C:\Windows\TEMP\script.ps1"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>if /I not "silconfig.log" EQU "script.bat" echo del /f /q /s "C:\Windows\TEMP\silconfig.log"
-    windows-server-2016-standard-x64-eval: del /f /q /s "C:\Windows\TEMP\silconfig.log"
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>echo ==> Removing potentially corrupt recycle bin
-    windows-server-2016-standard-x64-eval: ==> Removing potentially corrupt recycle bin
-    windows-server-2016-standard-x64-eval:
-    windows-server-2016-standard-x64-eval: C:\Users\vagrant>rmdir /q /s C:\$Recycle.bin
-    windows-server-2016-standard-x64-eval: ==> Script exiting with errorlevel 0
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" directories
-    windows-server-2016-standard-x64-eval: ==> Cleaning "C:\Windows\TEMP" files
+==> windows-server-2016-standard-x64-eval: Restarting Machine
+==> windows-server-2016-standard-x64-eval: Waiting for machine to restart...
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2016-standard-x64-eval: WIN2016 restarted.
+    windows-server-2016-standard-x64-eval: #< CLIXML
+    windows-server-2016-standard-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+==> windows-server-2016-standard-x64-eval: Machine successfully restarted, moving on
+==> windows-server-2016-standard-x64-eval: Pausing 1m0s before the next provisioner...
 ==> windows-server-2016-standard-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat
 ==> windows-server-2016-standard-x64-eval: Gracefully halting virtual machine...
     windows-server-2016-standard-x64-eval:
