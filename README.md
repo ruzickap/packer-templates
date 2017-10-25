@@ -11,7 +11,7 @@
 
 #### Atlas/Vagrant repository
 
-[https://atlas.hashicorp.com/peru](https://atlas.hashicorp.com/peru)
+[https://app.vagrantup.com/peru](https://app.vagrantup.com/peru)
 
 
 ## Requirements
