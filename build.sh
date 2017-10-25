@@ -63,8 +63,8 @@ packer_build() {
   rm -v ${NAME}-libvirt.box
 }
 
-build_ubuntu_17_04_desktop() {
-  export UBUNTU_VERSION="17.04"
+build_ubuntu_17_10_desktop() {
+  export UBUNTU_VERSION="17.10"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="desktop"
   export NAME="ubuntu-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
@@ -196,7 +196,7 @@ main() {
   build_my_ubuntu_14_04_server
   build_ubuntu_16_04_server
   build_ubuntu_14_04_server
-  build_ubuntu_17_04_desktop
+  build_ubuntu_17_10_desktop
   date
 }
 

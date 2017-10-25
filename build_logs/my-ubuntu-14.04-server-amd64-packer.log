@@ -1,8 +1,8 @@
 ==> my-ubuntu-14.04-server-amd64: Downloading or copying ISO
     my-ubuntu-14.04-server-amd64: Downloading or copying: http://releases.ubuntu.com/14.04.5/ubuntu-14.04.5-server-amd64.iso
 ==> my-ubuntu-14.04-server-amd64: Creating hard drive...
-==> my-ubuntu-14.04-server-amd64: Starting HTTP server on port 8705
-==> my-ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 4434.
+==> my-ubuntu-14.04-server-amd64: Starting HTTP server on port 8079
+==> my-ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 3069.
 ==> my-ubuntu-14.04-server-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-ubuntu-14.04-server-amd64: Starting VM, booting from CD-ROM
 ==> my-ubuntu-14.04-server-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -19,8 +19,8 @@
     my-ubuntu-14.04-server-amd64: Extracting templates from packages: 100%
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: Current default time zone: 'Etc/UTC'
-    my-ubuntu-14.04-server-amd64: Local time is now:      Thu Oct 12 08:25:11 UTC 2017.
-    my-ubuntu-14.04-server-amd64: Universal Time is now:  Thu Oct 12 08:25:11 UTC 2017.
+    my-ubuntu-14.04-server-amd64: Local time is now:      Wed Oct 25 10:26:26 UTC 2017.
+    my-ubuntu-14.04-server-amd64: Universal Time is now:  Wed Oct 25 10:26:26 UTC 2017.
     my-ubuntu-14.04-server-amd64: Run 'dpkg-reconfigure tzdata' if you wish to change it.
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: Skipping profile in /etc/apparmor.d/disable: usr.sbin.rsyslogd
@@ -32,10 +32,10 @@
     my-ubuntu-14.04-server-amd64:    ...done.
 ==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: scripts/linux-common/vagrant.sh
     my-ubuntu-14.04-server-amd64: [sudo] password for vagrant: + date
-    my-ubuntu-14.04-server-amd64: + SSH_USER=vagrant
     my-ubuntu-14.04-server-amd64: ==> Giving vagrant sudo powers
-    my-ubuntu-14.04-server-amd64: ==> Installing vagrant key
+    my-ubuntu-14.04-server-amd64: + SSH_USER=vagrant
     my-ubuntu-14.04-server-amd64: + SSH_USER_HOME=/home/vagrant
+    my-ubuntu-14.04-server-amd64: ==> Installing vagrant key
     my-ubuntu-14.04-server-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-ubuntu-14.04-server-amd64: + echo '==> Giving vagrant sudo powers'
     my-ubuntu-14.04-server-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
@@ -46,9 +46,9 @@
     my-ubuntu-14.04-server-amd64: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-ubuntu-14.04-server-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     my-ubuntu-14.04-server-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
-==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell925277829
+==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell935029591
 ==> my-ubuntu-14.04-server-amd64: Provisioning with Ansible...
-==> my-ubuntu-14.04-server-amd64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-ubuntu-14.04-server-amd64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible167095549 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key305873046
+==> my-ubuntu-14.04-server-amd64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-ubuntu-14.04-server-amd64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible122413945 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key302696450
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: PLAY [all] *********************************************************************
     my-ubuntu-14.04-server-amd64:
@@ -150,8 +150,8 @@
     my-ubuntu-14.04-server-amd64: ok: [default] => (item=/root)
     my-ubuntu-14.04-server-amd64:
     my-ubuntu-14.04-server-amd64: TASK [common_defaults : Change rights for skel_copy_users/.config] *************
-    my-ubuntu-14.04-server-amd64: skipping: [default] => (item=/home/ubuntu)
     my-ubuntu-14.04-server-amd64: skipping: [default] => (item=/home/centos)
+    my-ubuntu-14.04-server-amd64: skipping: [default] => (item=/home/ubuntu)
     my-ubuntu-14.04-server-amd64: changed: [default] => (item=/home/vagrant)
     my-ubuntu-14.04-server-amd64: changed: [default] => (item=/root)
     my-ubuntu-14.04-server-amd64:
@@ -255,17 +255,17 @@
     my-ubuntu-14.04-server-amd64: default                    : ok=40   changed=32   unreachable=0    failed=0
     my-ubuntu-14.04-server-amd64:
 ==> my-ubuntu-14.04-server-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
-    my-ubuntu-14.04-server-amd64: ==> Cleaning up udev rules
     my-ubuntu-14.04-server-amd64: + SSH_USER=vagrant
     my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up udev rules'
     my-ubuntu-14.04-server-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
+    my-ubuntu-14.04-server-amd64: ==> Cleaning up udev rules
     my-ubuntu-14.04-server-amd64: + service rsyslog stop
     my-ubuntu-14.04-server-amd64: rsyslog stop/waiting
     my-ubuntu-14.04-server-amd64: + '[' -f /etc/os-release ']'
     my-ubuntu-14.04-server-amd64: + grep -iq debian /etc/os-release
     my-ubuntu-14.04-server-amd64: + export DEBIAN_FRONTEND=noninteractive
-    my-ubuntu-14.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-14.04-server-amd64: + DEBIAN_FRONTEND=noninteractive
+    my-ubuntu-14.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-14.04-server-amd64: + echo 'pre-up sleep 2'
     my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up leftover dhcp leases'
     my-ubuntu-14.04-server-amd64: + '[' -d /var/lib/dhcp3 ']'
@@ -281,9 +281,9 @@
     my-ubuntu-14.04-server-amd64: Reading package lists...
     my-ubuntu-14.04-server-amd64: Building dependency tree...
     my-ubuntu-14.04-server-amd64: Reading state information...
-    my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up tmp'
-    my-ubuntu-14.04-server-amd64: + rm -rf /tmp/script_2047.sh /tmp/ssh-s1KtAmIKv5
     my-ubuntu-14.04-server-amd64: ==> Cleaning up tmp
+    my-ubuntu-14.04-server-amd64: + echo '==> Cleaning up tmp'
+    my-ubuntu-14.04-server-amd64: + rm -rf /tmp/script_8027.sh /tmp/ssh-yfu5KzUpc7
     my-ubuntu-14.04-server-amd64: + unset HISTFILE
     my-ubuntu-14.04-server-amd64: + rm -f /root/.bash_history
     my-ubuntu-14.04-server-amd64: + rm -f /home/vagrant/.bash_history
@@ -295,10 +295,12 @@
     my-ubuntu-14.04-server-amd64: + read f
     my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: ==> Clearing last login information
     my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f
     my-ubuntu-14.04-server-amd64: + echo -ne ''
-    my-ubuntu-14.04-server-amd64: ==> Clearing last login information
+    my-ubuntu-14.04-server-amd64: + read f
+    my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f
     my-ubuntu-14.04-server-amd64: + echo -ne ''
     my-ubuntu-14.04-server-amd64: + read f

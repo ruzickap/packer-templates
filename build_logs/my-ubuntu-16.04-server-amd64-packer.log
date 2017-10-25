@@ -1,8 +1,8 @@
 ==> my-ubuntu-16.04-server-amd64: Downloading or copying ISO
     my-ubuntu-16.04-server-amd64: Downloading or copying: http://releases.ubuntu.com/16.04.3/ubuntu-16.04.3-server-amd64.iso
 ==> my-ubuntu-16.04-server-amd64: Creating hard drive...
-==> my-ubuntu-16.04-server-amd64: Starting HTTP server on port 8787
-==> my-ubuntu-16.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 3951.
+==> my-ubuntu-16.04-server-amd64: Starting HTTP server on port 8183
+==> my-ubuntu-16.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 2647.
 ==> my-ubuntu-16.04-server-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> my-ubuntu-16.04-server-amd64: Starting VM, booting from CD-ROM
 ==> my-ubuntu-16.04-server-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -20,8 +20,8 @@
     my-ubuntu-16.04-server-amd64: [sudo] password for vagrant: + date
     my-ubuntu-16.04-server-amd64: + SSH_USER=vagrant
     my-ubuntu-16.04-server-amd64: ==> Giving vagrant sudo powers
-    my-ubuntu-16.04-server-amd64: ==> Installing vagrant key
     my-ubuntu-16.04-server-amd64: + SSH_USER_HOME=/home/vagrant
+    my-ubuntu-16.04-server-amd64: ==> Installing vagrant key
     my-ubuntu-16.04-server-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-ubuntu-16.04-server-amd64: + echo '==> Giving vagrant sudo powers'
     my-ubuntu-16.04-server-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
@@ -32,9 +32,9 @@
     my-ubuntu-16.04-server-amd64: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     my-ubuntu-16.04-server-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     my-ubuntu-16.04-server-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
-==> my-ubuntu-16.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell431968105
+==> my-ubuntu-16.04-server-amd64: Provisioning with shell script: /var/tmp/packer-shell404157130
 ==> my-ubuntu-16.04-server-amd64: Provisioning with Ansible...
-==> my-ubuntu-16.04-server-amd64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-ubuntu-16.04-server-amd64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible944906912 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key304174853
+==> my-ubuntu-16.04-server-amd64: Executing Ansible: ansible-playbook --extra-vars packer_build_name=my-ubuntu-16.04-server-amd64 packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible660434571 /home/pruzicka/data/github/packer-templates/ansible/site.yml --private-key /var/tmp/ansible-key648441564
     my-ubuntu-16.04-server-amd64:
     my-ubuntu-16.04-server-amd64: PLAY [all] *********************************************************************
     my-ubuntu-16.04-server-amd64:
@@ -249,8 +249,8 @@
     my-ubuntu-16.04-server-amd64: + '[' -f /etc/os-release ']'
     my-ubuntu-16.04-server-amd64: + grep -iq debian /etc/os-release
     my-ubuntu-16.04-server-amd64: + export DEBIAN_FRONTEND=noninteractive
-    my-ubuntu-16.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-16.04-server-amd64: + DEBIAN_FRONTEND=noninteractive
+    my-ubuntu-16.04-server-amd64: ==> Cleaning up leftover dhcp leases
     my-ubuntu-16.04-server-amd64: + echo 'pre-up sleep 2'
     my-ubuntu-16.04-server-amd64: + echo '==> Cleaning up leftover dhcp leases'
     my-ubuntu-16.04-server-amd64: + '[' -d /var/lib/dhcp3 ']'
@@ -266,15 +266,13 @@
     my-ubuntu-16.04-server-amd64: Reading package lists...
     my-ubuntu-16.04-server-amd64: Building dependency tree...
     my-ubuntu-16.04-server-amd64: Reading state information...
-    my-ubuntu-16.04-server-amd64: + echo '==> Cleaning up tmp'
     my-ubuntu-16.04-server-amd64: ==> Cleaning up tmp
-    my-ubuntu-16.04-server-amd64: + rm -rf /tmp/script_8529.sh /tmp/ssh-vvCOwJrehr /tmp/systemd-private-007ebdd9429e474fb0ce8a70e0e33d9b-haveged.service-ZLAct7 /tmp/systemd-private-007ebdd9429e474fb0ce8a70e0e33d9b-systemd-timesyncd.service-3X8BcM
+    my-ubuntu-16.04-server-amd64: + echo '==> Cleaning up tmp'
+    my-ubuntu-16.04-server-amd64: + rm -rf /tmp/script_1693.sh /tmp/ssh-FIafusLGG7 /tmp/systemd-private-e6aaae7030df48419e0afe5003ff84bc-haveged.service-RmpG1y /tmp/systemd-private-e6aaae7030df48419e0afe5003ff84bc-systemd-timesyncd.service-CGic0U
     my-ubuntu-16.04-server-amd64: + unset HISTFILE
     my-ubuntu-16.04-server-amd64: + rm -f /root/.bash_history
     my-ubuntu-16.04-server-amd64: + rm -f /home/vagrant/.bash_history
-    my-ubuntu-16.04-server-amd64: + read f
     my-ubuntu-16.04-server-amd64: + find /var/log -type f
-    my-ubuntu-16.04-server-amd64: + echo -ne ''
     my-ubuntu-16.04-server-amd64: + read f
     my-ubuntu-16.04-server-amd64: + echo -ne ''
     my-ubuntu-16.04-server-amd64: + read f
@@ -289,7 +287,9 @@
     my-ubuntu-16.04-server-amd64: + echo -ne ''
     my-ubuntu-16.04-server-amd64: + read f
     my-ubuntu-16.04-server-amd64: + echo -ne ''
+    my-ubuntu-16.04-server-amd64: + read f
     my-ubuntu-16.04-server-amd64: ==> Clearing last login information
+    my-ubuntu-16.04-server-amd64: + echo -ne ''
     my-ubuntu-16.04-server-amd64: + read f
     my-ubuntu-16.04-server-amd64: + echo -ne ''
     my-ubuntu-16.04-server-amd64: + read f
