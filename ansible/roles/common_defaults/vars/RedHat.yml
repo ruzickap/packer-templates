@@ -75,3 +75,7 @@ disable_distribution_specific_boot_services:
   - kdump
   - mdmonitor
   - smartd
+
+desktop_spice_packages:
+  - spice-vdagent
+  - xorg-x11-drv-qxl

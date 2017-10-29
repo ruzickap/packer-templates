@@ -46,6 +46,7 @@
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
       "scripts": [
         "scripts/ubuntu/update.sh",
+        "scripts/ubuntu/spice-vdagent.sh",
         "scripts/linux-common/vagrant.sh",
         "scripts/linux-common/cleanup.sh"
       ]

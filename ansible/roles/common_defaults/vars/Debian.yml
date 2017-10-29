@@ -30,6 +30,10 @@ distribution_specific_packages:
   - update-notifier-common
   - vim
 
+desktop_spice_packages:
+  - spice-vdagent
+  - xserver-xorg-video-qxl
+
 disable_distribution_specific_boot_services:
 
 enable_distribution_specific_boot_services:

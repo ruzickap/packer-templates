@@ -262,6 +262,17 @@
   tags:
     - ssh
 
+- name: Check if the X server is installed
+  stat:
+    path: /usr/bin/X
+  register: xserver_status
+
+- name: Install spice / qxl packages (needed for desktop)
+  package:
+    name: "{{ item }}"
+  with_items:
+    - "{{ desktop_spice_packages }}"
+  when:  xserver_status.stat.exists
 
 #- include_tasks: "{{ ansible_os_family }}.yml"
 - include: "{{ ansible_os_family }}.yml"
@@ -281,7 +292,9 @@
     - services
 
 - name: Enable services during boot
-  service: name={{ item }} enabled=yes
+  service:
+    name: "{{ item }}"
+    enabled: yes
   with_items: "{{ enable_distribution_specific_boot_services }}"
   when: enable_distribution_specific_boot_services
   tags:
