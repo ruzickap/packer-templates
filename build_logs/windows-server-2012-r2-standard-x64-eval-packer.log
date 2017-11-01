@@ -4,22 +4,22 @@
     windows-server-2012-r2-standard-x64-eval: Copying files flatly from floppy_files
     windows-server-2012-r2-standard-x64-eval: Copying file: http/windows-server-2012/Autounattend.xml
     windows-server-2012-r2-standard-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jxFN28HbUBwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
     windows-server-2012-r2-standard-x64-eval: Done copying files from floppy_files
     windows-server-2012-r2-standard-x64-eval: Collecting paths from floppy_dirs
     windows-server-2012-r2-standard-x64-eval: Resulting paths from floppy_dirs : []
     windows-server-2012-r2-standard-x64-eval: Done copying paths from floppy_dirs
 ==> windows-server-2012-r2-standard-x64-eval: Creating hard drive...
-==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3693.
+==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3595.
 ==> windows-server-2012-r2-standard-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-server-2012-r2-standard-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-server-2012-r2-standard-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
@@ -30,16 +30,12 @@
     windows-server-2012-r2-standard-x64-eval: WinRM connected.
 ==> windows-server-2012-r2-standard-x64-eval: Connected to WinRM!
 ==> windows-server-2012-r2-standard-x64-eval: Provisioning with Ansible...
-==> windows-server-2012-r2-standard-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-server-2012-r2-standard-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible398005564 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key646105361 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=2k12R2
+==> windows-server-2012-r2-standard-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-server-2012-r2-standard-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible334101301 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key268684718 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=2k12R2
     windows-server-2012-r2-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_EXE option, In favor of become which is a
     windows-server-2012-r2-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
     windows-server-2012-r2-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
     windows-server-2012-r2-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of become which is a
     windows-server-2012-r2-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
-    windows-server-2012-r2-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
-    windows-server-2012-r2-standard-x64-eval: [DEPRECATION WARNING]: win_msi is kept for backwards compatibility but usage is
-    windows-server-2012-r2-standard-x64-eval:  discouraged. The module documentation details page may explain more about this
-    windows-server-2012-r2-standard-x64-eval:  rationale.. This feature will be removed in a future release. Deprecation
     windows-server-2012-r2-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: PLAY [all] *********************************************************************
@@ -47,61 +43,80 @@
     windows-server-2012-r2-standard-x64-eval: TASK [Gathering Facts] *********************************************************
     windows-server-2012-r2-standard-x64-eval: ok: [default]
     windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Download virtio-win.iso] *************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Mount virtio-win.iso] ****************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Export Cert powershell] **************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install RH certificate to TrustedPublisher certificate store] ************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Remove C:\redhat.cer] ****************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install the VirtIO SCSI pass-through controller Driver (vioscsi)] ********
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install the Baloon Driver (Balloon)] *************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install Virtio RNG driver (viorng)] **************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install Virtio serial driver (vioserial)] ********************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install Virtio Input driver (vioinput)] **********************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install pvpanic device driver (pvpanic)] *********************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install Qemu Guest Agent (qemu-ga-x64.msi)] ******************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Unmount virtio-win.iso] **************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Download vdagent] ********************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Create C:\Program Files (x86)\\SPICE Guest Tools directory] **************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Extract vdagent archive] *************************************************
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Move vdagent binaries to final destination (C:\Program Files (x86)\\SPICE Guest Tools)] ***
-    windows-server-2012-r2-standard-x64-eval: changed: [default]
-    windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Delete unpacked vdagent binaries] ****************************************
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Include OS-specific variables.] ****************
     windows-server-2012-r2-standard-x64-eval: ok: [default]
     windows-server-2012-r2-standard-x64-eval:
-    windows-server-2012-r2-standard-x64-eval: TASK [Install vdagent] *********************************************************
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Get list of all drivers] ***********************
+    windows-server-2012-r2-standard-x64-eval: ok: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Check if Red Hat certificate is not already installed] ***
+    windows-server-2012-r2-standard-x64-eval: ok: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Download virtio-win.iso] ***********************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Mount virtio-win.iso] **************************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Export Cert powershell] ************************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install RH certificate to TrustedPublisher certificate store] ***
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install the Virtio Network Driver (netkvm)] ****
+    windows-server-2012-r2-standard-x64-eval: skipping: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install the Virtio Block Driver (viostor)] *****
+    windows-server-2012-r2-standard-x64-eval: skipping: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install the QXL Graphics Driver (qxldod)] ******
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install the Balloon Driver (Balloon)] **********
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install Virtio RNG driver (viorng)] ************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install Virtio serial driver (vioserial)] ******
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install Virtio Input driver (vioinput)] ********
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install pvpanic device driver (pvpanic)] *******
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install Qemu Guest Agent (qemu-ga-x64.msi)] ****
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Unmount virtio-win.iso] ************************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Delete previously downloaded iso and the certificates C:\redhat.cer] ***
+    windows-server-2012-r2-standard-x64-eval: changed: [default] => (item=C:\Users\vagrant\AppData\Local\Temp\redhat.cer)
+    windows-server-2012-r2-standard-x64-eval: changed: [default] => (item=C:\Users\vagrant\AppData\Local\Temp\virtio-win.iso)
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Check services] ********************************
+    windows-server-2012-r2-standard-x64-eval: ok: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Download vdagent] ******************************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Create C:\Program Files (x86)\\SPICE Guest Tools directory] ***
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Extract vdagent archive] ***********************
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Move vdagent binaries to final destination (C:\Program Files (x86)\\SPICE Guest Tools)] ***
+    windows-server-2012-r2-standard-x64-eval: changed: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Delete unpacked vdagent binaries] **************
+    windows-server-2012-r2-standard-x64-eval: ok: [default]
+    windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [ansible-role-virtio-win : Install vdagent] *******************************
     windows-server-2012-r2-standard-x64-eval: changed: [default]
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: TASK [Start NTP service (w32time)] *********************************************
@@ -119,14 +134,105 @@
     windows-server-2012-r2-standard-x64-eval: TASK [Allow RDP traffic] *******************************************************
     windows-server-2012-r2-standard-x64-eval: changed: [default]
     windows-server-2012-r2-standard-x64-eval:
+    windows-server-2012-r2-standard-x64-eval: TASK [Enable Administrator account] ********************************************
+    windows-server-2012-r2-standard-x64-eval: skipping: [default]
+    windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: TASK [Install windows updates] *************************************************
     windows-server-2012-r2-standard-x64-eval: changed: [default]
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: PLAY RECAP *********************************************************************
-    windows-server-2012-r2-standard-x64-eval: default                    : ok=26   changed=22   unreachable=0    failed=0
+    windows-server-2012-r2-standard-x64-eval: default                    : ok=30   changed=22   unreachable=0    failed=0
     windows-server-2012-r2-standard-x64-eval:
 ==> windows-server-2012-r2-standard-x64-eval: Restarting Machine
 ==> windows-server-2012-r2-standard-x64-eval: Waiting for machine to restart...
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
+    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)

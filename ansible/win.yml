@@ -3,89 +3,12 @@
   gather_facts: yes
 
   vars:
-    vdagent_win_version: 0.9.0
     ntp_server: ntp.cesnet.cz
 
+  roles:
+    - ansible-role-virtio-win
+
   tasks:
-    - name: Download virtio-win.iso
-      win_get_url:
-        url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
-        dest: "{{ ansible_env.TEMP }}\\virtio-win.iso"
-
-    - name: Mount virtio-win.iso
-      win_disk_image:
-        image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
-      register: win_disk_image
-
-    - name: Export Cert powershell
-      win_shell: '$cert = (Get-AuthenticodeSignature "{{ win_disk_image.mount_path }}\Balloon\{{ virtio_driver_directory }}\amd64\blnsvr.exe").SignerCertificate; [System.IO.File]::WriteAllBytes("{{ ansible_env.TEMP }}\redhat.cer", $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));'
-
-    - name: Install RH certificate to TrustedPublisher certificate store
-      win_command: 'certutil.exe -f -addstore "TrustedPublisher" {{ ansible_env.TEMP }}\redhat.cer'
-
-    - name: Remove {{ ansible_env.SystemDrive }}\redhat.cer
-      win_file:
-        path: "{{ ansible_env.TEMP }}\\redhat.cer"
-        state: absent
-
-    - name: Install the VirtIO SCSI pass-through controller Driver (vioscsi)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\vioscsi\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install the Baloon Driver (Balloon)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\Balloon\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install Virtio RNG driver (viorng)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\viorng\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install Virtio serial driver (vioserial)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\vioserial\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install Virtio Input driver (vioinput)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\vioinput\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install pvpanic device driver (pvpanic)
-      win_command: "pnputil -i -a \"{{ win_disk_image.mount_path }}\\pvpanic\\{{ virtio_driver_directory }}\\{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}\\*.inf\""
-
-    - name: Install Qemu Guest Agent (qemu-ga-x64.msi)
-      win_msi:
-        path: "{{ win_disk_image.mount_path }}\\guest-agent\\qemu-ga-x64.msi"
-        creates: "{{ ansible_env['ProgramFiles(x86)'] }}\\qemu-ga"
-
-    - name: Unmount virtio-win.iso
-      win_disk_image:
-        image_path: "{{ ansible_env.TEMP }}\\virtio-win.iso"
-        state: absent
-
-    - name: Download vdagent
-      win_get_url:
-        url: "https://www.spice-space.org/download/windows/vdagent/vdagent-win-{{ vdagent_win_version }}/vdagent-win-{{ vdagent_win_version }}-x64.zip"
-        dest: "{{ ansible_env.TEMP }}\\vdagent-win.zip"
-
-    - name: Create {{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools directory
-      win_file:
-        path: "{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools"
-        state: directory
-
-    - name: Extract vdagent archive
-      win_unzip:
-        src: "{{ ansible_env.TEMP }}\\vdagent-win.zip"
-        dest: "{{ ansible_env.TEMP }}"
-        delete_archive: yes
-
-    - name: Move vdagent binaries to final destination ({{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools)
-      win_copy:
-        src: "{{ ansible_env.TEMP }}\\vdagent-win-{{ vdagent_win_version }}-x64\\"
-        dest: "{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools\\"
-        remote_src: yes
-
-    - name: Delete unpacked vdagent binaries
-      win_file:
-        path: "{{ ansible_env.TEMP }}\\vdagent-win-{{ vdagent_win_version }}-{{ ansible_env.PROCESSOR_ARCHITECTURE | lower }}"
-        state: absent
-
-    - name: Install vdagent
-      win_command: "\"{{ ansible_env['ProgramFiles(x86)'] }}\\SPICE Guest Tools\\vdservice.exe\" install"
-
     - name: Start NTP service (w32time)
       win_service:
         name: w32time

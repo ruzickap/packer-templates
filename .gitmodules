@@ -1,0 +1,3 @@
+[submodule "ansible/roles/ansible-role-virtio-win"]
+	path = ansible/roles/ansible-role-virtio-win
+	url = https://github.com/ruzickap/ansible-role-virtio-win.git
