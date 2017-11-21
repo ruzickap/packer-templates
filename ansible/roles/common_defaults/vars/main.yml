@@ -42,7 +42,6 @@ common_packages:
   - sysstat
   - tcpdump
   - telnet
-  - tmux
   - traceroute
 
 enable_boot_services:

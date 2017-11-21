@@ -54,7 +54,7 @@ Root password is: vagrant
 * NTP enabled (default configuration)
 * full-upgrade
 * unattended-upgrades
-* /dev/vda1 mounted on / using btrfs filesystem (all files in one partition)
+* /dev/vda1 mounted on / using ext4 filesystem (all files in one partition)
 * no swap
 
 ---

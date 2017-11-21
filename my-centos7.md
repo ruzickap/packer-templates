@@ -56,7 +56,7 @@ Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.i
 * NTP enabled (default configuration)
 * full-upgrade
 * unattended-upgrades
-* /dev/vda1 mounted on / using btrfs filesystem (all files in one partition)
+* /dev/vda1 mounted on / using xfs filesystem (all files in one partition)
 * no swap
 
 ---

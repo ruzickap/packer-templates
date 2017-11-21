@@ -57,16 +57,16 @@ render_template() {
 packer_build() {
   PACKER_FILE=$1; shift
 
-  packerio build -color=false $PACKER_FILE | tee "${LOG_DIR}/${NAME}-packer.log"
+  packerio build -on-error=ask -color=false $PACKER_FILE | tee "${LOG_DIR}/${NAME}-packer.log"
   create_vagrantup_box
   upload_boxfile_to_vagrantup
   rm -v ${NAME}-libvirt.box
 }
 
 build_ubuntu_17_10_desktop() {
-  export UBUNTU_VERSION="17.10"
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="desktop"
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/17.10/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
   export NAME="ubuntu-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
   export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
   export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
@@ -75,9 +75,9 @@ build_ubuntu_17_10_desktop() {
 }
 
 build_ubuntu_16_04_server() {
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n 's/.*-\(..\...\..\).*/\1/p' | head -1`
-  export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
+  export UBUNTU_ARCH="amd64"
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
   export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
   export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
   export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
@@ -86,9 +86,9 @@ build_ubuntu_16_04_server() {
 }
 
 build_ubuntu_14_04_server() {
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n 's/.*-\(..\...\..\).*/\1/p' | head -1`
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
   export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
   export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
   export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
@@ -97,9 +97,9 @@ build_ubuntu_14_04_server() {
 }
 
 build_my_ubuntu_14_04_server() {
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n 's/.*-\(..\...\..\).*/\1/p' | head -1`
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
   export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
   export DESCRIPTION=$(render_template my-ubuntu-${UBUNTU_TYPE}.md)
   export SHORT_DESCRIPTION="My Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
@@ -108,9 +108,9 @@ build_my_ubuntu_14_04_server() {
 }
 
 build_my_ubuntu_16_04_server() {
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n 's/.*-\(..\...\..\).*/\1/p' | head -1`
   export UBUNTU_ARCH="amd64"
   export UBUNTU_TYPE="server"
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
   export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
   export DESCRIPTION=$(render_template my-ubuntu-${UBUNTU_TYPE}.md)
   export SHORT_DESCRIPTION="My Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
@@ -191,12 +191,12 @@ main() {
   build_windows_10
   build_windows_2016
   build_windows_2012_r2
-  build_my_centos7
   build_my_ubuntu_16_04_server
   build_my_ubuntu_14_04_server
   build_ubuntu_16_04_server
   build_ubuntu_14_04_server
   build_ubuntu_17_10_desktop
+  build_my_centos7
   date
 }
 

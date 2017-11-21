@@ -1,15 +1,15 @@
 # Packer Templates mainly for the [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider
 
-## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider
 
 ---
 
-#### Github repository for bug reports or  feature requests:
+#### Github repository for bug reports or feature requests:
 
 [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
 
-#### Atlas/Vagrant repository
+#### Vagrant Cloud repository
 
 [https://app.vagrantup.com/peru](https://app.vagrantup.com/peru)
 
@@ -58,5 +58,5 @@
 * NTP enabled (default configuration)
 * full-upgrade
 * unattended-upgrades
-* /dev/vda1 mounted on / using btrfs filesystem (all files in one partition)
+* /dev/vda1 mounted on / using ext4/xfs filesystem (all files in one partition)
 * no swap

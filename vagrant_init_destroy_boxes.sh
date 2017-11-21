@@ -4,8 +4,7 @@ LINUX_BOXES_LIST="*ubuntu*.box *centos*.box"
 WINDOWS_BOXES_LIST="*windows*.box"
 TMPDIR="/tmp/"
 export VAGRANT_DEFAULT_PROVIDER=libvirt
-unset http_proxy
-unset https_proxy
+
 
 vagrant_box_add() {
   VAGRANT_BOX_FILE=$1; shift
@@ -26,7 +25,7 @@ vagrant_init_up() {
   vagrant up
 }
 
-check_vagrant_vm() {
+check_vagrant_vm_linux() {
   VAGRANT_BOX_FILE=$1; shift
   VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE%.*}
 
@@ -38,6 +37,15 @@ check_vagrant_vm() {
   sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_BOX_NAME}_default uptime && echo "*** OK"
   echo "*** Running: sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_BOX_NAME}_default sudo id"
   sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_BOX_NAME}_default sudo id && echo "*** OK"
+}
+
+check_vagrant_vm_win() {
+  VAGRANT_BOX_FILE=$1; shift
+  VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE%.*}
+
+  export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME"
+  echo "*** Running: vagrant winrm --shell powershell --command 'Get-Service ...'"
+  vagrant winrm --shell powershell --command 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {$_.Name -like "QEMU*"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {$_.devicename -match ".*Red Hat.*|.*VirtIO.*"} | select devicename, driverversion'
 }
 
 
@@ -70,7 +78,7 @@ main() {
       echo -e "\n******************************************************\n*** ${LINUX_BOX}\n******************************************************\n"
       vagrant_box_add $LINUX_BOX
       vagrant_init_up $LINUX_BOX
-      check_vagrant_vm $LINUX_BOX
+      check_vagrant_vm_linux $LINUX_BOX
       vagrant_destroy $LINUX_BOX
       vagrant_remove_boxes_images $LINUX_BOX
     done
@@ -81,6 +89,7 @@ main() {
       echo -e "\n******************************************************\n*** ${WIN_BOX}\n******************************************************\n"
       vagrant_box_add $WIN_BOX
       vagrant_init_up $WIN_BOX
+      check_vagrant_vm_win $WIN_BOX
     done
 
     echo -e "\n\n*** Check your Windows boxes. Hit ENTER to remove all Windows VMs + boxes + libvirt/snapshots"

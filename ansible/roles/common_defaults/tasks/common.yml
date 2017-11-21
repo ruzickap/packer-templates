@@ -274,9 +274,7 @@
     - "{{ desktop_spice_packages }}"
   when:  xserver_status.stat.exists
 
-#- include_tasks: "{{ ansible_os_family }}.yml"
-- include: "{{ ansible_os_family }}.yml"
-
+- include_tasks: "{{ ansible_os_family }}.yml"
 
 - name: Disable and stop services during boot
   service:
