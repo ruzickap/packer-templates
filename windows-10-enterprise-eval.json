@@ -3,11 +3,10 @@
   "variables": {
     "name": "{{ env `NAME` }}",
     "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/B/8/B/B8B452EC-DD2D-4A8F-A88C-D2180C177624/15063.0.170317-1834.RS2_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO",
-    "iso_checksum": "0327731203f0c8ac0dfb607b7cfc5a91ba9a76cdc9a9852a8345a8b267d34f83",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
+    "iso_checksum": "3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "virtio_driver_directory": "w10",
-
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "disk_size": "51200"
