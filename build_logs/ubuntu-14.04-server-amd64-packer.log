@@ -1,8 +1,8 @@
 ==> ubuntu-14.04-server-amd64: Downloading or copying ISO
     ubuntu-14.04-server-amd64: Downloading or copying: http://releases.ubuntu.com/14.04.5/ubuntu-14.04.5-server-amd64.iso
 ==> ubuntu-14.04-server-amd64: Creating hard drive...
-==> ubuntu-14.04-server-amd64: Starting HTTP server on port 8114
-==> ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 3626.
+==> ubuntu-14.04-server-amd64: Starting HTTP server on port 8695
+==> ubuntu-14.04-server-amd64: Found port for communicator (SSH, WinRM, etc): 4334.
 ==> ubuntu-14.04-server-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> ubuntu-14.04-server-amd64: Starting VM, booting from CD-ROM
 ==> ubuntu-14.04-server-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -19,8 +19,8 @@
     ubuntu-14.04-server-amd64: Extracting templates from packages: 100%
     ubuntu-14.04-server-amd64:
     ubuntu-14.04-server-amd64: Current default time zone: 'Etc/UTC'
-    ubuntu-14.04-server-amd64: Local time is now:      Tue Nov 21 13:30:55 UTC 2017.
-    ubuntu-14.04-server-amd64: Universal Time is now:  Tue Nov 21 13:30:55 UTC 2017.
+    ubuntu-14.04-server-amd64: Local time is now:      Wed Nov 22 15:48:12 UTC 2017.
+    ubuntu-14.04-server-amd64: Universal Time is now:  Wed Nov 22 15:48:12 UTC 2017.
     ubuntu-14.04-server-amd64: Run 'dpkg-reconfigure tzdata' if you wish to change it.
     ubuntu-14.04-server-amd64:
     ubuntu-14.04-server-amd64:  * Starting AppArmor profiles
@@ -38,19 +38,19 @@
     ubuntu-14.04-server-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     ubuntu-14.04-server-amd64: + echo '==> Giving vagrant sudo powers'
     ubuntu-14.04-server-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
-    ubuntu-14.04-server-amd64: ==> Installing vagrant key
     ubuntu-14.04-server-amd64: + echo '==> Installing vagrant key'
     ubuntu-14.04-server-amd64: + '[' '!' -d /home/vagrant/.ssh ']'
     ubuntu-14.04-server-amd64: + mkdir /home/vagrant/.ssh
+    ubuntu-14.04-server-amd64: ==> Installing vagrant key
     ubuntu-14.04-server-amd64: + chmod 700 /home/vagrant/.ssh
     ubuntu-14.04-server-amd64: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
     ubuntu-14.04-server-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     ubuntu-14.04-server-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
 ==> ubuntu-14.04-server-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
+    ubuntu-14.04-server-amd64: ==> Cleaning up udev rules
     ubuntu-14.04-server-amd64: + SSH_USER=vagrant
     ubuntu-14.04-server-amd64: + echo '==> Cleaning up udev rules'
     ubuntu-14.04-server-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
-    ubuntu-14.04-server-amd64: ==> Cleaning up udev rules
     ubuntu-14.04-server-amd64: + service rsyslog stop
     ubuntu-14.04-server-amd64: rsyslog stop/waiting
     ubuntu-14.04-server-amd64: + '[' -f /etc/os-release ']'
@@ -73,14 +73,20 @@
     ubuntu-14.04-server-amd64: Reading package lists...
     ubuntu-14.04-server-amd64: Building dependency tree...
     ubuntu-14.04-server-amd64: Reading state information...
-    ubuntu-14.04-server-amd64: + echo '==> Cleaning up tmp'
     ubuntu-14.04-server-amd64: ==> Cleaning up tmp
-    ubuntu-14.04-server-amd64: + rm -rf /tmp/script_4111.sh /tmp/ssh-oVEkoMM4PM
+    ubuntu-14.04-server-amd64: + echo '==> Cleaning up tmp'
+    ubuntu-14.04-server-amd64: + rm -rf /tmp/script_1048.sh /tmp/ssh-VXrEnDotax
     ubuntu-14.04-server-amd64: + unset HISTFILE
     ubuntu-14.04-server-amd64: + rm -f /root/.bash_history
     ubuntu-14.04-server-amd64: + rm -f /home/vagrant/.bash_history
-    ubuntu-14.04-server-amd64: + read f
     ubuntu-14.04-server-amd64: + find /var/log -type f
+    ubuntu-14.04-server-amd64: + read f
+    ubuntu-14.04-server-amd64: + echo -ne ''
+    ubuntu-14.04-server-amd64: + read f
+    ubuntu-14.04-server-amd64: + echo -ne ''
+    ubuntu-14.04-server-amd64: + read f
+    ubuntu-14.04-server-amd64: + echo -ne ''
+    ubuntu-14.04-server-amd64: + read f
     ubuntu-14.04-server-amd64: + echo -ne ''
     ubuntu-14.04-server-amd64: + read f
     ubuntu-14.04-server-amd64: + echo -ne ''
@@ -89,12 +95,6 @@
     ubuntu-14.04-server-amd64: + read f
     ubuntu-14.04-server-amd64: + echo -ne ''
     ubuntu-14.04-server-amd64: ==> Clearing last login information
-    ubuntu-14.04-server-amd64: + read f
-    ubuntu-14.04-server-amd64: + echo -ne ''
-    ubuntu-14.04-server-amd64: + read f
-    ubuntu-14.04-server-amd64: + echo -ne ''
-    ubuntu-14.04-server-amd64: + read f
-    ubuntu-14.04-server-amd64: + echo -ne ''
     ubuntu-14.04-server-amd64: + read f
     ubuntu-14.04-server-amd64: + echo -ne ''
     ubuntu-14.04-server-amd64: + read f

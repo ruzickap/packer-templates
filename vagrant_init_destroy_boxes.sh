@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
-LINUX_BOXES_LIST="*ubuntu*.box *centos*.box"
-WINDOWS_BOXES_LIST="*windows*.box"
+LINUX_BOXES_LIST=`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" \) -printf "%f "`
+WINDOWS_BOXES_LIST=`find . -maxdepth 1 -name "*windows*.box" -printf "%f "`
 TMPDIR="/tmp/"
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 
@@ -73,18 +73,19 @@ vagrant_destroy() {
 #######
 
 main() {
-  if `ls $LINUX_BOXES_LIST &> /dev/null`; then
+  if [ -n "$LINUX_BOXES_LIST" ]; then
     for LINUX_BOX in $LINUX_BOXES_LIST; do
       echo -e "\n******************************************************\n*** ${LINUX_BOX}\n******************************************************\n"
       vagrant_box_add $LINUX_BOX
       vagrant_init_up $LINUX_BOX
       check_vagrant_vm_linux $LINUX_BOX
+      read A
       vagrant_destroy $LINUX_BOX
       vagrant_remove_boxes_images $LINUX_BOX
     done
   fi
 
-  if `ls $WINDOWS_BOXES_LIST &> /dev/null`; then
+  if [ -n "$WINDOWS_BOXES_LIST" ]; then
     for WIN_BOX in $WINDOWS_BOXES_LIST; do
       echo -e "\n******************************************************\n*** ${WIN_BOX}\n******************************************************\n"
       vagrant_box_add $WIN_BOX
