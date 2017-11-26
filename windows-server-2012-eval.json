@@ -69,7 +69,7 @@
     },
     {
       "type": "file",
-      "pause_before": "1m",
+      "pause_before": "2m",
       "source": "scripts/win-common/remove_nic.bat",
       "destination": "c:\\remove_nic.bat"
     }

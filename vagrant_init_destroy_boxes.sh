@@ -1,7 +1,6 @@
 #!/bin/bash -eu
 
-LINUX_BOXES_LIST=`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" \) -printf "%f "`
-WINDOWS_BOXES_LIST=`find . -maxdepth 1 -name "*windows*.box" -printf "%f "`
+BOXES_LIST=`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f "`
 TMPDIR="/tmp/"
 export VAGRANT_DEFAULT_PROVIDER=libvirt
 
@@ -45,7 +44,7 @@ check_vagrant_vm_win() {
 
   export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME"
   echo "*** Running: vagrant winrm --shell powershell --command 'Get-Service ...'"
-  vagrant winrm --shell powershell --command 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {$_.Name -like "QEMU*"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {$_.devicename -match ".*Red Hat.*|.*VirtIO.*"} | select devicename, driverversion'
+  vagrant winrm --shell powershell --command 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {$_.Name -match ".*QEMU.*|.*Spice.*"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {$_.devicename -match ".*Red Hat.*|.*VirtIO.*"} | select devicename, driverversion'
 }
 
 
@@ -73,33 +72,20 @@ vagrant_destroy() {
 #######
 
 main() {
-  if [ -n "$LINUX_BOXES_LIST" ]; then
-    for LINUX_BOX in $LINUX_BOXES_LIST; do
-      echo -e "\n******************************************************\n*** ${LINUX_BOX}\n******************************************************\n"
-      vagrant_box_add $LINUX_BOX
-      vagrant_init_up $LINUX_BOX
-      check_vagrant_vm_linux $LINUX_BOX
-      read A
-      vagrant_destroy $LINUX_BOX
-      vagrant_remove_boxes_images $LINUX_BOX
-    done
-  fi
+  if [ -n "$BOXES_LIST" ]; then
+    for BOX in $BOXES_LIST; do
+      echo -e "\n******************************************************\n*** ${BOX}\n******************************************************\n"
+      vagrant_box_add $BOX
+      vagrant_init_up $BOX
 
-  if [ -n "$WINDOWS_BOXES_LIST" ]; then
-    for WIN_BOX in $WINDOWS_BOXES_LIST; do
-      echo -e "\n******************************************************\n*** ${WIN_BOX}\n******************************************************\n"
-      vagrant_box_add $WIN_BOX
-      vagrant_init_up $WIN_BOX
-      check_vagrant_vm_win $WIN_BOX
-    done
+      if [ "${BOX::7}" = "windows" ]; then
+        check_vagrant_vm_win $BOX
+      else
+        check_vagrant_vm_linux $BOX
+      fi
 
-    echo -e "\n\n*** Check your Windows boxes. Hit ENTER to remove all Windows VMs + boxes + libvirt/snapshots"
-    read A
-
-    for WIN_BOX in $WINDOWS_BOXES_LIST; do
-      echo "*** $WIN_BOX"
-      vagrant_destroy $WIN_BOX
-      vagrant_remove_boxes_images $WIN_BOX
+      vagrant_destroy $BOX
+      vagrant_remove_boxes_images $BOX
     done
   fi
 }

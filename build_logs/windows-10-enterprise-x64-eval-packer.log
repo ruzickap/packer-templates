@@ -1,25 +1,25 @@
 ==> windows-10-enterprise-x64-eval: Downloading or copying ISO
-    windows-10-enterprise-x64-eval: Downloading or copying: http://care.dlservice.microsoft.com/dl/download/B/8/B/B8B452EC-DD2D-4A8F-A88C-D2180C177624/15063.0.170317-1834.RS2_RELEASE_CLIENTENTERPRISEEVAL_OEMRET_X64FRE_EN-US.ISO
+    windows-10-enterprise-x64-eval: Downloading or copying: http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso
 ==> windows-10-enterprise-x64-eval: Creating floppy disk...
     windows-10-enterprise-x64-eval: Copying files flatly from floppy_files
     windows-10-enterprise-x64-eval: Copying file: http/windows-10/Autounattend.xml
     windows-10-enterprise-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.cat
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.inf
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.sys
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvmco.dll
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.cat
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.inf
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.sys
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.cat
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.inf
-    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.c5zhRP7kHlwindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.sys
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvm.sys
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/NetKVM/w10/amd64/netkvmco.dll
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/qxldod/w10/amd64/qxldod.sys
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.cat
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.inf
+    windows-10-enterprise-x64-eval: Copying file: /var/tmp/tmp.4UYVDAFdoawindows-10-enterprise-x64-eval-iso/viostor/w10/amd64/viostor.sys
     windows-10-enterprise-x64-eval: Done copying files from floppy_files
     windows-10-enterprise-x64-eval: Collecting paths from floppy_dirs
     windows-10-enterprise-x64-eval: Resulting paths from floppy_dirs : []
     windows-10-enterprise-x64-eval: Done copying paths from floppy_dirs
 ==> windows-10-enterprise-x64-eval: Creating hard drive...
-==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 2671.
+==> windows-10-enterprise-x64-eval: Found port for communicator (SSH, WinRM, etc): 2362.
 ==> windows-10-enterprise-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-10-enterprise-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-10-enterprise-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
@@ -32,13 +32,7 @@
     windows-10-enterprise-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
 ==> windows-10-enterprise-x64-eval: Connected to WinRM!
 ==> windows-10-enterprise-x64-eval: Provisioning with Ansible...
-==> windows-10-enterprise-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-10-enterprise-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible032919616 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key258642725 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=w10
-    windows-10-enterprise-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_EXE option, In favor of become which is a
-    windows-10-enterprise-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
-    windows-10-enterprise-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
-    windows-10-enterprise-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of become which is a
-    windows-10-enterprise-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
-    windows-10-enterprise-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+==> windows-10-enterprise-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-10-enterprise-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible422775016 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key329149549 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=w10
     windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: PLAY [all] *********************************************************************
     windows-10-enterprise-x64-eval:
@@ -139,22 +133,14 @@
     windows-10-enterprise-x64-eval: TASK [Enable Administrator account] ********************************************
     windows-10-enterprise-x64-eval: changed: [default]
     windows-10-enterprise-x64-eval:
-    windows-10-enterprise-x64-eval: TASK [Install windows updates] *************************************************
-    windows-10-enterprise-x64-eval: changed: [default]
-    windows-10-enterprise-x64-eval:
     windows-10-enterprise-x64-eval: PLAY RECAP *********************************************************************
-    windows-10-enterprise-x64-eval: default                    : ok=31   changed=23   unreachable=0    failed=0
+    windows-10-enterprise-x64-eval: default                    : ok=30   changed=22   unreachable=0    failed=0
     windows-10-enterprise-x64-eval:
 ==> windows-10-enterprise-x64-eval: Restarting Machine
 ==> windows-10-enterprise-x64-eval: Waiting for machine to restart...
     windows-10-enterprise-x64-eval: A system shutdown is in progress.(1115)
-    windows-10-enterprise-x64-eval: A system shutdown is in progress.(1115)
-    windows-10-enterprise-x64-eval: A system shutdown is in progress.(1115)
-    windows-10-enterprise-x64-eval: #< CLIXML
-    windows-10-enterprise-x64-eval: WIN10 restarted.
-    windows-10-enterprise-x64-eval: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
 ==> windows-10-enterprise-x64-eval: Machine successfully restarted, moving on
-==> windows-10-enterprise-x64-eval: Pausing 1m0s before the next provisioner...
+==> windows-10-enterprise-x64-eval: Pausing 2m0s before the next provisioner...
 ==> windows-10-enterprise-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat
 ==> windows-10-enterprise-x64-eval: Gracefully halting virtual machine...
     windows-10-enterprise-x64-eval:

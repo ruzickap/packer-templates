@@ -4,22 +4,22 @@
     windows-server-2012-r2-standard-x64-eval: Copying files flatly from floppy_files
     windows-server-2012-r2-standard-x64-eval: Copying file: http/windows-server-2012/Autounattend.xml
     windows-server-2012-r2-standard-x64-eval: Copying file: scripts/win-common/fixnetwork.ps1
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
-    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.gJICIQQiJcwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvm.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/NetKVM/2k12R2/amd64/netkvmco.dll
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/qxldod/2k12R2/amd64/qxldod.sys
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.cat
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.inf
+    windows-server-2012-r2-standard-x64-eval: Copying file: /var/tmp/tmp.jWg1nJqmjgwindows-server-2012-r2-standard-x64-eval-iso/viostor/2k12R2/amd64/viostor.sys
     windows-server-2012-r2-standard-x64-eval: Done copying files from floppy_files
     windows-server-2012-r2-standard-x64-eval: Collecting paths from floppy_dirs
     windows-server-2012-r2-standard-x64-eval: Resulting paths from floppy_dirs : []
     windows-server-2012-r2-standard-x64-eval: Done copying paths from floppy_dirs
 ==> windows-server-2012-r2-standard-x64-eval: Creating hard drive...
-==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3595.
+==> windows-server-2012-r2-standard-x64-eval: Found port for communicator (SSH, WinRM, etc): 3878.
 ==> windows-server-2012-r2-standard-x64-eval: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> windows-server-2012-r2-standard-x64-eval: Starting VM, booting from CD-ROM
 ==> windows-server-2012-r2-standard-x64-eval: Overriding defaults Qemu arguments with QemuArgs...
@@ -30,13 +30,7 @@
     windows-server-2012-r2-standard-x64-eval: WinRM connected.
 ==> windows-server-2012-r2-standard-x64-eval: Connected to WinRM!
 ==> windows-server-2012-r2-standard-x64-eval: Provisioning with Ansible...
-==> windows-server-2012-r2-standard-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-server-2012-r2-standard-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible334101301 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key268684718 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=2k12R2
-    windows-server-2012-r2-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_EXE option, In favor of become which is a
-    windows-server-2012-r2-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
-    windows-server-2012-r2-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
-    windows-server-2012-r2-standard-x64-eval: [DEPRECATION WARNING]: DEFAULT_SUDO_USER option, In favor of become which is a
-    windows-server-2012-r2-standard-x64-eval: generic framework . This feature will be removed in version 2.8. Deprecation
-    windows-server-2012-r2-standard-x64-eval: warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+==> windows-server-2012-r2-standard-x64-eval: Executing Ansible: ansible-playbook --extra-vars packer_build_name=windows-server-2012-r2-standard-x64-eval packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible226022009 /home/pruzicka/data/github/packer-templates/ansible/win.yml --private-key /var/tmp/ansible-key453628674 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory=2k12R2
     windows-server-2012-r2-standard-x64-eval:
     windows-server-2012-r2-standard-x64-eval: PLAY [all] *********************************************************************
     windows-server-2012-r2-standard-x64-eval:
@@ -210,150 +204,8 @@
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
     windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: A system shutdown is in progress.(1115)
-    windows-server-2012-r2-standard-x64-eval: WIN2012R2 restarted.
 ==> windows-server-2012-r2-standard-x64-eval: Machine successfully restarted, moving on
-==> windows-server-2012-r2-standard-x64-eval: Pausing 1m0s before the next provisioner...
+==> windows-server-2012-r2-standard-x64-eval: Pausing 2m0s before the next provisioner...
 ==> windows-server-2012-r2-standard-x64-eval: Uploading scripts/win-common/remove_nic.bat => c:\remove_nic.bat
 ==> windows-server-2012-r2-standard-x64-eval: Gracefully halting virtual machine...
     windows-server-2012-r2-standard-x64-eval:
