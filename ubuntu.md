@@ -1,6 +1,6 @@
 # [Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Clean + Latest Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} base box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} base box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
 
 ---
 

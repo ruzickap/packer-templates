@@ -2,6 +2,8 @@
   "_comment": "Build with `NAME=ubuntu-16.04.3-server-amd64 UBUNTU_VERSION=16.04.3 UBUNTU_TYPE=server UBUNTU_ARCH=amd64 packer build ubuntu-server.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
+    "cpus": "2",
+    "memory": "4G",
     "iso_name": "ubuntu-{{ env `UBUNTU_VERSION` }}-{{ env `UBUNTU_TYPE` }}-{{ env `UBUNTU_ARCH` }}",
     "ubuntu_type": "{{ env `UBUNTU_TYPE` }}",
     "ubuntu_version": "{{ env `UBUNTU_VERSION` }}",
@@ -27,6 +29,7 @@
 
       "accelerator": "kvm",
       "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
       "boot_wait": "2s",
       "boot_command":
       [
@@ -36,7 +39,7 @@
         "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
         "/install/vmlinuz ",
         "initrd=/install/initrd.gz ",
-        "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-{{ user `ubuntu_type` }}/{{ user `preseed_file_name` }} ",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-{{ user `ubuntu_type` }}/{{ user `preseed_file_name` }} ",
         "auto=true ",
         "net.ifnames=0 ",
         "hostname=localhost ",

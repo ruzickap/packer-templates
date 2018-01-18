@@ -2,6 +2,8 @@
   "_comment": "Build with `NAME=my-CentOS-7-amd64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_ARCH=x86_64 CENTOS_TAG=1611 packer build my-centos7.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
+    "cpus": "2",
+    "memory": "4G",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
     "centos_version": "{{ env `CENTOS_VERSION` }}",
     "centos_arch": "{{ env `CENTOS_ARCH` }}",
@@ -27,7 +29,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
       "boot_wait": "2s",
       "boot_command":
       [

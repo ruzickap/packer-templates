@@ -1,0 +1,173 @@
+==> ubuntu-17.10-desktop-amd64: Downloading or copying ISO
+    ubuntu-17.10-desktop-amd64: Downloading or copying: http://archive.ubuntu.com/ubuntu/dists/artful/main/installer-amd64/current/images/netboot/mini.iso
+==> ubuntu-17.10-desktop-amd64: Creating hard drive...
+==> ubuntu-17.10-desktop-amd64: Starting HTTP server on port 8927
+==> ubuntu-17.10-desktop-amd64: Found port for communicator (SSH, WinRM, etc): 2592.
+==> ubuntu-17.10-desktop-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
+==> ubuntu-17.10-desktop-amd64: Starting VM, booting from CD-ROM
+==> ubuntu-17.10-desktop-amd64: Overriding defaults Qemu arguments with QemuArgs...
+==> ubuntu-17.10-desktop-amd64: Waiting 2s for boot...
+==> ubuntu-17.10-desktop-amd64: Connecting to VM via VNC
+==> ubuntu-17.10-desktop-amd64: Typing the boot command over VNC...
+==> ubuntu-17.10-desktop-amd64: Waiting for SSH to become available...
+==> ubuntu-17.10-desktop-amd64: Connected to SSH!
+==> ubuntu-17.10-desktop-amd64: Provisioning with shell script: scripts/ubuntu/update.sh
+    ubuntu-17.10-desktop-amd64: [sudo] password for vagrant: + export DEBIAN_FRONTEND=noninteractive
+    ubuntu-17.10-desktop-amd64: + DEBIAN_FRONTEND=noninteractive
+    ubuntu-17.10-desktop-amd64: + apt update
+    ubuntu-17.10-desktop-amd64:
+    ubuntu-17.10-desktop-amd64: WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+    ubuntu-17.10-desktop-amd64:
+    ubuntu-17.10-desktop-amd64: + apt -y upgrade
+    ubuntu-17.10-desktop-amd64:
+    ubuntu-17.10-desktop-amd64: WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+    ubuntu-17.10-desktop-amd64:
+==> ubuntu-17.10-desktop-amd64: Provisioning with shell script: scripts/ubuntu/spice-vdagent.sh
+    ubuntu-17.10-desktop-amd64: [sudo] password for vagrant: + apt-get install -y -q spice-vdagent
+    ubuntu-17.10-desktop-amd64: Reading package lists...
+    ubuntu-17.10-desktop-amd64: Building dependency tree...
+    ubuntu-17.10-desktop-amd64: Reading state information...
+    ubuntu-17.10-desktop-amd64: The following NEW packages will be installed:
+    ubuntu-17.10-desktop-amd64:   spice-vdagent
+    ubuntu-17.10-desktop-amd64: 0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+    ubuntu-17.10-desktop-amd64: Need to get 47.2 kB of archives.
+    ubuntu-17.10-desktop-amd64: After this operation, 165 kB of additional disk space will be used.
+    ubuntu-17.10-desktop-amd64: Get:1 http://archive.ubuntu.com/ubuntu artful/universe amd64 spice-vdagent amd64 0.17.0-1ubuntu1 [47.2 kB]
+    ubuntu-17.10-desktop-amd64: debconf: unable to initialize frontend: Dialog
+    ubuntu-17.10-desktop-amd64: debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+    ubuntu-17.10-desktop-amd64: debconf: falling back to frontend: Readline
+    ubuntu-17.10-desktop-amd64: debconf: unable to initialize frontend: Readline
+    ubuntu-17.10-desktop-amd64: debconf: (This frontend requires a controlling tty.)
+    ubuntu-17.10-desktop-amd64: debconf: falling back to frontend: Teletype
+    ubuntu-17.10-desktop-amd64: dpkg-preconfigure: unable to re-open stdin:
+    ubuntu-17.10-desktop-amd64: Fetched 47.2 kB in 0s (350 kB/s)
+    ubuntu-17.10-desktop-amd64: Selecting previously unselected package spice-vdagent.
+    ubuntu-17.10-desktop-amd64: (Reading database ... 129254 files and directories currently installed.)
+    ubuntu-17.10-desktop-amd64: Preparing to unpack .../spice-vdagent_0.17.0-1ubuntu1_amd64.deb ...
+    ubuntu-17.10-desktop-amd64: Unpacking spice-vdagent (0.17.0-1ubuntu1) ...
+    ubuntu-17.10-desktop-amd64: Setting up spice-vdagent (0.17.0-1ubuntu1) ...
+    ubuntu-17.10-desktop-amd64: Created symlink /etc/systemd/system/spice-vdagentd.target.wants/spice-vdagentd.service → /lib/systemd/system/spice-vdagentd.service.
+    ubuntu-17.10-desktop-amd64: spice-vdagentd.target is a disabled or a static unit, not starting it.
+    ubuntu-17.10-desktop-amd64: Processing triggers for ureadahead (0.100.0-20) ...
+    ubuntu-17.10-desktop-amd64: Processing triggers for systemd (234-2ubuntu12.1) ...
+    ubuntu-17.10-desktop-amd64: Processing triggers for man-db (2.7.6.1-2) ...
+    ubuntu-17.10-desktop-amd64: + echo 'SPICE_VDAGENTD_EXTRA_ARGS="-X"'
+==> ubuntu-17.10-desktop-amd64: Provisioning with shell script: scripts/linux-common/vagrant.sh
+    ubuntu-17.10-desktop-amd64: [sudo] password for vagrant: + date
+    ubuntu-17.10-desktop-amd64: + SSH_USER=vagrant
+    ubuntu-17.10-desktop-amd64: + SSH_USER_HOME=/home/vagrant
+    ubuntu-17.10-desktop-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+    ubuntu-17.10-desktop-amd64: ==> Giving vagrant sudo powers
+    ubuntu-17.10-desktop-amd64: ==> Installing vagrant key
+    ubuntu-17.10-desktop-amd64: + echo '==> Giving vagrant sudo powers'
+    ubuntu-17.10-desktop-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
+    ubuntu-17.10-desktop-amd64: + echo '==> Installing vagrant key'
+    ubuntu-17.10-desktop-amd64: + '[' '!' -d /home/vagrant/.ssh ']'
+    ubuntu-17.10-desktop-amd64: + mkdir /home/vagrant/.ssh
+    ubuntu-17.10-desktop-amd64: + chmod 700 /home/vagrant/.ssh
+    ubuntu-17.10-desktop-amd64: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+    ubuntu-17.10-desktop-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
+    ubuntu-17.10-desktop-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
+==> ubuntu-17.10-desktop-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
+    ubuntu-17.10-desktop-amd64: ==> Cleaning up udev rules
+    ubuntu-17.10-desktop-amd64: + SSH_USER=vagrant
+    ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up udev rules'
+    ubuntu-17.10-desktop-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
+    ubuntu-17.10-desktop-amd64: + service rsyslog stop
+    ubuntu-17.10-desktop-amd64: + '[' -f /etc/os-release ']'
+    ubuntu-17.10-desktop-amd64: + grep -iq debian /etc/os-release
+    ubuntu-17.10-desktop-amd64: + export DEBIAN_FRONTEND=noninteractive
+    ubuntu-17.10-desktop-amd64: + DEBIAN_FRONTEND=noninteractive
+    ubuntu-17.10-desktop-amd64: ==> Cleaning up leftover dhcp leases
+    ubuntu-17.10-desktop-amd64: + echo 'pre-up sleep 2'
+    ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up leftover dhcp leases'
+    ubuntu-17.10-desktop-amd64: + '[' -d /var/lib/dhcp3 ']'
+    ubuntu-17.10-desktop-amd64: + '[' -d /var/lib/dhcp ']'
+    ubuntu-17.10-desktop-amd64: + rm '/var/lib/dhcp/*'
+    ubuntu-17.10-desktop-amd64: rm: cannot remove '/var/lib/dhcp/*': No such file or directory
+    ubuntu-17.10-desktop-amd64: + apt-get -y autoremove --purge
+    ubuntu-17.10-desktop-amd64: Reading package lists...
+    ubuntu-17.10-desktop-amd64: Building dependency tree...
+    ubuntu-17.10-desktop-amd64: Reading state information...
+    ubuntu-17.10-desktop-amd64: 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+    ubuntu-17.10-desktop-amd64: + apt-get -y clean
+    ubuntu-17.10-desktop-amd64: + apt-get -y autoclean
+    ubuntu-17.10-desktop-amd64: Reading package lists...
+    ubuntu-17.10-desktop-amd64: Building dependency tree...
+    ubuntu-17.10-desktop-amd64: Reading state information...
+    ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up tmp'
+    ubuntu-17.10-desktop-amd64: + rm -rf /tmp/script_2734.sh /tmp/ssh-HmMXTd8DS1 /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-colord.service-7NTEal /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-rtkit-daemon.service-AViBuV /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-spice-vdagentd.service-wQ1ITC /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-hostnamed.service-aRNNmW /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-resolved.service-sqstm4 /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-timesyncd.service-7ymuLv
+    ubuntu-17.10-desktop-amd64: ==> Cleaning up tmp
+    ubuntu-17.10-desktop-amd64: + unset HISTFILE
+    ubuntu-17.10-desktop-amd64: + rm -f /root/.bash_history
+    ubuntu-17.10-desktop-amd64: + rm -f /home/vagrant/.bash_history
+    ubuntu-17.10-desktop-amd64: + find /var/log -type f
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: ==> Clearing last login information
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo '==> Clearing last login information'
+    ubuntu-17.10-desktop-amd64: + dd if=/dev/zero of=/EMPTY_FILE bs=1M
+    ubuntu-17.10-desktop-amd64: + echo 'dd exit code 1 is suppressed'
+    ubuntu-17.10-desktop-amd64: + rm -f /EMPTY_FILE
+    ubuntu-17.10-desktop-amd64: dd exit code 1 is suppressed
+    ubuntu-17.10-desktop-amd64: + sync
+==> ubuntu-17.10-desktop-amd64: Gracefully halting virtual machine...
+==> ubuntu-17.10-desktop-amd64: Converting hard drive...
+==> ubuntu-17.10-desktop-amd64: Running post-processor: vagrant
+==> ubuntu-17.10-desktop-amd64 (vagrant): Creating Vagrant box for 'libvirt' provider
+    ubuntu-17.10-desktop-amd64 (vagrant): Copying from artifact: output-ubuntu-17.10-desktop-amd64/packer-ubuntu-17.10-desktop-amd64
+    ubuntu-17.10-desktop-amd64 (vagrant): Using custom Vagrantfile: Vagrantfile-linux.template
+    ubuntu-17.10-desktop-amd64 (vagrant): Compressing: Vagrantfile
+    ubuntu-17.10-desktop-amd64 (vagrant): Compressing: box.img
+    ubuntu-17.10-desktop-amd64 (vagrant): Compressing: metadata.json
+Build 'ubuntu-17.10-desktop-amd64' finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> ubuntu-17.10-desktop-amd64: 'libvirt' provider box: ubuntu-17.10-desktop-amd64-libvirt.box

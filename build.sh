@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 export USER="peru"
 export TMPDIR="/var/tmp/"
@@ -47,7 +47,6 @@ upload_boxfile_to_vagrantup() {
     echo "*** Removing previous version: https://vagrantcloud.com/api/v1/box/$USER/$NAME/version/$CURRENT_VERSION"
     curl -s https://app.vagrantup.com/api/v1/box/$USER/$NAME/version/$CURRENT_VERSION -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   fi
-
 }
 
 render_template() {
@@ -63,59 +62,18 @@ packer_build() {
   rm -v ${NAME}-libvirt.box
 }
 
-build_ubuntu_17_10_desktop() {
+
+# Expected enviroments: UBUNTU_TYPE="desktop" UBUNTU_MAJOR_VERSION="17.10" MY_NAME="ubuntu"
+build_ubuntu() {
   export UBUNTU_ARCH="amd64"
-  export UBUNTU_TYPE="desktop"
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/17.10/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-  export NAME="ubuntu-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-  export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
+  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
+  export NAME="${MY_NAME}-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
+  export DESCRIPTION=$(render_template ${MY_NAME}.md)
   export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
 
-  packer_build ubuntu-${UBUNTU_TYPE}.json
-}
-
-build_ubuntu_16_04_server() {
-  export UBUNTU_TYPE="server"
-  export UBUNTU_ARCH="amd64"
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-  export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-  export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
-  export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
-
-  packer_build ubuntu-${UBUNTU_TYPE}.json
-}
-
-build_ubuntu_14_04_server() {
-  export UBUNTU_ARCH="amd64"
-  export UBUNTU_TYPE="server"
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-  export NAME="ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-  export DESCRIPTION=$(render_template ubuntu-${UBUNTU_TYPE}.md)
-  export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
-
-  packer_build ubuntu-${UBUNTU_TYPE}.json
-}
-
-build_my_ubuntu_14_04_server() {
-  export UBUNTU_ARCH="amd64"
-  export UBUNTU_TYPE="server"
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/14.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-  export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-  export DESCRIPTION=$(render_template my-ubuntu-${UBUNTU_TYPE}.md)
-  export SHORT_DESCRIPTION="My Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
-
-  packer_build my-ubuntu-${UBUNTU_TYPE}.json
-}
-
-build_my_ubuntu_16_04_server() {
-  export UBUNTU_ARCH="amd64"
-  export UBUNTU_TYPE="server"
-  export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/16.04/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-  export NAME="my-ubuntu-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-  export DESCRIPTION=$(render_template my-ubuntu-${UBUNTU_TYPE}.md)
-  export SHORT_DESCRIPTION="My Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
-
-  packer_build my-ubuntu-${UBUNTU_TYPE}.json
+  echo -e "\n\n*** $SHORT_DESCRIPTION ($NAME) [${MY_NAME}-${UBUNTU_TYPE}.json]\n"
+  echo "$DESCRIPTION" > $TMPDIR/${NAME}.md
+  packer_build ${MY_NAME}-${UBUNTU_TYPE}.json
 }
 
 build_my_centos7() {
@@ -191,11 +149,11 @@ main() {
   build_windows_10
   build_windows_2016
   build_windows_2012_r2
-  build_my_ubuntu_16_04_server
-  build_my_ubuntu_14_04_server
-  build_ubuntu_16_04_server
-  build_ubuntu_14_04_server
-  build_ubuntu_17_10_desktop
+  UBUNTU_TYPE="desktop" UBUNTU_MAJOR_VERSION="17.10" MY_NAME="ubuntu"    build_ubuntu
+  UBUNTU_TYPE="server"  UBUNTU_MAJOR_VERSION="16.04" MY_NAME="ubuntu"    build_ubuntu
+  UBUNTU_TYPE="server"  UBUNTU_MAJOR_VERSION="14.04" MY_NAME="ubuntu"    build_ubuntu
+  UBUNTU_TYPE="server"  UBUNTU_MAJOR_VERSION="16.04" MY_NAME="my-ubuntu" build_ubuntu
+  UBUNTU_TYPE="server"  UBUNTU_MAJOR_VERSION="14.04" MY_NAME="my-ubuntu" build_ubuntu
   build_my_centos7
   date
 }
