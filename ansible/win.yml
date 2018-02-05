@@ -1,12 +1,12 @@
 ---
 - hosts: all
-  gather_facts: yes
 
   vars:
     ntp_server: ntp.cesnet.cz
 
   roles:
-    - ansible-role-virtio-win
+    - role: ansible-role-virtio-win
+      virtio_win_iso_path: 'E:\\'
 
   tasks:
     - name: Start NTP service (w32time)
@@ -40,5 +40,7 @@
         account_disabled: no
       when: ansible_distribution | search("Microsoft Windows 10")
 
-    - name: Install windows updates
-      win_updates:
+     # Windows Updates is not working in ansible-2.4.0.0-1.fc27 and latest Ansible 2.4.2 is not working at all with Packer + WinRM
+     # That's the reason why updates are disabled for now...
+#    - name: Install windows updates
+#      win_updates:

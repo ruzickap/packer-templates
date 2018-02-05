@@ -2,11 +2,12 @@
   "_comment": "Build with `NAME=windows-10-enterprise-x64-eval WINDOWS_VERSION=10 packer build windows-10-enterprise-eval.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
-    "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
+    "cpus": "2",
+    "memory": "4G",
+    "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
     "iso_checksum": "3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
-    "virtio_driver_directory": "w10",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "disk_size": "51200"
@@ -27,50 +28,33 @@
       "winrm_use_ssl": "true",
       "winrm_insecure": "true",
 
-      "shutdown_command": "c:\\remove_nic.bat & del c:\\remove_nic.bat & shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_command": "timeout 100 & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
       "shutdown_timeout": "15m",
 
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "4G" ], [ "-smp", 2 ]],
+      "qemuargs": [[ "-display", "gtk" ], [ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ], ["-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3"], ["-drive", "file=output-{{ user `name` }}/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"]],
       "disk_size": "{{ user `disk_size` }}",
 
       "floppy_files": [
         "{{ user `autounattend` }}",
         "scripts/win-common/fixnetwork.ps1",
-
-        "{{ user `virtio_win_iso_dir` }}/NetKVM/{{user `virtio_driver_directory`}}/amd64/netkvm*.cat",
-        "{{ user `virtio_win_iso_dir` }}/NetKVM/{{user `virtio_driver_directory`}}/amd64/netkvm*.inf",
-        "{{ user `virtio_win_iso_dir` }}/NetKVM/{{user `virtio_driver_directory`}}/amd64/netkvm*.sys",
-        "{{ user `virtio_win_iso_dir` }}/NetKVM/{{user `virtio_driver_directory`}}/amd64/netkvm*.dll",
-
-        "{{ user `virtio_win_iso_dir` }}/qxldod/{{user `virtio_driver_directory`}}/amd64/qxldod*.cat",
-        "{{ user `virtio_win_iso_dir` }}/qxldod/{{user `virtio_driver_directory`}}/amd64/qxldod*.inf",
-        "{{ user `virtio_win_iso_dir` }}/qxldod/{{user `virtio_driver_directory`}}/amd64/qxldod*.sys",
-
-        "{{ user `virtio_win_iso_dir` }}/viostor/{{user `virtio_driver_directory`}}/amd64/viostor*.cat",
-        "{{ user `virtio_win_iso_dir` }}/viostor/{{user `virtio_driver_directory`}}/amd64/viostor*.inf",
-        "{{ user `virtio_win_iso_dir` }}/viostor/{{user `virtio_driver_directory`}}/amd64/viostor*.sys"
+        "scripts/win-common/unattend.xml"
       ]
     }
   ],
   "provisioners": [
     {
       "type": "ansible",
+      "pause_before": "1m",
       "user": "vagrant",
       "playbook_file": "ansible/win.yml",
       "extra_arguments": [
         "--connection", "packer",
-        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None virtio_driver_directory={{user `virtio_driver_directory`}}"
+        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
       ]
     },
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
-    },
-    {
-      "type": "file",
-      "pause_before": "5m",
-      "source": "scripts/win-common/remove_nic.bat",
-      "destination": "c:\\remove_nic.bat"
     }
   ],
   "post-processors": [
@@ -79,7 +63,7 @@
         "type": "vagrant",
         "compression_level": 9,
         "vagrantfile_template": "Vagrantfile-windows.template",
-        "output": "{{ user `name` }}-{{.Provider}}.box"
+        "output": "{{ user `name` }}-{{ .Provider }}.box"
       }
     ]
   ]

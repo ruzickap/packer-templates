@@ -1,8 +1,8 @@
 ==> ubuntu-17.10-desktop-amd64: Downloading or copying ISO
-    ubuntu-17.10-desktop-amd64: Downloading or copying: http://archive.ubuntu.com/ubuntu/dists/artful/main/installer-amd64/current/images/netboot/mini.iso
+    ubuntu-17.10-desktop-amd64: Found already downloaded, initial checksum matched, no download needed: http://archive.ubuntu.com/ubuntu/dists/artful/main/installer-amd64/current/images/netboot/mini.iso
 ==> ubuntu-17.10-desktop-amd64: Creating hard drive...
-==> ubuntu-17.10-desktop-amd64: Starting HTTP server on port 8927
-==> ubuntu-17.10-desktop-amd64: Found port for communicator (SSH, WinRM, etc): 2592.
+==> ubuntu-17.10-desktop-amd64: Starting HTTP server on port 8951
+==> ubuntu-17.10-desktop-amd64: Found port for communicator (SSH, WinRM, etc): 2396.
 ==> ubuntu-17.10-desktop-amd64: Looking for available port between 5900 and 6000 on 127.0.0.1
 ==> ubuntu-17.10-desktop-amd64: Starting VM, booting from CD-ROM
 ==> ubuntu-17.10-desktop-amd64: Overriding defaults Qemu arguments with QemuArgs...
@@ -40,9 +40,9 @@
     ubuntu-17.10-desktop-amd64: debconf: (This frontend requires a controlling tty.)
     ubuntu-17.10-desktop-amd64: debconf: falling back to frontend: Teletype
     ubuntu-17.10-desktop-amd64: dpkg-preconfigure: unable to re-open stdin:
-    ubuntu-17.10-desktop-amd64: Fetched 47.2 kB in 0s (350 kB/s)
+    ubuntu-17.10-desktop-amd64: Fetched 47.2 kB in 0s (60.5 kB/s)
     ubuntu-17.10-desktop-amd64: Selecting previously unselected package spice-vdagent.
-    ubuntu-17.10-desktop-amd64: (Reading database ... 129254 files and directories currently installed.)
+    ubuntu-17.10-desktop-amd64: (Reading database ... 129276 files and directories currently installed.)
     ubuntu-17.10-desktop-amd64: Preparing to unpack .../spice-vdagent_0.17.0-1ubuntu1_amd64.deb ...
     ubuntu-17.10-desktop-amd64: Unpacking spice-vdagent (0.17.0-1ubuntu1) ...
     ubuntu-17.10-desktop-amd64: Setting up spice-vdagent (0.17.0-1ubuntu1) ...
@@ -57,10 +57,10 @@
     ubuntu-17.10-desktop-amd64: + SSH_USER=vagrant
     ubuntu-17.10-desktop-amd64: + SSH_USER_HOME=/home/vagrant
     ubuntu-17.10-desktop-amd64: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
-    ubuntu-17.10-desktop-amd64: ==> Giving vagrant sudo powers
-    ubuntu-17.10-desktop-amd64: ==> Installing vagrant key
     ubuntu-17.10-desktop-amd64: + echo '==> Giving vagrant sudo powers'
+    ubuntu-17.10-desktop-amd64: ==> Giving vagrant sudo powers
     ubuntu-17.10-desktop-amd64: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
+    ubuntu-17.10-desktop-amd64: ==> Installing vagrant key
     ubuntu-17.10-desktop-amd64: + echo '==> Installing vagrant key'
     ubuntu-17.10-desktop-amd64: + '[' '!' -d /home/vagrant/.ssh ']'
     ubuntu-17.10-desktop-amd64: + mkdir /home/vagrant/.ssh
@@ -69,16 +69,16 @@
     ubuntu-17.10-desktop-amd64: + chmod 600 /home/vagrant/.ssh/authorized_keys
     ubuntu-17.10-desktop-amd64: + chown -R vagrant:vagrant /home/vagrant/.ssh
 ==> ubuntu-17.10-desktop-amd64: Provisioning with shell script: scripts/linux-common/cleanup.sh
-    ubuntu-17.10-desktop-amd64: ==> Cleaning up udev rules
     ubuntu-17.10-desktop-amd64: + SSH_USER=vagrant
+    ubuntu-17.10-desktop-amd64: ==> Cleaning up udev rules
     ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up udev rules'
     ubuntu-17.10-desktop-amd64: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
     ubuntu-17.10-desktop-amd64: + service rsyslog stop
     ubuntu-17.10-desktop-amd64: + '[' -f /etc/os-release ']'
     ubuntu-17.10-desktop-amd64: + grep -iq debian /etc/os-release
+    ubuntu-17.10-desktop-amd64: ==> Cleaning up leftover dhcp leases
     ubuntu-17.10-desktop-amd64: + export DEBIAN_FRONTEND=noninteractive
     ubuntu-17.10-desktop-amd64: + DEBIAN_FRONTEND=noninteractive
-    ubuntu-17.10-desktop-amd64: ==> Cleaning up leftover dhcp leases
     ubuntu-17.10-desktop-amd64: + echo 'pre-up sleep 2'
     ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up leftover dhcp leases'
     ubuntu-17.10-desktop-amd64: + '[' -d /var/lib/dhcp3 ']'
@@ -96,23 +96,13 @@
     ubuntu-17.10-desktop-amd64: Building dependency tree...
     ubuntu-17.10-desktop-amd64: Reading state information...
     ubuntu-17.10-desktop-amd64: + echo '==> Cleaning up tmp'
-    ubuntu-17.10-desktop-amd64: + rm -rf /tmp/script_2734.sh /tmp/ssh-HmMXTd8DS1 /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-colord.service-7NTEal /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-rtkit-daemon.service-AViBuV /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-spice-vdagentd.service-wQ1ITC /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-hostnamed.service-aRNNmW /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-resolved.service-sqstm4 /tmp/systemd-private-a7684467417d40b8baf74c99fb0fdbe3-systemd-timesyncd.service-7ymuLv
+    ubuntu-17.10-desktop-amd64: + rm -rf /tmp/script_7323.sh /tmp/ssh-NiciBt46YZ /tmp/systemd-private-0f15564bb0f944cdbcb3d63d73608272-colord.service-NTRADw /tmp/systemd-private-0f15564bb0f944cdbcb3d63d73608272-rtkit-daemon.service-uSIXNM /tmp/systemd-private-0f15564bb0f944cdbcb3d63d73608272-spice-vdagentd.service-zNZJuj /tmp/systemd-private-0f15564bb0f944cdbcb3d63d73608272-systemd-resolved.service-m611Fh /tmp/systemd-private-0f15564bb0f944cdbcb3d63d73608272-systemd-timesyncd.service-B16bkb
     ubuntu-17.10-desktop-amd64: ==> Cleaning up tmp
     ubuntu-17.10-desktop-amd64: + unset HISTFILE
     ubuntu-17.10-desktop-amd64: + rm -f /root/.bash_history
     ubuntu-17.10-desktop-amd64: + rm -f /home/vagrant/.bash_history
+    ubuntu-17.10-desktop-amd64: + read f
     ubuntu-17.10-desktop-amd64: + find /var/log -type f
-    ubuntu-17.10-desktop-amd64: + read f
-    ubuntu-17.10-desktop-amd64: + echo -ne ''
-    ubuntu-17.10-desktop-amd64: + read f
-    ubuntu-17.10-desktop-amd64: + echo -ne ''
-    ubuntu-17.10-desktop-amd64: + read f
-    ubuntu-17.10-desktop-amd64: + echo -ne ''
-    ubuntu-17.10-desktop-amd64: + read f
-    ubuntu-17.10-desktop-amd64: + echo -ne ''
-    ubuntu-17.10-desktop-amd64: + read f
-    ubuntu-17.10-desktop-amd64: + echo -ne ''
-    ubuntu-17.10-desktop-amd64: + read f
     ubuntu-17.10-desktop-amd64: + echo -ne ''
     ubuntu-17.10-desktop-amd64: + read f
     ubuntu-17.10-desktop-amd64: + echo -ne ''
@@ -152,11 +142,21 @@
     ubuntu-17.10-desktop-amd64: + read f
     ubuntu-17.10-desktop-amd64: + echo -ne ''
     ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
+    ubuntu-17.10-desktop-amd64: + echo -ne ''
+    ubuntu-17.10-desktop-amd64: + read f
     ubuntu-17.10-desktop-amd64: + echo '==> Clearing last login information'
     ubuntu-17.10-desktop-amd64: + dd if=/dev/zero of=/EMPTY_FILE bs=1M
     ubuntu-17.10-desktop-amd64: + echo 'dd exit code 1 is suppressed'
-    ubuntu-17.10-desktop-amd64: + rm -f /EMPTY_FILE
     ubuntu-17.10-desktop-amd64: dd exit code 1 is suppressed
+    ubuntu-17.10-desktop-amd64: + rm -f /EMPTY_FILE
     ubuntu-17.10-desktop-amd64: + sync
 ==> ubuntu-17.10-desktop-amd64: Gracefully halting virtual machine...
 ==> ubuntu-17.10-desktop-amd64: Converting hard drive...

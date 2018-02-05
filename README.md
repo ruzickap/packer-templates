@@ -22,7 +22,7 @@
 
 ## Login Credentials
 
-(root password is "vagrant" or is not set )
+(root/Administrator password is "vagrant" or is not set )
 
 * Username: vagrant
 * Password: vagrant
@@ -34,12 +34,12 @@
 * VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
 * QXL Video Card (SPICE display)
+* Channel Device (com.redhat.spice.0)
 
 
 ## Configuration
 
-#### Customized installation
-
+#### Customized Linux installation
 * there are usually many customization depends on distribution - all are described in Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
 * added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/main.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/Debian.yml) or [CentOS list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
@@ -50,8 +50,7 @@
 * sysstat (sar) is running every minute instead of every 5 minutes
 
 
-#### Minimal installation
-
+#### Minimal Linux installation
 * en_US.UTF-8
 * keymap for standard US keyboard
 * UTC timezone
@@ -60,3 +59,33 @@
 * unattended-upgrades
 * /dev/vda1 mounted on / using ext4/xfs filesystem (all files in one partition)
 * no swap
+
+
+#### Minimal Windows installation
+* UTC timezone
+* IEHarden disabled
+* Home Page set to "about:blank"
+* First Run Wizard disabled
+* Firewall allows Remote Desktop connections
+* AutoActivation skipped
+* DoNotOpenInitialConfigurationTasksAtLogon set to true
+* WinRM (ssl) enabled
+* New Network Window turned off
+* Administrator account enabled
+* EnableLUA
+
+Installed during installation:
+* NetKVM: VirtIO Network driver
+* qxldod: QXL graphics driver
+* viostor: VirtIO Block driver (VirtIO SCSI controller driver)
+
+Installed when the OS is installed via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml):
+* vioscsi: Support for VirtIO SCSI pass-through controller
+* Balloon: VirtIO Memory Balloon driver
+* viorng: VirtIO RNG Device driver
+* vioser: VirtIO Serial Driver
+* vioinput: VirtIO Input Driver - support for new QEMU input devices virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci, virtio-input-host-pci
+* pvpanic: QEMU pvpanic device driver
+* qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
+
+Image was finalized using sysprep with [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml).

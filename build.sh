@@ -72,7 +72,6 @@ build_ubuntu() {
   export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt"
 
   echo -e "\n\n*** $SHORT_DESCRIPTION ($NAME) [${MY_NAME}-${UBUNTU_TYPE}.json]\n"
-  echo "$DESCRIPTION" > $TMPDIR/${NAME}.md
   packer_build ${MY_NAME}-${UBUNTU_TYPE}.json
 }
 
@@ -98,12 +97,9 @@ build_windows_2012_r2() {
   export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
   export DESCRIPTION=$(render_template windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
 
-  wget -c -q $VIRTIO_WIN_ISO_URL -P $TMPDIR
-  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
-  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+  test -f $TMPDIR/virtio-win.iso || wget $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
   packer_build windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.json
-  sudo umount $VIRTIO_WIN_ISO_DIR
-  rmdir $VIRTIO_WIN_ISO_DIR
 }
 
 build_windows_2016() {
@@ -115,12 +111,9 @@ build_windows_2016() {
   export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
   export DESCRIPTION=$(render_template windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
 
-  wget -c -q $VIRTIO_WIN_ISO_URL -P $TMPDIR
-  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
-  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+  test -f $TMPDIR/virtio-win.iso || wget $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
   packer_build windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.json
-  sudo umount $VIRTIO_WIN_ISO_DIR
-  rmdir $VIRTIO_WIN_ISO_DIR
 }
 
 build_windows_10() {
@@ -131,12 +124,9 @@ build_windows_10() {
   export SHORT_DESCRIPTION="Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt"
   export DESCRIPTION=$(render_template windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
 
-  wget -c -q $VIRTIO_WIN_ISO_URL -P $TMPDIR
-  export VIRTIO_WIN_ISO_DIR=$(mktemp -d --suffix=${NAME}-iso --tmpdir=$TMPDIR)
-  sudo mount -o loop $TMPDIR/$VIRTIO_WIN_ISO $VIRTIO_WIN_ISO_DIR
+  test -f $TMPDIR/virtio-win.iso || wget $VIRTIO_WIN_ISO_URL -P $TMPDIR
+  export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
   packer_build windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.json
-  sudo umount $VIRTIO_WIN_ISO_DIR
-  rmdir $VIRTIO_WIN_ISO_DIR
 }
 
 
@@ -146,6 +136,8 @@ build_windows_10() {
 
 main() {
   date
+  # Do no use latest ansible 2.4.2 for now (Gathering Facts is not working properly on Windows + WinRM)
+  sudo dnf install -y ansible-2.4.0.0-1.fc27
   build_windows_10
   build_windows_2016
   build_windows_2012_r2

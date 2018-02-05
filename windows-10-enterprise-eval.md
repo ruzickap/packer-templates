@@ -16,14 +16,15 @@
 
 ## Requirements for Linux distributions
 Unfortunately you can not use the vagrant package provided by your Linux distribution (at least for Fedora / Debian).
-Both distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM). Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm) including the Ruby WinRM library is part of official Vagrant package.
+Both distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM).
+Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm) including the Ruby WinRM library is part of official Vagrant package.
 You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation) supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel) option and which is usually not part of the distributions.
 
-Here are the steps for Fedora 23 and 24 how to install Vagrant from the official web pages:
+Here are the steps for latest Fedora how to install Vagrant from the official web pages:
 \`\`\`
 dnf remove vagrant
 dnf install -y libvirt-daemon-kvm qemu-kvm libvirt-devel
-dnf install -y https://releases.hashicorp.com/vagrant/2.0.0/vagrant_2.0.0_x86_64.rpm
+dnf install -y https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.rpm
 vagrant plugin install vagrant-libvirt
 \`\`\`
 
@@ -87,9 +88,11 @@ Installed when the OS is installed via Ansible playbook [win.yml](https://github
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
+Image was finalized using sysprep with [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml).
+
 
 ## Thanks to...
 
 * https://github.com/boxcutter/windows
-* https://github.com/joefitzgerald/packer-windows - [fixnetwork.ps1](https://github.com/joefitzgerald/packer-windows/blob/master/scripts/fixnetwork.ps1)
+* https://github.com/StefanScherer/packer-windows
 * https://github.com/hashicorp/best-practices

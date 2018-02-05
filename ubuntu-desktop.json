@@ -46,7 +46,7 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash -x '{{.Path}}'",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
       "scripts": [
         "scripts/ubuntu/update.sh",
         "scripts/ubuntu/spice-vdagent.sh",
@@ -61,7 +61,7 @@
         "type": "vagrant",
         "compression_level": 9,
         "vagrantfile_template": "Vagrantfile-linux.template",
-        "output": "{{ user `name` }}-{{.Provider}}.box"
+        "output": "{{ user `name` }}-{{ .Provider }}.box"
       }
     ]
   ]

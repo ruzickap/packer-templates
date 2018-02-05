@@ -4,8 +4,7 @@ Vagrant.configure("2") do |config|
     libvirt.nic_model_type = "virtio"
     libvirt.video_type = "qxl"
     libvirt.graphics_type = "spice"
-    # Disabled due to: https://github.com/vagrant-libvirt/vagrant-libvirt/issues/831
-    # libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
+    libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
     libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
     libvirt.random :model => 'random'
     libvirt.memory = 2048
