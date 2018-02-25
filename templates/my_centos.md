@@ -1,6 +1,6 @@
-# [Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
+# [My CentOS ${CENTOS_VERSION}](https://www.centos.org/)
 
-## Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} base box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Modified CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
 
 ---
 
@@ -38,7 +38,7 @@ vagrant ssh
 
 ## Login Credentials
 
-(root password is not set)
+Root password is: vagrant
 
 * Username: vagrant
 * Password: vagrant
@@ -54,8 +54,9 @@ vagrant ssh
 
 ## Configuration
 
-#### Minimal installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/preseed.cfg)
-(it's very close to official Ubuntu [preseed file](https://help.ubuntu.com/lts/installation-guide/example-preseed.txt))
+Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.iso
+
+#### Preconfigured installation - see the [kickstart file](https://github.com/ruzickap/packer-templates/blob/master/http/centos${CENTOS_VERSION}/my-ks.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible) applied.
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -63,5 +64,15 @@ vagrant ssh
 * NTP enabled (default configuration)
 * full-upgrade
 * unattended-upgrades
-* /dev/vda1 mounted on / using ext4 filesystem (all files in one partition)
+* /dev/vda1 mounted on / using xfs filesystem (all files in one partition)
 * no swap
+
+---
+
+* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/common_variables.yml) and [CentOS list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/RedHat.yml)
+* mouse disabled in Midnight Commander + other MC customizations
+* preconfigured snmpd, vim, screen
+* logrotate using xz instead of gzip
+* logwatch is running once per week instead of once per day
+* sshd is using only the strong algorithms
+* sysstat (sar) is running every minute instead of every 5 minutes

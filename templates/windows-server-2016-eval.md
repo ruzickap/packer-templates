@@ -1,5 +1,5 @@
-# [Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^} ${WINDOWS_EDITION^} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE})
-## Clean and minimal Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation base box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+# [Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_EDITION^} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_TYPE}-${WINDOWS_VERSION})
+## Clean and minimal Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) providers.
 
 ---
 

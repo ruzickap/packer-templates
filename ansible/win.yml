@@ -2,11 +2,12 @@
 - hosts: all
 
   vars:
-    ntp_server: ntp.cesnet.cz
+    ntp_server: pool.ntp.org
 
   roles:
     - role: ansible-role-virtio-win
       virtio_win_iso_path: 'E:\\'
+      when: ansible_system_vendor == "QEMU"
 
   tasks:
     - name: Start NTP service (w32time)

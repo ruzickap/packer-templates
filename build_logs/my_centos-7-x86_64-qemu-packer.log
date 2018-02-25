@@ -1,0 +1,403 @@
+==> qemu: Downloading or copying ISO
+    qemu: Found already downloaded, initial checksum matched, no download needed: http://ftp.linux.cz/pub/linux/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1708.iso
+==> qemu: Creating hard drive...
+==> qemu: Starting HTTP server on port 8178
+==> qemu: Found port for communicator (SSH, WinRM, etc): 2810.
+==> qemu: Looking for available port between 5900 and 6000 on 127.0.0.1
+==> qemu: Starting VM, booting from CD-ROM
+    qemu: The VM will be run headless, without a GUI. If you want to
+    qemu: view the screen of the VM, connect via VNC without a password to
+    qemu: vnc://127.0.0.1:5959
+==> qemu: Overriding defaults Qemu arguments with QemuArgs...
+==> qemu: Waiting 2s for boot...
+==> qemu: Connecting to VM via VNC
+==> qemu: Typing the boot command over VNC...
+==> qemu: Waiting for SSH to become available...
+==> qemu: Connected to SSH!
+==> qemu: Provisioning with shell script: scripts/linux-common/vagrant.sh
+    qemu: + date
+    qemu: + SSH_USER=vagrant
+    qemu: ==> Giving vagrant sudo powers
+    qemu: ==> Installing vagrant key
+    qemu: + SSH_USER_HOME=/home/vagrant
+    qemu: + VAGRANT_INSECURE_KEY='ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+    qemu: + echo '==> Giving vagrant sudo powers'
+    qemu: + echo 'vagrant        ALL=(ALL)       NOPASSWD: ALL'
+    qemu: + echo '==> Installing vagrant key'
+    qemu: + '[' '!' -d /home/vagrant/.ssh ']'
+    qemu: + mkdir /home/vagrant/.ssh
+    qemu: + chmod 700 /home/vagrant/.ssh
+    qemu: + echo 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key'
+    qemu: + chmod 600 /home/vagrant/.ssh/authorized_keys
+    qemu: + chown -R vagrant:vagrant /home/vagrant/.ssh
+==> qemu: Provisioning with Ansible...
+==> qemu: Executing Ansible: ansible-playbook --extra-vars packer_build_name=qemu packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible837485039 /home/pruzicka/data/github/packer-templates/ansible/site.yml -e ansible_ssh_private_key_file=/var/tmp/ansible-key278593232
+    qemu:
+    qemu: PLAY [all] *********************************************************************
+    qemu:
+    qemu: TASK [Gathering Facts] *********************************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Include OS-specific variables] *************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Update repositories] ***********************************
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [common_defaults : Install EPEL repo] *************************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Import EPEL GPG key] ***********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Install common packages] *******************************
+    qemu: changed: [default] => (item=acpid)
+    qemu: changed: [default] => (item=atop)
+    qemu: ok: [default] => (item=bash-completion)
+    qemu: changed: [default] => (item=byobu)
+    qemu: changed: [default] => (item=cloud-init)
+    qemu: ok: [default] => (item=curl)
+    qemu: changed: [default] => (item=dstat)
+    qemu: ok: [default] => (item=ethtool)
+    qemu: changed: [default] => (item=haveged)
+    qemu: changed: [default] => (item=htop)
+    qemu: changed: [default] => (item=iftop)
+    qemu: changed: [default] => (item=iotop)
+    qemu: changed: [default] => (item=lftp)
+    qemu: ok: [default] => (item=logrotate)
+    qemu: changed: [default] => (item=logwatch)
+    qemu: changed: [default] => (item=lshw)
+    qemu: ok: [default] => (item=lsof)
+    qemu: ok: [default] => (item=man)
+    qemu: changed: [default] => (item=mc)
+    qemu: ok: [default] => (item=mlocate)
+    qemu: changed: [default] => (item=mutt)
+    qemu: changed: [default] => (item=nmap)
+    qemu: changed: [default] => (item=ntp)
+    qemu: ok: [default] => (item=ntpdate)
+    qemu: ok: [default] => (item=openssh-server)
+    qemu: ok: [default] => (item=parted)
+    qemu: ok: [default] => (item=postfix)
+    qemu: ok: [default] => (item=rsync)
+    qemu: ok: [default] => (item=screen)
+    qemu: ok: [default] => (item=strace)
+    qemu: ok: [default] => (item=sysstat)
+    qemu: ok: [default] => (item=tcpdump)
+    qemu: changed: [default] => (item=telnet)
+    qemu: ok: [default] => (item=traceroute)
+    qemu: ok: [default] => (item=@base)
+    qemu: ok: [default] => (item=audit)
+    qemu: ok: [default] => (item=libselinux-python)
+    qemu: changed: [default] => (item=net-snmp)
+    qemu: changed: [default] => (item=net-snmp-utils)
+    qemu: ok: [default] => (item=openssh-clients)
+    qemu: ok: [default] => (item=selinux-policy)
+    qemu: ok: [default] => (item=sos)
+    qemu: changed: [default] => (item=tmpwatch)
+    qemu: ok: [default] => (item=tuned)
+    qemu: ok: [default] => (item=vim-enhanced)
+    qemu: changed: [default] => (item=yum-cron)
+    qemu:
+    qemu: TASK [common_defaults : Chnage root password] **********************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Disable mouse in mc (/etc/profile.d/mc.sh)] ************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Create directory "/etc/skel/.config/mc"] ***************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Create directory for mc inside /etc/skel] **************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Check if user dirctory exists] *************************
+    qemu: ok: [default] => (item=/home/ubuntu)
+    qemu: ok: [default] => (item=/home/centos)
+    qemu: ok: [default] => (item=/home/vagrant)
+    qemu: ok: [default] => (item=/root)
+    qemu:
+    qemu: TASK [common_defaults : Copy /etc/skel/.config/ directory to root] *************
+    qemu: skipping: [default] => (item=/home/ubuntu)
+    qemu: skipping: [default] => (item=/home/centos)
+    qemu: changed: [default] => (item=/home/vagrant)
+    qemu: changed: [default] => (item=/root)
+    qemu:
+    qemu: TASK [common_defaults : Change owner for skel_copy_users/.config] **************
+    qemu: skipping: [default] => (item=/home/ubuntu)
+    qemu: skipping: [default] => (item=/home/centos)
+    qemu: changed: [default] => (item=/home/vagrant)
+    qemu: ok: [default] => (item=/root)
+    qemu:
+    qemu: TASK [common_defaults : Change rights for skel_copy_users/.config] *************
+    qemu: skipping: [default] => (item=/home/ubuntu)
+    qemu: skipping: [default] => (item=/home/centos)
+    qemu: changed: [default] => (item=/home/vagrant)
+    qemu: changed: [default] => (item=/root)
+    qemu:
+    qemu: TASK [common_defaults : Set format for history command (/etc/profile.d/history_format.sh)] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Add sar alias (/etc/bashrc)] ***************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Tweak vim (/etc/vimrc)] ********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Tweak screen (/etc/screenrc)] **************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Tweak logrotate (/etc/logrotate.conf)] *****************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Change logwatch to display weekly status (/etc/logwatch/conf/logwatch.conf)] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Move logwatch cron entry from cron.daily to cron.weekly] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Place snmpd.conf file to the /etc/snmp/] ***************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Configure sshd] ****************************************
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [common_defaults : Allow root SSH access and set "PasswordAuthentication yes" in /etc/ssh/sshd_config] ***
+    qemu: changed: [default] => (item={u'regexp': u'^PermitRootLogin', u'line': u'PermitRootLogin yes'})
+    qemu: ok: [default] => (item={u'regexp': u'^PasswordAuthentication', u'line': u'PasswordAuthentication yes'})
+    qemu:
+    qemu: TASK [common_defaults : Configure ssh client] **********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Tweak sysstat in cron.d] *******************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Configure cloud-init] **********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Remove /dev/fd0 (floppy) from /etc/fstab (floppy is presend by default when using KVM provisioner)] ***
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Ensure fstab uses nodiratime and noatime] **************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Check if /root/.ssh/authorized_keys exists] ************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Remove the Amazon AWS "disable root" feature] **********
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [common_defaults : Check if the X server is installed] ********************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Install spice / qxl packages (needed for desktop)] *****
+    qemu: skipping: [default] => (item=spice-vdagent)
+    qemu: skipping: [default] => (item=xorg-x11-drv-qxl)
+    qemu:
+    qemu: TASK [common_defaults : include_tasks] *****************************************
+    qemu: included: /home/pruzicka/data/github/packer-templates/ansible/roles/common_defaults/tasks/RedHat.yml for default
+    qemu:
+    qemu: TASK [common_defaults : Upgrade packages] **************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Remove useless packages] *******************************
+    qemu: ok: [default] => (item=aic94xx-firmware)
+    qemu: ok: [default] => (item=alsa-firmware)
+    qemu: ok: [default] => (item=alsa-lib)
+    qemu: ok: [default] => (item=alsa-tools-firmware)
+    qemu: ok: [default] => (item=biosdevname)
+    qemu: ok: [default] => (item=iprutils)
+    qemu: ok: [default] => (item=ivtv-firmware)
+    qemu: ok: [default] => (item=iwl100-firmware)
+    qemu: ok: [default] => (item=iwl1000-firmware)
+    qemu: ok: [default] => (item=iwl105-firmware)
+    qemu: ok: [default] => (item=iwl135-firmware)
+    qemu: ok: [default] => (item=iwl2000-firmware)
+    qemu: ok: [default] => (item=iwl2030-firmware)
+    qemu: ok: [default] => (item=iwl3160-firmware)
+    qemu: ok: [default] => (item=iwl3945-firmware)
+    qemu: ok: [default] => (item=iwl4965-firmware)
+    qemu: ok: [default] => (item=iwl5000-firmware)
+    qemu: ok: [default] => (item=iwl5150-firmware)
+    qemu: ok: [default] => (item=iwl6000-firmware)
+    qemu: ok: [default] => (item=iwl6000g2a-firmware)
+    qemu: ok: [default] => (item=iwl6000g2b-firmware)
+    qemu: ok: [default] => (item=iwl6050-firmware)
+    qemu: ok: [default] => (item=iwl7260-firmware)
+    qemu: ok: [default] => (item=libertas-sd8686-firmware)
+    qemu: ok: [default] => (item=libertas-sd8787-firmware)
+    qemu: ok: [default] => (item=libertas-usb8388-firmware)
+    qemu: changed: [default] => (item=linux-firmware)
+    qemu:
+    qemu: TASK [common_defaults : Add nice prompt for root user] *************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Tweak auditlog pre-prepare audit all commands run in the system] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Disable selinux] ***************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Check the presence of /etc/default/grub] ***************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [common_defaults : Backup grub settings] **********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Modify grub settings] **********************************
+    qemu: changed: [default] => (item={u'regexp': u'^GRUB_TIMEOUT=.*', u'replace': u'GRUB_TIMEOUT=1'})
+    qemu: ok: [default] => (item={u'regexp': u'nofb quiet splash=quiet', u'replace': u'nofb quiet rootflags=usrquota,grpquota vmwgfx.enable_fbdev=0 verbose consoleblank=0 no_timer_check splash=quiet'})
+    qemu:
+    qemu: TASK [common_defaults : Change HW Clock configuration] *************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Set NTP step stickers] *********************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Backup original /etc/yum/yum-cron.conf and /etc/yum/yum-cron-hourly.conf if exists] ***
+    qemu:
+    qemu: TASK [common_defaults : Configure yum-cron] ************************************
+    qemu: skipping: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
+    qemu:
+    qemu: TASK [common_defaults : Configure yum-cron] ************************************
+    qemu: skipping: [default] => (item={u'regexp': u'^update_cmd.*', u'replace': u'update_cmd = security-severity:Critical'})
+    qemu: skipping: [default] => (item={u'regexp': u'^apply_updates.*', u'replace': u'apply_updates = yes'})
+    qemu: skipping: [default] => (item={u'regexp': u'^update_messages.*', u'replace': u'update_messages = yes'})
+    qemu: skipping: [default] => (item={u'regexp': u'^download_updates.*', u'replace': u'download_updates = yes'})
+    qemu:
+    qemu: TASK [common_defaults : Add /usr/local/bin/etc_issue.sh script] ****************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Create link /usr/local/bin/etc_issue.sh /etc/profile.d/etc_issue.sh] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Prevent systemd to log too many messages like "Starting Session 1398 of user root."] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [common_defaults : Disable and stop services during boot] *****************
+    qemu: ok: [default] => (item=abrt-ccpp)
+    qemu: ok: [default] => (item=abrtd)
+    qemu: changed: [default] => (item=abrt-oops)
+    qemu: changed: [default] => (item=abrt-vmcore)
+    qemu: changed: [default] => (item=abrt-xorg)
+    qemu: changed: [default] => (item=chronyd)
+    qemu: changed: [default] => (item=dmraid-activation)
+    qemu: changed: [default] => (item=kdump)
+    qemu: ok: [default] => (item=mdmonitor)
+    qemu: changed: [default] => (item=smartd)
+    qemu:
+    qemu: TASK [common_defaults : Enable services during boot] ***************************
+    qemu: changed: [default] => (item=ntpd)
+    qemu: changed: [default] => (item=ntpdate)
+    qemu: changed: [default] => (item=snmpd)
+    qemu: ok: [default] => (item=yum-cron)
+    qemu:
+    qemu: RUNNING HANDLER [common_defaults : restart sshd] *******************************
+    qemu: changed: [default]
+    qemu:
+    qemu: RUNNING HANDLER [common_defaults : reload snmpd] *******************************
+    qemu: changed: [default]
+    qemu:
+    qemu: RUNNING HANDLER [common_defaults : generate grub configuration] ****************
+    qemu: changed: [default]
+    qemu:
+    qemu: PLAY RECAP *********************************************************************
+    qemu: default                    : ok=48   changed=37   unreachable=0    failed=0
+    qemu:
+==> qemu: Provisioning with shell script: scripts/linux-common/cleanup.sh
+    qemu: ==> Cleaning up udev rules
+    qemu: + SSH_USER=vagrant
+    qemu: + echo '==> Cleaning up udev rules'
+    qemu: + rm -rf /dev/.udev/ /lib/udev/rules.d/75-persistent-net-generator.rules
+    qemu: + service rsyslog stop
+    qemu: Redirecting to /bin/systemctl stop rsyslog.service
+    qemu: + '[' -f /etc/os-release ']'
+    qemu: + grep -iq debian /etc/os-release
+    qemu: + service auditd stop
+    qemu: Stopping logging: [  OK  ]
+    qemu: + sed -i '/^(HWADDR|UUID)=/d' /etc/sysconfig/network-scripts/ifcfg-eth0
+    qemu: + yum clean all
+    qemu: Loaded plugins: fastestmirror, langpacks
+    qemu: Cleaning repos: base epel extras updates
+    qemu: Cleaning up everything
+    qemu: Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
+    qemu: Cleaning up list of fastest mirrors
+    qemu: + echo '==> Cleaning up tmp'
+    qemu: + rm -rf /tmp/ks-script-cbiQR5 /tmp/ks-script-TYjyI4 /tmp/script_3748.sh /tmp/ssh-9YZ02LPYop /tmp/yum.log
+    qemu: ==> Cleaning up tmp
+    qemu: + unset HISTFILE
+    qemu: + rm -f /root/.bash_history
+    qemu: + rm -f /home/vagrant/.bash_history
+    qemu: + find /var/log -type f
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: ==> Clearing last login information
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo -ne ''
+    qemu: + read f
+    qemu: + echo '==> Clearing last login information'
+    qemu: + dd if=/dev/zero of=/EMPTY_FILE bs=1M
+    qemu: dd exit code 1 is suppressed
+    qemu: + echo 'dd exit code 1 is suppressed'
+    qemu: + rm -f /EMPTY_FILE
+    qemu: + sync
+==> qemu: Gracefully halting virtual machine...
+==> qemu: Converting hard drive...
+==> qemu: Running post-processor: vagrant
+==> qemu (vagrant): Creating Vagrant box for 'libvirt' provider
+    qemu (vagrant): Copying from artifact: my_centos-7-x86_64-qemu/my_centos-7-x86_64
+    qemu (vagrant): Using custom Vagrantfile: Vagrantfile-linux.template
+    qemu (vagrant): Compressing: Vagrantfile
+    qemu (vagrant): Compressing: box.img
+    qemu (vagrant): Compressing: metadata.json
+Build 'qemu' finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> qemu: 'libvirt' provider box: my_centos-7-x86_64-libvirt.box

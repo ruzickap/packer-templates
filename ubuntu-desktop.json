@@ -3,19 +3,20 @@
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
-    "memory": "4G",
+    "memory": "4096",
     "ubuntu_type": "{{ env `UBUNTU_TYPE` }}",
     "iso_checksum": "05db73efd450156d81a519d35bc7b8109101e12d7ee8d49da695778df568cb36",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "preseed.cfg",
-    "disk_size": "51200"
+    "disk_size": "51200",
+    "headless": "false"
   },
 
   "builders":
   [
     {
-      "name": "{{ user `name` }}",
+      "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
@@ -23,11 +24,12 @@
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "2G" ], [ "-smp", 2 ]],
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
+      "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
       "boot_wait": "2s",
       "boot_command":
       [
@@ -49,6 +51,7 @@
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
       "scripts": [
         "scripts/ubuntu/update.sh",
+        "scripts/ubuntu/disable_apt-daily.sh",
         "scripts/ubuntu/spice-vdagent.sh",
         "scripts/linux-common/vagrant.sh",
         "scripts/linux-common/cleanup.sh"

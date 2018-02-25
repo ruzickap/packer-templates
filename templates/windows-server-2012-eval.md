@@ -1,5 +1,5 @@
-# [Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_VERSION}-${WINDOWS_EDITION})
-## Clean and minimal Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation base box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+# [Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^} ${WINDOWS_EDITION^} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE})
+## Clean and minimal Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) providers.
 
 ---
 
@@ -58,7 +58,7 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 
 ## Configuration
 
-#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}/Autounattend.xml)
 
 * UTC timezone
 * IEHarden disabled
@@ -69,8 +69,6 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
 * WinRM (ssl) enabled
 * New Network Window turned off
-* Administrator account enabled
-* EnableLUA
 
 #### Additional Drivers installed (needed by libvirt) - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 

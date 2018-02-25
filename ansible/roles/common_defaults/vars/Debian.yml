@@ -19,6 +19,7 @@ distribution_specific_packages:
   - debconf-utils
   - dnsutils
   - bsd-mailx
+  - ifenslave
   - linux-virtual
   - mtr-tiny
   - snmp
@@ -35,7 +36,5 @@ desktop_spice_packages:
   - xserver-xorg-video-qxl
 
 disable_distribution_specific_boot_services:
-  - apt-daily.service
-  - apt-daily.timer
 
 enable_distribution_specific_boot_services:

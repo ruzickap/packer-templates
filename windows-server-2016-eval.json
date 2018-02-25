@@ -3,20 +3,21 @@
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
-    "memory": "4G",
+    "memory": "4096",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "http://care.dlservice.microsoft.com/dl/download/1/4/9/149D5452-9B29-4274-B6B3-5361DBDA30BC/14393.0.161119-1705.RS1_REFRESH_SERVER_EVAL_X64FRE_EN-US.ISO",
     "iso_checksum": "1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f",
     "autounattend": "http/windows-{{ env `WINDOWS_TYPE` }}-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
-    "disk_size": "51200"
+    "disk_size": "51200",
+    "headless": "false"
   },
 
   "builders":
   [
     {
-      "name": "{{ user `name` }}",
+      "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
@@ -27,12 +28,57 @@
       "winrm_timeout": "12h",
       "winrm_use_ssl": "true",
       "winrm_insecure": "true",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{ user `name` }}-qemu",
 
       "shutdown_command": "timeout 100 & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
       "shutdown_timeout": "15m",
 
-      "qemuargs": [[ "-display", "gtk" ], [ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ], ["-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3"], ["-drive", "file=output-{{ user `name` }}/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"]],
+      "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ], ["-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3"], ["-drive", "file={{ user `name` }}-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"]],
       "disk_size": "{{ user `disk_size` }}",
+
+      "floppy_files": [
+        "{{ user `autounattend` }}",
+        "scripts/win-common/fixnetwork.ps1",
+        "scripts/win-common/unattend.xml"
+      ]
+    },
+    {
+      "vm_name": "{{ user `name` }}",
+      "type": "virtualbox-iso",
+      "guest_os_type": "Windows2016_64",
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "{{ user `iso_checksum` }}",
+      "iso_urls": [ "{{ user `iso_url` }}" ],
+      "communicator": "winrm",
+      "winrm_username": "{{ user `winrm_username` }}",
+      "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "12h",
+      "winrm_use_ssl": "true",
+      "winrm_insecure": "true",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{ user `name` }}-virtualbox-iso",
+      "guest_additions_mode": "attach",
+
+      "shutdown_command": "timeout 100 & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
+      "shutdown_timeout": "15m",
+
+      "hard_drive_interface": "sata",
+      "disk_size": "{{ user `disk_size` }}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ]
+      ],
 
       "floppy_files": [
         "{{ user `autounattend` }}",
@@ -43,8 +89,17 @@
   ],
   "provisioners": [
     {
+      "type": "powershell",
+      "only": ["virtualbox-iso"],
+      "inline":
+        [
+          "$cert = (Get-AuthenticodeSignature 'E:\\VBoxWindowsAdditions.exe').SignerCertificate; [System.IO.File]::WriteAllBytes('C:\\vbox.cer', $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));",
+          "certutil.exe -f -addstore TrustedPublisher C:\\vbox.cer",
+          "E:\\VBoxWindowsAdditions.exe /S"
+        ]
+    },
+    {
       "type": "ansible",
-      "pause_before": "1m",
       "user": "vagrant",
       "playbook_file": "ansible/win.yml",
       "extra_arguments": [

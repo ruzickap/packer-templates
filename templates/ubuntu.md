@@ -1,6 +1,6 @@
-# [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
+# [Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Modified Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
 
 ---
 
@@ -38,7 +38,7 @@ vagrant ssh
 
 ## Login Credentials
 
-Root password is: vagrant
+(root password is not set)
 
 * Username: vagrant
 * Password: vagrant
@@ -54,7 +54,8 @@ Root password is: vagrant
 
 ## Configuration
 
-#### Preconfigured installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/) applied.
+#### Minimal installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/preseed.cfg)
+(it's very close to official Ubuntu [preseed file](https://help.ubuntu.com/lts/installation-guide/example-preseed.txt))
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -64,13 +65,3 @@ Root password is: vagrant
 * unattended-upgrades
 * /dev/vda1 mounted on / using ext4 filesystem (all files in one partition)
 * no swap
-
----
-
-* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/common_variables.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/Debian.yml)
-* mouse disabled in Midnight Commander + other MC customizations
-* preconfigured snmpd, vim, screen
-* logrotate using xz instead of gzip
-* logwatch is running once per week instead of once per day
-* sshd is using only the strong algorithms
-* sysstat (sar) is running every minute instead of every 5 minutes

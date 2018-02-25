@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: false
+
+  vars:
+    build_path: /var/tmp/
+    packages:
+      - ansible
+      - curl
+      - git
+      - python-winrm
+      - qemu-kvm
+      - virtualbox
+      - unzip
+      - wget
+    packer_url: https://releases.hashicorp.com/packer/1.2.0/packer_1.2.0_linux_amd64.zip
+    packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
+
+  tasks:
+    - name: Install Python 2
+      raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
+
+    - name: Gather facts
+      setup:
+
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+      with_items: "{{ packages }}"
+
+    - name: Download and unzip packer
+      unarchive:
+        src: "{{ packer_url }}"
+        dest: /usr/local/bin/
+        remote_src: yes
+
+    - name: Move packer to packerio
+      command: creates="/usr/local/bin/packerio" mv /usr/local/bin/packer /usr/local/bin/packerio
+
+    - name: Clone the git repository
+      git:
+        repo: "{{ packer_templates_git_repo }}"
+        dest: "{{ build_path }}/packer-templates"
+
+    - name: Run build-all.sh script to build all boxes
+      shell: build_all.sh
+      args:
+        chdir: "{{ build_path }}/packer-templates"
+
+    # - name: Run vagrant_init_destroy_boxes.sh script to test all created box images
+    #   shell: vagrant_init_destroy_boxes.sh
+    #   args:
+    #     chdir: "{{ build_path }}/packer-templates"

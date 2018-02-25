@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.provider :libvirt do |libvirt|
+  config.vm.provider :libvirt do |libvirt, override|
     libvirt.disk_bus = "virtio"
     libvirt.nic_model_type = "virtio"
     libvirt.video_type = "qxl"
@@ -8,6 +8,13 @@ Vagrant.configure("2") do |config|
     libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
     libvirt.random :model => 'random'
     libvirt.memory = 2048
+  end
+
+  config.vm.provider :virtualbox do |virtualbox, override|
+    virtualbox.gui = true
+    virtualbox.customize ["modifyvm", :id, "--memory", 2048]
+    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
+    virtualbox.customize ["modifyvm", :id, "--vram", 128]
   end
 
   # Port forward for RDP

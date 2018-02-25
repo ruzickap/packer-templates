@@ -1,6 +1,6 @@
-# [My CentOS ${CENTOS_VERSION}](https://www.centos.org/)
+# [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Modified CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} box with [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
+## Modified Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider.
 
 ---
 
@@ -54,9 +54,7 @@ Root password is: vagrant
 
 ## Configuration
 
-Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.iso
-
-#### Preconfigured installation - see the [kickstart file](https://github.com/ruzickap/packer-templates/blob/master/http/centos${CENTOS_VERSION}/my-ks.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible) applied.
+#### Preconfigured installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/) applied.
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -64,12 +62,12 @@ Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.i
 * NTP enabled (default configuration)
 * full-upgrade
 * unattended-upgrades
-* /dev/vda1 mounted on / using xfs filesystem (all files in one partition)
+* /dev/vda1 mounted on / using ext4 filesystem (all files in one partition)
 * no swap
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/common_variables.yml) and [CentOS list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/RedHat.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/common_variables.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/Debian.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip

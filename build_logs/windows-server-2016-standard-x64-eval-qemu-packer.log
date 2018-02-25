@@ -1,0 +1,166 @@
+==> qemu: Downloading or copying ISO
+    qemu: Found already downloaded, initial checksum matched, no download needed: http://care.dlservice.microsoft.com/dl/download/1/4/9/149D5452-9B29-4274-B6B3-5361DBDA30BC/14393.0.161119-1705.RS1_REFRESH_SERVER_EVAL_X64FRE_EN-US.ISO
+==> qemu: Creating floppy disk...
+    qemu: Copying files flatly from floppy_files
+    qemu: Copying file: http/windows-server-2016/Autounattend.xml
+    qemu: Copying file: scripts/win-common/fixnetwork.ps1
+    qemu: Copying file: scripts/win-common/unattend.xml
+    qemu: Done copying files from floppy_files
+    qemu: Collecting paths from floppy_dirs
+    qemu: Resulting paths from floppy_dirs : []
+    qemu: Done copying paths from floppy_dirs
+==> qemu: Creating hard drive...
+==> qemu: Found port for communicator (SSH, WinRM, etc): 4433.
+==> qemu: Looking for available port between 5900 and 6000 on 127.0.0.1
+==> qemu: Starting VM, booting from CD-ROM
+    qemu: The VM will be run headless, without a GUI. If you want to
+    qemu: view the screen of the VM, connect via VNC without a password to
+    qemu: vnc://127.0.0.1:5910
+==> qemu: Overriding defaults Qemu arguments with QemuArgs...
+==> qemu: Waiting 10s for boot...
+==> qemu: Connecting to VM via VNC
+==> qemu: Typing the boot command over VNC...
+==> qemu: Waiting for WinRM to become available...
+    qemu: WinRM connected.
+    qemu: #< CLIXML
+    qemu: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+==> qemu: Connected to WinRM!
+==> qemu: Provisioning with Ansible...
+==> qemu: Executing Ansible: ansible-playbook --extra-vars packer_build_name=qemu packer_builder_type=qemu -i /var/tmp/packer-provisioner-ansible790207088 /home/pruzicka/data/github/packer-templates/ansible/win.yml -e ansible_ssh_private_key_file=/var/tmp/ansible-key194187285 --connection packer --extra-vars ansible_shell_type=powershell ansible_shell_executable=None
+    qemu:
+    qemu: PLAY [all] *********************************************************************
+    qemu:
+    qemu: TASK [Gathering Facts] *********************************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Include OS-specific variables.] ****************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Get list of all drivers] ***********************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Check if Red Hat certificate is not already installed] ***
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Download virtio-win.iso] ***********************
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Mount virtio-win.iso] **************************
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Set the virtio_win_iso_path from predefined value or mounted ISO] ***
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Export Cert from qxldod] ***********************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Export Cert from balloon] **********************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install RH certificate (qxldod) to TrustedPublisher certificate store] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install RH certificate (Balloon) to TrustedPublisher certificate store] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install the Virtio Network Driver (netkvm)] ****
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install the Virtio Block Driver (viostor)] *****
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install the QXL Graphics Driver (qxldod)] ******
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install the Balloon Driver (Balloon)] **********
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install Virtio RNG driver (viorng)] ************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install Virtio serial driver (vioserial)] ******
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install Virtio Input driver (vioinput)] ********
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install pvpanic device driver (pvpanic)] *******
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install Qemu Guest Agent (qemu-ga-x64.msi)] ****
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install and enable spice-webdavd service (spice-webdavd-x64-latest.msi)] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Unmount virtio-win.iso] ************************
+    qemu: skipping: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Delete previously downloaded iso and the certificates C:\{redhat_balloon.cer,redhat_qxldod.cer}] ***
+    qemu: changed: [default] => (item=C:\Users\vagrant\AppData\Local\Temp\redhat_balloon.cer)
+    qemu: changed: [default] => (item=C:\Users\vagrant\AppData\Local\Temp\redhat_qxldod.cer)
+    qemu: ok: [default] => (item=C:\Users\vagrant\AppData\Local\Temp\virtio-win.iso)
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Check services] ********************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Download vdagent] ******************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Create C:\Program Files (x86)\\SPICE Guest Tools directory] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Extract vdagent archive] ***********************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Move vdagent binaries to final destination (C:\Program Files (x86)\\SPICE Guest Tools)] ***
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Delete unpacked vdagent binaries] **************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [ansible-role-virtio-win : Install vdagent] *******************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [Start NTP service (w32time)] *********************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [Configure NTP] ***********************************************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [Enable Remote Desktop] ***************************************************
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [Allow connections from computers running any version of Remote Desktop (less secure)] ***
+    qemu: ok: [default]
+    qemu:
+    qemu: TASK [Allow RDP traffic] *******************************************************
+    qemu: changed: [default]
+    qemu:
+    qemu: TASK [Enable Administrator account] ********************************************
+    qemu: skipping: [default]
+    qemu:
+    qemu: PLAY RECAP *********************************************************************
+    qemu: default                    : ok=29   changed=20   unreachable=0    failed=0
+    qemu:
+==> qemu: Restarting Machine
+==> qemu: Waiting for machine to restart...
+    qemu: A system shutdown is in progress.(1115)
+    qemu: WIN2016 restarted.
+    qemu: #< CLIXML
+    qemu: <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+==> qemu: Machine successfully restarted, moving on
+==> qemu: Gracefully halting virtual machine...
+    qemu: ERROR: Input redirection is not supported, exiting the process immediately.
+==> qemu: Converting hard drive...
+==> qemu: Running post-processor: vagrant
+==> qemu (vagrant): Creating Vagrant box for 'libvirt' provider
+    qemu (vagrant): Copying from artifact: windows-server-2016-standard-x64-eval-qemu/windows-server-2016-standard-x64-eval
+    qemu (vagrant): Using custom Vagrantfile: Vagrantfile-windows.template
+    qemu (vagrant): Compressing: Vagrantfile
+    qemu (vagrant): Compressing: box.img
+    qemu (vagrant): Compressing: metadata.json
+Build 'qemu' finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> qemu: 'libvirt' provider box: windows-server-2016-standard-x64-eval-libvirt.box
