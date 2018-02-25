@@ -1,6 +1,6 @@
-# Packer Templates mainly for the [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider
+# Packer Templates mainly for the Vagrant [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) provider
 
-## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) provider
+## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) provider
 
 ---
 
@@ -18,6 +18,7 @@
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
+* [VirtualBox](https://www.virtualbox.org/)
 
 
 ## Login Credentials
@@ -30,11 +31,16 @@
 
 ## VM Specifications
 
-* Libvirt Provider
+Drivers / Devices added for the VMs for specific providers.
+
+### Libvirt
 * VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
 * QXL Video Card (SPICE display)
 * Channel Device (com.redhat.spice.0)
+
+### VirtualBox
+* SATA Disk
 
 
 ## Configuration
@@ -73,13 +79,16 @@
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
+* Windows image was finalized using \`sysprep\`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
 
+
+#### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 Installed during installation:
 * NetKVM: VirtIO Network driver
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed when the OS is installed via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml):
+Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml) for Windows:
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver
@@ -88,10 +97,12 @@ Installed when the OS is installed via Ansible playbook [win.yml](https://github
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
-Image was finalized using sysprep with [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml).
+
+#### Additional Drivers installed for virtualbox boxes
+* VirtualBox Guest Additions
+
 
 ## Helper scripts
-
  * `build.sh` - build single image specified on command line
  * `build_all.sh` - builds all images
  * `build_all_remote_ssh.sh` - connects to remote Ubuntu server, install the necessary packages for building images and execute `build_all.sh`

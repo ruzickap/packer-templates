@@ -35,7 +35,7 @@ List of all supported builds:
 Examples:
 
 Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for Virtualbox:
-  $PROGNAME windows_10:virtualbox-iso windows_2016:virtualbox-iso windows_2012_r2:virtualbox-iso
+  $PROGNAME windows_10:virtualbox windows_2016:virtualbox windows_2012_r2:virtualbox
 
 
 Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for libvirt:
