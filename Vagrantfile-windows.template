@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
   config.winrm.password = "vagrant"
   config.winrm.transport = :ssl
   config.winrm.ssl_peer_verification = false
+  config.vm.boot_timeout = 1000
   config.vm.guest = :windows
   config.windows.halt_timeout = 15
   # Disable NFS sharing (==> default: Mounting NFS shared folders...)

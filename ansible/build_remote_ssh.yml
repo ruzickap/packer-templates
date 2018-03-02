@@ -1,0 +1,135 @@
+---
+# This can be used only with latest Fedora
+- hosts: all
+  become: yes
+  gather_facts: false
+
+  vars:
+    ansible_packer_connection_plugin: https://raw.githubusercontent.com/hashicorp/packer/master/test/fixtures/provisioner-ansible/connection_plugins/packer.py
+    build_path: /var/tmp/
+    packages:
+      - ansible
+      - curl
+      - elfutils-libelf-devel
+      - gcc
+      - git
+      - jq
+      - kernel-devel
+      - libvirt-client
+      - libvirt-daemon-kvm
+      - libvirt-devel
+      - python-winrm
+      - qemu-img
+      - qemu-kvm
+      - unzip
+      - https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.rpm
+      - VirtualBox-5.2
+      - wget
+      - xorg-x11-xauth
+      - xorg-x11-server-utils
+    packer_url: https://releases.hashicorp.com/packer/1.2.0/packer_1.2.0_linux_amd64.zip
+    packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
+    run_script: ./build_all.sh
+    vagrant_plugins:
+      - vagrant-libvirt
+      - vagrant-winrm
+    virtualbox_fedora_repo_url: http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
+
+  tasks:
+    - name: Install Python 2
+      raw: sudo bash -x -c "test -e /usr/bin/python || ( test -x /usr/bin/apt && ( apt -qqy update && apt install -y python-minimal ) || ( test -x /usr/bin/dnf && dnf install -y python ))"
+      register: output
+      changed_when: output.stdout | search("Installing")
+
+    - name: Gather facts
+      setup:
+
+    - name: Install libselinux-python needed for Fedora
+      dnf:
+        name: libselinux-python
+
+    - name: Disable SELinux
+      selinux:
+        state: disabled
+
+    - name: Upgrade all packages
+      dnf:
+        name: "*"
+        state: latest
+
+    - name: Download repo file for Fedora
+      get_url:
+        url: "{{ virtualbox_fedora_repo_url }}"
+        dest: /etc/yum.repos.d/virtualbox.repo
+
+    - name: Install packages
+      dnf:
+        name: "{{ item }}"
+      with_items: "{{ packages }}"
+
+    - name: List installed Vagrant Plugins
+      command: vagrant plugin list
+      register: vagrant_plugin_list
+      changed_when: false
+
+    - name: Install Vagrant Plugins
+      command: vagrant plugin install {{ item }}
+      with_items: "{{ vagrant_plugins }}"
+      when: not vagrant_plugin_list.stdout | search(item)
+
+    - name: Configure VirtualBox by running /sbin/vboxconfig
+      command: /sbin/vboxconfig
+      register: vboxconfig_output
+      args:
+        creates: "/usr/lib/modules/{{ ansible_kernel }}/misc/vboxdrv.ko"
+      changed_when: not ( vboxconfig_output.stdout | match("skipped.*exists") )
+
+    - name: Print stderr from vboxconfig (if any)
+      debug:
+        var: vboxconfig_output.stderr_lines
+      when: vboxconfig_output.stderr is defined and vboxconfig_output.stderr != ""
+
+    - name: Fail if VirtualBox installation failed (vboxconfig stderr is not empty)
+      fail:
+        msg: Something went wrong, please check the error above...
+      when: vboxconfig_output.stderr is defined and vboxconfig_output.stderr != ""
+
+    - name: Download and unzip packer
+      unarchive:
+        src: "{{ packer_url }}"
+        dest: /usr/local/bin/
+        remote_src: yes
+        creates: /usr/sbin/packerio
+
+    - name: Move packer to packerio
+      command: mv /usr/local/bin/packer /usr/sbin/packerio
+      args:
+        creates: /usr/sbin/packerio
+
+    - name: Create directory for packer ansible connection plugin
+      file:
+        path: "{{ ansible_env.HOME }}/.ansible/plugins/connection"
+        state: directory
+
+    - name: Download Ansible Packer Connection Plugin
+      get_url:
+        url: "{{ ansible_packer_connection_plugin }}"
+        dest: "{{ ansible_env.HOME }}/.ansible/plugins/connection/packer.py"
+
+    - name: Clone the git repository
+      git:
+        repo: "{{ packer_templates_git_repo }}"
+        dest: "{{ build_path }}/packer-templates"
+        force: yes
+
+    - name: Execute script to build boxes (this step usually takes long time) [for more details check *.log in /var/tmp/packer]
+      shell: "{{ run_script }}"
+      register: run_script_out
+      args:
+        chdir: "{{ build_path }}/packer-templates"
+
+    - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check *.log in /tmp/]
+      shell: ./vagrant_init_destroy_boxes.sh
+      register: out
+      args:
+        chdir: "{{ build_path }}/packer-templates"
