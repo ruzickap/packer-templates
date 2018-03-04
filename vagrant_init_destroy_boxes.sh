@@ -73,7 +73,7 @@ main() {
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME"
 
-      echo -e "\n******************************************************\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER)\n******************************************************\n" | tee -a $LOGFILE
+      echo -e "\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER)\n" | tee -a $LOGFILE
       test -d "$TMPDIR/$VAGRANT_BOX_NAME" && rm -rf "$TMPDIR/$VAGRANT_BOX_NAME"
       mkdir "$TMPDIR/$VAGRANT_BOX_NAME"
 

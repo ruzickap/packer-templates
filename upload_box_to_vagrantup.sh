@@ -1,6 +1,5 @@
-#!/bin/bash -ex
+#!/bin/bash -eu
 
-export USER="peru"
 export VERSION=${VERSION:-`date +%Y%m%d`.01}
 
 readonly PROGNAME=$(basename $0)
@@ -55,12 +54,12 @@ cmdline() {
 
   for VAGRANT_CLOUD_USER_BOX in $VAGRANT_CLOUD_USER_BOXES; do
     export VAGRANT_CLOUD_USER="${VAGRANT_CLOUD_USER_BOX%@*}"
-    local VAGRANT_CLOUD_BOX_FILE="${VAGRANT_CLOUD_USER_BOX##*@}"
-    local VAGRANT_CLOUD_BOX_NAME=`basename $VAGRANT_CLOUD_USER_BOX`
-    local MY_NAME=`echo $VAGRANT_CLOUD_BOX | awk -F '-' '{ print $1 }'`
-    export VAGRANT_PROVIDER=`basename $VAGRANT_CLOUD_USER_BOX .box | awk -F '-' '{ print $NF }'`
+    VAGRANT_CLOUD_BOX_FILE="${VAGRANT_CLOUD_USER_BOX##*@}"
+    VAGRANT_CLOUD_BOX_NAME=`basename $VAGRANT_CLOUD_BOX_FILE .box`
+    MY_NAME=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $1 }'`
+    export VAGRANT_PROVIDER=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $NF }'`
 
-    echo "*** My Name: $MY_NAME, User: $VAGRANT_CLOUD_USER, Box: $VAGRANT_CLOUD_BOX"
+    echo "*** My Name: $MY_NAME, User: $VAGRANT_CLOUD_USER, Box file: $VAGRANT_CLOUD_BOX_FILE, Box name: $VAGRANT_CLOUD_BOX_NAME"
 
     case $VAGRANT_CLOUD_BOX_NAME in
       *centos*)
@@ -73,8 +72,8 @@ cmdline() {
         export LONG_DESCRIPTION=$(render_template templates/my_centos.md)
       ;;
       *ubuntu*)
-        export UBUNTU_TYPE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
-        export UBUNTU_MAJOR_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
+        export UBUNTU_TYPE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
+        export UBUNTU_MAJOR_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
         export UBUNTU_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
         export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
         export NAME="${MY_NAME}-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
@@ -110,14 +109,12 @@ cmdline() {
       ;;
     esac
 
-exit
-
     vagrantup_upload $VAGRANT_CLOUD_BOX_FILE
   done
 }
 
 create_vagrantup_box() {
-  if wget -O /dev/null "https://vagrantcloud.com/api/v1/box/$USER/$NAME" 2>&1 | grep -q 'ERROR 404'; then
+  if wget -O /dev/null "https://vagrantcloud.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME" 2>&1 | grep -q 'ERROR 404'; then
     #Create box, because it doesn't exists
     echo "*** Creating box: ${NAME}, Short Description: $SHORT_DESCRIPTION"
     curl -s https://app.vagrantup.com/api/v1/boxes -X POST -d box[name]="$NAME" -d box[short_description]="${SHORT_DESCRIPTION}" -d box[is_private]=false -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
@@ -127,8 +124,8 @@ create_vagrantup_box() {
 }
 
 remove_vagrantup_box() {
-  echo "*** Removing box: $USER/$NAME"
-  curl -s https://app.vagrantup.com/api/v1/box/$USER/$NAME -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN"
+  echo "*** Removing box: $VAGRANT_CLOUD_USER/$NAME"
+  curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN"
 }
 
 upload_boxfile_to_vagrantup() {

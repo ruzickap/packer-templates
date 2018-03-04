@@ -44,7 +44,7 @@ Install and connect to the box:
 \`\`\`
 mkdir ${NAME}
 cd ${NAME}
-vagrant init ${USER}/${NAME}
+vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
 VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 # or
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
