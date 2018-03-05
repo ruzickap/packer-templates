@@ -81,7 +81,7 @@ Drivers / Devices added for the VMs for specific providers.
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
-* Windows image was finalized using \`sysprep\`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
+* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
 
 
 #### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
@@ -102,6 +102,17 @@ Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/
 
 #### Additional Drivers installed for virtualbox boxes
 * VirtualBox Guest Additions
+
+
+## How to build images
+If you want to build the images yourself you will need passwordless ssh access to the latest Fedora server and locally installed Ansible. The server should not have IPs from this range `192.168.121.0/24` - this is used by Vagrant + libvirt by default.
+
+Then you just need to modify the `REMOTE_IP` and `REMOTE_USER` in `build_remote_ssh.sh` file.
+
+The `build_remote_ssh.sh` script will connect to your Fedora server, downloads necessary packages (initiate reboot if necessary for kernel update) and start building the images using Packer.
+It will also test the newly created images by Vagrant.
+The whole procedure will take several hours.
+You can check the progress by sshing to the server and checking the log files in `/tmp/` or `/var/tmp/packer` directories.
 
 
 ## Helper scripts
