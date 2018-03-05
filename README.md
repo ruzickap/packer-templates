@@ -2,6 +2,8 @@
 
 ## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) provider
 
+[![Build Status](https://travis-ci.org/ruzickap/packer-templates.svg)](https://travis-ci.org/ruzickap/packer-templates)
+
 ---
 
 #### Github repository for bug reports or feature requests:

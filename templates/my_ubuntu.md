@@ -67,7 +67,7 @@ Root password is: vagrant
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/common_variables.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/vars/Debian.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/main.yml) and [Debian list](https://github.com/ruzickap/packer-templates/blob/master/ansible/roles/common_defaults/vars/Debian.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip

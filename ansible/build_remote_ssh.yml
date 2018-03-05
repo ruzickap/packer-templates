@@ -23,12 +23,15 @@
       - qemu-kvm
       - unzip
       - https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.rpm
-      - VirtualBox-5.2
+      - VirtualBox
       - wget
       - xorg-x11-xauth
       - xorg-x11-server-utils
     packer_url: https://releases.hashicorp.com/packer/1.2.0/packer_1.2.0_linux_amd64.zip
     packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
+    rpmfusion_repositories:
+      - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm
+      - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm
     run_script: ./build_all.sh
     vagrant_plugins:
       - vagrant-libvirt
@@ -52,15 +55,32 @@
       selinux:
         state: disabled
 
+    - name: Install rpmfusion repositories
+      dnf:
+        name: "{{ item }}"
+      with_items: "{{ rpmfusion_repositories }}"
+
     - name: Upgrade all packages
       dnf:
         name: "*"
         state: latest
 
-    - name: Download repo file for Fedora
-      get_url:
-        url: "{{ virtualbox_fedora_repo_url }}"
-        dest: /etc/yum.repos.d/virtualbox.repo
+    - name: Check if reboot is necessary
+      shell: LAST_KERNEL=$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; fi
+      changed_when: false
+      register: reboot_out
+
+    - name: Reboot machne to boot to latest kernel
+      shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
+      async: 1
+      poll: 0
+      ignore_errors: true
+      when: reboot_out.stdout | search("reboot")
+
+    - name: Wait for system to boot up
+      local_action: wait_for host={{ ansible_host }} port={{ ansible_port | default('22') }} delay=15
+      become: False
+      when: reboot_out.stdout | search("reboot")
 
     - name: Install packages
       dnf:
@@ -76,23 +96,6 @@
       command: vagrant plugin install {{ item }}
       with_items: "{{ vagrant_plugins }}"
       when: not vagrant_plugin_list.stdout | search(item)
-
-    - name: Configure VirtualBox by running /sbin/vboxconfig
-      command: /sbin/vboxconfig
-      register: vboxconfig_output
-      args:
-        creates: "/usr/lib/modules/{{ ansible_kernel }}/misc/vboxdrv.ko"
-      changed_when: not ( vboxconfig_output.stdout | match("skipped.*exists") )
-
-    - name: Print stderr from vboxconfig (if any)
-      debug:
-        var: vboxconfig_output.stderr_lines
-      when: vboxconfig_output.stderr is defined and vboxconfig_output.stderr != ""
-
-    - name: Fail if VirtualBox installation failed (vboxconfig stderr is not empty)
-      fail:
-        msg: Something went wrong, please check the error above...
-      when: vboxconfig_output.stderr is defined and vboxconfig_output.stderr != ""
 
     - name: Download and unzip packer
       unarchive:
@@ -128,7 +131,7 @@
       args:
         chdir: "{{ build_path }}/packer-templates"
 
-    - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check *.log in /tmp/]
+    - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check /tmp/vagrant_init_destroy_boxes.log]
       shell: ./vagrant_init_destroy_boxes.sh
       register: out
       args:
