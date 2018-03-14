@@ -3,4 +3,4 @@
 	url = https://github.com/ruzickap/ansible-role-virtio-win.git
 [submodule "ansible/roles/ansible-role-my_common_defaults"]
 	path = ansible/roles/ansible-role-my_common_defaults
-	url = git@github.com:ruzickap/ansible-role-my_common_defaults.git
+	url = https://github.com/ruzickap/ansible-role-my_common_defaults.git
