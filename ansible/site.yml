@@ -3,4 +3,4 @@
   become: yes
 
   roles:
-    - common_defaults
+    - ansible-role-my_common_defaults

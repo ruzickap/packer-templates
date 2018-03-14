@@ -1,9 +1,0 @@
----
-- name: restart sshd
-  service: name={{ ssh_daemon }} state=restarted
-
-- name: reload snmpd
-  service: name=snmpd state=restarted
-
-- name: generate grub configuration
-  command: grub2-mkconfig -o /boot/grub2/grub.cfg

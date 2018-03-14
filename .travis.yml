@@ -1,29 +1,13 @@
 ---
-language: python
-python: "2.7"
+sudo: required
 
-# Use the new container infrastructure
-sudo: false
-
-# Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+services:
+  - docker
 
 install:
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=./ansible/roles/' >ansible.cfg
+  - gem install awesome_bot
 
 script:
-  # Basic role syntax check
-  - ansible-playbook ansible/roles/common_defaults/tests/test.yml --syntax-check
+  # Link Checks
+  - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
 
-#notifications:
-#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
