@@ -1,13 +1,13 @@
 {
-  "_comment": "Build with `NAME=windows-server-2012-r2-standard-x64-eval WINDOWS_VERSION=2012 WINDOWS_TYPE=server VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso packerio build -only=qemu windows-server-2012-eval.json`",
+  "_comment": "Build with `NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso packerio build -only=qemu my_windows-10-enterprise-eval.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
-    "iso_checksum": "6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5",
-    "autounattend": "http/windows-{{ env `WINDOWS_TYPE` }}-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
+    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
+    "iso_checksum": "3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691",
+    "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
     "disk_size": "51200",
@@ -46,7 +46,7 @@
     {
       "vm_name": "{{ user `name` }}",
       "type": "virtualbox-iso",
-      "guest_os_type": "Windows2012_64",
+      "guest_os_type": "Windows10_64",
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
@@ -107,7 +107,7 @@
     {
       "type": "ansible",
       "user": "vagrant",
-      "playbook_file": "ansible/win.yml",
+      "playbook_file": "ansible/site.yml",
       "extra_arguments": [
         "--connection", "packer",
         "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None packer_build_name={{ user `name` }}"

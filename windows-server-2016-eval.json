@@ -1,5 +1,5 @@
 {
-  "_comment": "Build with `NAME=windows-server-2016-standard-x64-eval WINDOWS_VERSION=2016 WINDOWS_TYPE=server packer build windows-server-2016-eval.json`",
+  "_comment": "Build with `NAME=windows-server-2016-standard-x64-eval WINDOWS_VERSION=2016 WINDOWS_TYPE=server VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso packerio build -only=qemu windows-server-2016-eval.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
@@ -110,7 +110,7 @@
       "playbook_file": "ansible/win.yml",
       "extra_arguments": [
         "--connection", "packer",
-        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None"
+        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None packer_build_name={{ user `name` }}"
       ]
     },
     {

@@ -1,23 +1,12 @@
 ---
 - hosts: all
 
-  vars:
-    ntp_server: pool.ntp.org
-
   roles:
     - role: ansible-role-virtio-win
       virtio_win_iso_path: 'E:\\'
       when: ansible_system_vendor == "QEMU"
 
   tasks:
-    - name: Start NTP service (w32time)
-      win_service:
-        name: w32time
-        state: started
-
-    - name: Configure NTP
-      win_command: w32tm /config /manualpeerlist:"{{ ntp_server }}" /reliable:yes /update
-
     - name: Enable Remote Desktop
       win_regedit:
         key: 'HKLM:\System\CurrentControlSet\Control\Terminal Server'
@@ -41,7 +30,8 @@
         account_disabled: no
       when: ansible_distribution | search("Microsoft Windows 10")
 
-     # Windows Updates is not working in ansible-2.4.0.0-1.fc27 and latest Ansible 2.4.2 is not working at all with Packer + WinRM
-     # That's the reason why updates are disabled for now...
-#    - name: Install windows updates
-#      win_updates:
+    # Windows Updates is not working in ansible-2.4.0.0-1.fc27 and latest Ansible 2.4.2 is not working at all with Packer + WinRM
+    # That's the reason why updates are disabled for now...
+    #- name: Install windows updates
+    #  win_updates:
+
