@@ -131,23 +131,27 @@ cmdline() {
 packer_build() {
   PACKER_FILE=$1; shift
 
-  test -d $TMPDIR || mkdir -v $TMPDIR
-  test -d $LOG_DIR || mkdir -v $LOG_DIR
-  case $PACKER_VAGRANT_PROVIDER in
-    libvirt )
-      export PACKER_BUILDER_TYPE="qemu"
-      if echo $PACKER_FILE | grep -q -i "windows"; then
-        test -f $TMPDIR/virtio-win.iso || wget $VIRTIO_WIN_ISO_URL -P $TMPDIR
-        export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
-      fi
-    ;;
-    virtualbox )
-      export PACKER_BUILDER_TYPE="virtualbox-iso"
-    ;;
-  esac
+  if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then 
+    test -d $TMPDIR || mkdir -v $TMPDIR
+    test -d $LOG_DIR || mkdir -v $LOG_DIR
+    case $PACKER_VAGRANT_PROVIDER in
+      libvirt )
+        export PACKER_BUILDER_TYPE="qemu"
+        if echo $PACKER_FILE | grep -q -i "windows"; then
+          test -f $TMPDIR/virtio-win.iso || wget $VIRTIO_WIN_ISO_URL -P $TMPDIR
+          export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
+        fi
+      ;;
+      virtualbox )
+        export PACKER_BUILDER_TYPE="virtualbox-iso"
+      ;;
+    esac
 
-  echo -e "\n\n*** $NAME [$PACKER_FILE] [$PACKER_BUILDER_TYPE]\n"
-  $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+    echo -e "\n\n*** $NAME [$PACKER_FILE] [$PACKER_BUILDER_TYPE]\n"
+    $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+  else
+    echo -e "\n*** File ${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";
+  fi
 }
 
 

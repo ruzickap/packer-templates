@@ -25,6 +25,8 @@ Box names:
 * ubuntu-17.10-desktop-amd64-libvirt.box
 * windows-10-enterprise-x64-eval-libvirt.box
 * windows-10-enterprise-x64-eval-virtualbox.box
+* my_windows-10-enterprise-x64-eval-libvirt.box
+* my_windows-10-enterprise-x64-eval-virtualbox.box
 * windows-server-2012-r2-standard-x64-eval-libvirt.box
 * windows-server-2012-r2-standard-x64-eval-virtualbox.box
 * windows-server-2016-standard-x64-eval-libvirt.box
@@ -47,7 +49,7 @@ render_template() {
 cmdline() {
   local VAGRANT_CLOUD_USER_BOXES=$@
 
-  if [ -z $VAGRANT_CLOUD_USER_BOXES ] || [ -z $VAGRANTUP_ACCESS_TOKEN ]; then
+  if [ -z "$VAGRANT_CLOUD_USER_BOXES" ] || [ -z "$VAGRANTUP_ACCESS_TOKEN" ]; then
     usage
     exit 0;
   fi
@@ -86,7 +88,7 @@ cmdline() {
         export WINDOWS_EDITION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
         export SHORT_DESCRIPTION="Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
-        export LONG_DESCRIPTION=$(render_template templates/windows-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
+        export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
       ;;
       *windows-*-2012-*)
         export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
@@ -96,7 +98,7 @@ cmdline() {
         export WINDOWS_EDITION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $5 }'`
         export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
         export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
-        export LONG_DESCRIPTION=$(render_template templates/windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
+        export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
       ;;
       *windows-*-2016-*)
         export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
@@ -105,7 +107,7 @@ cmdline() {
         export WINDOWS_EDITION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
         export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
         export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
-        export LONG_DESCRIPTION=$(render_template templates/windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
+        export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
       ;;
     esac
 
@@ -158,7 +160,6 @@ vagrantup_upload() {
   local PACKER_FILE=$1; shift
 
   echo -e "\n\n*** $SHORT_DESCRIPTION ($NAME) [$PACKER_FILE]\n"
-  echo "$LONG_DESCRIPTION" > /tmp/${NAME}.md
   create_vagrantup_box
   upload_boxfile_to_vagrantup
 }

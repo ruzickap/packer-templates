@@ -70,16 +70,20 @@
       changed_when: false
       register: reboot_out
 
-    - name: Reboot machne to boot to latest kernel
-      shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
-      async: 1
-      poll: 0
-      ignore_errors: true
-      when: reboot_out.stdout | search("reboot")
+    - block:
+      - name: As user for permission to reboot machne to boot to latest kernel
+        pause:
+          prompt: 'Please confirm you want to reboot the remote machine: {{ ansible_host }}! Press return to continue. Press Ctrl+c and then "a" to abort'
 
-    - name: Wait for system to boot up
-      local_action: wait_for host={{ ansible_host }} port={{ ansible_port | default('22') }} delay=15
-      become: False
+      - name: Reboot machne to boot to latest kernel
+        shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
+        async: 1
+        poll: 0
+        ignore_errors: true
+
+      - name: Wait for system to boot up
+        local_action: wait_for host={{ ansible_host }} port={{ ansible_port | default('22') }} delay=30
+        become: False
       when: reboot_out.stdout | search("reboot")
 
     - name: Install packages

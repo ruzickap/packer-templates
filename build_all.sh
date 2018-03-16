@@ -1,9 +1,10 @@
 #!/bin/bash -eu
 
 export VERSION="$(date +%Y%m%d).01"
-LOGFILE="/tmp/build_all.log"
+LOGFILE="/var/tmp/build_all.log"
 
 (
+
   date
 
   for PACKER_VAGRANT_PROVIDER in libvirt; do
@@ -13,10 +14,15 @@ LOGFILE="/tmp/build_all.log"
   done
 
   for PACKER_VAGRANT_PROVIDER in libvirt virtualbox; do
-    for BUILD in windows_10 windows_2016 windows_2012_r2; do
+    for BUILD in my_windows-10 windows-10 windows-2016 windows-2012_r2; do
       ./build.sh $BUILD:$PACKER_VAGRANT_PROVIDER
     done
   done
 
   date
+
+  ./vagrant_init_destroy_boxes.sh
+
+  date
+
 ) 2>&1 | tee $LOGFILE
