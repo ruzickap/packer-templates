@@ -5,7 +5,7 @@ export PACKER_CACHE_DIR="$TMPDIR"
 #export PACKER_LOG=1
 export VIRTIO_WIN_ISO_URL="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso"
 export VIRTIO_WIN_ISO=$(basename $VIRTIO_WIN_ISO_URL)
-export LOG_DIR="$TMPDIR"
+export LOG_DIR="/tmp"
 export HEADLESS=${HEADLESS:-true}
 export PACKER_BINARY="packerio"
 

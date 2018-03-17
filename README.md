@@ -112,7 +112,7 @@ Then you just need to modify the `REMOTE_IP` and `REMOTE_USER` in `build_remote_
 The `build_remote_ssh.sh` script will connect to your Fedora server, downloads necessary packages (initiate reboot if necessary for kernel update) and start building the images using Packer.
 It will also test the newly created images by Vagrant.
 The whole procedure will take several hours.
-You can check the progress by sshing to the server and checking the log files in `/tmp/` or `/var/tmp/packer` directories.
+You can check the progress by sshing to the server and checking the log files in `/tmp/` directory.
 
 
 ## Helper scripts

@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 
 export VERSION="$(date +%Y%m%d).01"
-LOGFILE="/var/tmp/build_all.log"
+LOGFILE="/tmp/build_all.log"
 
 (
 
