@@ -82,11 +82,16 @@ main() {
 
       check_vagrant_vm 2>&1 | tee -a $LOGFILE
 
+      #echo "Press ENTER to destroy the VMs"
+      #read A
+
       vagrant_destroy
       vagrant_remove_boxes_images
 
       rm -rf "$TMPDIR/$VAGRANT_BOX_NAME"
     done
+
+    echo "*** Check the summary in: $LOGFILE"
   fi
 }
 

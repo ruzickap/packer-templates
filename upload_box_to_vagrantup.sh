@@ -134,7 +134,7 @@ upload_boxfile_to_vagrantup() {
   #Get the current version before uploading anything
   echo "*** Getting current version of the box (if exists)"
   local CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME -X GET -d access_token="$VAGRANTUP_ACCESS_TOKEN" | jq -r ".current_version.version")
-  echo "*** Cureent version of the box: $CURRENT_VERSION"
+  echo "*** Current version of the box: $CURRENT_VERSION"
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/versions -X POST -d version[version]="$VERSION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION -X PUT -d version[description]="$LONG_DESCRIPTION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/providers -X POST -d provider[name]="$VAGRANT_PROVIDER" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null

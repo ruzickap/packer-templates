@@ -116,6 +116,15 @@
     {
       "type": "windows-restart",
       "restart_timeout": "1h"
+    },
+    {
+      "type": "windows-shell",
+      "inline":
+        [
+          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files",
+          "udefrag --optimize --repeat --suppress-progress-indicator %SystemDrive%",
+          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean system.free_disk_space"
+        ]
     }
   ],
   "post-processors": [

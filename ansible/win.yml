@@ -1,6 +1,9 @@
 ---
 - hosts: all
 
+  vars:
+    bleachbit_url: https://download.bleachbit.org/BleachBit-2.0-portable.zip
+
   roles:
     - role: ansible-role-virtio-win
       virtio_win_iso_path: 'E:\\'
@@ -30,8 +33,29 @@
         account_disabled: no
       when: ansible_distribution | search("Microsoft Windows 10")
 
+    - name: Remove all current pagefiles
+      win_pagefile:
+        remove_all: yes
+        automatic: no
+        state: absent
+
+    - name: Disable Hibernate Mode
+      win_command: powercfg -h off
+      changed_when: false
+      when: ansible_distribution | search("Microsoft Windows 10")
+
+    - name: Download BleachBit
+      win_get_url:
+        url: "{{ bleachbit_url }}"
+        dest: "%HOMEDRIVE%\\{{ bleachbit_url | basename }}"
+
+    - name: Unzip downloaded BleachBit
+      win_unzip:
+        src: "%HOMEDRIVE%\\{{ bleachbit_url | basename }}"
+        dest: "%HOMEDRIVE%\\"
+        delete_archive: yes
+
     # Windows Updates is not working in ansible-2.4.0.0-1.fc27 and latest Ansible 2.4.2 is not working at all with Packer + WinRM
     # That's the reason why updates are disabled for now...
     #- name: Install windows updates
     #  win_updates:
-

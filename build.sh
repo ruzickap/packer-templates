@@ -145,6 +145,9 @@ packer_build() {
       virtualbox )
         export PACKER_BUILDER_TYPE="virtualbox-iso"
       ;;
+      *)
+        echo "*** Unsupported PACKER_VAGRANT_PROVIDER: $PACKER_VAGRANT_PROVIDER"
+      ;;
     esac
 
     echo -e "\n\n*** $NAME [$PACKER_FILE] [$PACKER_BUILDER_TYPE]\n"
