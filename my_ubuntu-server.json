@@ -69,7 +69,8 @@
     {
       "type": "ansible",
       "user": "vagrant",
-      "ansible_env_vars": [ "ANSIBLE_SSH_ARGS='-o ForwardAgent=no -o ControlMaster=auto -o ControlPersist=1h'", "become=true" ],
+      "ansible_env_vars": [ "ANSIBLE_SSH_ARGS='-o ForwardAgent=no -o ControlMaster=auto -o ControlPersist=1h'" ],
+      "extra_arguments": [ "--extra-vars", "packer_build_name={{ user `name` }}", "--become" ],
       "playbook_file": "ansible/site.yml"
     },
     {
