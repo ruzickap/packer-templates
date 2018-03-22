@@ -1,7 +1,6 @@
 ---
 # This can be used only with latest Fedora
 - hosts: all
-  become: yes
   gather_facts: false
 
   vars:
@@ -47,49 +46,69 @@
     - name: Gather facts
       setup:
 
-    - name: Install libselinux-python needed for Fedora
-      dnf:
-        name: libselinux-python
-
-    - name: Disable SELinux
-      selinux:
-        state: disabled
-
-    - name: Install rpmfusion repositories
-      dnf:
-        name: "{{ item }}"
-      with_items: "{{ rpmfusion_repositories }}"
-
-    - name: Upgrade all packages
-      dnf:
-        name: "*"
-        state: latest
-
-    - name: Check if reboot is necessary
-      shell: LAST_KERNEL=$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; fi
-      changed_when: false
-      register: reboot_out
-
     - block:
-      - name: As user for permission to reboot machne to boot to latest kernel
-        pause:
-          prompt: 'Please confirm you want to reboot the remote machine: {{ ansible_host }}! Press return to continue. Press Ctrl+c and then "a" to abort'
+      - name: Install libselinux-python needed for Fedora
+        dnf:
+          name: libselinux-python
 
-      - name: Reboot machne to boot to latest kernel
-        shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
-        async: 1
-        poll: 0
-        ignore_errors: true
+      - name: Disable SELinux
+        selinux:
+          state: disabled
 
-      - name: Wait for system to boot up
-        local_action: wait_for host={{ ansible_host }} port={{ ansible_port | default('22') }} delay=30
-        become: False
-      when: reboot_out.stdout | search("reboot")
+      - name: Install rpmfusion repositories
+        dnf:
+          name: "{{ item }}"
+        with_items: "{{ rpmfusion_repositories }}"
 
-    - name: Install packages
-      dnf:
-        name: "{{ item }}"
-      with_items: "{{ packages }}"
+      - name: Upgrade all packages
+        dnf:
+          name: "*"
+          state: latest
+
+      - name: Check if reboot is necessary
+        shell: LAST_KERNEL=$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; fi
+        changed_when: false
+        register: reboot_out
+
+      - block:
+        - name: As user for permission to reboot machne to boot to latest kernel
+          pause:
+            prompt: 'Please confirm you want to reboot the remote machine: {{ ansible_host }}! Press return to continue. Press Ctrl+c and then "a" to abort'
+
+        - name: Reboot machne to boot to latest kernel
+          shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
+          async: 1
+          poll: 0
+          ignore_errors: true
+
+        - name: Wait for system to boot up
+          wait_for:
+            host: {{ ansible_host }}
+            port: {{ ansible_port | default('22') }} 
+            search_regex: OpenSSH
+            delay: 30
+          connection: local
+          become: False
+        when: reboot_out.stdout | search("reboot")
+
+      - name: Install packages
+        dnf:
+          name: "{{ item }}"
+        with_items: "{{ packages }}"
+
+      - name: Download and unzip packer
+        unarchive:
+          src: "{{ packer_url }}"
+          dest: /usr/local/bin/
+          remote_src: yes
+          creates: /usr/local/bin/packerio
+          validate_certs: false
+
+      - name: Move packer to packerio
+        command: mv /usr/local/bin/packer /usr/local/bin/packerio
+        args:
+          creates: /usr/sbin/packerio
+      become: true
 
     - name: List installed Vagrant Plugins
       command: vagrant plugin list
@@ -100,18 +119,6 @@
       command: vagrant plugin install {{ item }}
       with_items: "{{ vagrant_plugins }}"
       when: not vagrant_plugin_list.stdout | search(item)
-
-    - name: Download and unzip packer
-      unarchive:
-        src: "{{ packer_url }}"
-        dest: /usr/local/bin/
-        remote_src: yes
-        creates: /usr/sbin/packerio
-
-    - name: Move packer to packerio
-      command: mv /usr/local/bin/packer /usr/sbin/packerio
-      args:
-        creates: /usr/sbin/packerio
 
     - name: Create directory for packer ansible connection plugin
       file:

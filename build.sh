@@ -150,7 +150,7 @@ packer_build() {
       ;;
     esac
 
-    echo -e "\n\n*** $NAME [$PACKER_FILE] [$PACKER_BUILDER_TYPE]\n"
+    echo -e "\n\n*** ${NAME} [${PACKER_FILE}] [${PACKER_VAGRANT_PROVIDER}/${PACKER_BUILDER_TYPE}]\n"
     $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
   else
     echo -e "\n*** File ${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";
