@@ -3,6 +3,7 @@
 
   vars:
     bleachbit_url: https://download.bleachbit.org/BleachBit-2.0-portable.zip
+    ultradefrag_url: https://downloads.sourceforge.net/ultradefrag/ultradefrag-portable-7.0.2.bin.amd64.zip
 
   roles:
     - role: ansible-role-virtio-win
@@ -52,6 +53,17 @@
     - name: Unzip downloaded BleachBit
       win_unzip:
         src: "%HOMEDRIVE%\\{{ bleachbit_url | basename }}"
+        dest: "%HOMEDRIVE%\\"
+        delete_archive: yes
+
+    - name: Download UltraDefrag
+      win_get_url:
+        url: "{{ ultradefrag_url }}"
+        dest: "%HOMEDRIVE%\\{{ ultradefrag_url | basename }}"
+
+    - name: Unzip downloaded Ultra Defrag
+      win_unzip:
+        src: "%HOMEDRIVE%\\{{ ultradefrag_url | basename }}"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
