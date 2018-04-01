@@ -1,12 +1,13 @@
 {
-  "_comment": "Build with `NAME=windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso packerio build -only=qemu windows-10-enterprise-eval.json`",
+  "_comment_my_win10": "Build with `NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso ISO_CHECKSUM=3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso packerio build -only=qemu my_windows-10-enterprise-eval.json`",
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
-    "iso_url": "http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso",
-    "iso_checksum": "3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691",
+    "iso_url": "{{ env `ISO_URL` }}",
+    "iso_checksum": "{{ env `ISO_CHECKSUM` }}",
+    "windows_version": "{{ env `WINDOWS_VERSION` }}",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "winrm_username": "vagrant",
     "winrm_password": "vagrant",
@@ -46,7 +47,7 @@
     {
       "vm_name": "{{ user `name` }}",
       "type": "virtualbox-iso",
-      "guest_os_type": "Windows10_64",
+      "guest_os_type": "Windows{{ user `windows_version` }}_64",
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
@@ -107,7 +108,7 @@
     {
       "type": "ansible",
       "user": "vagrant",
-      "playbook_file": "ansible/win.yml",
+      "playbook_file": "ansible/site.yml",
       "extra_arguments": [
         "--connection", "packer",
         "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None packer_build_name={{ user `name` }}"
@@ -121,11 +122,9 @@
       "type": "windows-shell",
       "inline":
         [
-          "%HOMEDRIVE%\\BleachBit-Portable\\bleachbit_console.exe --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails",
-          "%HOMEDRIVE%\\ultradefrag-portable-7.0.2.amd64\\udefrag.exe --optimize --repeat --suppress-progress-indicator %SystemDrive%",
-          "rmdir /s /q %HOMEDRIVE%\\ultradefrag-portable-7.0.2.amd64",
-          "%HOMEDRIVE%\\BleachBit-Portable\\bleachbit_console.exe --clean system.free_disk_space",
-          "rmdir /s /q %HOMEDRIVE%\\BleachBit-Portable"
+          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails",
+          "udefrag --optimize --repeat --suppress-progress-indicator %SystemDrive%",
+          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean system.free_disk_space"
         ],
       "remote_path": "C:\\script.bat"
     }

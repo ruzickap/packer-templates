@@ -74,7 +74,7 @@ Drivers / Devices added for the VMs for specific providers.
 
 ## Configuration
 
-#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_TYPE}-${WINDOWS_VERSION}/Autounattend.xml)
+#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
 * UTC timezone
 * IEHarden disabled
 * Home Page set to "about:blank"

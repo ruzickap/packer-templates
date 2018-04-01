@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-BOXES_LIST=`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`
+BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
 TMPDIR="/tmp/"
 LOGFILE="$TMPDIR/vagrant_init_destroy_boxes.log"
 
@@ -26,21 +26,21 @@ check_vagrant_vm() {
 
   case $VAGRANT_BOX_FILE in
     *windows* )
+      echo "*** Getting version: systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\""
+      vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"'
       echo "*** Running: vagrant winrm --shell powershell --command 'Get-Service ...'"
       vagrant winrm --shell powershell --command 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {$_.Name -match ".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {$_.devicename -match ".*Red Hat.*|.*VirtIO.*"} | select devicename, driverversion'
     ;;
     *centos* | *ubuntu* )
-      echo "*** Running: vagrant ssh --command uptime"
+      echo "*** Running: vagrant ssh --command \"apt list -qq --upgradable\""
       vagrant ssh --command '\
         sudo sh -c "test -x /usr/bin/apt && apt-get update 2>&1 > /dev/null && echo \"apt list -qq --upgradable\" && apt list -qq --upgradable"; \
         sudo sh -c "test -x /usr/bin/yum && yum update -q && yum list -q updates"; \
-        uptime; \
         id; \
       '
-      echo "*** Running: sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_VM_IP} 'uptime; id; sudo id'"
+      echo "*** Running: sshpass -pvagrant ssh vagrant@${VAGRANT_VM_IP} 'id; sudo id'"
       sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_VM_IP} '\
         grep PRETTY_NAME /etc/os-release; \
-        uptime; \
         id; \
         sudo id; \
       '

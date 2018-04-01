@@ -83,8 +83,8 @@
 
         - name: Wait for system to boot up
           wait_for:
-            host: {{ ansible_host }}
-            port: {{ ansible_port | default('22') }} 
+            host: "{{ ansible_host }}"
+            port: "{{ ansible_port | default('22') }}"
             search_regex: OpenSSH
             delay: 30
           connection: local

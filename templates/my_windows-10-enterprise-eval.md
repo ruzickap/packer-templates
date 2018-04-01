@@ -106,7 +106,7 @@ Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/
 
 ---
 
-* added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
+* added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
 
 
 #### Additional Drivers installed for virtualbox boxes
