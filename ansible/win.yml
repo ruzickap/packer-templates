@@ -32,7 +32,7 @@
       win_user:
         name: Administrator
         account_disabled: no
-      when: ansible_distribution | search("Microsoft Windows 10")
+      when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Remove all current pagefiles
       win_pagefile:
@@ -43,7 +43,7 @@
     - name: Disable Hibernate Mode
       win_command: powercfg -h off
       changed_when: false
-      when: ansible_distribution | search("Microsoft Windows 10")
+      when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Download BleachBit
       win_get_url:

@@ -41,7 +41,7 @@
     - name: Install Python 2
       raw: sudo bash -x -c "test -e /usr/bin/python || ( test -x /usr/bin/apt && ( apt -qqy update && apt install -y python-minimal ) || ( test -x /usr/bin/dnf && dnf install -y python ))"
       register: output
-      changed_when: output.stdout | search("Installing")
+      changed_when: output.stdout is search("Installing")
 
     - name: Gather facts
       setup:
@@ -89,7 +89,7 @@
             delay: 30
           connection: local
           become: False
-        when: reboot_out.stdout | search("reboot")
+        when: reboot_out.stdout is search("reboot")
 
       - name: Install packages
         dnf:
@@ -118,7 +118,7 @@
     - name: Install Vagrant Plugins
       command: vagrant plugin install {{ item }}
       with_items: "{{ vagrant_plugins }}"
-      when: not vagrant_plugin_list.stdout | search(item)
+      when: vagrant_plugin_list.stdout is not search(item)
 
     - name: Create directory for packer ansible connection plugin
       file:
