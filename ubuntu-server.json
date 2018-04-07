@@ -57,6 +57,7 @@
       "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
       "scripts": [
         "scripts/ubuntu/update.sh",
+        "scripts/ubuntu/add_libpam-systemd.sh",
         "scripts/ubuntu/disable_apt-daily.sh",
         "scripts/linux-common/vagrant.sh",
         "scripts/linux-common/cleanup.sh"
