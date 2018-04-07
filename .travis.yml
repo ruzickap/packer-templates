@@ -1,4 +1,6 @@
 ---
+dist: xenial
+
 sudo: required
 
 env:
@@ -6,8 +8,9 @@ env:
 
 install:
   - sudo apt update -qq
-  - sudo apt install -y ansible jq
+  - sudo apt install -y jq
   - gem install awesome_bot
+  - sudo pip install ansible
 
 script:
   # Link Checks
@@ -19,3 +22,5 @@ script:
       RUN=$(cat $FILE | jq -r '."_comment" | join("; ")' | sed 's/packer build/packer validate/g;')
       eval $RUN
     done
+  # Check Ansible playbooks
+  - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
