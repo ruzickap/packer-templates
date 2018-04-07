@@ -1,5 +1,5 @@
 {
-  "_comment": "Build with `NAME=ubuntu-16.04.3-server-amd64 UBUNTU_VERSION=16.04.3 UBUNTU_TYPE=server UBUNTU_ARCH=amd64 packer build ubuntu-server.json`",
+  "_comment": ["NAME=ubuntu-16.04.4-server-amd64 UBUNTU_VERSION=16.04.4 UBUNTU_TYPE=server UBUNTU_ARCH=amd64 packer build ubuntu-server.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",

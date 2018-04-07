@@ -1,5 +1,5 @@
 {
-  "_comment": "Build with `NAME=ubuntu-17.10-desktop-amd64 UBUNTU_TYPE=desktop packer build ubuntu-desktop.json`",
+  "_comment": ["NAME=ubuntu-17.10-desktop-amd64 UBUNTU_TYPE=desktop packer build ubuntu-desktop.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",

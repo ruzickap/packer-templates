@@ -1,5 +1,5 @@
 {
-  "_comment_my_win10": "Build with `NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso ISO_CHECKSUM=3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso packerio build -only=qemu my_windows-10-enterprise-eval.json`",
+  "_comment": ["NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso ISO_CHECKSUM=3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso packer build -only=qemu my_windows.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",

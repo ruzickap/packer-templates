@@ -1,13 +1,21 @@
 ---
 sudo: required
 
-services:
-  - docker
+env:
+  - PACKER_URL=https://releases.hashicorp.com/packer/1.2.2/packer_1.2.2_linux_amd64.zip
 
 install:
+  - sudo apt update -qq
+  - sudo apt install -y ansible jq
   - gem install awesome_bot
 
 script:
   # Link Checks
   - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
-
+  # Validate Packer templates
+  - |
+    for FILE in *.json; do
+      echo "*** $FILE"
+      RUN=$(cat $FILE | jq -r '."_comment" | join("; ")' | sed 's/packer build/packer validate/g;')
+      eval $RUN
+    done
