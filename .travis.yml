@@ -13,6 +13,8 @@ install:
   - sudo pip install ansible
 
 script:
+  # Remove all iso links form *.md files
+  - find . -name "*.md" -exec sed -i '/.*\.iso/d' {} \;
   # Link Checks
   - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
   # Validate Packer templates
