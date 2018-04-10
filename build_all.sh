@@ -8,7 +8,7 @@ LOGFILE="/tmp/build_all.log"
   date
 
   for PACKER_VAGRANT_PROVIDER in libvirt; do
-    for BUILD in ubuntu-desktop-17.10 ubuntu-server-16.04 ubuntu-server-14.04 my_ubuntu-server-16.04 my_ubuntu-server-14.04 my_centos-7; do
+    for BUILD in ubuntu-desktop-18.04 ubuntu-desktop-17.10 ubuntu-server-18.04 ubuntu-server-16.04 ubuntu-server-14.04 my_ubuntu-server-18.04 my_ubuntu-server-16.04 my_ubuntu-server-14.04 my_centos-7; do
       ./build.sh $BUILD:$PACKER_VAGRANT_PROVIDER
     done
   done

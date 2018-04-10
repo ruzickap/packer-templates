@@ -164,4 +164,4 @@ NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tm
  * `build.sh` - build single image specified on command line
  * `build_all.sh` - builds all images
  * `build_all_remote_ssh.sh` - connects to remote Ubuntu server, install the necessary packages for building images and execute `build_all.sh`
- * `vagrant_init_destroy_boxes.sh` - tests all *.box images in the current directory using `vagrant add/up/ssh/winrm/destroy`
+ * `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current directory using `vagrant add/up/ssh/winrm/destroy`

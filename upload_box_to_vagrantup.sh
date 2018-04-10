@@ -15,22 +15,25 @@ This script can upload Packer box images to Vagrant Cloud.
 
 You need to define the "VAGRANTUP_ACCESS_TOKEN" variable with proper access token.
 
-Box names:
+Box names with user:
 
-* my_centos-7-x86_64-libvirt.box
-* my_ubuntu-14.04-server-amd64-libvirt.box
-* my_ubuntu-16.04-server-amd64-libvirt.box
-* ubuntu-14.04-server-amd64-libvirt.box
-* ubuntu-16.04-server-amd64-libvirt.box
-* ubuntu-17.10-desktop-amd64-libvirt.box
-* windows-10-enterprise-x64-eval-libvirt.box
-* windows-10-enterprise-x64-eval-virtualbox.box
-* my_windows-10-enterprise-x64-eval-libvirt.box
-* my_windows-10-enterprise-x64-eval-virtualbox.box
-* windows-server-2012-r2-standard-x64-eval-libvirt.box
-* windows-server-2012-r2-standard-x64-eval-virtualbox.box
-* windows-server-2016-standard-x64-eval-libvirt.box
-* windows-server-2016-standard-x64-eval-virtualbox.box
+* peru@my_centos-7-x86_64-libvirt.box
+* peru@my_ubuntu-14.04-server-amd64-libvirt.box
+* peru@my_ubuntu-16.04-server-amd64-libvirt.box
+* peru@my_ubuntu-18.04-server-amd64-libvirt.box
+* peru@ubuntu-14.04-server-amd64-libvirt.box
+* peru@ubuntu-16.04-server-amd64-libvirt.box
+* peru@ubuntu-18.04-server-amd64-libvirt.box
+* peru@ubuntu-17.10-desktop-amd64-libvirt.box
+* peru@ubuntu-18.04-desktop-amd64-libvirt.box
+* peru@windows-10-enterprise-x64-eval-libvirt.box
+* peru@windows-10-enterprise-x64-eval-virtualbox.box
+* peru@my_windows-10-enterprise-x64-eval-libvirt.box
+* peru@my_windows-10-enterprise-x64-eval-virtualbox.box
+* peru@windows-server-2012-r2-standard-x64-eval-libvirt.box
+* peru@windows-server-2012-r2-standard-x64-eval-virtualbox.box
+* peru@windows-server-2016-standard-x64-eval-libvirt.box
+* peru@windows-server-2016-standard-x64-eval-virtualbox.box
 
 Examples:
 
