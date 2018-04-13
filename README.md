@@ -11,7 +11,7 @@
 [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
 
-#### Vagrant Cloud repository
+#### Vagrant Cloud repository for the images build by these templates
 
 [https://app.vagrantup.com/peru](https://app.vagrantup.com/peru)
 

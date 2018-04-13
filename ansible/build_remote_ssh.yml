@@ -35,7 +35,6 @@
     vagrant_plugins:
       - vagrant-libvirt
       - vagrant-winrm
-    virtualbox_fedora_repo_url: http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
 
   tasks:
     - name: Install Python 2

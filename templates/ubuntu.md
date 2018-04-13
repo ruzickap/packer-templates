@@ -14,12 +14,13 @@
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 
-Here are the steps for latest Fedora how to install Vagrant from the official web pages:
+Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
 \`\`\`
-dnf remove vagrant
-dnf install -y libvirt-daemon-kvm qemu-kvm libvirt-devel
-dnf install -y https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.rpm
-vagrant plugin install vagrant-libvirt
+# Fedora
+dnf install -y vagrant-libvirt
+
+# Ubuntu
+apt install -y libvirt-bin vagrant-libvirt
 \`\`\`
 
 
