@@ -1,16 +1,17 @@
 {
-  "_comment_": "I'm using server iso because desktop iso doesn't support preseed: https://askubuntu.com/questions/796145/cant-preseed-ubuntu-desktop-installation",
   "_comment": [
-    "NAME=ubuntu-17.10-desktop-amd64 UBUNTU_VERSION=17.10.1 UBUNTU_TYPE=desktop UBUNTU_ARCH=amd64 packer build ubuntu-desktop.json"
+    "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic packer build ubuntu-desktop.json",
+    "NAME=ubuntu-17.10-desktop-amd64 UBUNTU_CODENAME=artful packer build ubuntu-desktop.json",
+    "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial packer build ubuntu-desktop.json",
+    "NAME=ubuntu-14.04-desktop-amd64 UBUNTU_CODENAME=trusty packer build ubuntu-desktop.json"
   ],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
-    "iso_name": "ubuntu-{{ env `UBUNTU_VERSION` }}-server-{{ env `UBUNTU_ARCH` }}",
-    "ubuntu_type": "{{ env `UBUNTU_TYPE` }}",
-    "ubuntu_version": "{{ env `UBUNTU_VERSION` }}",
-    "ubuntu_mirror": "http://releases.ubuntu.com/",
+    "iso_name": "mini.iso",
+    "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
+    "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "preseed.cfg",
@@ -24,8 +25,8 @@
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_version` }}/SHA256SUMS",
-      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_version` }}/{{ user `iso_name` }}.iso" ],
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
@@ -35,22 +36,65 @@
 
       "accelerator": "kvm",
       "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
-      "boot_wait": "2s",
+      "boot_wait": "5s",
       "boot_command":
       [
-        "<enter><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "/install/vmlinuz ",
-        "initrd=/install/initrd.gz ",
-        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-{{ user `ubuntu_type` }}/{{ user `preseed_file_name` }} ",
+        "<tab>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
         "auto=true ",
         "net.ifnames=0 ",
         "hostname=localhost ",
         "<enter>"
       ],
       "disk_size": "{{ user `disk_size` }}",
+      "http_directory": "http"
+    },
+    {
+      "vm_name": "{{ user `name` }}",
+      "type": "virtualbox-iso",
+      "guest_os_type": "Ubuntu_64",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_wait_timeout": "60m",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{ user `name` }}-virtualbox-iso",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+      "hard_drive_interface": "sata",
+      "disk_size": "{{ user `disk_size` }}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--audiocontroller",
+          "hda"
+        ]
+      ],
+      "boot_wait": "5s",
+      "boot_command":
+      [
+        "<tab>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
+        "auto=true ",
+        "net.ifnames=0 ",
+        "hostname=localhost ",
+        "<enter>"
+      ],
       "http_directory": "http"
     }
   ],
@@ -62,6 +106,7 @@
         "scripts/ubuntu/update.sh",
         "scripts/ubuntu/disable_apt-daily.sh",
         "scripts/ubuntu/spice-vdagent.sh",
+        "scripts/ubuntu/virtualbox-guest-x11.sh",
         "scripts/linux-common/vagrant.sh",
         "scripts/linux-common/cleanup.sh"
       ]

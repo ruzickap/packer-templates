@@ -22,36 +22,32 @@ This script can build the various libvirt and virtualbox images.
 You should have Packer, Ansible, libvirt and VirtualBox installed.
 
 List of all supported builds:
- * my_windows-10          (libvirt, virtualbox)
- * windows-10             (libvirt, virtualbox)
- * windows-2016           (libvirt, virtualbox)
- * windows-2012_r2        (libvirt, virtualbox)
- * ubuntu-desktop-18.04   (libvirt)
- * ubuntu-desktop-17.10   (libvirt)
- * ubuntu-server-18.04    (libvirt)
- * ubuntu-server-16.04    (libvirt)
- * ubuntu-server-14.04    (libvirt)
- * my_ubuntu-server-18.04 (libvirt)
- * my_ubuntu-server-16.04 (libvirt)
- * my_ubuntu-server-14.04 (libvirt)
- * my_centos-7            (libvirt)
+ * my_windows-10:{libvirt,virtualbox}
+ * windows-10:{libvirt,virtualbox}
+ * windows-2016:{libvirt,virtualbox}
+ * windows-2012_r2:{libvirt,virtualbox}
+ * ubuntu-18.04-desktop:{libvirt,virtualbox}
+ * ubuntu-17.10-desktop:{libvirt,virtualbox}
+ * ubuntu-18.04-server:{libvirt,virtualbox}
+ * ubuntu-16.04-server:{libvirt,virtualbox}
+ * ubuntu-14.04-server:{libvirt,virtualbox}
+ * my_ubuntu-18.04-server:{libvirt,virtualbox}
+ * my_ubuntu-16.04-server:{libvirt,virtualbox}
+ * my_ubuntu-14.04-server:{libvirt,virtualbox}
+ * my_centos-7:{libvirt,virtualbox}
 
 Examples:
 
-Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for Virtualbox:
-  $PROGNAME my_windows-10:virtualbox windows-10:virtualbox windows-2016:virtualbox windows-2012_r2:virtualbox
-
-
-Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for libvirt:
-  $PROGNAME my_windows-10:libvirt windows-10:libvirt windows-2016:libvirt windows-2012_r2:libvirt
+Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for Virtualbox and libvirt:
+  $PROGNAME my_windows-10:{virtualbox,libvirt} windows-10:{virtualbox,libvirt} windows-2016:{virtualbox,libvirt} windows-2012_r2:{virtualbox,libvirt}
 
 
 Build Ubuntu Desktop 18.04, 17.10; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt:
   $PROGNAME \\
-  ubuntu-desktop-18.04:libvirt ubuntu-desktop-17.10:libvirt \\
-  ubuntu-server-18.04:libvirt ubuntu-server-16.04:libvirt ubuntu-server-14.04:libvirt \\
-  my_ubuntu-server-18.04:libvirt my_ubuntu-server-16.04:libvirt my_ubuntu-server-14.04:libvirt \\
-  my_centos-7:libvirt
+  ubuntu-{18.04,17.10}-desktop:{libvirt,virtualbox} \\
+  ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
+  my_ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
+  my_centos-7:{libvirt,virtualbox}
 EOF
 }
 
@@ -76,30 +72,28 @@ cmdline() {
         export PACKER_BUILDER_TYPE="virtualbox-iso"
       ;;
       *)
-        echo "*** Unsupported PACKER_VAGRANT_PROVIDER: \"$PACKER_VAGRANT_PROVIDER\" used from \"$BUILD\""
+        echo -e "\n\n*** Unsupported PACKER_VAGRANT_PROVIDER: \"$PACKER_VAGRANT_PROVIDER\" used from \"$BUILD\""
         exit 1
       ;;
     esac
 
-    echo "*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_VAGRANT_PROVIDER"
+    echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_VAGRANT_PROVIDER"
 
     case $MYBUILD in
       *centos*)
         export CENTOS_VERSION=`echo $MYBUILD | awk -F '-' '{ print $2 }'`
         export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha1sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
-        export CENTOS_ARCH="x86_64"
         export CENTOS_TYPE="NetInstall"
-        export NAME="${MY_NAME}-${CENTOS_VERSION}-${CENTOS_ARCH}"
+        export NAME="${MY_NAME}-${CENTOS_VERSION}-x86_64"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
 
         sudo dnf upgrade -y ansible
       ;;
       *ubuntu*)
-        export UBUNTU_TYPE=`echo $MYBUILD | awk -F '-' '{ print $2 }'`
-        export UBUNTU_MAJOR_VERSION=`echo $MYBUILD | awk -F '-' '{ print $3 }'`
-        export UBUNTU_ARCH="amd64"
-        export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-        export NAME="${MY_NAME}-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
+        export UBUNTU_TYPE=`echo $MYBUILD | awk -F '-' '{ print $3 }'`
+        export UBUNTU_VERSION=`echo $MYBUILD | awk -F '-' '{ print $2 }'`
+        export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
+        export NAME="${MY_NAME}-${UBUNTU_VERSION}-${UBUNTU_TYPE}-amd64"
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
 
         sudo dnf upgrade -y ansible
@@ -153,7 +147,7 @@ packer_build() {
     test -d $TMPDIR  || mkdir -v $TMPDIR
     test -d $LOG_DIR || mkdir -v $LOG_DIR
 
-    echo -e "\n\n* ${NAME} [${PACKER_FILE}] [${PACKER_VAGRANT_PROVIDER}/${PACKER_BUILDER_TYPE}]\n"
+    echo -e "\n* ${NAME} [${PACKER_FILE}] [${PACKER_VAGRANT_PROVIDER}/${PACKER_BUILDER_TYPE}]\n"
     $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
   else
     echo -e "\n* File ${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";

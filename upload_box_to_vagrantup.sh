@@ -73,16 +73,16 @@ cmdline() {
         export CENTOS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export CENTOS_TYPE="NetInstall"
         export NAME="${MY_NAME}-${CENTOS_VERSION}-${CENTOS_ARCH}"
-        export SHORT_DESCRIPTION="My CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} for libvirt and vagrant"
+        export SHORT_DESCRIPTION="My CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} for libvirt and virtualbox"
         export LONG_DESCRIPTION=$(render_template templates/my_centos.md)
       ;;
       *ubuntu*)
         export UBUNTU_TYPE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export UBUNTU_MAJOR_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
         export UBUNTU_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
-        export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-${UBUNTU_TYPE}-${UBUNTU_ARCH}.iso/\1/p" | head -1`
-        export NAME="${MY_NAME}-${UBUNTU_VERSION::5}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-        export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_VERSION::5} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt and vagrant"
+        export UBUNTU_VERSION=`curl -s http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS | sed -n "s/.*ubuntu-\([^-]*\)-.*-${UBUNTU_ARCH}.iso/\1/p" | head -1`
+        export NAME="${MY_NAME}-${UBUNTU_MAJOR_VERSION}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
+        export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_MAJOR_VERSION} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt and virtualbox"
         export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}.md)
       ;;
       *windows-10*)

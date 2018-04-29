@@ -6,4 +6,4 @@
 # Description: https://serverfault.com/questions/706475/ssh-sessions-hang-on-shutdown-reboot
 
 export DEBIAN_FRONTEND="noninteractive"
-apt-get install -qq -y libpam-systemd
+apt-get install -qq -y --no-install-recommends libpam-systemd

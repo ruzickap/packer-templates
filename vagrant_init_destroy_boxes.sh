@@ -34,16 +34,18 @@ check_vagrant_vm() {
     *centos* | *ubuntu* )
       echo "*** Running: vagrant ssh --command \"apt list -qq --upgradable\""
       vagrant ssh --command '\
+        grep PRETTY_NAME /etc/os-release; \
         sudo sh -c "test -x /usr/bin/apt && apt-get update 2>&1 > /dev/null && echo \"apt list -qq --upgradable\" && apt list -qq --upgradable"; \
         sudo sh -c "test -x /usr/bin/yum && yum update -q && yum list -q updates"; \
         id; \
       '
-      echo "*** Running: sshpass -pvagrant ssh vagrant@${VAGRANT_VM_IP} 'id; sudo id'"
-      sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_VM_IP} '\
-        grep PRETTY_NAME /etc/os-release; \
-        id; \
-        sudo id; \
-      '
+      if [ "$VAGRANT_BOX_PROVIDER" != "virtualbox" ]; then
+        echo "*** Running: sshpass -pvagrant ssh vagrant@${VAGRANT_VM_IP} 'id; sudo id'"
+        sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_VM_IP} '\
+          id; \
+          sudo id; \
+        '
+      fi
     ;;
   esac
 }
@@ -73,7 +75,7 @@ main() {
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME"
 
-      echo -e "\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER)\n" | tee -a $LOGFILE
+      echo -e "\n\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER)" | tee -a $LOGFILE
       test -d "$TMPDIR/$VAGRANT_BOX_NAME" && rm -rf "$TMPDIR/$VAGRANT_BOX_NAME"
       mkdir "$TMPDIR/$VAGRANT_BOX_NAME"
 

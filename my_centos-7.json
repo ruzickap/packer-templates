@@ -1,12 +1,11 @@
 {
-  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_ARCH=x86_64 CENTOS_TAG=1708 packer build my_centos-7.json"],
+  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1708 packer build my_centos-7.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
     "centos_version": "{{ env `CENTOS_VERSION` }}",
-    "centos_arch": "{{ env `CENTOS_ARCH` }}",
     "centos_tag": "{{ env `CENTOS_TAG` }}",
     "centos_mirror": "http://ftp.linux.cz/pub/linux/centos/",
     "ssh_username": "vagrant",
@@ -22,8 +21,8 @@
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/{{ user `centos_arch` }}/sha256sum.txt",
-      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/{{ user `centos_arch` }}/CentOS-{{ user `centos_version` }}-{{ user `centos_arch` }}-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
+      "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
+      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
@@ -33,12 +32,55 @@
 
       "accelerator": "kvm",
       "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
-      "boot_wait": "2s",
+      "boot_wait": "5s",
       "boot_command":
       [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
       "disk_size": "{{ user `disk_size` }}",
+      "http_directory": "http"
+    },
+    {
+      "vm_name": "{{ user `name` }}",
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_checksum_type": "sha256",
+      "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
+      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
+      "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_wait_timeout": "60m",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "{{ user `name` }}-virtualbox-iso",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+
+      "hard_drive_interface": "sata",
+      "disk_size": "{{ user `disk_size` }}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--audiocontroller",
+          "hda"
+        ]
+      ],
+      "boot_wait": "5s",
+      "boot_command":
+      [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
+      ],
       "http_directory": "http"
     }
   ],
