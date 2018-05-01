@@ -96,7 +96,7 @@
       "type": "ansible",
       "user": "vagrant",
       "ansible_env_vars": [ "ANSIBLE_SSH_ARGS='-o ForwardAgent=no -o ControlMaster=auto -o ControlPersist=1h'" ],
-      "extra_arguments": [ "--extra-vars", "packer_build_name={{ user `name` }}", "--become" ],
+      "extra_arguments": [ "--become", "--extra-vars", "packer_build_name={{ user `name` }}", "--timeout", "30" ],
       "playbook_file": "ansible/site.yml",
       "sftp_command": "/usr/libexec/openssh/sftp-server -e"
     },

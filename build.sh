@@ -108,8 +108,8 @@ cmdline() {
           *windows-10*)
             export WINDOWS_EDITION="enterprise"
             export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
-            export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455"
           ;;
           *windows-2016*)
             export WINDOWS_TYPE="server"
