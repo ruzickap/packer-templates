@@ -1,6 +1,3 @@
----
-dist: xenial
-
 sudo: required
 
 env:
@@ -13,7 +10,6 @@ addons:
     - jq
 
 install:
-  - sudo apt update -qq
   - gem install awesome_bot
   - sudo pip install ansible
 
@@ -27,7 +23,7 @@ script:
     for FILE in *.json; do
       echo "*** $FILE"
       RUN=$(cat $FILE | jq -r '."_comment" | join("; ")' | sed 's/packer build/packer validate/g;')
-      eval $RUN
+      eval "$RUN"
     done
   # Check Ansible playbooks
   - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml

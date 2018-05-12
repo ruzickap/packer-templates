@@ -1,5 +1,5 @@
 {
-  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1708 packer build my_centos-7.json"],
+  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1804 packer build my_centos-7.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
