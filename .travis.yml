@@ -4,11 +4,16 @@ dist: xenial
 sudo: required
 
 env:
-  - PACKER_URL=https://releases.hashicorp.com/packer/1.2.2/packer_1.2.2_linux_amd64.zip
+  - PACKER_URL=https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
+
+# Install jq
+addons:
+  apt:
+    packages:
+    - jq
 
 install:
   - sudo apt update -qq
-  - sudo apt install -y jq
   - gem install awesome_bot
   - sudo pip install ansible
 
