@@ -4,6 +4,7 @@
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
+    "ssh_host_port": "5986",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "{{ env `ISO_URL` }}",
     "iso_checksum": "{{ env `ISO_CHECKSUM` }}",
@@ -24,6 +25,8 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
       "communicator": "winrm",
+      "ssh_host_port_min": "{{ user `ssh_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_host_port` }}",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
@@ -32,10 +35,15 @@
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
 
-      "shutdown_command": "timeout 100 & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
+      "shutdown_command": "timeout 100 & del C:\\script.bat & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
       "shutdown_timeout": "15m",
 
-      "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ], ["-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3"], ["-drive", "file={{ user `name` }}-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"]],
+      "qemuargs": [
+        [ "-m", "{{ user `memory` }}" ],
+        [ "-smp", "{{ user `cpus` }}" ],
+        [ "-drive", "file={{ user `virtio_win_iso` }},media=cdrom,index=3" ],
+        [ "-drive", "file={{ user `name` }}-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1" ]
+      ],
       "disk_size": "{{ user `disk_size` }}",
 
       "floppy_files": [
@@ -52,6 +60,8 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
       "communicator": "winrm",
+      "ssh_host_port_min": "{{ user `ssh_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_host_port` }}",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
@@ -106,13 +116,8 @@
         ]
     },
     {
-      "type": "ansible",
-      "user": "vagrant",
-      "playbook_file": "ansible/site.yml",
-      "extra_arguments": [
-        "--connection", "packer",
-        "--extra-vars", "ansible_shell_type=powershell ansible_shell_executable=None packer_build_name={{ user `name` }}"
-      ]
+      "type": "shell-local",
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user=vagrant ansible_ssh_pass=vagrant ansible_port={{ user `ssh_host_port` }}' -i 127.0.0.1, ansible/site.yml"
     },
     {
       "type": "windows-restart",
@@ -122,7 +127,7 @@
       "type": "windows-shell",
       "inline":
         [
-          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails",
+          "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails > NUL",
           "udefrag --optimize --repeat --suppress-progress-indicator %SystemDrive%",
           "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean system.free_disk_space"
         ],

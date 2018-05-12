@@ -77,7 +77,10 @@ cmdline() {
       ;;
     esac
 
-    echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_VAGRANT_PROVIDER"
+    test -d $TMPDIR  || mkdir -v $TMPDIR
+    test -d $LOG_DIR || mkdir -v $LOG_DIR
+
+    echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
 
     case $MYBUILD in
       *centos*)
@@ -86,8 +89,7 @@ cmdline() {
         export CENTOS_TYPE="NetInstall"
         export NAME="${MY_NAME}-${CENTOS_VERSION}-x86_64"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
-
-        sudo dnf upgrade -y ansible
+        echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
       ;;
       *ubuntu*)
         export UBUNTU_TYPE=`echo $MYBUILD | awk -F '-' '{ print $3 }'`
@@ -95,8 +97,7 @@ cmdline() {
         export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
         export NAME="${MY_NAME}-${UBUNTU_VERSION}-${UBUNTU_TYPE}-amd64"
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
-
-        sudo dnf upgrade -y ansible
+        echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
@@ -128,8 +129,9 @@ cmdline() {
           ;;
         esac
 
+        echo "* NAME: $NAME, WINDOWS_ARCH: $WINDOWS_ARCH, WINDOWS_VERSION: $WINDOWS_VERSION, WINDOWS_EDITION: $WINDOWS_EDITION, PACKER_FILE: $PACKER_FILE"
+
         test -f $VIRTIO_WIN_ISO || wget --continue $VIRTIO_WIN_ISO_URL -O $VIRTIO_WIN_ISO
-        sudo dnf install -y ansible-2.4.0.0-1.fc27
       ;;
       *)
         echo "*** Unsupported build type: \"$MYBUILD\" used from \"$BUILD\""
@@ -144,10 +146,6 @@ cmdline() {
 
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
-    test -d $TMPDIR  || mkdir -v $TMPDIR
-    test -d $LOG_DIR || mkdir -v $LOG_DIR
-
-    echo -e "\n* ${NAME} [${PACKER_FILE}] [${PACKER_VAGRANT_PROVIDER}/${PACKER_BUILDER_TYPE}]\n"
     $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
   else
     echo -e "\n* File ${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";

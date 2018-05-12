@@ -4,7 +4,6 @@
   gather_facts: false
 
   vars:
-    ansible_packer_connection_plugin: https://raw.githubusercontent.com/hashicorp/packer/master/test/fixtures/provisioner-ansible/connection_plugins/packer.py
     build_path: /var/tmp/
     packages:
       - ansible
@@ -21,12 +20,12 @@
       - qemu-img
       - qemu-kvm
       - unzip
-      - https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.rpm
+      - https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.rpm
       - VirtualBox
       - wget
       - xorg-x11-xauth
       - xorg-x11-server-utils
-    packer_url: https://releases.hashicorp.com/packer/1.2.0/packer_1.2.0_linux_amd64.zip
+    packer_url: https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
     packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
     rpmfusion_repositories:
       - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm
@@ -118,16 +117,6 @@
       command: vagrant plugin install {{ item }}
       with_items: "{{ vagrant_plugins }}"
       when: vagrant_plugin_list.stdout is not search(item)
-
-    - name: Create directory for packer ansible connection plugin
-      file:
-        path: "{{ ansible_env.HOME }}/.ansible/plugins/connection"
-        state: directory
-
-    - name: Download Ansible Packer Connection Plugin
-      get_url:
-        url: "{{ ansible_packer_connection_plugin }}"
-        dest: "{{ ansible_env.HOME }}/.ansible/plugins/connection/packer.py"
 
     - name: Clone the git repository
       git:
