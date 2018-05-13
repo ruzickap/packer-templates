@@ -2,7 +2,7 @@
 
 VAGRANT_CLOUD_USER=${VAGRANT_CLOUD_USER:-peru}
 LOGFILE="vagrant_init_destroy_boxes.log"
-
+export VERSION=${VERSION:-`date +%Y%m%d`.01}
 
 (
   for BOX in *.box; do
