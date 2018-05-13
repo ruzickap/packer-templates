@@ -9,7 +9,6 @@
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
-    "iso_name": "mini.iso",
     "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
     "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
     "ssh_username": "vagrant",

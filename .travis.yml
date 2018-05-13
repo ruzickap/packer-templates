@@ -14,16 +14,30 @@ install:
   - sudo pip install ansible
 
 script:
+  - set -e
   # Remove all iso links form *.md files
   - find . -name "*.md" -exec sed -i '/.*\.iso/d' {} \;
   # Link Checks
   - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
   # Validate Packer templates
   - |
+    curl $PACKER_URL --output /tmp/packer_linux_amd64.zip
+    sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
     for FILE in *.json; do
       echo "*** $FILE"
       RUN=$(cat $FILE | jq -r '."_comment" | join("; ")' | sed 's/packer build/packer validate/g;')
+      echo "* $RUN"
       eval "$RUN"
+    done
+  # Check the boxes at app.vagrantup.com
+  - |
+    for VAGRANT_PROVIDER in virtualbox libvirt; do
+      for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-{18.04,16.04}-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-10-enterprise-x64-eval windows-server-2016-standard-x64-eval windows-server-2012-r2-standard-x64-eval; do
+        CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version")
+        URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box"
+        echo "*** $URL"
+        curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
+      done
     done
   # Check Ansible playbooks
   - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
