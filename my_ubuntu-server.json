@@ -1,13 +1,15 @@
 {
   "_comment": [
-    "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic packer build ubuntu-server.json",
-    "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial packer build ubuntu-server.json",
-    "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty packer build ubuntu-server.json"
+    "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic packer build my_ubuntu-server.json",
+    "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial packer build my_ubuntu-server.json",
+    "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty packer build my_ubuntu-server.json"
   ],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
+    "ssh_winrm_host_port": "2299",
+    "vnc_vrdp_host_port": "5999",
     "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
     "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
     "ssh_username": "vagrant",
@@ -25,6 +27,11 @@
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
       "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
+      "vnc_port_max": "{{ user `vnc_vrdp_host_port` }}",
+      "vnc_port_min": "{{ user `vnc_vrdp_host_port` }}",
+      "vnc_bind_address": "0.0.0.0",
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
@@ -54,6 +61,11 @@
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
       "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
+      "vrdp_port_max": "{{ user `vnc_vrdp_host_port` }}",
+      "vrdp_port_min": "{{ user `vnc_vrdp_host_port` }}",
+      "vrdp_bind_address": "0.0.0.0",
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",

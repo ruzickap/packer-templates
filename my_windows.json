@@ -1,10 +1,11 @@
 {
-  "_comment": ["NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=/var/tmp/packer/virtio-win.iso ISO_CHECKSUM=3d39dd9bd37db5b3c80801ae44003802a9c770a7400a1b33027ca474a1a7c691 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/5/D/65D18931-F626-4A35-AD5B-F5DA41FE6B76/16299.15.170928-1534.rs3_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso packer build -only=qemu my_windows.json"],
+  "_comment": ["NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455 ISO_URL=https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso packer build -only=qemu my_windows.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
     "cpus": "2",
     "memory": "4096",
-    "ssh_host_port": "5986",
+    "ssh_winrm_host_port": "2299",
+    "vnc_vrdp_host_port": "5999",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "{{ env `ISO_URL` }}",
     "iso_checksum": "{{ env `ISO_CHECKSUM` }}",
@@ -25,8 +26,11 @@
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
       "communicator": "winrm",
-      "ssh_host_port_min": "{{ user `ssh_host_port` }}",
-      "ssh_host_port_max": "{{ user `ssh_host_port` }}",
+      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
+      "vnc_port_max": "{{ user `vnc_vrdp_host_port` }}",
+      "vnc_port_min": "{{ user `vnc_vrdp_host_port` }}",
+      "vnc_bind_address": "0.0.0.0",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
@@ -59,9 +63,12 @@
       "iso_checksum_type": "sha256",
       "iso_checksum": "{{ user `iso_checksum` }}",
       "iso_urls": [ "{{ user `iso_url` }}" ],
+      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
+      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
+      "vrdp_port_max": "{{ user `vnc_vrdp_host_port` }}",
+      "vrdp_port_min": "{{ user `vnc_vrdp_host_port` }}",
+      "vrdp_bind_address": "0.0.0.0",
       "communicator": "winrm",
-      "ssh_host_port_min": "{{ user `ssh_host_port` }}",
-      "ssh_host_port_max": "{{ user `ssh_host_port` }}",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
@@ -117,7 +124,7 @@
     },
     {
       "type": "shell-local",
-      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user=vagrant ansible_ssh_pass=vagrant ansible_port={{ user `ssh_host_port` }}' -i 127.0.0.1, ansible/site.yml"
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user=vagrant ansible_ssh_pass=vagrant ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/site.yml"
     },
     {
       "type": "windows-restart",
