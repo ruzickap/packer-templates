@@ -32,11 +32,11 @@ check_vagrant_vm() {
       vagrant winrm --shell powershell --command 'Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {$_.Name -match ".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {$_.devicename -match ".*Red Hat.*|.*VirtIO.*"} | select devicename, driverversion' | uniq
     ;;
     *centos* | *ubuntu* )
-      echo "*** Running: vagrant ssh --command \"apt list -qq --upgradable\""
+      echo "*** Checking if there are some packages to upgrade (there should be none)"
       vagrant ssh --command '\
         grep PRETTY_NAME /etc/os-release; \
         sudo sh -c "test -x /usr/bin/apt && apt-get update 2>&1 > /dev/null && echo \"apt list -qq --upgradable\" && apt list -qq --upgradable"; \
-        sudo sh -c "test -x /usr/bin/yum && yum update -q && yum list -q updates"; \
+        sudo sh -c "test -x /usr/bin/yum && yum list -q updates"; \
         id; \
       '
       if [ "$VAGRANT_BOX_PROVIDER" != "virtualbox" ]; then

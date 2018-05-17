@@ -146,7 +146,37 @@ You can build the images using the build script [build.sh](build.sh) or directly
 ./build.sh my_windows-10:{libvirt,virtualbox}
 ```
 
-### Build process with the packer
+### Build process with the Docker image
+If you do not want to install Packer, Vagrant, Vagrant plugins or Ansible, then you can use Docker image.
+You can find the Docker image and it's source on these URLs:
+
+* https://hub.docker.com/r/peru/packer_qemu_virtualbox_ansible/
+* https://github.com/ruzickap/docker-packer_qemu_virtualbox_ansible
+
+#### Ubuntu example with Docker image
+```
+sudo apt update
+sudo apt install -y --no-install-recommends curl git docker.io virtualbox
+sudo gpasswd -a ${USER} docker
+
+sudo reboot
+```
+
+#### Fedora example with Docker image
+```
+sudo sed -i 's@^SELINUX=enforcing@SELINUX=disabled@' /etc/selinux/config
+sudo dnf upgrade -y
+sudo dnf install -y http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install -y curl git docker VirtualBox
+sudo groupadd docker && sudo gpasswd -a ${USER} docker
+sudo systemctl enable docker
+
+sudo reboot
+```
+
+### Build process with the Packer
+
+Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 
 * Ubuntu:
 ```

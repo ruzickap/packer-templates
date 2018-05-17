@@ -1,13 +1,16 @@
-#!/bin/bash -ue
+#!/bin/bash -eu
 
-export TMPDIR="/var/tmp/packer"
-export PACKER_CACHE_DIR="$TMPDIR"
-#export PACKER_LOG=1
+export TMPDIR="$PWD/packer_cache"
 export VIRTIO_WIN_ISO_URL="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso"
-export VIRTIO_WIN_ISO=$(basename $VIRTIO_WIN_ISO_URL)
+export VIRTIO_WIN_ISO="$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)"
 export LOG_DIR="/tmp"
 export HEADLESS=${HEADLESS:-true}
+export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
 export PACKER_BINARY="packerio"
+# You can use VNC client to connect to machine which is building ot see the details (vncviewer 127.0.0.1:5999)
+export VNC_PORT=5999
+# You can use ssh/winrm to connect to machine when the OS is installed
+export WINRM_SSH_PORT=2299
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -89,6 +92,7 @@ cmdline() {
         export CENTOS_TYPE="NetInstall"
         export NAME="${MY_NAME}-${CENTOS_VERSION}-x86_64"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
+        export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION=$CENTOS_VERSION -e CENTOS_TAG=$CENTOS_TAG -e CENTOS_TYPE=$CENTOS_TYPE -e NAME=$NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
       ;;
       *ubuntu*)
@@ -97,12 +101,12 @@ cmdline() {
         export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
         export NAME="${MY_NAME}-${UBUNTU_VERSION}-${UBUNTU_TYPE}-amd64"
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
+        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE=$UBUNTU_TYPE -e UBUNTU_VERSION=$UBUNTU_VERSION -e UBUNTU_CODENAME=$UBUNTU_CODENAME -e NAME=$NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
         export WINDOWS_VERSION=`echo $MYBUILD | sed 's/.*windows-\([^-_]*\).*/\1/'`
-        export VIRTIO_WIN_ISO="$TMPDIR/virtio-win.iso"
         export PACKER_FILE="${MY_NAME}.json"
 
         case $MYBUILD in
@@ -111,6 +115,7 @@ cmdline() {
             export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
             export ISO_URL="https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
             export ISO_CHECKSUM="27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455"
+
           ;;
           *windows-2016*)
             export WINDOWS_TYPE="server"
@@ -134,8 +139,8 @@ cmdline() {
         esac
 
         echo "* NAME: $NAME, WINDOWS_ARCH: $WINDOWS_ARCH, WINDOWS_VERSION: $WINDOWS_VERSION, WINDOWS_EDITION: $WINDOWS_EDITION, PACKER_FILE: $PACKER_FILE"
-
         test -f $VIRTIO_WIN_ISO || wget --continue $VIRTIO_WIN_ISO_URL -O $VIRTIO_WIN_ISO
+        export DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION=$WINDOWS_VERSION -e NAME=$NAME -e ISO_URL=$ISO_URL -e ISO_CHECKSUM=$ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename $VIRTIO_WIN_ISO)"
       ;;
       *)
         echo "*** Unsupported build type: \"$MYBUILD\" used from \"$BUILD\""
@@ -150,7 +155,12 @@ cmdline() {
 
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
-    $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+    if [ $USE_DOCKERIZED_PACKER = "true" ]; then
+      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS --privileged --cap-add=ALL -v /lib/modules:/lib/modules:ro -v $PWD:/var/tmp/packer-templates/ -v $TMPDIR:/var/tmp/packer-templates/packer_cache/ peru/packer_qemu_virtualbox_ansible \
+        build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+    else
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+    fi
   else
     echo -e "\n* File ${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";
   fi
