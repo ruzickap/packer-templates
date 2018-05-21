@@ -156,7 +156,7 @@ cmdline() {
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS --privileged --cap-add=ALL -v /lib/modules:/lib/modules:ro -v $PWD:/var/tmp/packer-templates/ -v $TMPDIR:/var/tmp/packer-templates/packer_cache/ peru/packer_qemu_virtualbox_ansible \
+      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS --privileged -v $PWD:/var/tmp/packer-templates/ -v $TMPDIR:/var/tmp/packer-templates/packer_cache/ peru/packer_qemu_virtualbox_ansible \
         build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
