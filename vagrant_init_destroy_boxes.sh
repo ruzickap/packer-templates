@@ -72,12 +72,13 @@ main() {
     test -f $LOGFILE && rm $LOGFILE
     for VAGRANT_BOX_FILE in $BOXES_LIST; do
       export VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE%.*}
+      export VAGRANT_BOX_NAME_SHORT=`echo $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
-      export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME"
+      export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
 
-      echo -e "\n\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER)" | tee -a $LOGFILE
-      test -d "$TMPDIR/$VAGRANT_BOX_NAME" && rm -rf "$TMPDIR/$VAGRANT_BOX_NAME"
-      mkdir "$TMPDIR/$VAGRANT_BOX_NAME"
+      echo -e "\n\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER) ($TMPDIR/$VAGRANT_BOX_NAME_SHORT)" | tee -a $LOGFILE
+      test -d "$TMPDIR/$VAGRANT_BOX_NAME_SHORT" && rm -rf "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
+      mkdir "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
 
       vagrant_box_add
       vagrant_init_up
@@ -90,7 +91,7 @@ main() {
       vagrant_destroy
       vagrant_remove_boxes_images
 
-      rm -rf "$TMPDIR/$VAGRANT_BOX_NAME"
+      rm -rf "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
     done
 
     echo "*** Check the summary in: $LOGFILE"
