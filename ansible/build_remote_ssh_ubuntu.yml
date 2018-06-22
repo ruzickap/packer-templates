@@ -1,0 +1,117 @@
+---
+# This can be used only with latest Ubuntu
+- hosts: all
+  gather_facts: false
+
+  vars:
+    build_path: /var/tmp/
+
+    packages:
+      - ansible
+      - curl
+      - git
+      - libvirt-bin
+      - libvirt-dev
+      - python-pip
+      - unzip
+      - virtualbox-qt
+      - wget
+    packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
+
+    run_script: ./build_all.sh
+
+    vagrant_plugins:
+      - vagrant-libvirt
+      - vagrant-winrm
+
+  tasks:
+    - name: Install Python
+      raw: sudo bash -x -c "test -e /usr/bin/python || test -x /usr/bin/apt && ( apt -qqy update && apt install -y python-minimal )"
+      register: output
+      changed_when: output.stdout is search("Unpacking")
+
+    - name: Gather facts
+      setup:
+
+    - block:
+      - name: Update all packages to the latest version
+        apt:
+          upgrade: dist
+          update_cache: yes
+
+      - name: Get latest version of Vagrant
+        uri:
+          url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
+          return_content: yes
+        register: vagrant_uri
+
+      - name: Install Vagrant
+        apt:
+          deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
+
+      - name: Install packages
+        apt:
+          name: "{{ item }}"
+        loop: "{{ packages }}"
+
+      # python-winrm for python2 is not part of ubuntu
+      - name: Instal pywinrm
+        pip:
+          name: pywinrm
+
+      - name: Add the current user "{{ ansible_user_id }}" to kvm group
+        user:
+          name: "{{ ansible_user_id }}"
+          groups: kvm
+          append: yes
+
+      - name: Get latest version of Packer
+        uri:
+          url: https://checkpoint-api.hashicorp.com/v1/check/packer
+          return_content: yes
+        register: packer_uri
+
+      - name: Download and unzip packer
+        unarchive:
+          src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
+          dest: /usr/local/bin/
+          remote_src: yes
+          creates: /usr/local/bin/packerio
+          validate_certs: false
+
+      - name: Move packer to packerio
+        command: mv /usr/local/bin/packer /usr/local/bin/packerio
+        args:
+          creates: /usr/local/bin/packerio
+      become: true
+
+    - name: List installed Vagrant Plugins
+      command: vagrant plugin list
+      register: vagrant_plugin_list
+      changed_when: false
+
+    - name: Install Vagrant Plugins
+      command: vagrant plugin install {{ item }}
+      loop: "{{ vagrant_plugins }}"
+      when: vagrant_plugin_list.stdout is not search(item)
+
+    - name: Clone the git repository
+      git:
+        repo: "{{ packer_templates_git_repo }}"
+        dest: "{{ build_path }}/packer-templates"
+        version: latest
+        force: yes
+
+    - name: Execute script to build boxes (this step usually takes long time) [for more details check *.log in /var/tmp/packer]
+      command: "{{ run_script }}"
+      args:
+        chdir: "{{ build_path }}/packer-templates"
+      register: run_script_out
+      changed_when: true
+
+    - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check /tmp/vagrant_init_destroy_boxes.log]
+      command: ./vagrant_init_destroy_boxes.sh
+      args:
+        chdir: "{{ build_path }}/packer-templates"
+      register: vagrant_init_destroy_boxes_out
+      changed_when: true

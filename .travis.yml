@@ -1,8 +1,5 @@
 sudo: required
 
-env:
-  - PACKER_URL=https://releases.hashicorp.com/packer/1.2.3/packer_1.2.3_linux_amd64.zip
-
 # Install jq
 addons:
   apt:
@@ -11,7 +8,7 @@ addons:
 
 install:
   - gem install awesome_bot
-  - sudo pip install ansible
+  - sudo pip install ansible ansible-lint
 
 script:
   - set -e
@@ -21,7 +18,8 @@ script:
   - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
   # Validate Packer templates
   - |
-    curl $PACKER_URL --output /tmp/packer_linux_amd64.zip
+    PACKER_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
+    curl https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip --output /tmp/packer_linux_amd64.zip
     sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
     for FILE in *.json; do
       echo "*** $FILE"
@@ -41,3 +39,4 @@ script:
     done
   # Check Ansible playbooks
   - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
+  - ansible-lint -x ANSIBLE0010 ansible/*.yml

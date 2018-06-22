@@ -64,7 +64,7 @@
           state: latest
 
       - name: Check if reboot is necessary
-        shell: LAST_KERNEL=$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; fi
+        shell: if [ "$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}')" != "$(uname -r)" ]; then echo 'reboot'; fi
         changed_when: false
         register: reboot_out
 
@@ -73,7 +73,7 @@
           pause:
             prompt: 'Please confirm you want to reboot the remote machine: {{ ansible_host }}! Press return to continue. Press Ctrl+c and then "a" to abort'
 
-        - name: Reboot machne to boot to latest kernel
+        - name: Reboot machine to boot to latest kernel
           shell: sleep 2 && shutdown -r now "Ansible triggered reboot"
           async: 1
           poll: 0
@@ -122,16 +122,19 @@
       git:
         repo: "{{ packer_templates_git_repo }}"
         dest: "{{ build_path }}/packer-templates"
+        version: latest
         force: yes
 
     - name: Execute script to build boxes (this step usually takes long time) [for more details check *.log in /var/tmp/packer]
-      shell: "{{ run_script }}"
+      command: "{{ run_script }}"
       register: run_script_out
       args:
         chdir: "{{ build_path }}/packer-templates"
+      changed_when: true
 
     - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check /tmp/vagrant_init_destroy_boxes.log]
-      shell: ./vagrant_init_destroy_boxes.sh
+      command: ./vagrant_init_destroy_boxes.sh
       register: out
       args:
         chdir: "{{ build_path }}/packer-templates"
+      changed_when: true

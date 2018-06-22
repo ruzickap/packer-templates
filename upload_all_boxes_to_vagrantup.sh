@@ -1,7 +1,8 @@
 #!/bin/bash -eu
 
 VAGRANT_CLOUD_USER=${VAGRANT_CLOUD_USER:-peru}
-LOGFILE="vagrant_init_destroy_boxes.log"
+TMPDIR="/tmp"
+LOGFILE="$TMPDIR/vagrant_init_destroy_boxes.log"
 export VERSION=${VERSION:-`date +%Y%m%d`.01}
 
 (
