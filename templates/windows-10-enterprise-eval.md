@@ -114,3 +114,4 @@ Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/
 * https://github.com/boxcutter/windows
 * https://github.com/StefanScherer/packer-windows
 * https://github.com/hashicorp/best-practices
+* https://github.com/chef/bento/
