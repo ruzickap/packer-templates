@@ -4,26 +4,26 @@
 
 ---
 
-#### Github repository for bug reports or feature requests:
+### Github repository for bug reports or feature requests
 
-[https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
-
+* [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
 ## Requirements
+
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
-
 ## Requirements for linux distributions running Vagrant
+
 Unfortunately you can not use the Vagrant package provided by your Linux distribution (at least for CentOS / Fedora / Debian).
 These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM) needed by Vagrant for "talking" to Windows.
 Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm) including the Ruby WinRM library is part of official Vagrant package.
 You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation) supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel).
 
 Here are the steps for latest Fedora how to install Vagrant from the official web pages:
-\`\`\`
+\`\`\`bash
 dnf remove vagrant
 
 dnf install -y https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.rpm
@@ -36,12 +36,11 @@ dnf install -y gcc libvirt-daemon-kvm qemu-kvm libvirt-devel rdesktop
 vagrant plugin install vagrant-libvirt
 \`\`\`
 
-
 ## Getting started
 
 Install and connect to the box:
 
-\`\`\`
+\`\`\`bash
 mkdir ${NAME}
 cd ${NAME}
 vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
@@ -50,18 +49,17 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
 \`\`\`
 
-
 ## Login Credentials
 
 * Username: Administrator, vagrant
 * Password: vagrant
-
 
 ## VM Specifications
 
 Drivers / Devices added for the VMs for specific providers.
 
 ### Libvirt
+
 * Libvirt Provider
 * VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
@@ -69,12 +67,13 @@ Drivers / Devices added for the VMs for specific providers.
 * Channel Device (com.redhat.spice.0)
 
 ### VirtualBox
-* SATA Disk
 
+* SATA Disk
 
 ## Configuration
 
-#### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+
 * UTC timezone
 * IEHarden disabled
 * Home Page set to "about:blank"
@@ -89,7 +88,8 @@ Drivers / Devices added for the VMs for specific providers.
 * Windows image was finalized using \`sysprep\`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
 
 
-#### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
+### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
+
 Installed during installation:
 * NetKVM: VirtIO Network driver
 * qxldod: QXL graphics driver
@@ -105,9 +105,9 @@ Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
 
-#### Additional Drivers installed for virtualbox boxes
-* VirtualBox Guest Additions
+### Additional Drivers installed for virtualbox boxes
 
+* VirtualBox Guest Additions
 
 ## Thanks to...
 

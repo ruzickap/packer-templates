@@ -4,19 +4,19 @@
 
 ---
 
-#### Github repository for bug reports or feature requests:
+### Github repository for bug reports or feature requests
 
-[https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
-
+* [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
 ## Requirements
+
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
 Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
-\`\`\`
+\`\`\`bash
 # Fedora
 dnf install -y vagrant-libvirt
 
@@ -24,12 +24,11 @@ dnf install -y vagrant-libvirt
 apt install -y libvirt-bin vagrant-libvirt
 \`\`\`
 
-
 ## Getting started
 
 Install and connect to the box:
 
-\`\`\`
+\`\`\`bash
 mkdir ${NAME}
 cd ${NAME}
 vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
@@ -39,7 +38,6 @@ VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
 vagrant ssh
 \`\`\`
 
-
 ## Login Credentials
 
 Root password is: vagrant
@@ -47,24 +45,24 @@ Root password is: vagrant
 * Username: vagrant
 * Password: vagrant
 
-
 ## VM Specifications
 
 Drivers / Devices added for the VMs for specific providers.
 
 ### Libvirt
+
 * Libvirt Provider
 * VirtIO dynamic Hard Disk (up to 50 GiB)
 * VirtIO Network Interface
 * QXL Video Card (SPICE display)
 
 ### VirtualBox
-* SATA Disk
 
+* SATA Disk
 
 ## Configuration
 
-#### Preconfigured installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/) applied.
+### Preconfigured installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/) applied
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -85,5 +83,6 @@ Drivers / Devices added for the VMs for specific providers.
 * sshd is using only the strong algorithms
 * sysstat (sar) is running every minute instead of every 5 minutes
 
-#### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for virtualbox boxes
+
 * VirtualBox Guest Additions
