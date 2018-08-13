@@ -143,7 +143,7 @@ upload_boxfile_to_vagrantup() {
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/providers -X POST -d provider[name]="$VAGRANT_PROVIDER" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   local UPLOAD_PATH=$(curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/provider/$VAGRANT_PROVIDER/upload?access_token=$VAGRANTUP_ACCESS_TOKEN | jq -r '.upload_path')
   echo "*** Uploading \"${NAME}-${VAGRANT_PROVIDER}.box\" to $UPLOAD_PATH as version [$VERSION]"
-  curl -s -X PUT --upload-file ${NAME}-${VAGRANT_PROVIDER}.box $UPLOAD_PATH
+  curl -X PUT --upload-file ${NAME}-${VAGRANT_PROVIDER}.box $UPLOAD_PATH
   curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   # Check if uploaded file really exists
   if curl --output /dev/null --silent --head --fail "https://app.vagrantup.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box"; then

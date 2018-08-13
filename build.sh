@@ -129,7 +129,7 @@ cmdline() {
             export WINDOWS_TYPE="server"
             export WINDOWS_EDITION="standard"
             export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
-            export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
+            export ISO_URL="http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
             export ISO_CHECKSUM="6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5"
           ;;
           *)
@@ -156,7 +156,7 @@ cmdline() {
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS --privileged -v $PWD:/var/tmp/packer-templates/ -v $TMPDIR:/var/tmp/packer-templates/packer_cache/ peru/packer_qemu_virtualbox_ansible \
+      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS -u $(id -u):$(id -g) --privileged -v $PWD:/home/docker/packer -v $TMPDIR:/home/docker/packer/packer_cache/ peru/packer_qemu_virtualbox_ansible \
         build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"

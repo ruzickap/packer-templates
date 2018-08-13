@@ -26,14 +26,14 @@ Here are the steps for latest Fedora how to install Vagrant from the official we
 \`\`\`bash
 dnf remove vagrant
 
-dnf install -y https://releases.hashicorp.com/vagrant/2.0.3/vagrant_2.0.3_x86_64.rpm
+dnf install -y https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.rpm
 
 # virtualbox
 # Details here: https://rpmfusion.org/Howto/VirtualBox
 
 # libvirt
 dnf install -y gcc libvirt-daemon-kvm qemu-kvm libvirt-devel rdesktop
-vagrant plugin install vagrant-libvirt
+CONFIGURE_ARGS="with-libvirt-include=/usr/include/libvirt --with-libvirt-lib=/usr/lib64/libvirt" vagrant plugin install vagrant-libvirt
 \`\`\`
 
 ## Getting started
