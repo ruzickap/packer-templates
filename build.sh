@@ -7,10 +7,6 @@ export LOG_DIR="/tmp"
 export HEADLESS=${HEADLESS:-true}
 export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
 export PACKER_BINARY="packerio"
-# You can use VNC client to connect to machine which is building ot see the details (vncviewer 127.0.0.1:5999)
-export VNC_PORT=5999
-# You can use ssh/winrm to connect to machine when the OS is installed
-export WINRM_SSH_PORT=2299
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -156,7 +152,7 @@ cmdline() {
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker run --rm -it -p $WINRM_SSH_PORT:2299 -p $VNC_PORT:5999 $DOCKER_ENV_PARAMETERS -u $(id -u):$(id -g) --privileged -v $PWD:/home/docker/packer -v $TMPDIR:/home/docker/packer/packer_cache/ peru/packer_qemu_virtualbox_ansible \
+      docker run --rm -it $DOCKER_ENV_PARAMETERS -u $(id -u):$(id -g) --privileged -v $PWD:/home/docker/packer -v $TMPDIR:/home/docker/packer/packer_cache/ peru/packer_qemu_virtualbox_ansible \
         build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
