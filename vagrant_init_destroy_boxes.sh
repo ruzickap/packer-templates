@@ -71,8 +71,8 @@ main() {
   if [ -n "$BOXES_LIST" ]; then
     test -f $LOGFILE && rm $LOGFILE
     for VAGRANT_BOX_FILE in $BOXES_LIST; do
-      export VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE%.*}
-      export VAGRANT_BOX_NAME_SHORT=`echo $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
+      export VAGRANT_BOX_NAME=`basename ${VAGRANT_BOX_FILE%.*}`
+      export VAGRANT_BOX_NAME_SHORT=`basename $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
 
