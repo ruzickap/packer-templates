@@ -54,7 +54,7 @@ vagrant_remove_boxes_images() {
   vagrant box remove -f $VAGRANT_BOX_NAME
 
   if echo $VAGRANT_BOX_NAME | grep -q -i "libvirt"; then
-    sudo virsh vol-delete --pool default --vol ${VAGRANT_BOX_NAME}_vagrant_box_image_0.img
+    virsh --connect=qemu:///system vol-delete --pool default --vol ${VAGRANT_BOX_NAME}_vagrant_box_image_0.img
   fi
 }
 
