@@ -1,8 +1,8 @@
 #!/bin/bash -eu
 
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
-TMPDIR="/tmp"
-LOGFILE="$TMPDIR/vagrant_init_destroy_boxes.log"
+TMPDIR=${TMPDIR:-/tmp}
+LOGFILE=${LOGFILE:-$TMPDIR/vagrant_init_destroy_boxes.log}
 
 
 vagrant_box_add() {
