@@ -201,7 +201,6 @@ NAME=ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty    UBUNTU_TYPE=server pack
 
 # Ubuntu Desktop
 NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic   UBUNTU_TYPE=desktop packer build -only=qemu ubuntu-desktop.json
-NAME=ubuntu-17.10-desktop-amd64 UBUNTU_CODENAME=artful   UBUNTU_TYPE=desktop packer build -only=qemu ubuntu-desktop.json
 
 # Ubuntu Server - customized
 NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_TYPE=server packer build -only=qemu my_ubuntu-server.json

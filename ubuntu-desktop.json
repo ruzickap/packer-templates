@@ -1,7 +1,6 @@
 {
   "_comment": [
     "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic packer build -only=qemu ubuntu-desktop.json",
-    "NAME=ubuntu-17.10-desktop-amd64 UBUNTU_CODENAME=artful packer build -only=qemu ubuntu-desktop.json",
     "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial packer build -only=qemu ubuntu-desktop.json",
     "NAME=ubuntu-14.04-desktop-amd64 UBUNTU_CODENAME=trusty packer build -only=qemu ubuntu-desktop.json"
   ],

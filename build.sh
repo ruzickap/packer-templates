@@ -26,7 +26,6 @@ List of all supported builds:
  * windows-2016:{libvirt,virtualbox}
  * windows-2012_r2:{libvirt,virtualbox}
  * ubuntu-18.04-desktop:{libvirt,virtualbox}
- * ubuntu-17.10-desktop:{libvirt,virtualbox}
  * ubuntu-18.04-server:{libvirt,virtualbox}
  * ubuntu-16.04-server:{libvirt,virtualbox}
  * ubuntu-14.04-server:{libvirt,virtualbox}
@@ -41,9 +40,9 @@ Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windo
   $PROGNAME my_windows-10:{virtualbox,libvirt} windows-10:{virtualbox,libvirt} windows-2016:{virtualbox,libvirt} windows-2012_r2:{virtualbox,libvirt}
 
 
-Build Ubuntu Desktop 18.04, 17.10; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt:
+Build Ubuntu Desktop 18.04; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt:
   $PROGNAME \\
-  ubuntu-{18.04,17.10}-desktop:{libvirt,virtualbox} \\
+  ubuntu-{18.04}-desktop:{libvirt,virtualbox} \\
   ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
   my_ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
   my_centos-7:{libvirt,virtualbox}
