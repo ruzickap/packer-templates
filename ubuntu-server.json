@@ -1,11 +1,12 @@
 {
   "_comment": [
-    "NAME=ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic packer build -only=qemu ubuntu-server.json",
-    "NAME=ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial packer build -only=qemu ubuntu-server.json",
-    "NAME=ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty packer build -only=qemu ubuntu-server.json"
+    "NAME=ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
+    "NAME=ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
+    "NAME=ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json"
   ],
   "variables": {
     "name": "{{ env `NAME` }}",
+    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "cpus": "2",
     "memory": "4096",
     "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
@@ -116,7 +117,7 @@
         "type": "vagrant",
         "compression_level": 9,
         "vagrantfile_template": "Vagrantfile-linux.template",
-        "output": "{{ user `name` }}-{{ .Provider }}.box"
+        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box"
       }
     ]
   ]

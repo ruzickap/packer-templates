@@ -1,7 +1,8 @@
 {
-  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1804 packer build -only=qemu my_centos-7.json"],
+  "_comment": ["NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1804 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_centos-7.json"],
   "variables": {
     "name": "{{ env `NAME` }}",
+    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "cpus": "2",
     "memory": "4096",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
@@ -114,7 +115,7 @@
         "type": "vagrant",
         "compression_level": 9,
         "vagrantfile_template": "Vagrantfile-linux.template",
-        "output": "{{ user `name` }}-{{ .Provider }}.box"
+        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box"
       }
     ]
   ]

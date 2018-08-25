@@ -195,17 +195,17 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 
 ```bash
 # Ubuntu Server
-NAME=ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic    UBUNTU_TYPE=server packer build -only=qemu ubuntu-server.json
-NAME=ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial    UBUNTU_TYPE=server packer build -only=qemu ubuntu-server.json
-NAME=ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty    UBUNTU_TYPE=server packer build -only=qemu ubuntu-server.json
+NAME=ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json
+NAME=ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json
+NAME=ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json
 
 # Ubuntu Desktop
-NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic   UBUNTU_TYPE=desktop packer build -only=qemu ubuntu-desktop.json
+NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic UBUNTU_TYPE=desktop PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json
 
 # Ubuntu Server - customized
-NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_TYPE=server packer build -only=qemu my_ubuntu-server.json
-NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial UBUNTU_TYPE=server packer build -only=qemu my_ubuntu-server.json
-NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty UBUNTU_TYPE=server packer build -only=qemu my_ubuntu-server.json
+NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_ubuntu-server.json
+NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_ubuntu-server.json
+NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty UBUNTU_TYPE=server PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_ubuntu-server.json
 ```
 
 * Windows:
@@ -220,6 +220,7 @@ export WINDOWS_VERSION=2012
 export VIRTIO_WIN_ISO=/var/tmp/virtio-win.iso
 export ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5
 export ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO
+export PACKER_IMAGES_OUTPUT_DIR=/var/tmp/
 packer build -only=qemu windows.json
 
 ## Windows Server 2016
@@ -228,6 +229,7 @@ export WINDOWS_VERSION=2016
 export VIRTIO_WIN_ISO=/var/tmp/virtio-win.iso
 export ISO_CHECKSUM=1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f
 export ISO_URL=https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO
+export PACKER_IMAGES_OUTPUT_DIR=/var/tmp/
 packer build -only=qemu windows.json
 
 # Windows 10
@@ -236,6 +238,7 @@ export WINDOWS_VERSION=10
 export VIRTIO_WIN_ISO=/var/tmp/virtio-win.iso
 export ISO_CHECKSUM=27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455
 export USO_URL=https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso
+export PACKER_IMAGES_OUTPUT_DIR=/var/tmp/
 packer build -only=qemu windows.json
 
 # Windows 10 - customized
@@ -244,6 +247,7 @@ export WINDOWS_VERSION=10
 export VIRTIO_WIN_ISO=/var/tmp/virtio-win.iso
 export ISO_CHECKSUM=27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455
 export ISO_URL=https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso
+export PACKER_IMAGES_OUTPUT_DIR=/var/tmp/
 packer build -only=qemu my_windows.json
 ```
 

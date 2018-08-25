@@ -1,12 +1,13 @@
 #!/bin/bash -eu
 
-export TMPDIR="$PWD/packer_cache"
-export VIRTIO_WIN_ISO_URL="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso"
-export VIRTIO_WIN_ISO="$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)"
-export LOG_DIR="/tmp"
+export TMPDIR=${TMPDIR:-$PWD/packer_cache}
+export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso}
+export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)}
 export HEADLESS=${HEADLESS:-true}
 export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
-export PACKER_BINARY="packerio"
+export PACKER_BINARY=${PACKER_BINARY:-packerio}
+export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
+export LOG_DIR=${LOG_DIR:-$PACKER_IMAGES_OUTPUT_DIR}
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -75,8 +76,9 @@ cmdline() {
       ;;
     esac
 
-    test -d $TMPDIR  || mkdir -v $TMPDIR
-    test -d $LOG_DIR || mkdir -v $LOG_DIR
+    test -d $TMPDIR                   || mkdir -v $TMPDIR
+    test -d $PACKER_IMAGES_OUTPUT_DIR || mkdir -v $PACKER_IMAGES_OUTPUT_DIR
+    test -d $LOG_DIR                  || mkdir -v $LOG_DIR
 
     echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
 
@@ -151,8 +153,12 @@ cmdline() {
 packer_build() {
   if [ ! -f "${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker run --rm -it $DOCKER_ENV_PARAMETERS -u $(id -u):$(id -g) --privileged -v $PWD:/home/docker/packer -v $TMPDIR:/home/docker/packer/packer_cache/ peru/packer_qemu_virtualbox_ansible \
-        build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+      docker run --rm -it -u $(id -u):$(id -g) --privileged \
+        -v $PACKER_IMAGES_OUTPUT_DIR:$PACKER_IMAGES_OUTPUT_DIR \
+        -v $PWD:/home/docker/packer \
+        -v $TMPDIR:/home/docker/packer/packer_cache/ \
+        $DOCKER_ENV_PARAMETERS -e PACKER_IMAGES_OUTPUT_DIR=$PACKER_IMAGES_OUTPUT_DIR \
+        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     fi
