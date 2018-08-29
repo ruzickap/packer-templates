@@ -95,7 +95,7 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml):
+Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml):
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver

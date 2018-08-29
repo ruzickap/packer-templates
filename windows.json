@@ -1,7 +1,7 @@
 {
   "_comment": [
     "NAME=windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455 ISO_URL=https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu windows.json",
-    "NAME=windows-server-2012-r2-standard-x64-eval WINDOWS_VERSION=2012 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu windows.json",
+    "NAME=windows-server-2012_r2-standard-x64-eval WINDOWS_VERSION=2012 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu windows.json",
     "NAME=windows-server-2016-standard-x64-eval WINDOWS_VERSION=2016 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f ISO_URL=https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu windows.json"
   ],
   "variables": {
@@ -122,7 +122,7 @@
     },
     {
       "type": "shell-local",
-      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user=vagrant ansible_ssh_pass=vagrant ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/win.yml"
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user='{{ user `winrm_username` }}' ansible_ssh_pass='{{ user `winrm_password` }}' ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/win-simple.yml"
     },
     {
       "type": "windows-restart",

@@ -97,7 +97,7 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed components via Ansible playbook [win.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win.yml) for Windows:
+Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml) for Windows:
 
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
@@ -146,14 +146,14 @@ You can build the images using the build script [build.sh](build.sh) or directly
 
 ```bash
 # Windows Server
-./build.sh windows-2012_r2:{libvirt,virtualbox}
-./build.sh windows-2016:{libvirt,virtualbox}
+./build.sh windows-server-2012_r2-standard:{libvirt,virtualbox}
+./build.sh windows-server-2016-standard:{libvirt,virtualbox}
 
 # Windows 10
-./build.sh windows-10:{libvirt,virtualbox}
+./build.sh windows-10-enterprise:{libvirt,virtualbox}
 
 # Windows 10 - customized
-./build.sh my_windows-10:{libvirt,virtualbox}
+./build.sh my_windows-10-enterprise:{libvirt,virtualbox}
 ```
 
 ### Build process with the Docker image
@@ -215,7 +215,7 @@ wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-vir
 
 # Windows Server
 ## Windows Server 2012
-export NAME=windows-server-2012-r2-standard-x64-eval
+export NAME=windows-server-2012_r2-standard-x64-eval
 export WINDOWS_VERSION=2012
 export VIRTIO_WIN_ISO=/var/tmp/virtio-win.iso
 export ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5

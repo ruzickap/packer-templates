@@ -29,18 +29,18 @@ Box names with user:
 * peru@windows-10-enterprise-x64-eval-virtualbox.box
 * peru@my_windows-10-enterprise-x64-eval-libvirt.box
 * peru@my_windows-10-enterprise-x64-eval-virtualbox.box
-* peru@windows-server-2012-r2-standard-x64-eval-libvirt.box
-* peru@windows-server-2012-r2-standard-x64-eval-virtualbox.box
+* peru@windows-server-2012_r2-standard-x64-eval-libvirt.box
+* peru@windows-server-2012_r2-standard-x64-eval-virtualbox.box
 * peru@windows-server-2016-standard-x64-eval-libvirt.box
 * peru@windows-server-2016-standard-x64-eval-virtualbox.box
 
 Examples:
 
-Upload the "windows-server-2012-r2-standard-x64-eval-virtualbox.box" to peru/windows-server-2012-r2-standard-x64-eval:
+Upload the "windows-server-2012_r2-standard-x64-eval-virtualbox.box" to peru/windows-server-2012_r2-standard-x64-eval:
   export VAGRANTUP_ACCESS_TOKEN="123456"
 
   $PROGNAME <vagrant_cloud_user>@<box_image>
-  $PROGNAME peru@windows-server-2012-r2-standard-x64-eval-virtualbox.box
+  $PROGNAME peru@windows-server-2012_r2-standard-x64-eval-virtualbox.box
 EOF
 }
 
@@ -92,7 +92,7 @@ cmdline() {
         export SHORT_DESCRIPTION="Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
         export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
       ;;
-      *windows-*-2012-*)
+      *windows-*-2012*)
         export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export WINDOWS_RELEASE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
         export WINDOWS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $6 }'`
@@ -102,7 +102,7 @@ cmdline() {
         export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
         export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
       ;;
-      *windows-*-2016-*)
+      *windows-*-2016*)
         export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export WINDOWS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $5 }'`
         export WINDOWS_TYPE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
