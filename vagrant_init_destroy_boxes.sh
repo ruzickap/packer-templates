@@ -77,8 +77,8 @@ main() {
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
 
       echo -e "\n\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER) ($TMPDIR/$VAGRANT_BOX_NAME_SHORT)" | tee -a $LOGFILE
-      test -d "$TMPDIR/$VAGRANT_BOX_NAME_SHORT" && rm -rf "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
-      mkdir "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
+      test -d "$VAGRANT_CWD" && rm -rf "$VAGRANT_CWD"
+      mkdir "$VAGRANT_CWD"
 
       vagrant_box_add
       vagrant_init_up
@@ -91,7 +91,8 @@ main() {
       vagrant_destroy
       vagrant_remove_boxes_images
 
-      rm -rf "$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
+      rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
+      rmdir $VAGRANT_CWD
     done
 
     echo "*** Check the summary in: $LOGFILE"
