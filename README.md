@@ -180,7 +180,10 @@ sudo reboot
 sudo sed -i 's@^SELINUX=enforcing@SELINUX=disabled@' /etc/selinux/config
 sudo dnf upgrade -y
 sudo dnf install -y http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install -y curl git docker kmod-VirtualBox
+sudo dnf install -y akmod-VirtualBox curl docker git kernel-devel-$(uname -r) libvirt-daemon-kvm
+sudo akmods
+sudo usermod -a -G vboxusers ${USER}
+sudo usermod -a -G libvirt ${USER}
 sudo groupadd docker && sudo gpasswd -a ${USER} docker
 sudo systemctl enable docker
 
