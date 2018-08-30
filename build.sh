@@ -1,12 +1,19 @@
 #!/bin/bash -eu
 
+# Temporary directory where to store the iso images and other packer files
 export TMPDIR=${TMPDIR:-$PWD/packer_cache}
+# VirtIO win iso URL (https://www.linux-kvm.org/page/WindowsGuestDrivers/Download_Drivers)
 export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso}
 export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)}
+# Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
+# Use packer, virtualboc, ansible in docker image
 export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-true}
+# Packer binary (doesn't apply of you are using Dockerized packer)
 export PACKER_BINARY=${PACKER_BINARY:-packerio}
+# Directory where all the images will be stored
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
+# Directory where to store the logs
 export LOG_DIR=${LOG_DIR:-$PACKER_IMAGES_OUTPUT_DIR}
 
 readonly PROGNAME=$(basename $0)
