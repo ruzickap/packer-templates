@@ -1,7 +1,6 @@
 #!/bin/bash -eu
 
 LOGFILE="/tmp/build_all.log"
-#export USE_DOCKERIZED_PACKER="true"
 
 (
 
@@ -12,6 +11,6 @@ LOGFILE="/tmp/build_all.log"
     done
   done
 
-  ./vagrant_init_destroy_boxes.sh
+  ./vagrant_init_destroy_boxes_docker.sh
 
 ) 2>&1 | tee $LOGFILE

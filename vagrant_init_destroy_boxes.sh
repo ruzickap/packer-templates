@@ -13,7 +13,7 @@ vagrant_init_up() {
   vagrant init $VAGRANT_BOX_NAME
 
   # Disable VagrantBox GUI
-  if echo $VAGRANT_BOX_NAME | grep -q -i "virtualbox"; then
+  if [ "$VAGRANT_BOX_PROVIDER" = "virtualbox" ]; then
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' $VAGRANT_CWD/Vagrantfile
   fi
 
