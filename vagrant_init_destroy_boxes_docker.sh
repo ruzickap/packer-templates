@@ -1,13 +1,13 @@
 #!/bin/bash -eu
 
 VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH=$PWD
-
+LOGDIR=${LOGDIR:-/var/tmp}
 VAGRANT_BOX_FILE=$1
 
 vagrant_box() {
   docker run --rm -t -u $(id -u):$(id -g) --privileged --net=host \
   -e HOME=/home/docker \
-  -e LOGFILE=/home/docker/vagrant/vagrant_init_destroy_boxes.log \
+  -e LOGDIR=$LOGDIR \
   -v /dev/vboxdrv:/dev/vboxdrv \
   -v /var/run/libvirt/libvirt-sock:/var/run/libvirt/libvirt-sock \
   -v $VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH:/home/docker/vagrant_script \

@@ -1,8 +1,8 @@
 #!/bin/bash -eu
 
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
-TMPDIR=${TMPDIR:-/tmp}
-LOGFILE=${LOGFILE:-$TMPDIR/vagrant_init_destroy_boxes.log}
+TMPDIR=${TMPDIR:-/var/tmp}
+LOGDIR=${LOGDIR:-$TMPDIR}
 
 
 vagrant_box_add() {
@@ -69,21 +69,20 @@ vagrant_destroy() {
 
 main() {
   if [ -n "$BOXES_LIST" ]; then
-    test -f $LOGFILE && rm $LOGFILE
     for VAGRANT_BOX_FILE in $BOXES_LIST; do
       export VAGRANT_BOX_NAME=`basename ${VAGRANT_BOX_FILE%.*}`
       export VAGRANT_BOX_NAME_SHORT=`basename $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
 
-      echo -e "\n\n*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER) ($TMPDIR/$VAGRANT_BOX_NAME_SHORT)" | tee -a $LOGFILE
+      echo -e "*** ${VAGRANT_BOX_FILE} [$VAGRANT_BOX_NAME] ($VAGRANT_BOX_PROVIDER) ($TMPDIR/$VAGRANT_BOX_NAME_SHORT)" | tee $LOGDIR/$VAGRANT_BOX_NAME
       test -d "$VAGRANT_CWD" && rm -rf "$VAGRANT_CWD"
       mkdir "$VAGRANT_CWD"
 
       vagrant_box_add
       vagrant_init_up
 
-      check_vagrant_vm 2>&1 | tee -a $LOGFILE
+      check_vagrant_vm 2>&1 | tee -a $LOGDIR/$VAGRANT_BOX_NAME
 
       #echo "Press ENTER to destroy the VMs"
       #read A
@@ -94,8 +93,6 @@ main() {
       rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
       rmdir $VAGRANT_CWD
     done
-
-    echo "*** Check the summary in: $LOGFILE"
   fi
 }
 

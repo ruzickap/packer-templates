@@ -14,7 +14,7 @@ export PACKER_BINARY=${PACKER_BINARY:-packerio}
 # Directory where all the images will be stored
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
 # Directory where to store the logs
-export LOG_DIR=${LOG_DIR:-$PACKER_IMAGES_OUTPUT_DIR}
+export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -85,7 +85,7 @@ cmdline() {
 
     test -d $TMPDIR                   || mkdir -v $TMPDIR
     test -d $PACKER_IMAGES_OUTPUT_DIR || mkdir -v $PACKER_IMAGES_OUTPUT_DIR
-    test -d $LOG_DIR                  || mkdir -v $LOG_DIR
+    test -d $LOGDIR                   || mkdir -v $LOGDIR
 
     echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
 
@@ -164,9 +164,9 @@ packer_build() {
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache/ \
         $DOCKER_ENV_PARAMETERS -e PACKER_IMAGES_OUTPUT_DIR=$PACKER_IMAGES_OUTPUT_DIR \
-        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     else
-      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOG_DIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     fi
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";
