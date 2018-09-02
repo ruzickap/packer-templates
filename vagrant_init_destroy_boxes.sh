@@ -17,7 +17,7 @@ vagrant_init_up() {
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' $VAGRANT_CWD/Vagrantfile
   fi
 
-  vagrant up --provider $VAGRANT_BOX_PROVIDER
+  vagrant up --provider $VAGRANT_BOX_PROVIDER | grep -v 'Progress:'
 }
 
 check_vagrant_vm() {
