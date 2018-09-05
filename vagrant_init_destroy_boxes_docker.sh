@@ -22,16 +22,16 @@ vagrant_box() {
 #######
 
 main() {
-    VAGRANT_BOX_FILE_BASE_DIR=$(dirname $VAGRANT_BOX_FILE)
-    VAGRANT_BOX_FILE_BASENAME=$(basename $VAGRANT_BOX_FILE)
-    VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE_BASENAME%.*}
-    LOG_FILE="$LOGDIR/${VAGRANT_BOX_NAME}_vagrant_init_destroy_boxes.log"
+  VAGRANT_BOX_FILE_BASE_DIR=$(dirname $VAGRANT_BOX_FILE)
+  VAGRANT_BOX_FILE_BASENAME=$(basename $VAGRANT_BOX_FILE)
+  VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE_BASENAME%.*}
+  LOG_FILE="$LOGDIR/${VAGRANT_BOX_NAME}_vagrant_init_destroy_boxes.log"
 
-    if [ -f $LOG_FILE ]; then
-      echo -e "\n*** Logfile \"$LOG_FILE\" exist, please remove it... Skipping...\n"
-    else
-      vagrant_box
-    fi
+  if [ -f $LOG_FILE ]; then
+    echo -e "\n*** Logfile \"$LOG_FILE\" exist, please remove it... Skipping...\n"
+  else
+    vagrant_box
+  fi
 }
 
 main

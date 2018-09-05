@@ -3,6 +3,7 @@
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
 TMPDIR=${TMPDIR:-/var/tmp}
 LOGDIR=${LOGDIR:-$TMPDIR}
+VAGRANT_IGNORE_WINRM_PLUGIN=true
 
 
 vagrant_box_add() {
@@ -85,7 +86,7 @@ main() {
       mkdir "$VAGRANT_CWD"
 
       vagrant_box_add
-      vagrant_init_up
+      vagrant_init_up 2>&1 | tee -a $LOG_FILE
 
       check_vagrant_vm 2>&1 | tee -a $LOG_FILE
 
