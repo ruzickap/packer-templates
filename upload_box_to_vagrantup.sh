@@ -162,6 +162,7 @@ upload_boxfile_to_vagrantup() {
     echo "*** Removing previous version: https://vagrantcloud.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION"
     curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   fi
+  echo "*** Done"
 }
 
 vagrantup_upload() {

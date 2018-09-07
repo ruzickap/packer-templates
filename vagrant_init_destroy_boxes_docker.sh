@@ -34,11 +34,10 @@ main() {
   fi
 
   if [ -f $LOG_FILE ]; then
-    echo -e "\n*** ERROR: Logfile \"$LOG_FILE\" exist, please remove it...\n"
-    exit 1
+    echo -e "\n*** ERROR: Logfile \"$LOG_FILE\" exist! Skipping...\n"
+  else
+    vagrant_box
   fi
-
-  vagrant_box
 }
 
 main
