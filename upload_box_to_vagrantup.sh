@@ -1,6 +1,7 @@
 #!/bin/bash -eu
 
 export VERSION=${VERSION:-`date +%Y%m%d`.01}
+export LOGDIR=${LOGDIR:-/var/tmp}
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -63,6 +64,11 @@ cmdline() {
     MY_NAME=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $1 }'`
     export VAGRANT_PROVIDER=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $NF }'`
 
+    if [ ! -f $VAGRANT_CLOUD_BOX_FILE ]; then
+      echo -e "*** ERROR: \"$VAGRANT_CLOUD_BOX_FILE\" does not exist!\n"
+      exit 1
+    fi
+
     echo "*** My Name: $MY_NAME, User: $VAGRANT_CLOUD_USER, Box file: $VAGRANT_CLOUD_BOX_FILE, Box name: $VAGRANT_CLOUD_BOX_NAME"
 
     case $VAGRANT_CLOUD_BOX_NAME in
@@ -113,7 +119,7 @@ cmdline() {
       ;;
     esac
 
-    vagrantup_upload $VAGRANT_CLOUD_BOX_FILE
+    vagrantup_upload $VAGRANT_CLOUD_BOX_FILE | tee $LOGDIR/${VAGRANT_CLOUD_BOX_NAME}-upload.log
   done
 }
 
@@ -141,8 +147,8 @@ upload_boxfile_to_vagrantup() {
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION -X PUT -d version[description]="$LONG_DESCRIPTION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/providers -X POST -d provider[name]="$VAGRANT_PROVIDER" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   local UPLOAD_PATH=$(curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/provider/$VAGRANT_PROVIDER/upload?access_token=$VAGRANTUP_ACCESS_TOKEN | jq -r '.upload_path')
-  echo "*** Uploading \"${NAME}-${VAGRANT_PROVIDER}.box\" to $UPLOAD_PATH as version [$VERSION]"
-  curl -X PUT --upload-file ${NAME}-${VAGRANT_PROVIDER}.box $UPLOAD_PATH
+  echo "*** Uploading \"${VAGRANT_CLOUD_BOX_FILE}\" to \"https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME\" as version [$VERSION]"
+  curl -s -X PUT --upload-file ${VAGRANT_CLOUD_BOX_FILE} $UPLOAD_PATH
   curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   # Check if uploaded file really exists
   if curl --output /dev/null --silent --head --fail "https://app.vagrantup.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box"; then
@@ -161,7 +167,7 @@ upload_boxfile_to_vagrantup() {
 vagrantup_upload() {
   local PACKER_FILE=$1; shift
 
-  echo -e "\n\n*** $SHORT_DESCRIPTION ($NAME) [$PACKER_FILE]\n"
+  echo -e "*** $SHORT_DESCRIPTION ($NAME) [$PACKER_FILE]\n"
   create_vagrantup_box
   upload_boxfile_to_vagrantup
 }
