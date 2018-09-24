@@ -40,7 +40,7 @@
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
 
-      "shutdown_command": "timeout 1 & del C:\\script.bat & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
+      "shutdown_command": "del C:\\script.bat & A:\\sysprep.bat",
       "shutdown_timeout": "15m",
 
       "qemuargs": [
@@ -54,7 +54,8 @@
       "floppy_files": [
         "{{ user `autounattend` }}",
         "scripts/win-common/fixnetwork.ps1",
-        "scripts/win-common/unattend.xml"
+        "scripts/win-common/unattend.xml",
+        "scripts/win-common/sysprep.bat"
       ]
     },
     {
@@ -76,7 +77,7 @@
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "guest_additions_mode": "attach",
 
-      "shutdown_command": "timeout 1 & del C:\\script.bat & C:\\Windows\\System32\\Sysprep\\sysprep.exe /generalize /oobe /shutdown /unattend:A:\\unattend.xml",
+      "shutdown_command": "del C:\\script.bat & A:\\sysprep.bat",
       "shutdown_timeout": "15m",
 
       "hard_drive_interface": "sata",
@@ -105,7 +106,8 @@
       "floppy_files": [
         "{{ user `autounattend` }}",
         "scripts/win-common/fixnetwork.ps1",
-        "scripts/win-common/unattend.xml"
+        "scripts/win-common/unattend.xml",
+        "scripts/win-common/sysprep.bat"
       ]
     }
   ],
