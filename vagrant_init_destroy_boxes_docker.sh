@@ -26,18 +26,13 @@ main() {
   VAGRANT_BOX_FILE_BASE_DIR=$(dirname $VAGRANT_BOX_FILE_FULL_PATH)
   VAGRANT_BOX_FILE_BASENAME=$(basename $VAGRANT_BOX_FILE)
   VAGRANT_BOX_NAME=${VAGRANT_BOX_FILE_BASENAME%.*}
-  LOG_FILE="$LOGDIR/${VAGRANT_BOX_NAME}_vagrant_init_destroy_boxes.log"
 
   if [ ! -f $VAGRANT_BOX_FILE ]; then
     echo -e "\n*** ERROR: Box file \"$VAGRANT_BOX_FILE\" does not exist!\n"
     exit 1
   fi
 
-  if [ -f $LOG_FILE ]; then
-    echo -e "\n*** ERROR: Logfile \"$LOG_FILE\" exist! Skipping...\n"
-  else
-    vagrant_box
-  fi
+  vagrant_box
 }
 
 main

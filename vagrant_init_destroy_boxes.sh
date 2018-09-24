@@ -75,7 +75,7 @@ main() {
       export VAGRANT_BOX_NAME_SHORT=`basename $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
       export VAGRANT_CWD="$TMPDIR/$VAGRANT_BOX_NAME_SHORT"
-      export LOG_FILE="$LOGDIR/${VAGRANT_BOX_NAME}_vagrant_init_destroy_boxes.log"
+      export LOG_FILE="$LOGDIR/${VAGRANT_BOX_NAME}-init.log"
 
       if [ -f $LOG_FILE ]; then
         echo -e "\n*** Logfile \"$LOG_FILE\" exist, please remove it... Skipping...\n"
@@ -89,9 +89,6 @@ main() {
       vagrant_init_up 2>&1 | tee -a $LOG_FILE
 
       check_vagrant_vm 2>&1 | tee -a $LOG_FILE
-
-      #echo "Press ENTER to destroy the VMs"
-      #read A
 
       vagrant_destroy
       vagrant_remove_boxes_images
