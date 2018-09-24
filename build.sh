@@ -15,6 +15,9 @@ export PACKER_BINARY=${PACKER_BINARY:-packerio}
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
 # Directory where to store the logs
 export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
+# Enable packer debug log if set to 1 (default 0)
+export PACKER_LOG=${PACKER_LOG:-0}
+
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -96,7 +99,7 @@ cmdline() {
         export CENTOS_TYPE="NetInstall"
         export NAME="${MY_NAME}-${CENTOS_VERSION}-x86_64"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
-        export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION=$CENTOS_VERSION -e CENTOS_TAG=$CENTOS_TAG -e CENTOS_TYPE=$CENTOS_TYPE -e NAME=$NAME"
+        export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
       ;;
       *ubuntu*)
@@ -105,7 +108,7 @@ cmdline() {
         export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
         export NAME="${MY_NAME}-${UBUNTU_VERSION}-${UBUNTU_TYPE}-amd64"
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
-        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE=$UBUNTU_TYPE -e UBUNTU_VERSION=$UBUNTU_VERSION -e UBUNTU_CODENAME=$UBUNTU_CODENAME -e NAME=$NAME"
+        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
       ;;
       *windows*)
@@ -143,7 +146,7 @@ cmdline() {
 
         echo "* NAME: $NAME, WINDOWS_ARCH: $WINDOWS_ARCH, WINDOWS_VERSION: $WINDOWS_VERSION, WINDOWS_EDITION: $WINDOWS_EDITION, PACKER_FILE: $PACKER_FILE"
         test -f $VIRTIO_WIN_ISO || wget --continue $VIRTIO_WIN_ISO_URL -O $VIRTIO_WIN_ISO
-        export DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION=$WINDOWS_VERSION -e NAME=$NAME -e ISO_URL=$ISO_URL -e ISO_CHECKSUM=$ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename $VIRTIO_WIN_ISO)"
+        export DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename $VIRTIO_WIN_ISO)"
       ;;
       *)
         echo "*** Unsupported build type: \"$MYBUILD\" used from \"$BUILD\""
@@ -160,11 +163,14 @@ packer_build() {
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
       docker run --rm -t -u $(id -u):$(id -g) --privileged \
-        -v $PACKER_IMAGES_OUTPUT_DIR:$PACKER_IMAGES_OUTPUT_DIR \
+        -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
-        -v $TMPDIR:/home/docker/packer/packer_cache/ \
-        $DOCKER_ENV_PARAMETERS -e PACKER_IMAGES_OUTPUT_DIR=$PACKER_IMAGES_OUTPUT_DIR \
+        -v $TMPDIR:/home/docker/packer/packer_cache \
+        $DOCKER_ENV_PARAMETERS \
+        -e PACKER_LOG \
+        -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
         peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+      echo "*** Error code $?"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
     fi
