@@ -133,15 +133,10 @@ create_vagrantup_box() {
   fi
 }
 
-remove_vagrantup_box() {
-  echo "*** Removing box: $VAGRANT_CLOUD_USER/$NAME"
-  curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN"
-}
-
 upload_boxfile_to_vagrantup() {
   #Get the current version before uploading anything
   echo "*** Getting current version of the box (if exists)"
-  local CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME -X GET -d access_token="$VAGRANTUP_ACCESS_TOKEN" | jq -r ".current_version.version")
+  local CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME | jq -r ".current_version.version")
   echo "*** Current version of the box: $CURRENT_VERSION"
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/versions -X POST -d version[version]="$VERSION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION -X PUT -d version[description]="$LONG_DESCRIPTION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
@@ -157,8 +152,9 @@ upload_boxfile_to_vagrantup() {
     echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box\" does not exists !!!"
     exit 1
   fi
-  # Remove previous version (always keep just one - latest version - recently uploaded)
-  if [ "$CURRENT_VERSION" != "null" ] && [ "$CURRENT_VERSION" != "$VERSION" ]; then
+  # Check if previous version really exists and then remove it (always keep just one - latest version - recently uploaded)
+  CURRENT_VERSION_EXISTS=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION | jq -r '.success')
+  if [ "$CURRENT_VERSION" != "null" ] && [ "$CURRENT_VERSION" != "$VERSION" ] && [ "$CURRENT_VERSION_EXISTS" != "false" ]; then
     echo "*** Removing previous version: https://vagrantcloud.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION"
     curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   fi
