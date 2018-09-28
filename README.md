@@ -133,27 +133,27 @@ You can build the images using the build script [build.sh](build.sh) or directly
 
 ```bash
 # Ubuntu Server
-./build.sh ubuntu-server-{18.04,16.04,14.04}:{libvirt,virtualbox}
+./build.sh ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
-./build.sh ubuntu-desktop-18.04:{libvirt,virtualbox}
+./build.sh ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
 
 # Ubuntu Server - customized
-./build.sh my_ubuntu-server-{18.04,16.04}:{libvirt,virtualbox}
+./build.sh my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
 ```
 
 * Windows:
 
 ```bash
 # Windows Server
-./build.sh windows-server-2012_r2-standard:{libvirt,virtualbox}
-./build.sh windows-server-2016-standard:{libvirt,virtualbox}
+./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
+./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
 
 # Windows 10
-./build.sh windows-10-enterprise:{libvirt,virtualbox}
+./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
 
 # Windows 10 - customized
-./build.sh my_windows-10-enterprise:{libvirt,virtualbox}
+./build.sh my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
 ```
 
 ### Build process with the Docker image

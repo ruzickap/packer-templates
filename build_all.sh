@@ -5,9 +5,9 @@ LOGFILE="/tmp/build_all.log"
 (
 
   for PACKER_VAGRANT_PROVIDER in libvirt virtualbox; do
-    for BUILD in ubuntu-18.04-desktop ubuntu-{18.04,16.04,14.04}-server my_ubuntu-{18.04,16.04}-server my_centos-7 my_windows-10-enterprise windows-10-enterprise windows-server-2016-standard windows-server-2012_r2-standard; do
+    for BUILD in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-{18.04,16.04}-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-10-enterprise-x64-eval windows-server-2016-standard-x64-eval windows-server-2012_r2-standard-x64-eval; do
       echo "**** `date`"
-      ./build.sh $BUILD:$PACKER_VAGRANT_PROVIDER
+      ./build.sh ${BUILD}-${PACKER_VAGRANT_PROVIDER}
     done
   done
 

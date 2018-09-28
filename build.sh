@@ -32,31 +32,34 @@ This script can build the various libvirt and virtualbox images.
 You should have Packer, Ansible, libvirt and VirtualBox installed.
 
 List of all supported builds:
- * my_windows-10-enterprise:{libvirt,virtualbox}
- * windows-10-enterprise:{libvirt,virtualbox}
- * windows-server-2016-standard:{libvirt,virtualbox}
- * windows-server-2012_r2-standard:{libvirt,virtualbox}
- * ubuntu-18.04-desktop:{libvirt,virtualbox}
- * ubuntu-18.04-server:{libvirt,virtualbox}
- * ubuntu-16.04-server:{libvirt,virtualbox}
- * ubuntu-14.04-server:{libvirt,virtualbox}
- * my_ubuntu-18.04-server:{libvirt,virtualbox}
- * my_ubuntu-16.04-server:{libvirt,virtualbox}
- * my_ubuntu-14.04-server:{libvirt,virtualbox}
- * my_centos-7:{libvirt,virtualbox}
+ * my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
+ * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
+ * ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
+ * ubuntu-18.04-server-amd64-{libvirt,virtualbox}
+ * ubuntu-16.04-server-amd64-{libvirt,virtualbox}
+ * ubuntu-14.04-server-amd64-{libvirt,virtualbox}
+ * my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}
+ * my_ubuntu-16.04-server-amd64-{libvirt,virtualbox}
+ * my_ubuntu-14.04-server-amd64-{libvirt,virtualbox}
+ * my_centos-7-x86_64-{libvirt,virtualbox}
 
 Examples:
 
 Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for Virtualbox and libvirt:
-  $PROGNAME my_windows-10-enterprise:{virtualbox,libvirt} windows-10-enterprise:{virtualbox,libvirt} windows-server-2016-standard:{virtualbox,libvirt} windows-server-2012_r2-standard:{virtualbox,libvirt}
-
-
-Build Ubuntu Desktop 18.04; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt:
   $PROGNAME \\
-  ubuntu-{18.04}-desktop:{libvirt,virtualbox} \\
-  ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
-  my_ubuntu-{18.04,16.04,14.04}-server:{libvirt,virtualbox} \\
-  my_centos-7:{libvirt,virtualbox}
+    my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
+    windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
+
+Build Ubuntu Desktop 18.04; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt and Virtualbox:
+  $PROGNAME \\
+    ubuntu-18.04-desktop-amd64-{libvirt,virtualbox} \\
+    ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox} \\
+    my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox} \\
+    my_centos-7-x86_64-{libvirt,virtualbox}
 EOF
 }
 
@@ -69,9 +72,9 @@ cmdline() {
   fi
 
   for BUILD in $BUILDS; do
-    export PACKER_VAGRANT_PROVIDER="${BUILD##*:}"
-    export MYBUILD="${BUILD%:*}"
-    export MY_NAME=`echo $MYBUILD | awk -F '-' '{ print $1 }'`
+    export PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
+    export NAME="${BUILD%-*}"
+    export MY_NAME=`echo $NAME | awk -F '-' '{ print $1 }'`
 
     case $PACKER_VAGRANT_PROVIDER in
       libvirt )
@@ -90,56 +93,49 @@ cmdline() {
     test -d $PACKER_IMAGES_OUTPUT_DIR || mkdir -v $PACKER_IMAGES_OUTPUT_DIR
     test -d $LOGDIR                   || mkdir -v $LOGDIR
 
-    echo -e "\n\n*** $MY_NAME | $MYBUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
+    echo -e "\n\n*** $MY_NAME | $NAME | $BUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
 
-    case $MYBUILD in
+    case $NAME in
       *centos*)
-        export CENTOS_VERSION=`echo $MYBUILD | awk -F '-' '{ print $2 }'`
+        export CENTOS_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
         export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha1sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
         export CENTOS_TYPE="NetInstall"
-        export NAME="${MY_NAME}-${CENTOS_VERSION}-x86_64"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
         export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
       ;;
       *ubuntu*)
-        export UBUNTU_TYPE=`echo $MYBUILD | awk -F '-' '{ print $3 }'`
-        export UBUNTU_VERSION=`echo $MYBUILD | awk -F '-' '{ print $2 }'`
+        export UBUNTU_TYPE=`echo $NAME | awk -F '-' '{ print $3 }'`
+        export UBUNTU_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
         export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
-        export NAME="${MY_NAME}-${UBUNTU_VERSION}-${UBUNTU_TYPE}-amd64"
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
-        export WINDOWS_VERSION=`echo $MYBUILD | sed -n -e 's/.*-\([0-9][0-9][0-9][0-9]\)[_-].*/\1/p' -e 's/.*-\([0-9][0-9]\)-.*/\1/p'`
+        export WINDOWS_VERSION=`echo $NAME | sed -n -e 's/.*-\([0-9][0-9][0-9][0-9]\)[_-].*/\1/p' -e 's/.*-\([0-9][0-9]\)-.*/\1/p'`
         export PACKER_FILE="${MY_NAME}.json"
+        export WINDOWS_EDITION=`echo $NAME | sed -e 's/.*-\([^-]*\)-x64-eval$/\1/'`
 
-        case $MYBUILD in
+        case $NAME in
           *windows-10-enterprise*)
-            export WINDOWS_EDITION="enterprise"
-            export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
             export ISO_URL="https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
             export ISO_CHECKSUM="27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455"
           ;;
           *windows-server-2016-standard*)
             export WINDOWS_TYPE="server"
-            export WINDOWS_EDITION="standard"
-            export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
             export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
             export ISO_CHECKSUM="1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f"
           ;;
           *windows-server-2012_r2-standard*)
             export WINDOWS_RELEASE="r2"
             export WINDOWS_TYPE="server"
-            export WINDOWS_EDITION="standard"
-            export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}_${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
             export ISO_URL="http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
             export ISO_CHECKSUM="6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5"
           ;;
           *)
-            echo "*** Unsupported Windows build type: \"$MYBUILD\" used from \"$BUILD\""
+            echo "*** Unsupported Windows build type: \"$NAME\" used from \"$BUILD\""
             exit 1
           ;;
         esac
@@ -149,7 +145,7 @@ cmdline() {
         export DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename $VIRTIO_WIN_ISO)"
       ;;
       *)
-        echo "*** Unsupported build type: \"$MYBUILD\" used from \"$BUILD\""
+        echo "*** Unsupported build type: \"$NAME\" used from \"$BUILD\""
         exit 1
       ;;
     esac
@@ -160,22 +156,22 @@ cmdline() {
 
 
 packer_build() {
-  if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${NAME}-${PACKER_VAGRANT_PROVIDER}.box" ]; then
+  if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker run --rm -t -u $(id -u):$(id -g) --privileged \
+      docker pull peru/packer_qemu_virtualbox_ansible
+      docker run --rm -t -u $(id -u):$(id -g) --privileged --name "packer_${BUILD}" \
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
         $DOCKER_ENV_PARAMETERS \
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
-        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
-      echo "*** Error code $?"
+        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     else
-      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${NAME}-${PACKER_BUILDER_TYPE}-packer.log"
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
   else
-    echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${NAME}-${PACKER_VAGRANT_PROVIDER}.box already exists. Skipping....\n";
+    echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
   fi
 }
 
