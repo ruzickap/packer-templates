@@ -136,8 +136,8 @@
       "inline":
         [
           "%HOMEDRIVE%\\BleachBit-Portable\\bleachbit_console.exe --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails > NUL",
-          "%HOMEDRIVE%\\ultradefrag-portable-7.0.2.amd64\\udefrag.exe --optimize --repeat --suppress-progress-indicator %SystemDrive%",
-          "rmdir /s /q %HOMEDRIVE%\\ultradefrag-portable-7.0.2.amd64",
+          "%HOMEDRIVE%\\ultradefrag-portable-7.1.0.amd64\\udefrag.exe --optimize --repeat --suppress-progress-indicator %SystemDrive%",
+          "rmdir /s /q %HOMEDRIVE%\\ultradefrag-portable-7.1.0.amd64",
           "%HOMEDRIVE%\\BleachBit-Portable\\bleachbit_console.exe --clean system.free_disk_space",
           "rmdir /s /q %HOMEDRIVE%\\BleachBit-Portable"
         ],

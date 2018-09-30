@@ -3,7 +3,7 @@
 
   vars:
     bleachbit_url: https://download.bleachbit.org/BleachBit-2.0-portable.zip
-    ultradefrag_url: http://sourceforge.mirrorservice.org/u/ul/ultradefrag/stable-release/7.0.2/ultradefrag-portable-7.0.2.bin.amd64.zip
+    ultradefrag_url: http://sourceforge.mirrorservice.org/u/ul/ultradefrag/stable-release/7.1.0/ultradefrag-portable-7.1.0.bin.amd64.zip
 
   roles:
     - role: ansible-role-virtio-win
