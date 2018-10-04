@@ -231,5 +231,4 @@
             <DoNotOpenInitialConfigurationTasksAtLogon>true</DoNotOpenInitialConfigurationTasksAtLogon>
         </component>
     </settings>
-    <cpi:offlineImage xmlns:cpi="urn:schemas-microsoft-com:cpi" cpi:source="wim:d:/sources/install.wim#Windows 10 Enterprise Evaluation"/>
 </unattend>

@@ -71,7 +71,7 @@
                 </OSImage>
             </ImageInstall>
             <UserData>
-                <!-- Product Key from http://technet.microsoft.com/en-us/library/jj612867.aspx -->
+                <!-- Product Key from https://www.microsoft.com/en-us/evalcenter/ -->
                 <ProductKey>
                     <!-- Do not uncomment the Key element if you are using trial ISOs -->
                     <!-- You must uncomment the Key element (and optionally insert your own key) if you are using retail or volume license ISOs -->
@@ -212,5 +212,4 @@
             <EnableLUA>false</EnableLUA>
         </component>
     </settings>
-    <cpi:offlineImage xmlns:cpi="urn:schemas-microsoft-com:cpi" cpi:source="wim:c:/install.wim#Windows Server 2012 R2 SERVERSTANDARD"/>
 </unattend>
