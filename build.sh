@@ -34,6 +34,7 @@ You should have Packer, Ansible, libvirt and VirtualBox installed.
 List of all supported builds:
  * my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
  * windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-server-2019-datacenter-x64-eval-{libvirt,virtualbox}
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
  * ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
@@ -47,10 +48,11 @@ List of all supported builds:
 
 Examples:
 
-Build Windows 10 Enterprise Evaluation, Windows Server 2016 Evaluation and Windows Server 2012 Evaluation for Virtualbox and libvirt:
+Build Windows 10 Enterprise Evaluation, Windows Server 2019 Datacenter Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
   $PROGNAME \\
     my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-server-2019-datacenter-x64-eval-{libvirt,virtualbox} \\
     windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
 
@@ -120,8 +122,13 @@ cmdline() {
 
         case $NAME in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="a37718a13ecff4e8497e8feef50e4c91348e97c6bfe93474e364c9d03ad381a2"
+          ;;
+          *windows-server-2019-datacenter*)
+            export WINDOWS_TYPE="server"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_SERVER_EVAL_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="dbb0ffbab5d114ce7370784c4e24740191fefdb3349917c77a53ff953dd10f72"
           ;;
           *windows-server-2016-standard*)
             export WINDOWS_TYPE="server"

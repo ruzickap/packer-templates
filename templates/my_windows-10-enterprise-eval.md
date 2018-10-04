@@ -26,7 +26,7 @@ Here are the steps for latest Fedora how to install Vagrant from the official we
 \`\`\`bash
 dnf remove vagrant
 
-dnf install -y https://releases.hashicorp.com/vagrant/2.1.2/vagrant_2.1.2_x86_64.rpm
+dnf install -y https://releases.hashicorp.com/vagrant/2.1.5/vagrant_2.1.5_x86_64.rpm
 
 # virtualbox
 # Details here: https://rpmfusion.org/Howto/VirtualBox
