@@ -148,7 +148,7 @@ You can build the images using the build script [build.sh](build.sh) or directly
 # Windows Server
 ./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
 ./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
-./build.sh windows-server-2019-datacenter-x64-eval-{libvirt,virtualbox}
+./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
 
 # Windows 10
 ./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
@@ -232,7 +232,7 @@ export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
 packer build -only="qemu" windows.json
 
 ## Windows Server 2019
-export NAME="windows-server-2019-datacenter-x64-eval"
+export NAME="windows-server-2019-standard-x64-eval"
 export WINDOWS_VERSION="2019"
 export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
 export ISO_CHECKSUM="dbb0ffbab5d114ce7370784c4e24740191fefdb3349917c77a53ff953dd10f72"

@@ -34,8 +34,8 @@ Box names with user:
 * peru@windows-server-2012_r2-standard-x64-eval-virtualbox.box
 * peru@windows-server-2016-standard-x64-eval-libvirt.box
 * peru@windows-server-2016-standard-x64-eval-virtualbox.box
-* peru@windows-server-2019-datacenter-x64-eval-libvirt.box
-* peru@windows-server-2019-datacenter-x64-eval-virtualbox.box
+* peru@windows-server-2019-standard-x64-eval-libvirt.box
+* peru@windows-server-2019-standard-x64-eval-virtualbox.box
 
 Examples:
 
