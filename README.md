@@ -219,6 +219,7 @@ NAME="my_ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" UBUNTU_TYPE="server
 
 ```bash
 wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso -P /var/tmp/
+export TMPDIR=/var/tmp
 
 # Windows Server
 ## Windows Server 2012
