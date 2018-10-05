@@ -32,7 +32,10 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
 
       "accelerator": "kvm",
-      "qemuargs": [[ "-m", "{{ user `memory` }}" ], [ "-smp", "{{ user `cpus` }}" ]],
+      "qemuargs": [
+        [ "-m", "{{ user `memory` }}" ],
+        [ "-smp", "{{ user `cpus` }}" ]
+      ],
       "boot_wait": "5s",
       "boot_command":
       [
