@@ -3,7 +3,6 @@
 
   vars:
     bleachbit_url: https://download.bleachbit.org/BleachBit-2.0-portable.zip
-    ultradefrag_url: http://sourceforge.mirrorservice.org/u/ul/ultradefrag/stable-release/7.1.0/ultradefrag-portable-7.1.0.bin.amd64.zip
 
   roles:
     - role: ansible-role-virtio-win
@@ -48,22 +47,32 @@
     - name: Download BleachBit
       win_get_url:
         url: "{{ bleachbit_url }}"
-        dest: "%HOMEDRIVE%\\{{ bleachbit_url | basename }}"
+        dest: "%HOMEDRIVE%\\BleachBit-portable.zip"
 
     - name: Unzip downloaded BleachBit
       win_unzip:
-        src: "%HOMEDRIVE%\\{{ bleachbit_url | basename }}"
+        src: "%HOMEDRIVE%\\BleachBit-portable.zip"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
-    - name: Download UltraDefrag
+    - name: Get latest UltraDefrag url
+      win_uri:
+        url: https://sourceforge.net/projects/ultradefrag/rss?path=/stable-release
+        return_content: yes
+      register: ultradefrag_url_output
+
+    - name: Set UltraDefrag url
+      set_fact:
+        ultradefrag_url: "{{ ultradefrag_url_output.content |  regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>','\\1') | first }}"
+
+    - name: Download UltraDefrag from {{ ultradefrag_url }}
       win_get_url:
         url: "{{ ultradefrag_url }}"
-        dest: "%HOMEDRIVE%\\{{ ultradefrag_url | basename }}"
+        dest: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
 
     - name: Unzip downloaded Ultra Defrag
       win_unzip:
-        src: "%HOMEDRIVE%\\{{ ultradefrag_url | basename }}"
+        src: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
