@@ -25,6 +25,7 @@ Box names with user:
 * peru@ubuntu-14.04-server-amd64-libvirt.box
 * peru@ubuntu-16.04-server-amd64-libvirt.box
 * peru@ubuntu-18.04-server-amd64-libvirt.box
+* peru@ubuntu-18.10-desktop-amd64-libvirt.box
 * peru@ubuntu-18.04-desktop-amd64-libvirt.box
 * peru@windows-10-enterprise-x64-eval-libvirt.box
 * peru@windows-10-enterprise-x64-eval-virtualbox.box

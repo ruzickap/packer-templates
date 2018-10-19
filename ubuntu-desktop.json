@@ -1,5 +1,6 @@
 {
   "_comment": [
+    "NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
     "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
     "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
     "NAME=ubuntu-14.04-desktop-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json"
@@ -24,8 +25,8 @@
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
-      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
@@ -56,8 +57,8 @@
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
-      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",

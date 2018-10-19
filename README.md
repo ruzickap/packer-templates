@@ -136,7 +136,7 @@ You can build the images using the build script [build.sh](build.sh) or directly
 ./build.sh ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
-./build.sh ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-18.10-desktop-amd64-{libvirt,virtualbox}
 
 # Ubuntu Server - customized
 ./build.sh my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
@@ -207,6 +207,7 @@ NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" UBUNTU_TYPE="server" P
 NAME="ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
+NAME="ubuntu-18.10-desktop-amd64" UBUNTU_CODENAME="cosmic" UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-desktop.json
 NAME="ubuntu-18.04-desktop-amd64" UBUNTU_CODENAME="bionic" UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
