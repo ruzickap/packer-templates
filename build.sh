@@ -123,8 +123,8 @@ cmdline() {
 
         case $NAME in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="a37718a13ecff4e8497e8feef50e4c91348e97c6bfe93474e364c9d03ad381a2"
+            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
@@ -167,7 +167,7 @@ packer_build() {
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
       docker pull peru/packer_qemu_virtualbox_ansible
-      docker run --rm -t -u $(id -u):$(id -g) --privileged --name "packer_${BUILD}" \
+      docker run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" \
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
