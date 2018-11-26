@@ -17,7 +17,8 @@ export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-temp
 export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
-
+# User docker / podman executable
+DOCKER_COMMAND="docker"
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -166,8 +167,8 @@ cmdline() {
 packer_build() {
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
-      docker pull peru/packer_qemu_virtualbox_ansible
-      docker run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" \
+      $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
+      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" \
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
