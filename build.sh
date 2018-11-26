@@ -18,7 +18,12 @@ export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
 # User docker / podman executable
-DOCKER_COMMAND="docker"
+if `which podman &> /dev/null`; then
+  DOCKER_COMMAND="podman"
+else
+  DOCKER_COMMAND="docker"
+fi
+
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
