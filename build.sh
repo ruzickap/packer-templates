@@ -173,7 +173,7 @@ packer_build() {
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
       $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
-      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" \
+      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" --tmpfs /dev/shm:size=67108864 \
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
