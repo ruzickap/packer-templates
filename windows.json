@@ -1,7 +1,7 @@
 {
   "_comment": [
-    "NAME=windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455 ISO_URL=https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json",
-    "NAME=windows-server-2012_r2-standard-x64-eval WINDOWS_VERSION=2012 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5 ISO_URL=http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json",
+    "NAME=windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351 ISO_URL=https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json",
+    "NAME=windows-server-2012_r2-standard-x64-eval WINDOWS_VERSION=2012 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5 ISO_URL=https://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json",
     "NAME=windows-server-2016-standard-x64-eval WINDOWS_VERSION=2016 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f ISO_URL=https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json",
     "NAME=windows-server-2019-standard-x64-eval WINDOWS_VERSION=2019 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_CHECKSUM=dbb0ffbab5d114ce7370784c4e24740191fefdb3349917c77a53ff953dd10f72 ISO_URL=https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_SERVER_EVAL_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu windows.json"
   ],
@@ -38,6 +38,7 @@
       "winrm_timeout": "12h",
       "winrm_use_ssl": "true",
       "winrm_insecure": "true",
+      "accelerator": "kvm",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
 
@@ -115,6 +116,7 @@
   "provisioners": [
     {
       "type": "powershell",
+      "pause_before": "1m",
       "only": ["virtualbox-iso"],
       "inline":
         [
@@ -134,6 +136,7 @@
     },
     {
       "type": "windows-shell",
+      "pause_before": "15m",
       "inline":
         [
           "%HOMEDRIVE%\\BleachBit-Portable\\bleachbit_console.exe --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails > NUL",
