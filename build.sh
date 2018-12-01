@@ -19,9 +19,9 @@ export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 export PACKER_LOG=${PACKER_LOG:-0}
 # User docker / podman executable
 if `which podman &> /dev/null`; then
-  DOCKER_COMMAND="podman"
+  DOCKER_COMMAND=${DOCKER_COMMAND:-podman}
 else
-  DOCKER_COMMAND="docker"
+  DOCKER_COMMAND=${DOCKER_COMMAND:-docker}
 fi
 
 
@@ -173,11 +173,12 @@ packer_build() {
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
     if [ $USE_DOCKERIZED_PACKER = "true" ]; then
       $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
-      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --net=host --privileged --name "packer_${BUILD}" --tmpfs /dev/shm:size=67108864 \
+      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" $DOCKER_ENV_PARAMETERS \
+        -v /dev/kvm:/dev/kvm \
+        -v /dev/vboxdrv:/dev/vboxdrv \
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
-        $DOCKER_ENV_PARAMETERS \
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
         peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
