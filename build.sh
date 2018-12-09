@@ -8,7 +8,7 @@ export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
 # Use packer, virtualboc, ansible in docker image
-export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-true}
+export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
 # Packer binary (doesn't apply of you are using Dockerized packer)
 export PACKER_BINARY=${PACKER_BINARY:-packerio}
 # Directory where all the images will be stored
@@ -26,6 +26,8 @@ else
   DOCKER_COMMAND=${DOCKER_COMMAND:-docker}
 fi
 
+# This variable is a workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox support "Windows2019_64")
+WINDOWS_2019_VIRTUALBOX_HELPER=""
 
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
@@ -138,6 +140,8 @@ cmdline() {
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_SERVER_EVAL_x64FRE_en-us.iso"
             export ISO_CHECKSUM="dbb0ffbab5d114ce7370784c4e24740191fefdb3349917c77a53ff953dd10f72"
+            # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox support "Windows2019_64")
+            export WINDOWS_2019_VIRTUALBOX_HELPER="-var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016"
           ;;
           *windows-server-2016-*)
             export WINDOWS_TYPE="server"
@@ -184,9 +188,9 @@ packer_build() {
         -e PACKER_RUN_TIMEOUT \
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
-        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $WINDOWS_2019_VIRTUALBOX_HELPER $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     else
-      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $WINDOWS_2019_VIRTUALBOX_HELPER $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
