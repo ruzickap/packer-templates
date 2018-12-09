@@ -8,7 +8,7 @@
     "centos_type": "{{ env `CENTOS_TYPE` }}",
     "centos_version": "{{ env `CENTOS_VERSION` }}",
     "centos_tag": "{{ env `CENTOS_TAG` }}",
-    "centos_mirror": "http://ftp.linux.cz/pub/linux/centos/",
+    "centos_mirror": "http://ftp.cvut.cz/centos/",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "my-ks.cfg",
