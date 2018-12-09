@@ -131,7 +131,7 @@
     },
     {
       "type": "windows-shell",
-      "pause_before": "15m",
+      "pause_before": "5m",
       "inline":
         [
           "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cookies internet_explorer.forms internet_explorer.history internet_explorer.temporary_files system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.history windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.thumbnails > NUL",
