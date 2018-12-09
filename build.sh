@@ -17,6 +17,8 @@ export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-temp
 export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
+# Max amount of time which packer can run (default 3 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
+export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-10800}
 # User docker / podman executable
 if `which podman &> /dev/null`; then
   DOCKER_COMMAND=${DOCKER_COMMAND:-podman}
@@ -107,7 +109,7 @@ cmdline() {
     case $NAME in
       *centos*)
         export CENTOS_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
-        export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha1sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
+        export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
         export CENTOS_TYPE="NetInstall"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
         export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
@@ -179,6 +181,7 @@ packer_build() {
         -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
         -v $PWD:/home/docker/packer \
         -v $TMPDIR:/home/docker/packer/packer_cache \
+        -e PACKER_RUN_TIMEOUT \
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
         peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
