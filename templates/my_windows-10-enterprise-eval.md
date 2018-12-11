@@ -26,8 +26,8 @@ Here are the steps for latest Fedora how to install Vagrant from the official we
 \`\`\`bash
 dnf remove vagrant
 
-VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version') \
-curl -s https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm --output /tmp/vagrant_x86_64.rpm \
+VAGRANT_LATEST_VERSION=\$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version') \
+curl -s https://releases.hashicorp.com/vagrant/\${VAGRANT_LATEST_VERSION}/vagrant_\${VAGRANT_LATEST_VERSION}_x86_64.rpm --output /tmp/vagrant_x86_64.rpm \
 dnf install /tmp/vagrant_x86_64.rpm \
 rm /tmp/vagrant_x86_64.rpm
 
