@@ -77,7 +77,7 @@ cmdline() {
     case $VAGRANT_CLOUD_BOX_NAME in
       *centos*)
         export CENTOS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
-        export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha1sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
+        export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
         export CENTOS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
         export CENTOS_TYPE="NetInstall"
         export NAME="${MY_NAME}-${CENTOS_VERSION}-${CENTOS_ARCH}"
@@ -102,12 +102,12 @@ cmdline() {
         export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md)
       ;;
       *windows-*-2012*)
-        export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $3 }'`
-        export WINDOWS_RELEASE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
-        export WINDOWS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $6 }'`
+        export WINDOWS_VERSION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '[-_]' '{ print $3 }'`
+        export WINDOWS_RELEASE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '[-_]' '{ print $4 }'`
+        export WINDOWS_ARCH=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $5 }'`
         export WINDOWS_TYPE=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $2 }'`
-        export WINDOWS_EDITION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $5 }'`
-        export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+        export WINDOWS_EDITION=`echo $VAGRANT_CLOUD_BOX_NAME | awk -F '-' '{ print $4 }'`
+        export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}_${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
         export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE^} $WINDOWS_VERSION ${WINDOWS_RELEASE^^} ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation for libvirt and virtualbox"
         export LONG_DESCRIPTION=$(render_template templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md)
       ;;
