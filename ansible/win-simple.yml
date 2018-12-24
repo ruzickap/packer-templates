@@ -76,7 +76,7 @@
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
-    - name: Install windows updates
+    - name: Install windows updates 1
       win_updates:
         category_names:
           - Application
@@ -91,3 +91,20 @@
           - Tools
           - UpdateRollups
           - Updates
+      ignore_errors: true
+      register: windows_updates1
+
+    - name: Windows reboot
+      win_reboot:
+        reboot_timeout: 10000
+      when: windows_updates1.reboot_required
+
+    - name: Install windows updates 2
+      win_updates:
+      ignore_errors: true
+      register: windows_updates2
+
+    - name: Windows reboot
+      win_reboot:
+        reboot_timeout: 10000
+      when: windows_updates2.reboot_required
