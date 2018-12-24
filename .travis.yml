@@ -37,4 +37,4 @@ script:
     done
   # Check Ansible playbooks
   - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
-  - ansible-lint -x ANSIBLE0010 ansible/*.yml
+  - ansible-lint -x 204,403 ansible/*.yml

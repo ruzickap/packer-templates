@@ -48,6 +48,8 @@
       - name: Install libselinux-python needed for Fedora
         dnf:
           name: libselinux-python
+        register: result
+        until: result is succeeded
 
       - name: Disable SELinux
         selinux:
@@ -57,11 +59,15 @@
         dnf:
           name: "{{ item }}"
         with_items: "{{ rpmfusion_repositories }}"
+        register: result
+        until: result is succeeded
 
       - name: Upgrade all packages
         dnf:
           name: "*"
           state: latest
+        register: result
+        until: result is succeeded
 
       - name: Check if reboot is necessary
         shell: if [ "$(rpm -q --last kernel-core | awk 'NR==1 {sub(/kernel-core-/,""); print $1}')" != "$(uname -r)" ]; then echo 'reboot'; fi
@@ -93,6 +99,8 @@
         dnf:
           name: "{{ item }}"
         with_items: "{{ packages }}"
+        register: result
+        until: result is succeeded
 
       - name: Download and unzip packer
         unarchive:
