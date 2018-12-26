@@ -101,7 +101,6 @@
 
     - name: Install windows updates 2
       win_updates:
-      ignore_errors: true
       register: windows_updates2
 
     - name: Windows reboot
