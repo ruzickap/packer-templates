@@ -236,8 +236,8 @@ packer build -only="qemu" windows.json
 export NAME="windows-server-2019-standard-x64-eval"
 export WINDOWS_VERSION="2019"
 export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_CHECKSUM="dbb0ffbab5d114ce7370784c4e24740191fefdb3349917c77a53ff953dd10f72"
-export ISO_URL="https://software-download.microsoft.com/download/pr/17763.1.180914-1434.rs5_release_SERVER_EVAL_x64FRE_en-us.iso"
+export ISO_CHECKSUM="57FAF4A2EA4484CFDF5E964C539313C061C4D9CAC474E723D60405F2EA02D570"
+export ISO_URL="https://software-download.microsoft.com/download/sg/17763.253.190108-0006.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
 export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
 packer build -only="qemu" windows.json
 
