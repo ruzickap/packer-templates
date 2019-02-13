@@ -1,23 +1,38 @@
-# Install jq
+dist: xenial
+
+node_js:
+  - "8"
+
 addons:
   apt:
     packages:
     - jq
+    - npm
 
 install:
-  - gem install awesome_bot
+  # Install ansible and ansible-lint
   - sudo pip install ansible ansible-lint
+
+  # Install markdownlint and markdown-link-check
+  - sudo -E npm install -g markdownlint-cli markdown-link-check > /dev/null
 
 script:
   - set -e
-  # Remove all iso links form *.md files
-  - find . -name "*.md" -exec sed -i '/.*\.iso/Id' {} \;
+
+  # Markdown check
+  - |
+    echo '"line-length": false' > markdownlint_config.json
+    markdownlint -c markdownlint_config.json README.md
+
   # Link Checks
-  - awesome_bot --white-list "$" --allow-dupe --allow-redirect --skip-save-results `find . -name "*.md"`
+  - |
+    echo '{ "ignorePatterns": [ { "pattern": "^(http|https)://localhost" } ] }' > config.json
+    markdown-link-check --config config.json README.md
+
   # Validate Packer templates
   - |
     PACKER_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
-    curl https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip --output /tmp/packer_linux_amd64.zip
+    curl -s https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip --output /tmp/packer_linux_amd64.zip
     sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
     for FILE in *.json; do
       echo "*** $FILE"
@@ -25,6 +40,7 @@ script:
       echo "* $RUN"
       eval "$RUN"
     done
+
   # Check the boxes at app.vagrantup.com
   - |
     for VAGRANT_PROVIDER in virtualbox libvirt; do
@@ -35,6 +51,7 @@ script:
         curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
       done
     done
+
   # Check Ansible playbooks
   - ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
   - ansible-lint -x 204,403 ansible/*.yml
