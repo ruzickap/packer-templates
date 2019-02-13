@@ -108,7 +108,7 @@ Installed components via Ansible playbook [win-simple.yml](https://github.com/ru
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
 
-### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions
 

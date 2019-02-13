@@ -83,6 +83,6 @@ Drivers / Devices added for the VMs for specific providers.
 * sshd is using only the strong algorithms
 * sysstat (sar) is running every minute instead of every 5 minutes
 
-### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions

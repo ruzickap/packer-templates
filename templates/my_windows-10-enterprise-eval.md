@@ -112,7 +112,7 @@ Installed components via Ansible playbook [win-simple.yml](https://github.com/ru
 * added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
 
 
-### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions
 

@@ -74,6 +74,6 @@ Drivers / Devices added for the VMs for specific providers.
 * /dev/vda1 mounted on / using ext4 filesystem (all files in one partition)
 * no swap
 
-### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions
