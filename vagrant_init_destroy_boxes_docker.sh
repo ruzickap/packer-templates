@@ -20,7 +20,6 @@ vagrant_box() {
   -e HOME=/home/docker \
   -e LOGDIR=/home/docker/vagrant_logdir \
   -v /dev/vboxdrv:/dev/vboxdrv \
-  -v /dev/kvm:/dev/kvm \
   -v /var/run/libvirt/libvirt-sock:/var/run/libvirt/libvirt-sock \
   -v $VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH:/home/docker/vagrant_script \
   -v $VAGRANT_BOX_FILE_BASE_DIR:/home/docker/vagrant \
