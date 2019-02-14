@@ -16,17 +16,11 @@ install:
   - npm install -g markdownlint-cli markdown-link-check > /dev/null
 
 script:
-  - set -e
-
   # Markdown check
-  - |
-    echo '"line-length": false' > /tmp/markdownlint_config.json
-    find . -name "*.md" -exec markdownlint -c /tmp/markdownlint_config.json {} \;
+  - find . -name "*.md" -print0 | xargs -0 markdownlint
 
   # Link Checks
-  - |
-    echo '{ "ignorePatterns": [ { "pattern": "^(http|https)://localhost" } ] }' > /tmp/config.json
-    markdown-link-check --config /tmp/config.json README.md templates/*.md
+  - markdown-link-check README.md templates/*.md
 
   # Validate Packer templates
   - |
