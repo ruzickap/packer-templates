@@ -1,6 +1,6 @@
-# [My Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_VERSION}-${WINDOWS_EDITION})
+# [My Windows $WINDOWS_VERSION ${WINDOWS_EDITION_UC} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_VERSION}-${WINDOWS_EDITION})
 
-## Modified Windows $WINDOWS_VERSION ${WINDOWS_EDITION^} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
+## Modified Windows $WINDOWS_VERSION ${WINDOWS_EDITION_UC} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
 
 ---
 
@@ -18,16 +18,17 @@
 ## Requirements for linux distributions running Vagrant
 
 Unfortunately you can not use the Vagrant package provided by your Linux distribution (at least for CentOS / Fedora / Debian).
-These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM) needed by Vagrant for "talking" to Windows.
+These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM) needed by Vagrant for talking to Windows.
 Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm) including the Ruby WinRM library is part of official Vagrant package.
 You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation) supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel).
 
 Here are the steps for latest Fedora how to install Vagrant from the official web pages:
-\`\`\`bash
+
+```bash
 dnf remove vagrant
 
-VAGRANT_LATEST_VERSION=\$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version') \
-curl -s https://releases.hashicorp.com/vagrant/\${VAGRANT_LATEST_VERSION}/vagrant_\${VAGRANT_LATEST_VERSION}_x86_64.rpm --output /tmp/vagrant_x86_64.rpm \
+VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version') \
+curl -s https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm --output /tmp/vagrant_x86_64.rpm \
 dnf install /tmp/vagrant_x86_64.rpm \
 rm /tmp/vagrant_x86_64.rpm
 
@@ -37,20 +38,20 @@ rm /tmp/vagrant_x86_64.rpm
 # libvirt
 dnf install -y gcc libvirt-daemon-kvm qemu-kvm libvirt-devel rdesktop
 CONFIGURE_ARGS='with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64/libvirt' vagrant plugin install vagrant-libvirt
-\`\`\`
+```
 
 ## Getting started
 
 Install and connect to the box:
 
-\`\`\`bash
+```bash
 mkdir ${NAME}
 cd ${NAME}
 vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
 VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 # or
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
-\`\`\`
+```
 
 ## Login Credentials
 
@@ -79,7 +80,7 @@ Drivers / Devices added for the VMs for specific providers.
 
 * UTC timezone
 * IEHarden disabled
-* Home Page set to "about:blank"
+* Home Page set to `about:blank`
 * First Run Wizard disabled
 * Firewall allows Remote Desktop connections
 * AutoActivation skipped
@@ -88,17 +89,18 @@ Drivers / Devices added for the VMs for specific providers.
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
-* Windows image was finalized using \`sysprep\`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
-
+* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
 
 ### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 
 Installed during installation:
+
 * NetKVM: VirtIO Network driver
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
 Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml):
+
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver
@@ -111,14 +113,13 @@ Installed components via Ansible playbook [win-simple.yml](https://github.com/ru
 
 * added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
 
-
 ### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions
 
-## Thanks to...
+## Thanks to
 
-* https://github.com/boxcutter/windows
-* https://github.com/StefanScherer/packer-windows
-* https://github.com/hashicorp/best-practices
-* https://github.com/chef/bento/
+* [https://github.com/boxcutter/windows](https://github.com/boxcutter/windows)
+* [https://github.com/StefanScherer/packer-windows](https://github.com/StefanScherer/packer-windows)
+* [https://github.com/hashicorp/best-practices](https://github.com/hashicorp/best-practices)
+* [https://github.com/chef/bento/](https://github.com/chef/bento/)

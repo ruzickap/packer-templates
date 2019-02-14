@@ -1,6 +1,6 @@
-# [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE^}](http://www.ubuntu.com/${UBUNTU_TYPE})
+# [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE_UC}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Modified Ubuntu ${UBUNTU_TYPE^} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
+## Modified Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
 
 ---
 
@@ -16,19 +16,20 @@
 * [VirtualBox](https://www.virtualbox.org/)
 
 Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
-\`\`\`bash
+
+```bash
 # Fedora
 dnf install -y vagrant-libvirt
 
 # Ubuntu
 apt install -y libvirt-bin vagrant-libvirt
-\`\`\`
+```
 
 ## Getting started
 
 Install and connect to the box:
 
-\`\`\`bash
+```bash
 mkdir ${NAME}
 cd ${NAME}
 vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
@@ -36,7 +37,7 @@ VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 # or
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
 vagrant ssh
-\`\`\`
+```
 
 ## Login Credentials
 

@@ -1,4 +1,4 @@
-dist: xenialOB
+dist: xenial
 
 node_js:
   - "8"
@@ -21,12 +21,12 @@ script:
   # Markdown check
   - |
     echo '"line-length": false' > /tmp/markdownlint_config.json
-    markdownlint -c /tmp/markdownlint_config.json README.md
+    find . -name "*.md" -exec markdownlint -c /tmp/markdownlint_config.json {} \;
 
   # Link Checks
   - |
     echo '{ "ignorePatterns": [ { "pattern": "^(http|https)://localhost" } ] }' > /tmp/config.json
-    markdown-link-check --config /tmp/config.json README.md
+    markdown-link-check --config /tmp/config.json README.md templates/*.md
 
   # Validate Packer templates
   - |
