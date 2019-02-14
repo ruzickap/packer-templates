@@ -1,4 +1,4 @@
-dist: xenial
+dist: xenialOB
 
 node_js:
   - "8"
@@ -7,27 +7,26 @@ addons:
   apt:
     packages:
     - jq
-    - npm
 
 install:
   # Install ansible and ansible-lint
   - sudo pip install ansible ansible-lint
 
   # Install markdownlint and markdown-link-check
-  - sudo -E npm install -g markdownlint-cli markdown-link-check > /dev/null
+  - npm install -g markdownlint-cli markdown-link-check > /dev/null
 
 script:
   - set -e
 
   # Markdown check
   - |
-    echo '"line-length": false' > markdownlint_config.json
-    markdownlint -c markdownlint_config.json README.md
+    echo '"line-length": false' > /tmp/markdownlint_config.json
+    markdownlint -c /tmp/markdownlint_config.json README.md
 
   # Link Checks
   - |
-    echo '{ "ignorePatterns": [ { "pattern": "^(http|https)://localhost" } ] }' > config.json
-    markdown-link-check --config config.json README.md
+    echo '{ "ignorePatterns": [ { "pattern": "^(http|https)://localhost" } ] }' > /tmp/config.json
+    markdown-link-check --config /tmp/config.json README.md
 
   # Validate Packer templates
   - |
