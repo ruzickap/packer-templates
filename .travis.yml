@@ -20,7 +20,7 @@ script:
   - find . -name "*.md" -print0 | xargs -0 markdownlint
 
   # Link Checks
-  - markdown-link-check README.md templates/*.md
+  - markdown-link-check --quiet README.md templates/*.md
 
   # Validate Packer templates
   - |
