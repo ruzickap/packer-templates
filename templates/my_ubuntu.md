@@ -1,10 +1,11 @@
 # [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE_UC}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Modified Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
+Modified Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
+and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-### Github repository for bug reports or feature requests
+## Github repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -15,7 +16,8 @@
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
-Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
+Here are the steps for latest Fedora/Ubuntu to install Vagrant
+and vagrant-libvirt + KVM:
 
 ```bash
 # Fedora
@@ -63,7 +65,10 @@ Drivers / Devices added for the VMs for specific providers.
 
 ## Configuration
 
-### Preconfigured installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/) applied
+### Preconfigured installation
+
+See the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg)
+and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/)
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -76,7 +81,8 @@ Drivers / Devices added for the VMs for specific providers.
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml) and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
+  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip

@@ -1,6 +1,9 @@
-# Packer Templates mainly for the Vagrant [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) provider
+# Packer Templates mainly for the Vagrant [libvirt][libvirt] and [virtualbox][virtualbox]
 
-## Customized+Clean/Minimal boxes for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) provider
+## Customized+Clean/Minimal boxes for [libvirt][libvirt] and [virtualbox][virtualbox]
+
+[libvirt]: https://github.com/vagrant-libvirt/vagrant-libvirt
+[virtualbox]: https://www.vagrantup.com/docs/virtualbox/
 
 [![Build Status](https://travis-ci.com/ruzickap/packer-templates.svg?branch=master)](https://travis-ci.com/ruzickap/packer-templates)
 
@@ -58,10 +61,14 @@ Drivers / Devices added for the VMs for specific providers.
 
 ### Customized Linux installation
 
-Some of the Linux [images](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=peru/my)/templates begins with "my_" - they are preconfigured with the following:
+Some of the Linux [images](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=peru/my)/templates
+begins with "my_" - they are preconfigured with the following:
 
-* there are usually many customization depends on distribution - all are described in Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml) and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml) or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
+* there are usually many customization depends on distribution - all are
+  described in Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
+  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
+  or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip
@@ -97,13 +104,16 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml) for Windows:
+Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml)
+for Windows:
 
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver
 * vioser: VirtIO Serial Driver
-* vioinput: VirtIO Input Driver - support for new QEMU input devices virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci, virtio-input-host-pci
+* vioinput: VirtIO Input Driver - support for new QEMU input devices
+  virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci,
+  virtio-input-host-pci
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
@@ -113,19 +123,28 @@ Installed components via Ansible playbook [win-simple.yml](https://github.com/ru
 
 ## How to build images remotely
 
-If you want to build the images yourself you will need passwordless ssh access to the latest Fedora server and locally installed Ansible. The server should not have IPs from this range `192.168.121.0/24` - this is used by Vagrant + libvirt by default.
+If you want to build the images yourself you will need passwordless ssh access
+to the latest Fedora server and locally installed Ansible. The server should
+not have IPs from this range `192.168.121.0/24` - this is
+used by Vagrant + libvirt by default.
 
-Then you just need to modify the `REMOTE_IP` and `REMOTE_USER` in `build_remote_ssh.sh` file.
+Then you just need to modify the `REMOTE_IP` and `REMOTE_USER`
+in `build_remote_ssh.sh` file.
 
-The `build_remote_ssh.sh` script will connect to your Fedora server, downloads necessary packages (initiate reboot if necessary for kernel update) and start building the images using Packer.
+The `build_remote_ssh.sh` script will connect to your Fedora server, downloads
+necessary packages (initiate reboot if necessary for kernel update) and start
+building the images using Packer.
 It will also test the newly created images by Vagrant.
 The whole procedure will take several hours.
-You can check the progress by sshing to the server and checking the log files in `/tmp/` directory.
+You can check the progress by sshing to the server and checking the log files
+in `/tmp/` directory.
 
 ## How to build images locally
 
-If you have necessary software installed+configured on your local machine you can use the following commands to build the images.
-You can build the images using the build script [build.sh](build.sh) or directly with Packer.
+If you have necessary software installed+configured on your local machine you
+can use the following commands to build the images.
+You can build the images using the build script [build.sh](build.sh) or directly
+with Packer.
 
 ### Build process with the [build.sh](build.sh) script
 
@@ -159,7 +178,8 @@ You can build the images using the build script [build.sh](build.sh) or directly
 
 ### Build process with the Docker image
 
-If you do not want to install Packer, Vagrant, Vagrant plugins or Ansible, then you can use Docker image.
+If you do not want to install Packer, Vagrant, Vagrant plugins or Ansible,
+then you can use Docker image.
 You can find the Docker image and it's source on these URLs:
 
 * Docker image: [https://hub.docker.com/r/peru/packer_qemu_virtualbox_ansible/](https://hub.docker.com/r/peru/packer_qemu_virtualbox_ansible/)
@@ -171,7 +191,8 @@ You can find the Docker image and it's source on these URLs:
 sudo apt update
 sudo apt install -y --no-install-recommends curl git jq docker.io virtualbox
 sudo gpasswd -a ${USER} docker
-# This is mandatory for Ubuntu otherwise docker container will not have access to /dev/kvm - this is default in Fedora (https://bugzilla.redhat.com/show_bug.cgi?id=993491)
+# This is mandatory for Ubuntu otherwise docker container will not have
+# access to /dev/kvm - this is default in Fedora (https://bugzilla.redhat.com/show_bug.cgi?id=993491)
 sudo bash -c "echo 'KERNEL==\"kvm\", GROUP=\"kvm\", MODE=\"0666\"' > /etc/udev/rules.d/60-qemu-system-common.rules"
 sudo sed -i 's/^unix_sock_/#&/' /etc/libvirt/libvirtd.conf
 sudo reboot
@@ -184,8 +205,12 @@ sudo sed -i 's@^SELINUX=enforcing@SELINUX=disabled@' /etc/selinux/config
 sudo dnf upgrade -y
 # Reboot if necessary (especialy if you upgrade the kernel or related packages)
 
-sudo dnf install -y http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install -y akmod-VirtualBox curl docker git jq kernel-devel-$(uname -r) libvirt-daemon-kvm
+FEDORA_VESION=$(rpm -E %fedora)
+sudo dnf install -y \
+  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VESION}.noarch.rpm\
+  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VESION}.noarch.rpm
+sudo dnf install -y akmod-VirtualBox curl docker git jq \
+  kernel-devel-$(uname -r) libvirt-daemon-kvm
 sudo akmods
 
 sudo bash -c 'echo "vboxdrv" > /etc/modules-load.d/vboxdrv.conf'
@@ -204,24 +229,45 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 
 ```bash
 # Ubuntu Server
-NAME="ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-server.json
-NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-server.json
-NAME="ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-server.json
+NAME="ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-server.json
+
+NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-server.json
+
+NAME="ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
-NAME="ubuntu-18.10-desktop-amd64" UBUNTU_CODENAME="cosmic" UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-desktop.json
-NAME="ubuntu-18.04-desktop-amd64" UBUNTU_CODENAME="bionic" UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" ubuntu-desktop.json
+NAME="ubuntu-18.10-desktop-amd64" UBUNTU_CODENAME="cosmic" \
+UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-desktop.json
+
+NAME="ubuntu-18.04-desktop-amd64" UBUNTU_CODENAME="bionic" \
+UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
-NAME="my_ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" my_ubuntu-server.json
-NAME="my_ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" my_ubuntu-server.json
-NAME="my_ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" packer build -only="qemu" my_ubuntu-server.json
+NAME="my_ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+packer build -only="qemu" my_ubuntu-server.json
+
+NAME="my_ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+packer build -only="qemu" my_ubuntu-server.json
+
+NAME="my_ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+packer build -only="qemu" my_ubuntu-server.json
 ```
 
 * Windows:
 
 ```bash
-wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso -P /var/tmp/
+wget -P /var/tmp/ https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
 export TMPDIR=/var/tmp
 
 # Windows Server
@@ -275,5 +321,7 @@ packer build -only="qemu" my_windows.json
 
 * `build.sh` - build single image specified on command line
 * `build_all.sh` - builds all images
-* `build_all_remote_ssh.sh` - connects to remote Ubuntu server, install the necessary packages for building images and execute `build_all.sh`
-* `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current directory using `vagrant add/up/ssh/winrm/destroy`
+* `build_all_remote_ssh.sh` - connects to remote Ubuntu server, install
+  the necessary packages for building images and execute `build_all.sh`
+* `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current
+  directory using `vagrant add/up/ssh/winrm/destroy`

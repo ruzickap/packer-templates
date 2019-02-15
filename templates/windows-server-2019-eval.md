@@ -1,10 +1,12 @@
 # [Windows ${WINDOWS_TYPE_UC} $WINDOWS_VERSION ${WINDOWS_EDITION_UC} Evaluation](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-${WINDOWS_TYPE}-${WINDOWS_VERSION})
 
-## Clean and minimal Windows ${WINDOWS_TYPE_UC} $WINDOWS_VERSION ${WINDOWS_EDITION_UC} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) providers
+Clean and minimal Windows ${WINDOWS_TYPE_UC} $WINDOWS_VERSION
+${WINDOWS_EDITION_UC} ($WINDOWS_ARCH) Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
+and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-### Github repository for bug reports or feature requests
+## Github repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -17,27 +19,31 @@
 
 ## Requirements for linux distributions running Vagrant
 
-Unfortunately you can not use the Vagrant package provided by your Linux distribution (at least for CentOS / Fedora / Debian).
-These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM) needed by Vagrant for talking to Windows.
-Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm) including the Ruby WinRM library is part of official Vagrant package.
-You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation) supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel).
+Unfortunately you can not use the Vagrant package provided by your Linux
+distribution (at least for CentOS / Fedora / Debian).
+These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM)
+needed by Vagrant for talking to Windows.
+Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm)
+including the Ruby WinRM library is part of official Vagrant package.
+You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
+supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel).
 
-Here are the steps for latest Fedora how to install Vagrant from the official web pages:
+Here are the steps for latest Fedora how to install Vagrant from the official
+web pages:
 
 ```bash
 dnf remove vagrant
 
-VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version') \
-curl -s https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm --output /tmp/vagrant_x86_64.rpm \
-dnf install /tmp/vagrant_x86_64.rpm \
-rm /tmp/vagrant_x86_64.rpm
+VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant\
+  | jq -r -M '.current_version')
+dnf install https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm
 
 # virtualbox
 # Details here: https://rpmfusion.org/Howto/VirtualBox
 
 # libvirt
-dnf install -y gcc libvirt-daemon-kvm qemu-kvm libvirt-devel rdesktop
-CONFIGURE_ARGS='with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64/libvirt' vagrant plugin install vagrant-libvirt
+dnf install -y gcc libvirt-daemon-kvm qemu-kvm libvirt-devel make rdesktop
+vagrant plugin install vagrant-libvirt
 ```
 
 ## Getting started
@@ -76,7 +82,9 @@ Drivers / Devices added for the VMs for specific providers.
 
 ## Configuration
 
-### Minimal installation - see the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+### Minimal installation
+
+See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
 
 * UTC timezone
 * IEHarden disabled
@@ -105,7 +113,9 @@ Installed components via Ansible playbook [win-simple.yml](https://github.com/ru
 * Balloon: VirtIO Memory Balloon driver
 * viorng: VirtIO RNG Device driver
 * vioser: VirtIO Serial Driver
-* vioinput: VirtIO Input Driver - support for new QEMU input devices virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci, virtio-input-host-pci
+* vioinput: VirtIO Input Driver - support for new QEMU input devices
+  virtio-keyboard-pci, virtio-mouse-pci, virtio-tablet-pci,
+  virtio-input-host-pci
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 

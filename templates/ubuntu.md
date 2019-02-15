@@ -1,10 +1,12 @@
 # [Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE_UC}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
-## Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
+Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} base box for
+[libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and
+[virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-### Github repository for bug reports or feature requests
+## Github repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -15,7 +17,8 @@
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
-Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
+Here are the steps for latest Fedora/Ubuntu to install Vagrant
+and vagrant-libvirt + KVM:
 
 ```bash
 # Fedora
@@ -63,7 +66,9 @@ Drivers / Devices added for the VMs for specific providers.
 
 ## Configuration
 
-### Minimal installation - see the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/preseed.cfg)
+### Minimal installation
+
+See the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/preseed.cfg)
 
 (it's very close to official Ubuntu [preseed file](https://help.ubuntu.com/lts/installation-guide/example-preseed.txt))
 

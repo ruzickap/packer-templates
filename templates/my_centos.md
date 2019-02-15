@@ -1,10 +1,12 @@
 # [My CentOS ${CENTOS_VERSION} (${CENTOS_TAG})](https://www.centos.org/)
 
-## Modified CentOS ${CENTOS_VERSION} (${CENTOS_TAG}) ${CENTOS_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers
+Modified CentOS ${CENTOS_VERSION} (${CENTOS_TAG}) ${CENTOS_ARCH} box for
+[libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
+and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-### Github repository for bug reports or feature requests
+## Github repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -15,7 +17,8 @@
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
-Here are the steps for latest Fedora/Ubuntu to install Vagrant and vagrant-libvirt + KVM:
+Here are the steps for latest Fedora/Ubuntu to install Vagrant
+and vagrant-libvirt + KVM:
 
 ```bash
 # Fedora
@@ -65,7 +68,10 @@ Drivers / Devices added for the VMs for specific providers.
 
 Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.iso
 
-### Preconfigured installation - see the [kickstart file](https://github.com/ruzickap/packer-templates/blob/master/http/centos${CENTOS_VERSION}/my-ks.cfg) and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible) applied
+### Preconfigured installation
+
+See the [kickstart file](https://github.com/ruzickap/packer-templates/blob/master/http/centos${CENTOS_VERSION}/my-ks.cfg)
+and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -78,7 +84,8 @@ Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.i
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml) and [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
+  and [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip
