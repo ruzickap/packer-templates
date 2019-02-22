@@ -1,6 +1,8 @@
 #!/bin/bash -eu
 
-export VERSION=${VERSION:-`date +%Y%m%d`.01}
+set -o pipefail
+
+export BOX_VERSION=${BOX_VERSION:-`date +%Y%m%d`.01}
 export LOGDIR=${LOGDIR:-/var/tmp}
 
 readonly PROGNAME=$(basename $0)
@@ -144,23 +146,23 @@ upload_boxfile_to_vagrantup() {
   echo "*** Getting current version of the box (if exists)"
   local CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME | jq -r ".current_version.version")
   echo "*** Current version of the box: $CURRENT_VERSION"
-  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/versions -X POST -d version[version]="$VERSION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
-  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION -X PUT -d version[description]="$LONG_DESCRIPTION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
-  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/providers -X POST -d provider[name]="$VAGRANT_PROVIDER" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
-  local UPLOAD_PATH=$(curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/provider/$VAGRANT_PROVIDER/upload?access_token=$VAGRANTUP_ACCESS_TOKEN | jq -r '.upload_path')
-  echo "*** Uploading \"${VAGRANT_CLOUD_BOX_FILE}\" to \"https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME\" as version [$VERSION]"
+  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/versions -X POST -d version[version]="$BOX_VERSION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
+  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION -X PUT -d version[description]="$LONG_DESCRIPTION" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
+  curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/providers -X POST -d provider[name]="$VAGRANT_PROVIDER" -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
+  local UPLOAD_PATH=$(curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/provider/$VAGRANT_PROVIDER/upload?access_token=$VAGRANTUP_ACCESS_TOKEN | jq -r '.upload_path')
+  echo "*** Uploading \"${VAGRANT_CLOUD_BOX_FILE}\" to \"https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME\" as version [$BOX_VERSION]"
   curl -s -X PUT --upload-file ${VAGRANT_CLOUD_BOX_FILE} $UPLOAD_PATH
-  curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
+  curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   # Check if uploaded file really exists
-  if curl --output /dev/null --silent --head --fail "https://app.vagrantup.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box"; then
-    echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box\" is reachable and exists..."
+  if curl --output /dev/null --silent --head --fail "https://app.vagrantup.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$BOX_VERSION/providers/$VAGRANT_PROVIDER.box"; then
+    echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$BOX_VERSION/providers/$VAGRANT_PROVIDER.box\" is reachable and exists..."
   else
-    echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$VERSION/providers/$VAGRANT_PROVIDER.box\" does not exists !!!"
+    echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$BOX_VERSION/providers/$VAGRANT_PROVIDER.box\" does not exists !!!"
     exit 1
   fi
   # Check if previous version really exists and then remove it (always keep just one - latest version - recently uploaded)
   CURRENT_VERSION_EXISTS=$(curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION | jq -r '.success')
-  if [ "$CURRENT_VERSION" != "null" ] && [ "$CURRENT_VERSION" != "$VERSION" ] && [ "$CURRENT_VERSION_EXISTS" != "false" ]; then
+  if [ "$CURRENT_VERSION" != "null" ] && [ "$CURRENT_VERSION" != "$BOX_VERSION" ] && [ "$CURRENT_VERSION_EXISTS" != "false" ]; then
     echo "*** Removing previous version: https://vagrantcloud.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION"
     curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$CURRENT_VERSION -X DELETE -d access_token="$VAGRANTUP_ACCESS_TOKEN" > /dev/null
   fi

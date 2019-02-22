@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+set -o pipefail
+
 VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH=$PWD
 LOGDIR=${LOGDIR:-/var/tmp}
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
@@ -9,6 +11,7 @@ if `which podman &> /dev/null`; then
 else
   DOCKER_COMMAND=${DOCKER_COMMAND:-docker}
 fi
+
 
 vagrant_box() {
   local VAGRANT_BOX_FILE_FULL_PATH=$1

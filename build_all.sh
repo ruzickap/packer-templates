@@ -1,6 +1,9 @@
 #!/bin/bash -eu
 
+set -o pipefail
+
 LOGFILE="/tmp/build_all.log"
+
 
 (
 

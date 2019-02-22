@@ -32,6 +32,7 @@ WINDOWS_2019_VIRTUALBOX_HELPER=""
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
 
+set -o pipefail
 
 usage() {
   cat <<- EOF
@@ -140,7 +141,7 @@ cmdline() {
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/sg/17763.253.190108-0006.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
             export ISO_CHECKSUM="57FAF4A2EA4484CFDF5E964C539313C061C4D9CAC474E723D60405F2EA02D570"
-            # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox support "Windows2019_64")
+            # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox supports "Windows2019_64")
             export WINDOWS_2019_VIRTUALBOX_HELPER="-var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016"
           ;;
           *windows-server-2016-*)
