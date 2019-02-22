@@ -9,7 +9,10 @@
     packages:
       - ansible
       - curl
+      - docker.io
       - git
+      - gitlab-runner
+      - jq
       - libvirt-bin
       - libvirt-dev
       - python-pip
@@ -17,8 +20,6 @@
       - virtualbox-qt
       - wget
     packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
-
-    run_script: ./build_all.sh
 
     vagrant_plugins:
       - vagrant-libvirt
@@ -53,6 +54,11 @@
         register: result
         until: result is succeeded
 
+      - name: Add GitLab’s official repository
+        shell: curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+        args:
+          creates: /etc/apt/sources.list.d/runner_gitlab-runner.list
+
       - name: Install packages
         apt:
           name: "{{ item }}"
@@ -67,11 +73,26 @@
         register: result
         until: result is succeeded
 
-      - name: Add the current user "{{ ansible_user_id }}" to kvm group
+      - name: Add the current user "{{ ansible_user_id }}" to docker and libvirt group
         user:
           name: "{{ ansible_user_id }}"
-          groups: kvm
+          groups: docker,kvm,libvirt
           append: yes
+
+      - name: Add the gitlab-runner user to docker and libvirt group
+        user:
+          name: gitlab-runner
+          groups: docker,kvm,libvirt
+          append: yes
+
+      # Yhis is not needed for Fedora, because in Fedora it's "crw-rw-rw- 1 root kvm 10, 232 Feb 13 09:58 /dev/kvm"
+      - name: Chnage righs for /dev/kvm
+        blockinfile:
+          path: /etc/udev/rules.d/60-qemu-system-common.rules
+          create: yes
+          block: |
+            # Chnaging rights of /dev/kvm from 0660 to 0666
+            KERNEL=="kvm", GROUP="kvm", MODE="0666"
 
       - name: Get latest version of Packer
         uri:
@@ -91,6 +112,17 @@
         command: mv /usr/local/bin/packer /usr/local/bin/packerio
         args:
           creates: /usr/local/bin/packerio
+
+      - name: Remove configuration of unix socket for libvirt (/var/run/libvirt/libvirt-sock)
+        replace:
+          path: /etc/libvirt/libvirtd.conf
+          # Commend all lines beginning with "unix_sock_"
+          regexp: '^unix_sock_.*'
+          replace: '#&'
+          backup: yes
+
+      - name: Reboot the machine to use new kernel
+        reboot:
       become: true
 
     - name: List installed Vagrant Plugins
@@ -107,19 +139,4 @@
       git:
         repo: "{{ packer_templates_git_repo }}"
         dest: "{{ build_path }}/packer-templates"
-        version: latest
         force: yes
-
-    - name: Execute script to build boxes (this step usually takes long time) [for more details check *.log in /var/tmp/packer]
-      command: "{{ run_script }}"
-      args:
-        chdir: "{{ build_path }}/packer-templates"
-      register: run_script_out
-      changed_when: true
-
-    - name: Run vagrant_init_destroy_boxes.sh script to test all previously created box images (this step usually takes long time) [for more details check /tmp/vagrant_init_destroy_boxes.log]
-      command: ./vagrant_init_destroy_boxes.sh
-      args:
-        chdir: "{{ build_path }}/packer-templates"
-      register: vagrant_init_destroy_boxes_out
-      changed_when: true
