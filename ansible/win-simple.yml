@@ -48,6 +48,8 @@
       win_get_url:
         url: "{{ bleachbit_url }}"
         dest: "%HOMEDRIVE%\\BleachBit-portable.zip"
+      register: result
+      until: result is succeeded
 
     - name: Unzip downloaded BleachBit
       win_unzip:
@@ -60,15 +62,18 @@
         url: https://sourceforge.net/projects/ultradefrag/rss?path=/stable-release
         return_content: yes
       register: ultradefrag_url_output
+      until: ultradefrag_url_output is succeeded
 
     - name: Set UltraDefrag url
       set_fact:
-        ultradefrag_url: "{{ ultradefrag_url_output.content |  regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>','\\1') | first }}"
+        ultradefrag_url: "{{ ultradefrag_url_output.content | regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>','\\1') | first }}"
 
     - name: Download UltraDefrag from {{ ultradefrag_url }}
       win_get_url:
         url: "{{ ultradefrag_url }}"
         dest: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
+      register: result
+      until: result is succeeded
 
     - name: Unzip downloaded Ultra Defrag
       win_unzip:
