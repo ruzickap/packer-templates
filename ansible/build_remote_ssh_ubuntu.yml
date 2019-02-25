@@ -7,7 +7,6 @@
     build_path: /var/tmp/
 
     packages:
-      - ansible
       - curl
       - docker.io
       - git
@@ -54,8 +53,14 @@
         register: result
         until: result is succeeded
 
-      - name: Add GitLab’s official repository
-        shell: curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+      - name: Download GitLab's official repository script
+        get_url:
+          url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
+          dest: /root/script.deb.sh
+          mode: 0755
+
+      - name: Install GitLab's official repository
+        command: /root/script.deb.sh
         args:
           creates: /etc/apt/sources.list.d/runner_gitlab-runner.list
 
@@ -66,10 +71,11 @@
         register: result
         until: result is succeeded
 
-      # python-winrm for python2 is not part of ubuntu
-      - name: Instal pywinrm
+      - name: Install latest Ansible and pywinrm
         pip:
-          name: pywinrm
+          name:
+            - ansible
+            - pywinrm
         register: result
         until: result is succeeded
 
@@ -93,6 +99,7 @@
           block: |
             # Chnaging rights of /dev/kvm from 0660 to 0666
             KERNEL=="kvm", GROUP="kvm", MODE="0666"
+        notify: reboot
 
       - name: Get latest version of Packer
         uri:
@@ -120,9 +127,12 @@
           regexp: '^unix_sock_.*'
           replace: '#&'
           backup: yes
+        notify: reboot
 
-      - name: Reboot the machine to use new kernel
-        reboot:
+      - name: Register gitlab agent
+        command: gitlab-runner register --non-interactive --tag-list packer-templates --registration-token {{ GITLAB_REGISTRATION_TOKEN }} --url https://gitlab.com/ --executor shell
+        when: GITLAB_REGISTRATION_TOKEN is defined
+        changed_when: false
       become: true
 
     - name: List installed Vagrant Plugins
@@ -135,8 +145,7 @@
       loop: "{{ vagrant_plugins }}"
       when: vagrant_plugin_list.stdout is not search(item)
 
-    - name: Clone the git repository
-      git:
-        repo: "{{ packer_templates_git_repo }}"
-        dest: "{{ build_path }}/packer-templates"
-        force: yes
+  handlers:
+    - name: reboot
+      become: true
+      reboot:
