@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
   # Port forward for WinRM
   config.vm.network :forwarded_port, guest: 5986, host: 5986, id: "winrm-ssl", auto_correct:true
   config.vm.communicator = "winrm"
-  config.winrm.username = "Administrator"
+  config.winrm.username = "vagrant"
   config.winrm.password = "vagrant"
   config.winrm.transport = :ssl
   config.winrm.ssl_peer_verification = false
