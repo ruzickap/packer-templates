@@ -60,7 +60,7 @@
           - https://www.virtualbox.org/download/oracle_vbox_2016.asc
           - https://www.virtualbox.org/download/oracle_vbox.asc
 
-      - name:
+      - name: Add Virtualbox repository
         apt_repository:
           repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
 
@@ -151,15 +151,20 @@
 
       become: true
 
-    - name: List installed Vagrant Plugins
-      command: vagrant plugin list
-      register: vagrant_plugin_list
-      changed_when: false
+    - block:
+      - name: List installed Vagrant Plugins
+        command: vagrant plugin list
+        register: vagrant_plugin_list
+        changed_when: false
 
-    - name: Install Vagrant Plugins
-      command: vagrant plugin install {{ item }}
-      loop: "{{ vagrant_plugins }}"
-      when: vagrant_plugin_list.stdout is not search(item)
+      - name: Install Vagrant Plugins
+        command: vagrant plugin install {{ item }}
+        loop: "{{ vagrant_plugins }}"
+        when: vagrant_plugin_list.stdout is not search(item)
+
+      become: yes
+      become_user: gitlab-runner
+
 
   handlers:
     - name: reboot
