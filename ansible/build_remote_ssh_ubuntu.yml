@@ -14,9 +14,9 @@
       - jq
       - libvirt-bin
       - libvirt-dev
-      - python-pip
+      - python3-pip
       - unzip
-      - virtualbox-qt
+      - virtualbox-6.0
       - wget
     packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
 
@@ -26,7 +26,7 @@
 
   tasks:
     - name: Install Python
-      raw: sudo bash -x -c "test -e /usr/bin/python || test -x /usr/bin/apt && ( apt -qqy update && apt install -y python-minimal )"
+      raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y python3-minimal )"
       register: output
       changed_when: output.stdout is search("Unpacking")
 
@@ -52,6 +52,17 @@
           deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
         register: result
         until: result is succeeded
+
+      - name: Add an Apt signing key for Virtualbox
+        apt_key:
+          url: "{{ item }}"
+        loop:
+          - https://www.virtualbox.org/download/oracle_vbox_2016.asc
+          - https://www.virtualbox.org/download/oracle_vbox.asc
+
+      - name:
+        apt_repository:
+          repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
 
       - name: Download GitLab's official repository script
         get_url:
@@ -82,13 +93,13 @@
       - name: Add the current user "{{ ansible_user_id }}" to docker and libvirt group
         user:
           name: "{{ ansible_user_id }}"
-          groups: docker,kvm,libvirt
+          groups: docker,kvm,libvirt,vboxusers
           append: yes
 
       - name: Add the gitlab-runner user to docker and libvirt group
         user:
           name: gitlab-runner
-          groups: docker,kvm,libvirt
+          groups: docker,kvm,libvirt,vboxusers
           append: yes
 
       # Yhis is not needed for Fedora, because in Fedora it's "crw-rw-rw- 1 root kvm 10, 232 Feb 13 09:58 /dev/kvm"
@@ -129,10 +140,15 @@
           backup: yes
         notify: reboot
 
+      - name: Check if gitlab-runner is already registered
+        command: gitlab-runner list
+        register: gitlab_runner_list
+        changed_when: false
+
       - name: Register gitlab agent
         command: gitlab-runner register --non-interactive --tag-list packer-templates --registration-token {{ GITLAB_REGISTRATION_TOKEN }} --url https://gitlab.com/ --executor shell
-        when: GITLAB_REGISTRATION_TOKEN is defined
-        changed_when: false
+        when: GITLAB_REGISTRATION_TOKEN is defined and gitlab_runner_list.stderr is not search('https://gitlab.com/')
+
       become: true
 
     - name: List installed Vagrant Plugins
