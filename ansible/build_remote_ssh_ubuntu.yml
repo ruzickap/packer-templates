@@ -22,7 +22,6 @@
 
     vagrant_plugins:
       - vagrant-libvirt
-      - vagrant-winrm
 
   tasks:
     - name: Install Python
@@ -89,12 +88,6 @@
             - pywinrm
         register: result
         until: result is succeeded
-
-      - name: Add the current user "{{ ansible_user_id }}" to docker and libvirt group
-        user:
-          name: "{{ ansible_user_id }}"
-          groups: docker,kvm,libvirt,vboxusers
-          append: yes
 
       - name: Add the gitlab-runner user to docker and libvirt group
         user:
