@@ -4,7 +4,7 @@ set -o pipefail
 
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
 TMPDIR=${TMPDIR:-/var/tmp/vagrant_init_destroy_boxes}
-LOGDIR=${LOGDIR:-$TMPDIR}
+LOGDIR=${LOGDIR:-/var/tmp/}
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
 
@@ -97,7 +97,6 @@ main() {
       rmdir $VAGRANT_CWD
     done
 
-    rmdir $TMPDIR
   fi
 }
 
