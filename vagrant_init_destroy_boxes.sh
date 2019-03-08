@@ -3,7 +3,7 @@
 set -o pipefail
 
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
-TMPDIR=${TMPDIR:-/var/tmp}
+TMPDIR=${TMPDIR:-/var/tmp/vagrant_init_destroy_boxes}
 LOGDIR=${LOGDIR:-$TMPDIR}
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
@@ -72,6 +72,8 @@ vagrant_destroy() {
 
 main() {
   if [ -n "$BOXES_LIST" ]; then
+    test -d $TMPDIR || mkdir $TMPDIR
+
     for VAGRANT_BOX_FILE in $BOXES_LIST; do
       export VAGRANT_BOX_NAME=`basename ${VAGRANT_BOX_FILE%.*}`
       export VAGRANT_BOX_NAME_SHORT=`basename $VAGRANT_BOX_FILE | cut -d - -f 1,2,3`
@@ -94,6 +96,8 @@ main() {
       rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
       rmdir $VAGRANT_CWD
     done
+
+    rmdir $TMPDIR
   fi
 }
 

@@ -3,7 +3,8 @@
 set -o pipefail
 
 VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH=$PWD
-LOGDIR=${LOGDIR:-/var/tmp}
+TMPDIR=${TMPDIR:-/var/tmp/vagrant_init_destroy_boxes}
+
 BOXES_LIST=${*:-`find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " "`}
 # User docker / podman executable
 if `which podman &> /dev/null`; then
@@ -21,12 +22,12 @@ vagrant_box() {
   $DOCKER_COMMAND pull peru/vagrant_libvirt_virtualbox
   $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --privileged --network host --name "vagrant_libvirt_virtualbox_${VAGRANT_BOX_FILE_BASE_NAME}" \
   -e HOME=/home/docker \
-  -e LOGDIR=/home/docker/vagrant_logdir \
+  -e TMPDIR=$TMPDIR \
   -v /dev/vboxdrv:/dev/vboxdrv \
   -v /var/run/libvirt/libvirt-sock:/var/run/libvirt/libvirt-sock \
   -v $VAGRANT_INIT_DESTROY_BOXES_SCRIPT_PATH:/home/docker/vagrant_script \
   -v $VAGRANT_BOX_FILE_BASE_DIR:/home/docker/vagrant \
-  -v $LOGDIR:/home/docker/vagrant_logdir \
+  -v $TMPDIR:$TMPDIR \
   peru/vagrant_libvirt_virtualbox /home/docker/vagrant_script/vagrant_init_destroy_boxes.sh /home/docker/vagrant/$VAGRANT_BOX_FILE_BASE_NAME
 }
 
@@ -36,6 +37,8 @@ vagrant_box() {
 #######
 
 main() {
+  test -d $TMPDIR || mkdir $TMPDIR
+
   for VAGRANT_BOX_FILE in $BOXES_LIST; do
     VAGRANT_BOX_FILE_FULL_PATH=$(readlink -f $VAGRANT_BOX_FILE)
 
@@ -46,6 +49,8 @@ main() {
 
     vagrant_box $VAGRANT_BOX_FILE_FULL_PATH
   done
+
+  rmdir $TMPDIR
 }
 
 main
