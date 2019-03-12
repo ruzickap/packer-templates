@@ -17,8 +17,8 @@ export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-temp
 export LOGDIR=${LOGDIR:-$PACKER_IMAGES_OUTPUT_DIR}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
-# Max amount of time which packer can run (default 4 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
-export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-14400}
+# Max amount of time which packer can run (default 5 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
+export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-18000}
 # User docker / podman executable
 if `which podman &> /dev/null`; then
   DOCKER_COMMAND=${DOCKER_COMMAND:-podman}
