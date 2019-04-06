@@ -139,8 +139,8 @@ cmdline() {
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
-            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.253.190108-0006.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="57FAF4A2EA4484CFDF5E964C539313C061C4D9CAC474E723D60405F2EA02D570"
+            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.379.190312-0539.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="221f9acbc727297a56674a0f1722b8ac7b6e840b4e1ffbdd538a9ed0da823562"
             # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox supports "Windows2019_64")
             export WINDOWS_2019_VIRTUALBOX_HELPER="-var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016"
           ;;
