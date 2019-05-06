@@ -1,10 +1,8 @@
 {
-  "_comment": [
-    "NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-    "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-    "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-    "NAME=ubuntu-14.04-desktop-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json"
-  ],
+  "_comment": "NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment": "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment": "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment": "NAME=ubuntu-14.04-desktop-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
