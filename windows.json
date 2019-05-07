@@ -113,8 +113,11 @@
   ],
   "provisioners": [
     {
+      "type": "sleep",
+      "duration": "1m"
+    },
+    {
       "type": "powershell",
-      "pause_before": "1m",
       "only": ["virtualbox-iso"],
       "inline":
         [
