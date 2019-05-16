@@ -48,8 +48,8 @@ List of all supported builds:
  * windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
+ * ubuntu-19.04-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-18.10-desktop-amd64-{libvirt,virtualbox}
- * ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-18.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-16.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-14.04-server-amd64-{libvirt,virtualbox}
@@ -121,7 +121,7 @@ cmdline() {
       *ubuntu*)
         export UBUNTU_TYPE=`echo $NAME | awk -F '-' '{ print $3 }'`
         export UBUNTU_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
-        export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@^<li><a href=\"\(.*\)/\">Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
+        export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"

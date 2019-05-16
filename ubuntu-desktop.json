@@ -1,4 +1,5 @@
 {
+  "_comment": "NAME=ubuntu-19.04-desktop-amd64 UBUNTU_CODENAME=disco  PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "_comment": "NAME=ubuntu-18.10-desktop-amd64 UBUNTU_CODENAME=cosmic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "_comment": "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "_comment": "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",

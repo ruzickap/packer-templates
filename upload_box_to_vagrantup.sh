@@ -27,8 +27,8 @@ Box names with user:
 * peru@ubuntu-14.04-server-amd64-libvirt.box
 * peru@ubuntu-16.04-server-amd64-libvirt.box
 * peru@ubuntu-18.04-server-amd64-libvirt.box
+* peru@ubuntu-19.04-desktop-amd64-libvirt.box
 * peru@ubuntu-18.10-desktop-amd64-libvirt.box
-* peru@ubuntu-18.04-desktop-amd64-libvirt.box
 * peru@windows-10-enterprise-x64-eval-libvirt.box
 * peru@windows-10-enterprise-x64-eval-virtualbox.box
 * peru@my_windows-10-enterprise-x64-eval-libvirt.box
@@ -152,7 +152,12 @@ upload_boxfile_to_vagrantup() {
   local UPLOAD_PATH=$(curl -sS https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/provider/$VAGRANT_PROVIDER/upload?access_token=$VAGRANTUP_ACCESS_TOKEN | jq -r '.upload_path')
   echo "*** Uploading \"${VAGRANT_CLOUD_BOX_FILE}\" to \"https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME\" as version [$BOX_VERSION]"
   curl -s -X PUT --upload-file ${VAGRANT_CLOUD_BOX_FILE} $UPLOAD_PATH
-  curl -s https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN" -o /dev/null
+
+  if ! curl -s --output /dev/null  https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN"; then
+    echo -e "\nUpload failed !\nOne more try..."
+    curl -s --output /dev/null https://app.vagrantup.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME/version/$BOX_VERSION/release -X PUT -d access_token="$VAGRANTUP_ACCESS_TOKEN"
+  fi
+
   # Check if uploaded file really exists
   if curl --output /dev/null --silent --head --fail "https://app.vagrantup.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$BOX_VERSION/providers/$VAGRANT_PROVIDER.box"; then
     echo "*** File \"https://vagrantcloud.com/$VAGRANT_CLOUD_USER/boxes/$NAME/versions/$BOX_VERSION/providers/$VAGRANT_PROVIDER.box\" is reachable and exists..."
