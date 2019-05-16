@@ -15,6 +15,7 @@
       - libvirt-bin
       - libvirt-dev
       - python3-pip
+      - sshpass
       - unzip
       - virtualbox-6.0
       - wget
