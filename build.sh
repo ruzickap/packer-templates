@@ -134,8 +134,8 @@ cmdline() {
 
         case $NAME in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="0278fc4638741f4a1dc85c39ed7fa76bb15fd582165f6ef036e9a9fb2f029351"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/18362.30.190401-1528.19h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="ab4862ba7d1644c27f27516d24cb21e6b39234eb3301e5f1fb365a78b22f79b3"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
