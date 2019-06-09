@@ -15,16 +15,18 @@ vagrant_box_add() {
 vagrant_init_up() {
   vagrant init $VAGRANT_BOX_NAME
 
-  # Disable VagrantBox GUI
+  # Disable VirtualBox GUI
   if [ "$VAGRANT_BOX_PROVIDER" = "virtualbox" ]; then
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' $VAGRANT_CWD/Vagrantfile
+    ps -elf | grep qemu
+    virsh list
   fi
 
   vagrant up --provider $VAGRANT_BOX_PROVIDER | grep -v 'Progress:'
 }
 
 check_vagrant_vm() {
-  local SSH_OPTIONS="-q -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no"
+  local SSH_OPTIONS="-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no"
   VAGRANT_VM_IP=`vagrant ssh-config | awk '/HostName/ { print $2 }'`
 
   case $VAGRANT_BOX_FILE in
@@ -42,12 +44,14 @@ check_vagrant_vm() {
         sudo sh -c "test -x /usr/bin/yum && yum list -q updates"; \
         id; \
       '
+      echo "*** vagrant ssh test completed..."
       if [ "$VAGRANT_BOX_PROVIDER" != "virtualbox" ]; then
         echo "*** Running: sshpass -pvagrant ssh vagrant@${VAGRANT_VM_IP} 'id; sudo id'"
         sshpass -pvagrant ssh $SSH_OPTIONS vagrant@${VAGRANT_VM_IP} '\
           id; \
           sudo id; \
         '
+        echo "*** sshpass test completed..."
       fi
     ;;
   esac
@@ -72,7 +76,8 @@ vagrant_destroy() {
 
 main() {
   if [ -n "$BOXES_LIST" ]; then
-    test -d $TMPDIR || mkdir $TMPDIR
+    test -d $TMPDIR || mkdir -p $TMPDIR
+    test -d $LOGDIR || mkdir -p $LOGDIR
 
     for VAGRANT_BOX_FILE in $BOXES_LIST; do
       export VAGRANT_BOX_NAME=`basename ${VAGRANT_BOX_FILE%.*}`
@@ -95,6 +100,7 @@ main() {
 
       rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
       rmdir $VAGRANT_CWD
+      echo "*** Completed"
     done
 
   fi

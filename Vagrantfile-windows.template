@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
   config.winrm.username = "vagrant"
   config.winrm.password = "vagrant"
   config.winrm.transport = :ssl
+  config.winrm.retry_limit = 30
   config.winrm.ssl_peer_verification = false
   config.vm.boot_timeout = 1000
   config.vm.guest = :windows
