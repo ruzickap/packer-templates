@@ -7,8 +7,8 @@ TMPDIR=${TMPDIR:-/var/tmp/vagrant_init_destroy_boxes}
 LOGDIR=${LOGDIR:-/var/tmp/}
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
-# Enable vagrant debug log if set to 'info' (default 'quiet')
-export VAGRANT_LOG=${VAGRANT_LOG:-quiet}
+# Enable vagrant debug log if set to 'info' (default 'warn')
+export VAGRANT_LOG=${VAGRANT_LOG:-warn}
 
 vagrant_box_add() {
   vagrant box add $VAGRANT_BOX_FILE --name=${VAGRANT_BOX_NAME} --force
