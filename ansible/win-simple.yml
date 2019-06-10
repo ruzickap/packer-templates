@@ -24,8 +24,11 @@
         data: 0
         datatype: dword
 
-    - name: Allow RDP traffic
-      win_shell: Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+    - name: Enable Firewall Inbound Rules Group
+      win_shell: Enable-NetFirewallRule -DisplayGroup "{{ item }}"
+      loop:
+        - Remote Desktop
+        - Windows Remote Management
 
     - name: Enable Administrator account
       win_user:
