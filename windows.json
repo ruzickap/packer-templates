@@ -129,7 +129,7 @@
     {
       "type": "shell-local",
       "environment_vars": "ANSIBLE_CONFIG=ansible/ansible.cfg",
-      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_read_timeout_sec=1000 ansible_winrm_operation_timeout_sec=900 ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user='{{ user `winrm_username` }}' ansible_ssh_pass='{{ user `winrm_password` }}' ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/win-simple.yml"
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user='{{ user `winrm_username` }}' ansible_ssh_pass='{{ user `winrm_password` }}' ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/win-simple.yml"
     },
     {
       "type": "windows-shell",
