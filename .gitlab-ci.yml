@@ -1,0 +1,195 @@
+# This file is a template, and might need editing before it works on your project.
+# see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
+
+variables:
+  # BOX_VERSION: "20190608.01"
+  DOCKER_COMMAND: docker
+  PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+  LOGDIR: /var/tmp/packer-templates-logs
+  VAGRANTUP_USER: peru
+  PACKER_RUN_TIMEOUT: 18000
+  USE_DOCKERIZED_PACKER: "false"
+  # PACKER_LOG: 1
+  # VAGRANT_LOG: info
+
+before_script:
+  - export BOX_VERSION=${BOX_VERSION:-$(date +%Y%m%d).01}
+  - test -d /home/gitlab-runner/packer_cache || mkdir -v /home/gitlab-runner/packer_cache
+  - ln -sv /home/gitlab-runner/packer_cache packer_cache
+  - echo "*** ${BOX_VERSION} | $(date)"
+
+after_script:
+  - rm packer_cache
+  - date
+
+.job_template: &job_definition
+  script:
+    - ./build.sh ${CI_JOB_NAME}
+    - ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${CI_JOB_NAME}.box
+    - ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${CI_JOB_NAME}.box
+    - rm -v ${PACKER_IMAGES_OUTPUT_DIR}/${CI_JOB_NAME}.box
+  tags:
+    - packer-templates
+  retry: 1
+  # Run only when triggered by Web GUI or scheduled by GitLab
+  only:
+    - schedules
+    - web
+
+stages:
+  - my_ubuntu-14.04-server-amd64-libvirt
+  - my_ubuntu-14.04-server-amd64-virtualbox
+  - my_ubuntu-16.04-server-amd64-libvirt
+  - my_ubuntu-16.04-server-amd64-virtualbox
+  - my_ubuntu-18.04-server-amd64-libvirt
+  - my_ubuntu-18.04-server-amd64-virtualbox
+  - ubuntu-14.04-server-amd64-libvirt
+  - ubuntu-14.04-server-amd64-virtualbox
+  - ubuntu-16.04-server-amd64-libvirt
+  - ubuntu-16.04-server-amd64-virtualbox
+  - ubuntu-18.04-server-amd64-libvirt
+  - ubuntu-18.04-server-amd64-virtualbox
+  - ubuntu-19.04-desktop-amd64-libvirt
+  - ubuntu-19.04-desktop-amd64-virtualbox
+  - ubuntu-18.04-desktop-amd64-libvirt
+  - ubuntu-18.04-desktop-amd64-virtualbox
+  - my_centos-7-x86_64-libvirt
+  - my_centos-7-x86_64-virtualbox
+  - windows-server-2019-datacenter-x64-eval-libvirt
+  - windows-server-2019-datacenter-x64-eval-virtualbox
+  - windows-server-2016-standard-x64-eval-libvirt
+  - windows-server-2016-standard-x64-eval-virtualbox
+  - windows-server-2012_r2-standard-x64-eval-libvirt
+  - windows-server-2012_r2-standard-x64-eval-virtualbox
+  - my_windows-10-enterprise-x64-eval-libvirt
+  - my_windows-10-enterprise-x64-eval-virtualbox
+  - windows-10-enterprise-x64-eval-libvirt
+  - windows-10-enterprise-x64-eval-virtualbox
+  - check_accessibility_vagrant_cloud
+
+my_ubuntu-14.04-server-amd64-libvirt:
+  stage: my_ubuntu-14.04-server-amd64-libvirt
+  <<: *job_definition
+
+my_ubuntu-14.04-server-amd64-virtualbox:
+  stage: my_ubuntu-14.04-server-amd64-virtualbox
+  <<: *job_definition
+
+my_ubuntu-16.04-server-amd64-libvirt:
+  stage: my_ubuntu-16.04-server-amd64-libvirt
+  <<: *job_definition
+
+my_ubuntu-16.04-server-amd64-virtualbox:
+  stage: my_ubuntu-16.04-server-amd64-virtualbox
+  <<: *job_definition
+
+my_ubuntu-18.04-server-amd64-libvirt:
+  stage: my_ubuntu-18.04-server-amd64-libvirt
+  <<: *job_definition
+
+my_ubuntu-18.04-server-amd64-virtualbox:
+  stage: my_ubuntu-18.04-server-amd64-virtualbox
+  <<: *job_definition
+
+ubuntu-14.04-server-amd64-libvirt:
+  stage: ubuntu-14.04-server-amd64-libvirt
+  <<: *job_definition
+
+ubuntu-14.04-server-amd64-virtualbox:
+  stage: ubuntu-14.04-server-amd64-virtualbox
+  <<: *job_definition
+
+ubuntu-16.04-server-amd64-libvirt:
+  stage: ubuntu-16.04-server-amd64-libvirt
+  <<: *job_definition
+
+ubuntu-16.04-server-amd64-virtualbox:
+  stage: ubuntu-16.04-server-amd64-virtualbox
+  <<: *job_definition
+
+ubuntu-18.04-server-amd64-libvirt:
+  stage: ubuntu-18.04-server-amd64-libvirt
+  <<: *job_definition
+
+ubuntu-18.04-server-amd64-virtualbox:
+  stage: ubuntu-18.04-server-amd64-virtualbox
+  <<: *job_definition
+
+ubuntu-18.04-desktop-amd64-libvirt:
+ stage: ubuntu-18.04-desktop-amd64-libvirt
+ <<: *job_definition
+
+ubuntu-18.04-desktop-amd64-virtualbox:
+ stage: ubuntu-18.04-desktop-amd64-virtualbox
+ <<: *job_definition
+
+ubuntu-19.04-desktop-amd64-libvirt:
+ stage: ubuntu-19.04-desktop-amd64-libvirt
+ <<: *job_definition
+
+ubuntu-19.04-desktop-amd64-virtualbox:
+ stage: ubuntu-19.04-desktop-amd64-virtualbox
+ <<: *job_definition
+
+my_centos-7-x86_64-libvirt:
+  stage: my_centos-7-x86_64-libvirt
+  <<: *job_definition
+
+my_centos-7-x86_64-virtualbox:
+  stage: my_centos-7-x86_64-virtualbox
+  <<: *job_definition
+
+windows-server-2019-datacenter-x64-eval-libvirt:
+  stage: windows-server-2019-datacenter-x64-eval-libvirt
+  <<: *job_definition
+
+windows-server-2019-datacenter-x64-eval-virtualbox:
+  stage: windows-server-2019-datacenter-x64-eval-virtualbox
+  <<: *job_definition
+
+windows-server-2016-standard-x64-eval-libvirt:
+  stage: windows-server-2016-standard-x64-eval-libvirt
+  <<: *job_definition
+
+windows-server-2016-standard-x64-eval-virtualbox:
+  stage: windows-server-2016-standard-x64-eval-virtualbox
+  <<: *job_definition
+
+windows-server-2012_r2-standard-x64-eval-libvirt:
+  stage: windows-server-2012_r2-standard-x64-eval-libvirt
+  <<: *job_definition
+
+windows-server-2012_r2-standard-x64-eval-virtualbox:
+  stage: windows-server-2012_r2-standard-x64-eval-virtualbox
+  <<: *job_definition
+
+my_windows-10-enterprise-x64-eval-libvirt:
+  stage: my_windows-10-enterprise-x64-eval-libvirt
+  <<: *job_definition
+
+my_windows-10-enterprise-x64-eval-virtualbox:
+  stage: my_windows-10-enterprise-x64-eval-virtualbox
+  <<: *job_definition
+
+windows-10-enterprise-x64-eval-libvirt:
+  stage: windows-10-enterprise-x64-eval-libvirt
+  <<: *job_definition
+
+windows-10-enterprise-x64-eval-virtualbox:
+  stage: windows-10-enterprise-x64-eval-virtualbox
+  <<: *job_definition
+
+check_accessibility_vagrant_cloud:
+  stage: check_accessibility_vagrant_cloud
+  when: always
+  tags:
+    - packer-templates
+  script:
+    - for NAME in ubuntu-{18.10,18.04}-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-{18.04,16.04}-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
+        for VAGRANT_PROVIDER in virtualbox libvirt; do
+          CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version") ;
+          URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box" ;
+          echo "*** $URL" ;
+          curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
+        done
+      done

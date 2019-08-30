@@ -6,6 +6,7 @@
 [virtualbox]: https://www.vagrantup.com/docs/virtualbox/
 
 [![Build Status](https://travis-ci.com/ruzickap/packer-templates.svg?branch=master)](https://travis-ci.com/ruzickap/packer-templates)
+[![Build Status](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)
 
 ---
 
@@ -147,6 +148,8 @@ You can build the images using the build script [build.sh](build.sh) or directly
 with Packer.
 
 ### Build process with the [build.sh](build.sh) script
+
+Real examples can be found here: [https://gitlab.com/ruzickap/packer-templates/pipelines](https://gitlab.com/ruzickap/packer-templates/pipelines)
 
 * Ubuntu:
 
@@ -325,3 +328,5 @@ packer build -only="qemu" my_windows.json
   the necessary packages for building images and execute `build_all.sh`
 * `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current
   directory using `vagrant add/up/ssh/winrm/destroy`
+
+GitLab CI configuration can be found here: [GitLab_CI_configuration.md](GitLab_CI_configuration.md)

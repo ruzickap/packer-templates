@@ -55,7 +55,7 @@ cmdline() {
 
   if [ -z "$VAGRANT_CLOUD_USER_BOXES" ] || [ -z "$VAGRANTUP_ACCESS_TOKEN" ]; then
     usage
-    exit 0;
+    exit 1;
   fi
 
   for VAGRANT_CLOUD_USER_BOX in $VAGRANT_CLOUD_USER_BOXES; do

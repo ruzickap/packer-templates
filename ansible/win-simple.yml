@@ -30,6 +30,9 @@
         - Remote Desktop
         - Windows Remote Management
 
+    - name: Use the plaintext WinRM transport and force it to use basic authentication
+      win_shell: winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
     - name: Enable Administrator account
       win_user:
         name: Administrator
