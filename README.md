@@ -6,7 +6,7 @@
 [virtualbox]: https://www.vagrantup.com/docs/virtualbox/
 
 [![Build Status](https://travis-ci.com/ruzickap/packer-templates.svg?branch=master)](https://travis-ci.com/ruzickap/packer-templates)
-[![Build Status](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)
+[![Build Status](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)](https://gitlab.com/ruzickap/packer-templates/pipelines)
 
 ---
 
