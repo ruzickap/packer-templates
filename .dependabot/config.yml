@@ -5,6 +5,3 @@ update_configs:
     update_schedule: "daily"
     default_assignees:
       - "ruzickap"
-    default_labels:
-      - "dependencies"
-      - "submodules"
