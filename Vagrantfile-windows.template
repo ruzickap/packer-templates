@@ -9,6 +9,10 @@ Vagrant.configure("2") do |config|
     libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
     libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
     libvirt.random :model => 'random'
+    libvirt.hyperv_feature :name => 'stimer',  :state => 'on'
+    libvirt.hyperv_feature :name => 'relaxed', :state => 'on'
+    libvirt.hyperv_feature :name => 'vapic',   :state => 'on'
+    libvirt.hyperv_feature :name => 'synic',   :state => 'on'
     libvirt.memory = 2048
   end
 
@@ -28,11 +32,11 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 5986, host: 5986, id: "winrm-ssl", auto_correct:true
   config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct:true
   config.vm.communicator = "winrm"
-  config.winrm.username = "vagrant"
-  config.winrm.password = "vagrant"
+  config.winrm.username    = "vagrant"
+  config.winrm.password    = "vagrant"
   config.winrm.retry_limit = 30
   config.vm.boot_timeout = 1000
-  config.vm.guest = :windows
+  config.vm.guest        = :windows
   config.windows.halt_timeout = 15
   # Disable NFS sharing (==> default: Mounting NFS shared folders...)
   config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
