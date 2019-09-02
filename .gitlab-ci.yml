@@ -37,22 +37,14 @@ after_script:
     - web
 
 stages:
-  - my_ubuntu-14.04-server-amd64-libvirt
-  - my_ubuntu-14.04-server-amd64-virtualbox
-  - my_ubuntu-16.04-server-amd64-libvirt
-  - my_ubuntu-16.04-server-amd64-virtualbox
   - my_ubuntu-18.04-server-amd64-libvirt
   - my_ubuntu-18.04-server-amd64-virtualbox
-  - ubuntu-14.04-server-amd64-libvirt
-  - ubuntu-14.04-server-amd64-virtualbox
   - ubuntu-16.04-server-amd64-libvirt
   - ubuntu-16.04-server-amd64-virtualbox
   - ubuntu-18.04-server-amd64-libvirt
   - ubuntu-18.04-server-amd64-virtualbox
   - ubuntu-19.04-desktop-amd64-libvirt
   - ubuntu-19.04-desktop-amd64-virtualbox
-  - ubuntu-18.04-desktop-amd64-libvirt
-  - ubuntu-18.04-desktop-amd64-virtualbox
   - my_centos-7-x86_64-libvirt
   - my_centos-7-x86_64-virtualbox
   - windows-server-2019-datacenter-x64-eval-libvirt
@@ -67,36 +59,12 @@ stages:
   - windows-10-enterprise-x64-eval-virtualbox
   - check_accessibility_vagrant_cloud
 
-my_ubuntu-14.04-server-amd64-libvirt:
-  stage: my_ubuntu-14.04-server-amd64-libvirt
-  <<: *job_definition
-
-my_ubuntu-14.04-server-amd64-virtualbox:
-  stage: my_ubuntu-14.04-server-amd64-virtualbox
-  <<: *job_definition
-
-my_ubuntu-16.04-server-amd64-libvirt:
-  stage: my_ubuntu-16.04-server-amd64-libvirt
-  <<: *job_definition
-
-my_ubuntu-16.04-server-amd64-virtualbox:
-  stage: my_ubuntu-16.04-server-amd64-virtualbox
-  <<: *job_definition
-
 my_ubuntu-18.04-server-amd64-libvirt:
   stage: my_ubuntu-18.04-server-amd64-libvirt
   <<: *job_definition
 
 my_ubuntu-18.04-server-amd64-virtualbox:
   stage: my_ubuntu-18.04-server-amd64-virtualbox
-  <<: *job_definition
-
-ubuntu-14.04-server-amd64-libvirt:
-  stage: ubuntu-14.04-server-amd64-libvirt
-  <<: *job_definition
-
-ubuntu-14.04-server-amd64-virtualbox:
-  stage: ubuntu-14.04-server-amd64-virtualbox
   <<: *job_definition
 
 ubuntu-16.04-server-amd64-libvirt:
@@ -114,14 +82,6 @@ ubuntu-18.04-server-amd64-libvirt:
 ubuntu-18.04-server-amd64-virtualbox:
   stage: ubuntu-18.04-server-amd64-virtualbox
   <<: *job_definition
-
-ubuntu-18.04-desktop-amd64-libvirt:
- stage: ubuntu-18.04-desktop-amd64-libvirt
- <<: *job_definition
-
-ubuntu-18.04-desktop-amd64-virtualbox:
- stage: ubuntu-18.04-desktop-amd64-virtualbox
- <<: *job_definition
 
 ubuntu-19.04-desktop-amd64-libvirt:
  stage: ubuntu-19.04-desktop-amd64-libvirt
