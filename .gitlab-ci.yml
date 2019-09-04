@@ -2,6 +2,7 @@
 # see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
 
 variables:
+  GIT_SUBMODULE_STRATEGY: recursive
   # BOX_VERSION: "20190608.01"
   DOCKER_COMMAND: docker
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
