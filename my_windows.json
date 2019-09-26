@@ -129,6 +129,14 @@
       "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user='{{ user `winrm_username` }}' ansible_ssh_pass='{{ user `winrm_password` }}' ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/site.yml"
     },
     {
+      "type": "powershell",
+      "inline":
+        [
+          "New-Item -ItemType directory -Path C:\\Users\\vagrant\\.ssh",
+          "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub' -OutFile 'C:\\Users\\vagrant\\.ssh\\authorized_keys'"
+        ]
+    },
+    {
       "type": "windows-shell",
       "pause_before": "5m",
       "inline":
