@@ -10,6 +10,8 @@ export VAGRANT_IGNORE_WINRM_PLUGIN=true
 # Enable vagrant debug log if set to 'info' (default 'warn')
 export VAGRANT_LOG=${VAGRANT_LOG:-warn}
 
+export VAGRANT_BOX_PROVIDER=virtualbox
+
 vagrant_box_add() {
   vagrant box add $VAGRANT_BOX_FILE --name=${VAGRANT_BOX_NAME} --force
 }
@@ -20,8 +22,8 @@ vagrant_init_up() {
   # Disable VirtualBox GUI
   if [ "$VAGRANT_BOX_PROVIDER" = "virtualbox" ]; then
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' $VAGRANT_CWD/Vagrantfile
-    ps -elf | grep qemu
-    virsh list
+    #ps -elf | grep qemu
+    #virsh list
   fi
 
   vagrant up --provider $VAGRANT_BOX_PROVIDER | grep -v 'Progress:'

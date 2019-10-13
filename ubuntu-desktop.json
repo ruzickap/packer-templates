@@ -61,7 +61,7 @@
       "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso" ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
-      "ssh_wait_timeout": "60m",
+      "ssh_wait_timeout": "120m",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
