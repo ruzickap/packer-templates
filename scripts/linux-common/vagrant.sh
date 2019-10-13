@@ -17,6 +17,7 @@ fi
 chmod 700 $SSH_USER_HOME/.ssh
 
 # https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub
+touch $SSH_USER_HOME/.ssh/authorized_keys
 echo "${VAGRANT_INSECURE_KEY}" > $SSH_USER_HOME/.ssh/authorized_keys
 chmod 600 $SSH_USER_HOME/.ssh/authorized_keys
 chown -R $SSH_USER:$SSH_USER $SSH_USER_HOME/.ssh

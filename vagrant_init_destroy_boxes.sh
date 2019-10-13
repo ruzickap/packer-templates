@@ -99,11 +99,11 @@ main() {
 
       check_vagrant_vm 2>&1 | tee -a $LOG_FILE
 
-      vagrant_destroy
-      vagrant_remove_boxes_images
+      #vagrant_destroy
+      #vagrant_remove_boxes_images
 
-      rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
-      rmdir $VAGRANT_CWD
+      #rm -rf $VAGRANT_CWD/{Vagrantfile,.vagrant}
+      #rmdir $VAGRANT_CWD
       echo "*** Completed"
     done
 

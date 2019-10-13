@@ -1,9 +1,0 @@
----
-- hosts: all
-
-  roles:
-    - role: ansible-role-virtio-win
-      virtio_win_iso_path: 'E:\\'
-      when: ansible_system == 'Win32NT' and ansible_system_vendor == 'QEMU'
-    - role: ansible-role-my_common_defaults
-      when: packer_build_name | regex_search('^my_')

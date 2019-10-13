@@ -65,6 +65,9 @@ echo "==> Clearing last login information"
 dd if=/dev/zero of=/EMPTY_FILE bs=1M &> /dev/null  || echo "dd exit code $? is suppressed"
 rm -f /EMPTY_FILE
 
+# Force user vagrant to change password
+passwd –expire vagrant
+
 # Make sure we wait until all the data is written to disk, otherwise
 # Packer might quite too early before the large files are deleted
 sync
