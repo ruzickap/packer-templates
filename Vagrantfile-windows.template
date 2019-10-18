@@ -40,4 +40,10 @@ Vagrant.configure("2") do |config|
   config.windows.halt_timeout = 15
   # Disable NFS sharing (==> default: Mounting NFS shared folders...)
   config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
+
+  if Vagrant.has_plugin?("vagrant-winrm-syncedfolders")
+    config.vm.synced_folder ".", "/vagrant", type: "winrm"
+  else
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+  end
 end
