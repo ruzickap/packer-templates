@@ -9,6 +9,8 @@ Vagrant.configure("2") do |config|
     libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
     libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
     libvirt.random :model => 'random'
+
+    # Enable Hyper-V enlightments: https://blog.wikichoon.com/2014/07/enabling-hyper-v-enlightenments-with-kvm.html
     libvirt.hyperv_feature :name => 'stimer',  :state => 'on'
     libvirt.hyperv_feature :name => 'relaxed', :state => 'on'
     libvirt.hyperv_feature :name => 'vapic',   :state => 'on'
