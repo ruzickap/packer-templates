@@ -2,11 +2,11 @@
 
 Clean and minimal Windows $WINDOWS_VERSION ${WINDOWS_EDITION_UC} ($WINDOWS_ARCH)
 Evaluation base box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-## Github repository for bug reports or feature requests
+## GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -17,7 +17,7 @@ and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
-## Requirements for linux distributions running Vagrant
+## Requirements for Linux distributions running Vagrant
 
 Unfortunately you can not use the Vagrant package provided by your Linux
 distribution (at least for CentOS / Fedora / Debian).
@@ -93,7 +93,7 @@ See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/ma
 * Firewall allows Remote Desktop connections
 * AutoActivation skipped
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
-* WinRM (ssl) enabled
+* WinRM (SSL) enabled
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA

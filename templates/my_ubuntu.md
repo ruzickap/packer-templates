@@ -1,11 +1,11 @@
 # [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE_UC}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
 Modified Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-## Github repository for bug reports or feature requests
+## GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 

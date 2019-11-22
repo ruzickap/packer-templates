@@ -2,11 +2,11 @@
 
 Modified CentOS ${CENTOS_VERSION} (${CENTOS_TAG}) ${CENTOS_ARCH} box for
 [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-and [virtualbox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 
 ---
 
-## Github repository for bug reports or feature requests
+## GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 

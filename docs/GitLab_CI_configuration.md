@@ -1,4 +1,4 @@
-# Gitlab setup
+# GitLab setup
 
 [![Build Status](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)
 
@@ -9,9 +9,9 @@ Vagrant automatically every month.
   * `ruzickap/packer-templates` -> Connect
 
 * Settings
-  * General -> Topics -> packer, vitualbox, vagrant, box, windows, ubuntu,
+  * General -> Topics -> packer, virtualbox, vagrant, box, windows, ubuntu,
      centos, images
-  * Repository -> Protected Branches -> `master` -> Unprotect
+  * Repository -> Protected Branches -> `master` -> not protect
   * CI/CD
     * General pipelines
       * Timeout: 2d

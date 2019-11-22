@@ -1,6 +1,6 @@
-# Packer Templates mainly for the Vagrant [libvirt][libvirt] and [virtualbox][virtualbox]
+# Packer Templates mainly for the Vagrant [libvirt][libvirt] and [VirtualBox][virtualbox]
 
-## Customized+Clean/Minimal boxes for [libvirt][libvirt] and [virtualbox][virtualbox]
+## Customized+Clean/Minimal boxes for [libvirt][libvirt] and [VirtualBox][virtualbox]
 
 [libvirt]: https://github.com/vagrant-libvirt/vagrant-libvirt
 [virtualbox]: https://www.vagrantup.com/docs/virtualbox/
@@ -10,7 +10,7 @@
 
 ---
 
-### Github repository for bug reports or feature requests
+### GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
 
@@ -86,7 +86,7 @@ begins with "my_" - they are preconfigured with the following:
 * Firewall allows Remote Desktop connections
 * AutoActivation skipped
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
-* WinRM (ssl) enabled
+* WinRM (SSL) enabled
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
@@ -95,7 +95,7 @@ begins with "my_" - they are preconfigured with the following:
 ### Customized Windows 10 installation
 
 * added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
-* Additional configuration done via ansible playbook [Win32NT-common.yml](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/tasks/Win32NT-common.yml)
+* Additional configuration done via Ansible playbook [Win32NT-common.yml](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/tasks/Win32NT-common.yml)
 
 ### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
 
@@ -118,13 +118,13 @@ for Windows:
 * pvpanic: QEMU pvpanic device driver
 * qemu-ga: [Qemu Guest Agent](http://wiki.libvirt.org/page/Qemu_guest_agent)
 
-### Additional Drivers installed for virtualbox boxes
+### Additional Drivers installed for VirtualBox boxes
 
 * VirtualBox Guest Additions
 
 ## How to build images remotely
 
-If you want to build the images yourself you will need passwordless ssh access
+If you want to build the images yourself you will need password-less ssh access
 to the latest Fedora server and locally installed Ansible. The server should
 not have IPs from this range `192.168.121.0/24` - this is
 used by Vagrant + libvirt by default.
@@ -329,4 +329,4 @@ packer build -only="qemu" my_windows.json
 * `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current
   directory using `vagrant add/up/ssh/winrm/destroy`
 
-GitLab CI configuration can be found here: [GitLab_CI_configuration.md](GitLab_CI_configuration.md)
+GitLab CI configuration can be found here: [GitLab_CI_configuration.md](docs/GitLab_CI_configuration.md)
