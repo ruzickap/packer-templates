@@ -1,0 +1,100 @@
+name: checks
+
+on:
+  push:
+    branches: [master]
+    paths:
+    - '**.md'
+    - '*.json'
+    - '.github/**'
+    - 'ansible/**'
+    - .spelling
+    - package-lock.json
+    - package.json
+
+jobs:
+  markdown-lint-check:
+    name: Markdown lint and spell check
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Install markdownlint-cli
+      run: npm install -g markdownlint-cli
+
+    - name: Install markdown-spellcheck
+      run: npm install -g markdown-spellcheck
+
+    - name: Create markdownlint configuration file
+      run: |
+        echo "{ MD013: { code_blocks: false } }" > /tmp/markdownlint_config.json
+
+    - name: Run markdownlint
+      run: find . -path ./node_modules -prune -o -name "*.md" -print0 | xargs -t -0 markdownlint -c /tmp/markdownlint_config.json
+
+    - name: Run mdspell
+      run: mdspell '**/*.md' '!**/node_modules/**/*.md' --ignore-numbers --ignore-acronyms --report --en-gb
+
+  validate-packer-templates:
+    name: Validate Packer templates
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Download Packer
+      run: |
+        PACKER_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
+        curl -s https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip --output /tmp/packer_linux_amd64.zip
+        sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
+
+    - name: Check packer templates
+      run: |
+        IFS=$'\n'
+        for FILE in *.json; do
+          echo "*** $FILE"
+          for PACKER_VALIDATE_RUN in $(awk -F\" '/"_comment"/ { gsub("packer build","packer validate",$4); print $4 }' $FILE); do
+            echo "* $PACKER_VALIDATE_RUN"
+            eval "$PACKER_VALIDATE_RUN"
+          done
+        done
+
+  verify-boxes-vagrant-cloud:
+    name: Verify if the boxes are avaiable on the Vegrant Cloud
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Check the boxes at app.vagrantup.com
+      run: |
+        for NAME in ubuntu-{18.10,18.04}-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-{18.04,16.04}-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
+          for VAGRANT_PROVIDER in virtualbox libvirt; do
+            CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version")
+            URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box"
+            echo "*** $URL"
+            curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
+          done
+        done
+
+  check-ansible-playbooks:
+    name: Verify Ansible playbooks
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install ansible and ansible-lint
+      run: |
+        sudo pip install ansible ansible-lint
+
+    - name: Test Ansible plabooks
+      run: |
+        ansible-playbook -i 'localhost,' --syntax-check ansible/*.yml
+        ansible-lint -x 204,403 ansible/*.yml
