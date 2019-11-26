@@ -65,24 +65,6 @@ jobs:
           done
         done
 
-  verify-boxes-vagrant-cloud:
-    name: Verify if the boxes are avaiable on the Vegrant Cloud
-    runs-on: ubuntu-18.04
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - name: Check the boxes at app.vagrantup.com
-      run: |
-        for NAME in ubuntu-{18.10,18.04}-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-{18.04,16.04}-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
-          for VAGRANT_PROVIDER in virtualbox libvirt; do
-            CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version")
-            URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box"
-            echo "*** $URL"
-            curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
-          done
-        done
-
   check-ansible-playbooks:
     name: Verify Ansible playbooks
     runs-on: ubuntu-18.04
