@@ -27,10 +27,12 @@ jobs:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       LOGDIR: /var/tmp/packer-templates-logs
       VAGRANTUP_USER: peru
+      VAGRANTUP_ACCESS_TOKEN: ${{ secrets.VAGRANTUP_ACCESS_TOKEN }}
       # PACKER_RUN_TIMEOUT: 18000
       # USE_DOCKERIZED_PACKER: "true"
       # PACKER_LOG: 1
       # VAGRANT_LOG: info
+
     strategy:
       max-parallel: 1
       matrix:
