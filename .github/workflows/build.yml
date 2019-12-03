@@ -2,7 +2,7 @@ name: build
 
 on:
   schedule:
-    - cron: '0 10 2 * *'
+    - cron: '0 2 1 * *'
 
 jobs:
   prebuild:
@@ -14,9 +14,6 @@ jobs:
     steps:
       - name: Create Packer cache directory if not already exists
         run: test -d /var/tmp/packer_cache || mkdir -v /var/tmp/packer_cache
-
-      - name: Set global BOX_VERSION variable
-        run: echo "::set-env name=BOX_VERSION::${BOX_VERSION:-$(date +%Y%m%d).01}"
 
   build:
     name: "*"
