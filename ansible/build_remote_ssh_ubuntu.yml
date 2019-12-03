@@ -10,7 +10,6 @@
       - curl
       - docker.io
       - git
-      - gitlab-runner
       - jq
       - libvirt-bin
       - libvirt-dev
@@ -19,7 +18,10 @@
       - unzip
       - virtualbox-6.0
       - wget
-    packer_templates_git_repo: https://github.com/ruzickap/packer-templates.git
+
+    packer_templates_git_repo: https://github.com/ruzickap/packer-templates
+    github_actions_runner_url: https://githubassets.azureedge.net/runners/2.161.0/actions-runner-linux-x64-2.161.0.tar.gz
+    builder_username: builder
 
     vagrant_plugins:
       - vagrant-libvirt
@@ -64,17 +66,6 @@
         apt_repository:
           repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
 
-      - name: Download GitLab's official repository script
-        get_url:
-          url: https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh
-          dest: /root/script.deb.sh
-          mode: 0755
-
-      - name: Install GitLab's official repository
-        command: /root/script.deb.sh
-        args:
-          creates: /etc/apt/sources.list.d/runner_gitlab-runner.list
-
       - name: Install packages
         apt:
           name: "{{ item }}"
@@ -90,9 +81,9 @@
         register: result
         until: result is succeeded
 
-      - name: Add the gitlab-runner user to docker and libvirt group
+      - name: Add the actions-runner user to docker and libvirt group
         user:
-          name: gitlab-runner
+          name: "{{ builder_username }}"
           groups: docker,kvm,libvirt,vboxusers
           append: yes
 
@@ -134,15 +125,6 @@
           backup: yes
         notify: reboot
 
-      - name: Check if gitlab-runner is already registered
-        command: gitlab-runner list
-        register: gitlab_runner_list
-        changed_when: false
-
-      - name: Register gitlab agent
-        command: gitlab-runner register --non-interactive --tag-list packer-templates --registration-token {{ GITLAB_REGISTRATION_TOKEN }} --url https://gitlab.com/ --executor shell
-        when: GITLAB_REGISTRATION_TOKEN is defined and gitlab_runner_list.stderr is not search('https://gitlab.com/')
-
       become: true
 
     - block:
@@ -156,9 +138,32 @@
         loop: "{{ vagrant_plugins }}"
         when: vagrant_plugin_list.stdout is not search(item)
 
-      become: yes
-      become_user: gitlab-runner
+      - name: Create a directory if it does not exist
+        file:
+          path: /home/{{ builder_username }}/actions-runner
+          state: directory
 
+      - name: Download and unpack the "actions-runner"
+        unarchive:
+          src: "{{ github_actions_runner_url }}"
+          dest: /home/{{ builder_username }}/actions-runner
+          remote_src: yes
+
+      - name: Register actions-runner
+        command: ./config.sh --url {{ packer_templates_git_repo }} --token {{ TOKEN }} --agent "{{ ansible_hostname }}" --work "_work"
+        args:
+          chdir: /home/{{ builder_username }}/actions-runner
+          creates: /home/{{ builder_username }}/actions-runner/.runner
+
+      become: yes
+      become_user: "{{ builder_username }}"
+
+    - name: Install actions-runner service
+      shell: ./svc.sh install && ./svc.sh start
+      become: true
+      args:
+        chdir: /home/{{ builder_username }}/actions-runner
+        creates: /home/{{ builder_username }}/actions-runner/.service
 
   handlers:
     - name: reboot
