@@ -11,12 +11,12 @@ echo "==> Giving ${SSH_USER} sudo powers"
 echo "${SSH_USER}        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/vagrant
 
 echo "==> Installing vagrant key"
-if [ ! -d $SSH_USER_HOME/.ssh ]; then
-  mkdir $SSH_USER_HOME/.ssh
+if [ ! -d "$SSH_USER_HOME/.ssh" ]; then
+  mkdir "$SSH_USER_HOME/.ssh"
 fi
-chmod 700 $SSH_USER_HOME/.ssh
+chmod 700 "$SSH_USER_HOME/.ssh"
 
 # https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub
-echo "${VAGRANT_INSECURE_KEY}" > $SSH_USER_HOME/.ssh/authorized_keys
-chmod 600 $SSH_USER_HOME/.ssh/authorized_keys
-chown -R $SSH_USER:$SSH_USER $SSH_USER_HOME/.ssh
+echo "${VAGRANT_INSECURE_KEY}" > "$SSH_USER_HOME/.ssh/authorized_keys"
+chmod 600 "$SSH_USER_HOME/.ssh/authorized_keys"
+chown -R "$SSH_USER:$SSH_USER" "$SSH_USER_HOME/.ssh"
