@@ -4,7 +4,7 @@
 export TMPDIR=${TMPDIR:-$PWD/packer_cache}
 # VirtIO win iso URL (https://www.linux-kvm.org/page/WindowsGuestDrivers/Download_Drivers)
 export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso}
-export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-$TMPDIR/$(basename $VIRTIO_WIN_ISO_URL)}
+export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-$TMPDIR/$(basename "$VIRTIO_WIN_ISO_URL")}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
 # Use packer, virtualboc, ansible in docker image
@@ -20,17 +20,15 @@ export PACKER_LOG=${PACKER_LOG:-0}
 # Max amount of time which packer can run (default 5 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
 export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-18000}
 # User docker / podman executable
-if `which podman &> /dev/null`; then
+if command -v podman &> /dev/null; then
   DOCKER_COMMAND=${DOCKER_COMMAND:-podman}
 else
   DOCKER_COMMAND=${DOCKER_COMMAND:-docker}
 fi
 
-# This variable is a workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox support "Windows2019_64")
-WINDOWS_2019_VIRTUALBOX_HELPER=""
 
-readonly PROGNAME=$(basename $0)
-readonly ARGS="$@"
+readonly PROGNAME=$(basename "$0")
+readonly ARGS=$*
 
 set -o pipefail
 
@@ -49,7 +47,7 @@ List of all supported builds:
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
  * ubuntu-19.04-desktop-amd64-{libvirt,virtualbox}
- * ubuntu-18.10-desktop-amd64-{libvirt,virtualbox}
+ * ubuntu-19.10-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-18.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-16.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-14.04-server-amd64-{libvirt,virtualbox}
@@ -78,7 +76,7 @@ EOF
 }
 
 cmdline() {
-  BUILDS=$@
+  BUILDS=$*
 
   if [ -z "$BUILDS" ]; then
     usage
@@ -88,7 +86,8 @@ cmdline() {
   for BUILD in $BUILDS; do
     export PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
     export NAME="${BUILD%-*}"
-    export MY_NAME=`echo $NAME | awk -F '-' '{ print $1 }'`
+    MY_NAME=$(echo "$NAME" | awk -F '-' '{ print $1 }')
+    export MY_NAME
 
     case $PACKER_VAGRANT_PROVIDER in
       libvirt )
@@ -103,34 +102,41 @@ cmdline() {
       ;;
     esac
 
-    test -d $TMPDIR                   || mkdir -v $TMPDIR
-    test -d $PACKER_IMAGES_OUTPUT_DIR || mkdir -v $PACKER_IMAGES_OUTPUT_DIR
-    test -d $LOGDIR                   || mkdir -v $LOGDIR
+    test -d "$TMPDIR"                   || mkdir -v "$TMPDIR"
+    test -d "$PACKER_IMAGES_OUTPUT_DIR" || mkdir -v "$PACKER_IMAGES_OUTPUT_DIR"
+    test -d "$LOGDIR"                   || mkdir -v "$LOGDIR"
 
     echo -e "\n\n*** $MY_NAME | $NAME | $BUILD - $PACKER_VAGRANT_PROVIDER/$PACKER_BUILDER_TYPE"
 
     case $NAME in
       *centos*)
-        export CENTOS_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
-        export CENTOS_TAG=`curl -s ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1`
+        CENTOS_VERSION=$(echo "$NAME" | awk -F '-' '{ print $2 }')
+        export CENTOS_VERSION
+        CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
+        export CENTOS_TAG
         export CENTOS_TYPE="NetInstall"
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
         export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
       ;;
       *ubuntu*)
-        export UBUNTU_TYPE=`echo $NAME | awk -F '-' '{ print $3 }'`
-        export UBUNTU_VERSION=`echo $NAME | awk -F '-' '{ print $2 }'`
-        export UBUNTU_CODENAME=`curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1`
+        UBUNTU_TYPE=$(echo "$NAME" | awk -F '-' '{ print $3 }')
+        export UBUNTU_TYPE
+        UBUNTU_VERSION=$(echo "$NAME" | awk -F '-' '{ print $2 }')
+        export UBUNTU_VERSION
+        UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
+        export UBUNTU_CODENAME
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
-        export WINDOWS_VERSION=`echo $NAME | sed -n -e 's/.*-\([0-9][0-9][0-9][0-9]\)[_-].*/\1/p' -e 's/.*-\([0-9][0-9]\)-.*/\1/p'`
+        WINDOWS_VERSION=$(echo "$NAME" | sed -n -e 's/.*-\([0-9][0-9][0-9][0-9]\)[_-].*/\1/p' -e 's/.*-\([0-9][0-9]\)-.*/\1/p')
+        export WINDOWS_VERSION
         export PACKER_FILE="${MY_NAME}.json"
-        export WINDOWS_EDITION=`echo $NAME | sed -e 's/.*-\([^-]*\)-x64-eval$/\1/'`
+        WINDOWS_EDITION=$(echo "$NAME" | awk -F - '{ print $(NF-2) }')
+        export WINDOWS_EDITION
 
         case $NAME in
           *windows-10-enterprise*)
@@ -141,8 +147,6 @@ cmdline() {
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/sg/17763.379.190312-0539.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
             export ISO_CHECKSUM="221f9acbc727297a56674a0f1722b8ac7b6e840b4e1ffbdd538a9ed0da823562"
-            # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox supports "Windows2019_64")
-            export WINDOWS_2019_VIRTUALBOX_HELPER="-var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016"
           ;;
           *windows-server-2016-*)
             export WINDOWS_TYPE="server"
@@ -162,8 +166,9 @@ cmdline() {
         esac
 
         echo "* NAME: $NAME, WINDOWS_ARCH: $WINDOWS_ARCH, WINDOWS_VERSION: $WINDOWS_VERSION, WINDOWS_EDITION: $WINDOWS_EDITION, PACKER_FILE: $PACKER_FILE"
-        test -f $VIRTIO_WIN_ISO || wget --continue $VIRTIO_WIN_ISO_URL -O $VIRTIO_WIN_ISO
-        export DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename $VIRTIO_WIN_ISO)"
+        test -f "$VIRTIO_WIN_ISO" || wget --continue "$VIRTIO_WIN_ISO_URL" -O "$VIRTIO_WIN_ISO"
+        DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename "$VIRTIO_WIN_ISO")"
+        export DOCKER_ENV_PARAMETERS
       ;;
       *)
         echo "*** Unsupported build type: \"$NAME\" used from \"$BUILD\""
@@ -177,19 +182,23 @@ cmdline() {
 
 
 packer_build() {
+  set -x
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
-    if [ $USE_DOCKERIZED_PACKER = "true" ]; then
+    if [ "$USE_DOCKERIZED_PACKER" = "true" ]; then
       $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
-      $DOCKER_COMMAND run --rm -t -u $(id -u):$(id -g) --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" $DOCKER_ENV_PARAMETERS \
-        -v $PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir \
-        -v $PWD:/home/docker/packer \
-        -v $TMPDIR:/home/docker/packer/packer_cache \
+      $DOCKER_COMMAND run --rm -t -u "$(id -u):$(id -g)" --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" "$DOCKER_ENV_PARAMETERS" \
+        -v "$PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir" \
+        -v "$PWD:/home/docker/packer" \
+        -v "$TMPDIR:/home/docker/packer/packer_cache" \
         -e PACKER_RUN_TIMEOUT \
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
-        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $WINDOWS_2019_VIRTUALBOX_HELPER $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+        peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+    # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox supports "Windows2019_64") [vboxmanage list ostypes]
+    elif echo "${NAME}" | grep windows-server-2019; then
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" -var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016 "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     else
-      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" $WINDOWS_2019_VIRTUALBOX_HELPER $PACKER_FILE 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
@@ -203,7 +212,7 @@ packer_build() {
 #######
 
 main() {
-  cmdline $ARGS
+  cmdline "$ARGS"
 }
 
 main
