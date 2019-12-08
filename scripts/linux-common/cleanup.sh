@@ -51,15 +51,15 @@ rm -rf /tmp/*
 # Remove Bash history
 unset HISTFILE
 rm -f /root/.bash_history
-rm -f /home/${SSH_USER}/.bash_history
+rm -f "/home/${SSH_USER}/.bash_history"
 
 # Clean up log files
-find /var/log -type f | while read f; do echo -ne '' > $f; done;
+find /var/log -type f | while read -r f; do echo -ne '' > "$f"; done;
 
 echo "==> Clearing last login information"
->/var/log/lastlog
->/var/log/wtmp
->/var/log/btmp
+true >/var/log/lastlog
+true >/var/log/wtmp
+true >/var/log/btmp
 
 # Zero out the free space to save space in the final image
 dd if=/dev/zero of=/EMPTY_FILE bs=1M &> /dev/null  || echo "dd exit code $? is suppressed"
