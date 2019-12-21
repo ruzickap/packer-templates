@@ -2,7 +2,7 @@
 - hosts: all
 
   vars:
-    bleachbit_url: https://download.bleachbit.org/BleachBit-2.2-portable.zip
+    bleachbit_url: https://download.bleachbit.org/BleachBit-3.0-portable.zip
 
   roles:
     - role: ansible-role-virtio-win
@@ -78,6 +78,7 @@
       win_get_url:
         url: "{{ ultradefrag_url }}"
         dest: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
+        follow_redirects: all
       register: result
       until: result is succeeded
 
