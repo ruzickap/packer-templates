@@ -5,9 +5,11 @@ on:
     types: [opened, synchronize]
     paths:
       - ansible/**
+      - .github/workflows/ansible-lint.yml
   push:
     paths:
       - ansible/**
+      - .github/workflows/ansible-lint.yml
 
 jobs:
   ansible-playbooks:
@@ -18,5 +20,5 @@ jobs:
       - name: Lint Ansible Playbook
         uses: ansible/ansible-lint-action@master
         with:
-          targets: ansible
+          targets: ansible/*.yml
           args: -x 204,403
