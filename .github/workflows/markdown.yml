@@ -1,0 +1,53 @@
+name: markdown
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.md'
+      - .github/workflows/markdown.yml
+      - .markdownlint.yml
+      - .spelling
+  push:
+    paths:
+      - '**.md'
+      - .github/workflows/markdown.yml
+      - .markdownlint.yml
+      - .spelling
+
+jobs:
+  markdownlint-check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: markdownlint-cli
+        uses: nosborn/github-action-markdown-cli@v1.1.1
+        with:
+          files: .
+          config_file: .markdownlint.yml
+          ignore_files: CHANGELOG.md
+
+  markdown-spell-check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install markdown-spellcheck
+        run: npm install -g markdown-spellcheck
+
+      - name: Run mdspell
+        run: find . -type f \( -name "*.md" ! -name "CHANGELOG.md" \) -exec mdspell --ignore-numbers --ignore-acronyms --report --en-gb {} \;
+
+  markdown-link-check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Link Checker
+        uses: gaurav-nelson/github-action-markdown-link-check@0.4.0

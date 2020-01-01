@@ -1,0 +1,22 @@
+name: ansible-lint
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ansible/**
+  push:
+    paths:
+      - ansible/**
+
+jobs:
+  ansible-playbooks:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Lint Ansible Playbook
+        uses: ansible/ansible-lint-action@master
+        with:
+          targets: ansible
+          args: -x 204,403

@@ -85,12 +85,12 @@ ubuntu-18.04-server-amd64-virtualbox:
   <<: *job_definition
 
 ubuntu-19.04-desktop-amd64-libvirt:
- stage: ubuntu-19.04-desktop-amd64-libvirt
- <<: *job_definition
+  stage: ubuntu-19.04-desktop-amd64-libvirt
+  <<: *job_definition
 
 ubuntu-19.04-desktop-amd64-virtualbox:
- stage: ubuntu-19.04-desktop-amd64-virtualbox
- <<: *job_definition
+  stage: ubuntu-19.04-desktop-amd64-virtualbox
+  <<: *job_definition
 
 my_centos-7-x86_64-libvirt:
   stage: my_centos-7-x86_64-libvirt

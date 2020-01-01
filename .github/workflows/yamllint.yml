@@ -1,0 +1,23 @@
+name: yamllint
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.yml'
+      - '**.yaml'
+  push:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+
+jobs:
+  yamllint-check:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: yamllint
+        uses: ibiqlik/action-yamllint@master
+        with:
+          file_or_dir: .
