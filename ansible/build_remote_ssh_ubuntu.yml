@@ -16,7 +16,7 @@
       - python3-pip
       - sshpass
       - unzip
-      - virtualbox-6.0
+      - virtualbox-6.1
       - wget
 
     packer_templates_git_repo: https://github.com/ruzickap/packer-templates
@@ -36,124 +36,124 @@
       setup:
 
     - block:
-      - name: Update all packages to the latest version
-        apt:
-          upgrade: dist
-          update_cache: yes
-        register: result
-        until: result is succeeded
+        - name: Update all packages to the latest version
+          apt:
+            upgrade: dist
+            update_cache: yes
+          register: result
+          until: result is succeeded
 
-      - name: Get latest version of Vagrant
-        uri:
-          url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
-          return_content: yes
-        register: vagrant_uri
+        - name: Get latest version of Vagrant
+          uri:
+            url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
+            return_content: yes
+          register: vagrant_uri
 
-      - name: Install Vagrant
-        apt:
-          deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
-        register: result
-        until: result is succeeded
+        - name: Install Vagrant
+          apt:
+            deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
+          register: result
+          until: result is succeeded
 
-      - name: Add an Apt signing key for Virtualbox
-        apt_key:
-          url: "{{ item }}"
-        loop:
-          - https://www.virtualbox.org/download/oracle_vbox_2016.asc
-          - https://www.virtualbox.org/download/oracle_vbox.asc
+        - name: Add an Apt signing key for Virtualbox
+          apt_key:
+            url: "{{ item }}"
+          loop:
+            - https://www.virtualbox.org/download/oracle_vbox_2016.asc
+            - https://www.virtualbox.org/download/oracle_vbox.asc
 
-      - name: Add Virtualbox repository
-        apt_repository:
-          repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
+        - name: Add Virtualbox repository
+          apt_repository:
+            repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
 
-      - name: Install packages
-        apt:
-          name: "{{ item }}"
-        loop: "{{ packages }}"
-        register: result
-        until: result is succeeded
+        - name: Install packages
+          apt:
+            name: "{{ item }}"
+          loop: "{{ packages }}"
+          register: result
+          until: result is succeeded
 
-      - name: Install latest Ansible and pywinrm
-        pip:
-          name:
-            - ansible
-            - pywinrm
-        register: result
-        until: result is succeeded
+        - name: Install latest Ansible and pywinrm
+          pip:
+            name:
+              - ansible
+              - pywinrm
+          register: result
+          until: result is succeeded
 
-      - name: Add the actions-runner user to docker and libvirt group
-        user:
-          name: "{{ builder_username }}"
-          groups: docker,kvm,libvirt,vboxusers
-          append: yes
+        - name: Add the actions-runner user to docker and libvirt group
+          user:
+            name: "{{ builder_username }}"
+            groups: docker,kvm,libvirt,vboxusers
+            append: yes
 
-      # Yhis is not needed for Fedora, because in Fedora it's "crw-rw-rw- 1 root kvm 10, 232 Feb 13 09:58 /dev/kvm"
-      - name: Chnage righs for /dev/kvm
-        blockinfile:
-          path: /etc/udev/rules.d/60-qemu-system-common.rules
-          create: yes
-          block: |
-            # Chnaging rights of /dev/kvm from 0660 to 0666
-            KERNEL=="kvm", GROUP="kvm", MODE="0666"
-        notify: reboot
+        # This is not needed for Fedora, because in Fedora it's "crw-rw-rw- 1 root kvm 10, 232 Feb 13 09:58 /dev/kvm"
+        - name: Chnage righs for /dev/kvm
+          blockinfile:
+            path: /etc/udev/rules.d/60-qemu-system-common.rules
+            create: yes
+            block: |
+              # Chnaging rights of /dev/kvm from 0660 to 0666
+              KERNEL=="kvm", GROUP="kvm", MODE="0666"
+          notify: reboot
 
-      - name: Get latest version of Packer
-        uri:
-          url: https://checkpoint-api.hashicorp.com/v1/check/packer
-          return_content: yes
-        register: packer_uri
+        - name: Get latest version of Packer
+          uri:
+            url: https://checkpoint-api.hashicorp.com/v1/check/packer
+            return_content: yes
+          register: packer_uri
 
-      - name: Download and unzip packer
-        unarchive:
-          src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
-          dest: /usr/local/bin/
-          remote_src: yes
-          creates: /usr/local/bin/packerio
-          validate_certs: false
+        - name: Download and unzip packer
+          unarchive:
+            src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
+            dest: /usr/local/bin/
+            remote_src: yes
+            creates: /usr/local/bin/packerio
+            validate_certs: false
 
-      - name: Move packer to packerio
-        command: mv /usr/local/bin/packer /usr/local/bin/packerio
-        args:
-          creates: /usr/local/bin/packerio
+        - name: Move packer to packerio
+          command: mv /usr/local/bin/packer /usr/local/bin/packerio
+          args:
+            creates: /usr/local/bin/packerio
 
-      - name: Remove configuration of unix socket for libvirt (/var/run/libvirt/libvirt-sock)
-        replace:
-          path: /etc/libvirt/libvirtd.conf
-          # Commend all lines beginning with "unix_sock_"
-          regexp: '^unix_sock_.*'
-          replace: '#&'
-          backup: yes
-        notify: reboot
+        - name: Remove configuration of unix socket for libvirt (/var/run/libvirt/libvirt-sock)
+          replace:
+            path: /etc/libvirt/libvirtd.conf
+            # Commend all lines beginning with "unix_sock_"
+            regexp: '^unix_sock_.*'
+            replace: '#&'
+            backup: yes
+          notify: reboot
 
       become: true
 
     - block:
-      - name: List installed Vagrant Plugins
-        command: vagrant plugin list
-        register: vagrant_plugin_list
-        changed_when: false
+        - name: List installed Vagrant Plugins
+          command: vagrant plugin list
+          register: vagrant_plugin_list
+          changed_when: false
 
-      - name: Install Vagrant Plugins
-        command: vagrant plugin install {{ item }}
-        loop: "{{ vagrant_plugins }}"
-        when: vagrant_plugin_list.stdout is not search(item)
+        - name: Install Vagrant Plugins
+          command: vagrant plugin install {{ item }}
+          loop: "{{ vagrant_plugins }}"
+          when: vagrant_plugin_list.stdout is not search(item)
 
-      - name: Create a directory if it does not exist
-        file:
-          path: /home/{{ builder_username }}/actions-runner
-          state: directory
+        - name: Create a directory if it does not exist
+          file:
+            path: /home/{{ builder_username }}/actions-runner
+            state: directory
 
-      - name: Download and unpack the "actions-runner"
-        unarchive:
-          src: "{{ github_actions_runner_url }}"
-          dest: /home/{{ builder_username }}/actions-runner
-          remote_src: yes
+        - name: Download and unpack the "actions-runner"
+          unarchive:
+            src: "{{ github_actions_runner_url }}"
+            dest: /home/{{ builder_username }}/actions-runner
+            remote_src: yes
 
-      - name: Register actions-runner
-        command: ./config.sh --url {{ packer_templates_git_repo }} --token {{ TOKEN }} --agent "{{ ansible_hostname }}" --work "_work"
-        args:
-          chdir: /home/{{ builder_username }}/actions-runner
-          creates: /home/{{ builder_username }}/actions-runner/.runner
+        - name: Register actions-runner
+          command: ./config.sh --url {{ packer_templates_git_repo }} --token {{ TOKEN }} --agent "{{ ansible_hostname }}" --work "_work"
+          args:
+            chdir: /home/{{ builder_username }}/actions-runner
+            creates: /home/{{ builder_username }}/actions-runner/.runner
 
       become: yes
       become_user: "{{ builder_username }}"
