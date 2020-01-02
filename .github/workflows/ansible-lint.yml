@@ -7,6 +7,8 @@ on:
       - ansible/**
       - .github/workflows/ansible-lint.yml
   push:
+    branches:
+      - master
     paths:
       - ansible/**
       - .github/workflows/ansible-lint.yml

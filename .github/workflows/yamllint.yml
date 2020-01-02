@@ -7,6 +7,8 @@ on:
       - '**.yml'
       - '**.yaml'
   push:
+    branches:
+      - master
     paths:
       - '**.yml'
       - '**.yaml'

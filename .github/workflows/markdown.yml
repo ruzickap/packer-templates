@@ -9,6 +9,8 @@ on:
       - .markdownlint.yml
       - .spelling
   push:
+    branches:
+      - master
     paths:
       - '**.md'
       - .github/workflows/markdown.yml
