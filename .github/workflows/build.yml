@@ -18,9 +18,6 @@ jobs:
       - name: Create Packer cache directory if not already exists
         run: test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
 
-      - name: Set BOX_VERSION variable
-        run: echo "::set-env name=BOX_VERSION::$(date +%Y%m%d).01"
-
   build:
     name: "*"
     runs-on: [self-hosted, linux, x64]
@@ -67,6 +64,7 @@ jobs:
       - name: Checkout submodules
         shell: bash
         run: |
+          ls -la
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
