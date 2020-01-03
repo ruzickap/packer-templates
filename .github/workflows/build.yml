@@ -18,6 +18,12 @@ jobs:
       - name: Create Packer cache directory if not already exists
         run: test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
 
+      - name: Create BOX_VERSION file
+        run: |
+          BOX_VERSION="$(date +%Y%m%d).02"
+          echo "*** Creating new file: ${PACKER_CACHE_DIR}/BOX_VERSION | ${BOX_VERSION}"
+          echo "${BOX_VERSION}" > "${PACKER_CACHE_DIR}/BOX_VERSION"
+
   build:
     name: "*"
     runs-on: [self-hosted, linux, x64]
@@ -25,6 +31,7 @@ jobs:
       # BOX_VERSION: "20190608.01"
       # DOCKER_COMMAND: docker
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+      PACKER_CACHE_DIR: /var/tmp/packer_cache
       LOGDIR: /var/tmp/packer-templates-logs
       VAGRANTUP_USER: peru
       VAGRANTUP_ACCESS_TOKEN: ${{ secrets.VAGRANTUP_ACCESS_TOKEN }}
@@ -71,12 +78,21 @@ jobs:
 
       - name: Build image - ${{ matrix.stage }}
         run: |
-          echo "*** ${BOX_VERSION} | ${{ matrix.stage }}"
-          ln -sv /var/tmp/packer_cache packer_cache
+          ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
-          ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+
+      - name: Check the created box image - ${{ matrix.stage }}
+        run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+
+      - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
+        if: github.ref == 'refs/heads/master'
+        run: |
+          export BOX_VERSION=$(cat "${PACKER_CACHE_DIR}/BOX_VERSION")
+          echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
           ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
-          rm -v ${LOGDIR}/${{ matrix.stage }}*
+
+      - name: Log cleanup - ${{ matrix.stage }}
+        run: rm -v ${LOGDIR}/${{ matrix.stage }}*
 
   cleanup:
     needs: build
@@ -84,13 +100,15 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     env:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+      PACKER_CACHE_DIR: /var/tmp/packer_cache
       LOGDIR: /var/tmp/packer-templates-logs
       VAGRANT_TMP: /var/tmp/vagrant_init_destroy_boxes
     steps:
       - name: Cleanup
         run: |
+          rm "${PACKER_CACHE_DIR}/BOX_VERSION"
           rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
-          rmdir -v $PACKER_IMAGES_OUTPUT_DIR $LOGDIR $VAGRANT_TMP || true
+          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" "${VAGRANT_TMP}" || true
 
   vagrantup_check:
     needs: build
