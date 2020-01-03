@@ -11,6 +11,7 @@ on:
   push:
     branches:
       - master
+      - dev
     paths:
       - '**.md'
       - .github/workflows/markdown.yml
