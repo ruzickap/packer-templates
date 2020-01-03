@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - master
+      - dev
     paths:
       - ansible/**
       - .github/workflows/ansible-lint.yml

@@ -1,6 +1,9 @@
 name: build
 
 on:
+  push:
+    branches:
+      - dev
   schedule:
     - cron: '0 2 3 * *'
 
@@ -13,7 +16,10 @@ jobs:
 
     steps:
       - name: Create Packer cache directory if not already exists
-        run: test -d /var/tmp/packer_cache || mkdir -v /var/tmp/packer_cache
+        run: test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
+
+      - name: Set BOX_VERSION variable
+        run: echo "::set-env name=BOX_VERSION::$(date +%Y%m%d).01"
 
   build:
     name: "*"
