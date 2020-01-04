@@ -23,7 +23,8 @@
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
-* [VirtualBox](https://www.virtualbox.org/)
+* [VirtualBox](https://www.virtualbox.org/) (Version 6.1 or later)
+* [Packer](https://www.packer.io/) (Version 1.4.x)
 
 ## Login Credentials
 
@@ -97,7 +98,7 @@ begins with "my_" - they are preconfigured with the following:
 * added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
 * Additional configuration done via Ansible playbook [Win32NT-common.yml](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/tasks/Win32NT-common.yml)
 
-### Additional Drivers installed for libvirt boxes - [VirtIO](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
+### Additional Drivers installed for libvirt boxes - [VirtIO](https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers)
 
 Installed during installation:
 
