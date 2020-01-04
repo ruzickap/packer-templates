@@ -3,7 +3,7 @@ name: build
 on:
   repository_dispatch:
   schedule:
-    - cron: '0 2 3 * *'
+    - cron: '0 2 1 * *'
 
 jobs:
   prebuild:
