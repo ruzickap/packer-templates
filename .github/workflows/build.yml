@@ -18,7 +18,7 @@ jobs:
 
       - name: Create BOX_VERSION file
         run: |
-          BOX_VERSION="$(date +%Y%m%d).02"
+          BOX_VERSION="$(date +%Y%m%d).01"
           echo "*** Creating new file: ${PACKER_CACHE_DIR}/BOX_VERSION | ${BOX_VERSION}"
           echo "${BOX_VERSION}" > "${PACKER_CACHE_DIR}/BOX_VERSION"
 
