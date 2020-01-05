@@ -30,7 +30,7 @@ jobs:
           IFS=$'\n'
           for FILE in *.json; do
             echo "*** $FILE"
-            for PACKER_VALIDATE_RUN in $(awk -F\" '/"_comment"/ { gsub("packer build","packer validate",$4); print $4 }' $FILE); do
+            for PACKER_VALIDATE_RUN in $(awk -F\" '/"_comment[0-9]*"/ { gsub("packer build","packer validate",$4); print $4 }' $FILE); do
               echo "* $PACKER_VALIDATE_RUN"
               eval "$PACKER_VALIDATE_RUN"
             done

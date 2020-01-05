@@ -1,7 +1,7 @@
 {
-  "_comment": "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
-  "_comment": "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
-  "_comment": "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment1": "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment2": "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment3": "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
@@ -15,31 +15,34 @@
     "disk_size": "51200",
     "headless": "false"
   },
-
-  "builders":
-  [
+  "builders": [
     {
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
-      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "iso_urls": [
+        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso"
+      ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
-      "accelerator": "kvm",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
-
       "accelerator": "kvm",
       "qemuargs": [
-        [ "-m", "{{ user `memory` }}" ],
-        [ "-smp", "{{ user `cpus` }}" ]
+        [
+          "-m",
+          "{{ user `memory` }}"
+        ],
+        [
+          "-smp",
+          "{{ user `cpus` }}"
+        ]
       ],
       "boot_wait": "5s",
-      "boot_command":
-      [
+      "boot_command": [
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-server/{{ user `preseed_file_name` }} ",
         "auto=true ",
@@ -56,14 +59,15 @@
       "guest_os_type": "Ubuntu_64",
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
-      "iso_urls": [ "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso" ],
+      "iso_urls": [
+        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso"
+      ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
-
       "hard_drive_interface": "sata",
       "disk_size": "{{ user `disk_size` }}",
       "vboxmanage": [
@@ -87,8 +91,7 @@
         ]
       ],
       "boot_wait": "5s",
-      "boot_command":
-      [
+      "boot_command": [
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-server/{{ user `preseed_file_name` }} ",
         "auto=true ",
@@ -113,14 +116,24 @@
     },
     {
       "type": "shell",
-      "environment_vars": [ "DEBIAN_FRONTEND=noninteractive" ],
-      "inline": [ "sudo -E apt-get install -y aptitude python > /dev/null" ]
+      "environment_vars": [
+        "DEBIAN_FRONTEND=noninteractive"
+      ],
+      "inline": [
+        "sudo -E apt-get install -y aptitude python > /dev/null"
+      ]
     },
     {
       "type": "ansible",
       "user": "vagrant",
-      "ansible_env_vars": [ "ANSIBLE_CONFIG=ansible/ansible.cfg" ],
-      "extra_arguments": [ "--become", "--extra-vars", "packer_build_name={{ user `name` }}" ],
+      "ansible_env_vars": [
+        "ANSIBLE_CONFIG=ansible/ansible.cfg"
+      ],
+      "extra_arguments": [
+        "--become",
+        "--extra-vars",
+        "packer_build_name={{ user `name` }}"
+      ],
       "playbook_file": "ansible/site.yml"
     },
     {

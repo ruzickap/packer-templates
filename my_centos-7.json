@@ -1,5 +1,5 @@
 {
-  "_comment": "NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1908 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_centos-7.json",
+  "_comment1": "NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=1908 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_centos-7.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
@@ -15,31 +15,34 @@
     "disk_size": "51200",
     "headless": "false"
   },
-
-  "builders":
-  [
+  "builders": [
     {
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
-      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
+      "iso_urls": [
+        "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso"
+      ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
-      "accelerator": "kvm",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
-
       "accelerator": "kvm",
       "qemuargs": [
-        [ "-m", "{{ user `memory` }}" ],
-        [ "-smp", "{{ user `cpus` }}" ]
+        [
+          "-m",
+          "{{ user `memory` }}"
+        ],
+        [
+          "-smp",
+          "{{ user `cpus` }}"
+        ]
       ],
       "boot_wait": "5s",
-      "boot_command":
-      [
+      "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
       "disk_size": "{{ user `disk_size` }}",
@@ -51,14 +54,15 @@
       "guest_os_type": "RedHat_64",
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
-      "iso_urls": [ "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso" ],
+      "iso_urls": [
+        "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso"
+      ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
-
       "hard_drive_interface": "sata",
       "disk_size": "{{ user `disk_size` }}",
       "vboxmanage": [
@@ -82,8 +86,7 @@
         ]
       ],
       "boot_wait": "5s",
-      "boot_command":
-      [
+      "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
       "http_directory": "http"
@@ -100,8 +103,14 @@
     {
       "type": "ansible",
       "user": "vagrant",
-      "ansible_env_vars": [ "ANSIBLE_CONFIG=ansible/ansible.cfg" ],
-      "extra_arguments": [ "--become", "--extra-vars", "packer_build_name={{ user `name` }}" ],
+      "ansible_env_vars": [
+        "ANSIBLE_CONFIG=ansible/ansible.cfg"
+      ],
+      "extra_arguments": [
+        "--become",
+        "--extra-vars",
+        "packer_build_name={{ user `name` }}"
+      ],
       "sftp_command": "/usr/libexec/openssh/sftp-server -e",
       "playbook_file": "ansible/site.yml"
     },
