@@ -3,6 +3,15 @@ name: periodic-markdown-links-check
 on:
   schedule:
     - cron: '8 8 * * 1'
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - .github/workflows/periodic-markdown-links-check.yml
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/periodic-markdown-links-check.yml
 
 jobs:
   markdown-link-check:
