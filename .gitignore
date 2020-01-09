@@ -1,4 +1,8 @@
+# Packer cache directory
 packer_cache
+
+# pre-commit config file
 .pre-commit-config.yaml
-*.retry
-*.box
+
+# release-it configuration file
+.release-it.yml
