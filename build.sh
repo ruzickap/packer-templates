@@ -194,9 +194,6 @@ packer_build() {
         -e PACKER_LOG \
         -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
         peru/packer_qemu_virtualbox_ansible build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
-    # Workaround for "guest_os_type" VirtualBox parameter (should be removed in the future when VirtualBox supports "Windows2019_64") [vboxmanage list ostypes]
-    elif echo "${NAME}" | grep windows-server-2019; then
-      $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" -var autounattend=http/windows-2019/Autounattend.xml -var windows_version=2016 "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
