@@ -1,5 +1,8 @@
+---
+# https://yamllint.readthedocs.io/en/stable/configuration.html
 extends: default
 
+# https://yamllint.readthedocs.io/en/stable/rules.html
 rules:
   # 80 chars should be enough, but don't fail if a line is longer
   line-length:
