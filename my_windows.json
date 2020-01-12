@@ -5,7 +5,6 @@
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "cpus": "2",
     "memory": "4096",
-    "ssh_winrm_host_port": "2299",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "{{ env `ISO_URL` }}",
     "iso_checksum": "{{ env `ISO_CHECKSUM` }}",
@@ -26,8 +25,6 @@
         "{{ user `iso_url` }}"
       ],
       "communicator": "winrm",
-      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
-      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
       "winrm_timeout": "12h",
@@ -73,8 +70,6 @@
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
-      "ssh_host_port_min": "{{ user `ssh_winrm_host_port` }}",
-      "ssh_host_port_max": "{{ user `ssh_winrm_host_port` }}",
       "communicator": "winrm",
       "winrm_username": "{{ user `winrm_username` }}",
       "winrm_password": "{{ user `winrm_password` }}",
@@ -134,8 +129,12 @@
     },
     {
       "type": "shell-local",
-      "environment_vars": "ANSIBLE_CONFIG=ansible/ansible.cfg",
-      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_user='{{ user `winrm_username` }}' ansible_ssh_pass='{{ user `winrm_password` }}' ansible_port={{ user `ssh_winrm_host_port` }}' -i 127.0.0.1, ansible/site.yml"
+      "environment_vars": [
+        "ANSIBLE_CONFIG=ansible/ansible.cfg",
+        "ANSIBLE_REMOTE_PORT={{ build `Port` }}",
+        "ANSIBLE_REMOTE_USER={{ user `winrm_username` }}"
+      ],
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_password='{{ user `winrm_password` }}'' -i 127.0.0.1, ansible/site.yml"
     },
     {
       "type": "powershell",
