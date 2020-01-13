@@ -1,5 +1,12 @@
-# Packer cache directory
-packer_cache
+# Packer cache objects
+packer_cache/
+
+# Packer built boxes
+*.box
+
+# Packer build directories
+*-qemu/
+*-virtualbox-iso/
 
 # pre-commit config file
 .pre-commit-config.yaml
