@@ -2,12 +2,13 @@
 
 REMOTE_IP="company-nb"
 REMOTE_USER="pruzicka"
-TOKEN=${TOKEN:-AxxxxxxxxxxxxxxxxxxxxxxxxxxxO}
+MY_PACKER_TEMPLATES_GITHUB_REPOSITORY="https://github.com/ruzickap/packer-templates"
+GITHUB_SELF_HOSTED_RUNNER_TOKEN=${TOKEN:-Axxxxxxxxxxxxxxxxxxxxxxxxxxx4}
 
 # Prepare remote machine for build
-if [ -n "$TOKEN" ]; then
-  ansible-playbook -i "$REMOTE_IP," -e TOKEN="$TOKEN" --user $REMOTE_USER ../ansible/build_remote_ssh_ubuntu.yml
+if [ -n "$GITHUB_SELF_HOSTED_RUNNER_TOKEN" ]; then
+  ansible-playbook -i "$REMOTE_IP," -e GITHUB_SELF_HOSTED_RUNNER_TOKEN="$GITHUB_SELF_HOSTED_RUNNER_TOKEN" -e MY_PACKER_TEMPLATES_GITHUB_REPOSITORY="$MY_PACKER_TEMPLATES_GITHUB_REPOSITORY" --user "$REMOTE_USER" ../ansible/build_remote_ssh_ubuntu.yml
 else
-  echo "Missing TOKEN"
+  echo "Missing GITHUB_SELF_HOSTED_RUNNER_TOKEN"
   exit 1
 fi

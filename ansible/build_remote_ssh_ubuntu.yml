@@ -19,16 +19,17 @@
       - virtualbox-6.1
       - wget
 
-    packer_templates_git_repo: https://github.com/ruzickap/packer-templates
     github_actions_runner_url: https://githubassets.azureedge.net/runners/2.161.0/actions-runner-linux-x64-2.161.0.tar.gz
     builder_username: builder
 
     vagrant_plugins:
       - vagrant-libvirt
 
+    action_runner_count: 2
+
   tasks:
     - name: Install Python
-      raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y python3-minimal )"
+      raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
       register: output
       changed_when: output.stdout is search("Unpacking")
 
@@ -138,32 +139,38 @@
           loop: "{{ vagrant_plugins }}"
           when: vagrant_plugin_list.stdout is not search(item)
 
-        - name: Create a directory if it does not exist
+        - name: Create a directories for action-runners if they do not exist
           file:
-            path: /home/{{ builder_username }}/actions-runner
+            path: /home/{{ builder_username }}/actions-runner-{{ item }}
             state: directory
+          loop: "{{ range(1, action_runner_count + 1) | list }}"
 
         - name: Download and unpack the "actions-runner"
           unarchive:
             src: "{{ github_actions_runner_url }}"
-            dest: /home/{{ builder_username }}/actions-runner
+            dest: /home/{{ builder_username }}/actions-runner-{{ item }}
             remote_src: yes
+          loop: "{{ range(1, action_runner_count + 1) | list }}"
 
-        - name: Register actions-runner
-          command: ./config.sh --url {{ packer_templates_git_repo }} --token {{ TOKEN }} --agent "{{ ansible_hostname }}" --work "_work"
+        - name: Register actions-runner-x
+          command: ./config.sh --url {{ MY_PACKER_TEMPLATES_GITHUB_REPOSITORY }} --token {{ GITHUB_SELF_HOSTED_RUNNER_TOKEN }} --agent "{{ ansible_hostname }}-{{ item }}" --work "_work"
           args:
-            chdir: /home/{{ builder_username }}/actions-runner
-            creates: /home/{{ builder_username }}/actions-runner/.runner
+            chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
+            creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
+          loop: "{{ range(1, action_runner_count + 1) | list }}"
 
       become: yes
       become_user: "{{ builder_username }}"
 
-    - name: Install actions-runner service
+    - name: Install actions-runner-x service
       shell: ./svc.sh install && ./svc.sh start
       become: true
       args:
-        chdir: /home/{{ builder_username }}/actions-runner
-        creates: /home/{{ builder_username }}/actions-runner/.service
+        chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
+        creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.service
+      environment:
+        SUDO_USER: "{{ builder_username }}"
+      loop: "{{ range(1, action_runner_count + 1) | list }}"
 
   handlers:
     - name: reboot
