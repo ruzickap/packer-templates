@@ -71,7 +71,7 @@ jobs:
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
-        if: github.ref == 'refs/heads/master'
+        if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
         run: |
           export BOX_VERSION=$(cat "${PACKER_CACHE_DIR}/BOX_VERSION")
           echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
