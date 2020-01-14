@@ -28,7 +28,7 @@
     action_runner_count: 2
 
   tasks:
-    - name: Install Python
+    - name: Install python3-minimal and gnupg2 if needed
       raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
       register: output
       changed_when: output.stdout is search("Unpacking")
