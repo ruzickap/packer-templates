@@ -140,13 +140,13 @@ cmdline() {
 
         case $NAME in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/pr/18362.30.190401-1528.19h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="ab4862ba7d1644c27f27516d24cb21e6b39234eb3301e5f1fb365a78b22f79b3"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_CHECKSUM="9ef81b6a101afd57b2dbfa44d5c8f7bc94ff45b51b82c5a1f9267ce2e63e9f53"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
-            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.379.190312-0539.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="221f9acbc727297a56674a0f1722b8ac7b6e840b4e1ffbdd538a9ed0da823562"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
+            export ISO_CHECKSUM="549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1"
           ;;
           *windows-server-2016-*)
             export WINDOWS_TYPE="server"

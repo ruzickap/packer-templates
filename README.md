@@ -288,8 +288,8 @@ packer build -only="qemu" windows.json
 export NAME="windows-server-2019-standard-x64-eval"
 export WINDOWS_VERSION="2019"
 export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_CHECKSUM="57FAF4A2EA4484CFDF5E964C539313C061C4D9CAC474E723D60405F2EA02D570"
-export ISO_URL="https://software-download.microsoft.com/download/sg/17763.253.190108-0006.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
+export ISO_CHECKSUM="549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1"
+export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
 export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
 packer build -only="qemu" windows.json
 
@@ -306,8 +306,8 @@ packer build -only="qemu" windows.json
 export NAME="windows-10-enterprise-x64-eval"
 export WINDOWS_VERSION="10"
 export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_CHECKSUM="ab4862ba7d1644c27f27516d24cb21e6b39234eb3301e5f1fb365a78b22f79b3"
-export ISO_URL="https://software-download.microsoft.com/download/pr/18362.30.190401-1528.19h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+export ISO_CHECKSUM="9ef81b6a101afd57b2dbfa44d5c8f7bc94ff45b51b82c5a1f9267ce2e63e9f53"
+export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
 export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
 packer build -only="qemu" windows.json
 
@@ -315,8 +315,8 @@ packer build -only="qemu" windows.json
 export NAME="my_windows-10-enterprise-x64-eval"
 export WINDOWS_VERSION="10"
 export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_CHECKSUM="27e4feb9102f7f2b21ebdb364587902a70842fb550204019d1a14b120918e455"
-export ISO_URL="https://software-download.microsoft.com/download/pr/17134.1.180410-1804.rs4_release_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+export ISO_CHECKSUM="9ef81b6a101afd57b2dbfa44d5c8f7bc94ff45b51b82c5a1f9267ce2e63e9f53"
+export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
 export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
 packer build -only="qemu" my_windows.json
 ```

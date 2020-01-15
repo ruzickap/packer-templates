@@ -23,7 +23,7 @@ jobs:
             echo "*** Creating new file: ${PACKER_CACHE_DIR}/BOX_VERSION | ${BOX_VERSION}"
             echo "${BOX_VERSION}" > "${PACKER_CACHE_DIR}/BOX_VERSION"
           else
-            echo "*** File [ ${PACKER_CACHE_DIR}/BOX_VERSION | $(cat ${PACKER_CACHE_DIR}/BOX_VERSION) ] already exists !"
+            echo "*** File [ ${PACKER_CACHE_DIR}/BOX_VERSION | $(cat ${PACKER_CACHE_DIR}/BOX_VERSION) ] already exists - using existing..."
           fi
 
 ##############
