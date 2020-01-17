@@ -1,24 +1,24 @@
 Vagrant.configure("2") do |config|
   config.vm.provider :libvirt do |libvirt, override|
-    libvirt.driver = "kvm"
-    libvirt.disk_bus = "virtio"
+    libvirt.disk_bus       = "virtio"
+    libvirt.driver         = "kvm"
+    libvirt.graphics_type  = "spice"
+    libvirt.memory         = 2048
     libvirt.nic_model_type = "virtio"
-    libvirt.video_type = "qxl"
-    libvirt.sound_type = "ich6"
-    libvirt.graphics_type = "spice"
-    libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
-    libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
-    libvirt.random :model => 'random'
-    libvirt.memory = 2048
+    libvirt.sound_type     = "ich6"
+    libvirt.video_type     = "qxl"
+
+    libvirt.channel :type  => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
+    libvirt.channel :type  => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
+    libvirt.random  :model => 'random'
   end
 
   config.vm.provider :virtualbox do |virtualbox, override|
-    virtualbox.gui = true
-    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
     virtualbox.customize ["modifyvm", :id, "--audiocontroller", "hda"]
+    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
     virtualbox.customize ["modifyvm", :id, "--memory", 2048]
     virtualbox.customize ["modifyvm", :id, "--vram", 128]
-    virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    virtualbox.gui = true
   end
 
   # Disable NFS sharing (==> default: Mounting NFS shared folders...)

@@ -1,31 +1,31 @@
 Vagrant.configure("2") do |config|
   config.vm.provider :libvirt do |libvirt, override|
-    libvirt.driver = "kvm"
-    libvirt.disk_bus = "virtio"
+    libvirt.disk_bus       = "virtio"
+    libvirt.driver         = "kvm"
+    libvirt.graphics_type  = "spice"
     libvirt.nic_model_type = "virtio"
-    libvirt.video_type = "qxl"
-    libvirt.sound_type = "ich6"
-    libvirt.graphics_type = "spice"
-    libvirt.channel :type => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
-    libvirt.channel :type => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
-    libvirt.random :model => 'random'
+    libvirt.sound_type     = "ich6"
+    libvirt.video_type     = "qxl"
+
+    libvirt.channel :type  => 'spicevmc', :target_name => 'com.redhat.spice.0',     :target_type => 'virtio'
+    libvirt.channel :type  => 'unix',     :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
+    libvirt.random  :model => 'random'
 
     # Enable Hyper-V enlightments: https://blog.wikichoon.com/2014/07/enabling-hyper-v-enlightenments-with-kvm.html
-    libvirt.hyperv_feature :name => 'stimer',  :state => 'on'
     libvirt.hyperv_feature :name => 'relaxed', :state => 'on'
-    libvirt.hyperv_feature :name => 'vapic',   :state => 'on'
+    libvirt.hyperv_feature :name => 'stimer',  :state => 'on'
     libvirt.hyperv_feature :name => 'synic',   :state => 'on'
+    libvirt.hyperv_feature :name => 'vapic',   :state => 'on'
     libvirt.memory = 2048
   end
 
   config.vm.provider :virtualbox do |virtualbox, override|
-    virtualbox.gui = true
-    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
-    virtualbox.customize ["modifyvm", :id, "--audiocontroller", "hda"]
-    virtualbox.customize ["modifyvm", :id, "--memory", 2048]
     virtualbox.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
+    virtualbox.customize ["modifyvm", :id, "--audiocontroller", "hda"]
+    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
+    virtualbox.customize ["modifyvm", :id, "--memory", 2048]
     virtualbox.customize ["modifyvm", :id, "--vram", 128]
-    virtualbox.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    virtualbox.gui = true
   end
 
   # Port forward for RDP
@@ -33,13 +33,15 @@ Vagrant.configure("2") do |config|
   # Port forward for WinRM
   config.vm.network :forwarded_port, guest: 5986, host: 5986, id: "winrm-ssl", auto_correct:true
   config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct:true
-  config.vm.communicator = "winrm"
-  config.winrm.username    = "vagrant"
-  config.winrm.password    = "vagrant"
-  config.winrm.retry_limit = 30
-  config.vm.boot_timeout = 1000
-  config.vm.guest        = :windows
+
+  config.vm.boot_timeout      = 1000
+  config.vm.communicator      = "winrm"
+  config.vm.guest             = :windows
   config.windows.halt_timeout = 15
+  config.winrm.password       = "vagrant"
+  config.winrm.retry_limit    = 30
+  config.winrm.username       = "vagrant"
+
   # Disable NFS sharing (==> default: Mounting NFS shared folders...)
   config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
 
