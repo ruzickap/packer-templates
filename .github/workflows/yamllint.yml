@@ -21,5 +21,3 @@ jobs:
 
       - name: yamllint
         uses: ibiqlik/action-yamllint@master
-        with:
-          file_or_dir: .
