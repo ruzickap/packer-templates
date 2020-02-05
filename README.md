@@ -159,7 +159,7 @@ Real examples can be found here: [https://gitlab.com/ruzickap/packer-templates/p
 ./build.sh ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
-./build.sh ubuntu-19.04-desktop-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-19.10-desktop-amd64-{libvirt,virtualbox}
 
 # Ubuntu Server - customized
 ./build.sh my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
@@ -246,11 +246,7 @@ UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
-NAME="ubuntu-19.04-desktop-amd64" UBUNTU_CODENAME="disco" \
-UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-desktop.json
-
-NAME="ubuntu-18.10-desktop-amd64" UBUNTU_CODENAME="cosmic" \
+NAME="ubuntu-19.10-desktop-amd64" UBUNTU_CODENAME="eoan" \
 UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-desktop.json
 
