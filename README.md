@@ -159,7 +159,7 @@ Real examples can be found here: [https://gitlab.com/ruzickap/packer-templates/p
 ./build.sh ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
-./build.sh ubuntu-19.10-desktop-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-{19.10,18.04}-desktop-amd64-{libvirt,virtualbox}
 
 # Ubuntu Server - customized
 ./build.sh my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}

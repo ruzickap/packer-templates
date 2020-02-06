@@ -51,6 +51,7 @@ jobs:
           - ubuntu-16.04-server-amd64-libvirt
           - ubuntu-18.04-server-amd64-libvirt
           # - ubuntu-19.10-desktop-amd64-libvirt
+          - ubuntu-18.04-desktop-amd64-libvirt
           - my_windows-10-enterprise-x64-eval-libvirt
           - windows-10-enterprise-x64-eval-libvirt
           - windows-server-2016-standard-x64-eval-libvirt
@@ -109,6 +110,7 @@ jobs:
           - ubuntu-16.04-server-amd64-virtualbox
           - ubuntu-18.04-server-amd64-virtualbox
           # - ubuntu-19.10-desktop-amd64-virtualbox
+          - ubuntu-18.04-desktop-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
           - windows-10-enterprise-x64-eval-virtualbox
           - windows-server-2016-standard-x64-eval-virtualbox
@@ -151,12 +153,19 @@ jobs:
       - name: Check the boxes at app.vagrantup.com
         run: |
           # for NAME in ubuntu-19.10-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
-          for NAME in ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
+          for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
             for VAGRANT_PROVIDER in virtualbox libvirt; do
               CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version")
               URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box"
               echo "*** $URL"
-              curl -L --fail --silent --head --output /dev/null "$URL" || ( echo "* Failed... ^^^" && exit 1 )
+              if ! curl -L --fail --silent --head --output /dev/null "$URL"; then
+                echo "* URL \"$URL\" is not accessible !"
+                exit 1
+              fi
+              if [ $(curl -s https://app.vagrantup.com/peru/boxes/$NAME | jq '.versions | length') != "1" ]; then
+                echo "* Too many versions for: https://app.vagrantup.com/peru/boxes/$NAME !"
+                exit 2
+              fi
             done
           done
 

@@ -47,6 +47,7 @@ List of all supported builds:
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
  * ubuntu-19.10-desktop-amd64-{libvirt,virtualbox}
+ * ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-18.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-16.04-server-amd64-{libvirt,virtualbox}
  * ubuntu-14.04-server-amd64-{libvirt,virtualbox}
