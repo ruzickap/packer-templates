@@ -87,6 +87,12 @@ main() {
       export LOG_FILE="${LOGDIR}/${VAGRANT_BOX_NAME}-init.log"
 
       echo -e "*** ${VAGRANT_BOX_FILE} [${VAGRANT_BOX_NAME}] (${VAGRANT_BOX_PROVIDER}) (${TMPDIR}/${VAGRANT_BOX_NAME_SHORT})" | tee "${LOG_FILE}"
+
+      if [ -s "${LOG_FILE}" ]; then
+        echo "*** The logfile \"${LOG_FILE}\" already exists - skipping..."
+        continue
+      fi
+
       test -d "$VAGRANT_CWD" && rm -rf "$VAGRANT_CWD"
       mkdir "${VAGRANT_CWD}"
 
