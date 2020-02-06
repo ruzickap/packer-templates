@@ -81,8 +81,8 @@ jobs:
           echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
           ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
-      - name: Log cleanup - ${{ matrix.stage }}
-        run: rm -v ${LOGDIR}/${{ matrix.stage }}*
+      - name: Build log cleanup - ${{ matrix.stage }}
+        run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
 
 ##############
 # VirtualBox
@@ -140,8 +140,8 @@ jobs:
           echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
           ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
-      - name: Log cleanup - ${{ matrix.stage }}
-        run: rm -v ${LOGDIR}/${{ matrix.stage }}*
+      - name: Build log cleanup - ${{ matrix.stage }}
+        run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
 
   check-vagrantcloud:
     needs: build-virtualbox
@@ -174,4 +174,5 @@ jobs:
         run: |
           rm -v "${PACKER_CACHE_DIR}/BOX_VERSION"
           rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
+          rm -v ${LOGDIR}/*
           rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" "${VAGRANT_TMP}" || true
