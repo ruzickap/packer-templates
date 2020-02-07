@@ -92,7 +92,7 @@ jobs:
   build-virtualbox:
     name: "*"
     runs-on: [self-hosted, linux, x64]
-    needs: [prebuild, build-libvirt]
+    needs: build-libvirt
     env:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       PACKER_CACHE_DIR: /var/tmp/packer_cache
