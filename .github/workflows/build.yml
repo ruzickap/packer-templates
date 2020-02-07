@@ -38,8 +38,8 @@ jobs:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       PACKER_CACHE_DIR: /var/tmp/packer_cache
       LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANTUP_USER: peru
-      VAGRANTUP_ACCESS_TOKEN: ${{ secrets.VAGRANTUP_ACCESS_TOKEN }}
+      VAGRANT_CLOUD_USER: peru
+      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -80,7 +80,7 @@ jobs:
         run: |
           export BOX_VERSION="$(cat ${PACKER_CACHE_DIR}/BOX_VERSION)"
           echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
-          ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+          ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
         run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
@@ -97,8 +97,8 @@ jobs:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       PACKER_CACHE_DIR: /var/tmp/packer_cache
       LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANTUP_USER: peru
-      VAGRANTUP_ACCESS_TOKEN: ${{ secrets.VAGRANTUP_ACCESS_TOKEN }}
+      VAGRANT_CLOUD_USER: peru
+      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -140,37 +140,49 @@ jobs:
         run: |
           export BOX_VERSION=$(cat "${PACKER_CACHE_DIR}/BOX_VERSION")
           echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
-          ./upload_box_to_vagrantup.sh ${VAGRANTUP_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+          ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
         run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
 
-  check-vagrantcloud:
+  clean_check_versions:
     needs: build-virtualbox
-    name: Verify if the boxes are avaiable on the Vagrant Cloud
     runs-on: ubuntu-18.04
+    env:
+      VAGRANT_CLOUD_USER: peru
+      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     steps:
-      - name: Check the boxes at app.vagrantup.com
+      - name: Remove old versions
+        run: |
+          for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
+            OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | .versions[] | select (.version != $current_version) .version')
+            for VERSION in ${OLD_VERSIONS}; do
+              echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
+              curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}" -X DELETE -d "access_token=${VAGRANT_CLOUD_TOKEN}" -o /dev/null
+            done
+          done
+
+      - name: Verify if the boxes are avaiable on the Vagrant Cloud
         run: |
           # for NAME in ubuntu-19.10-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
           for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04,14.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
             for VAGRANT_PROVIDER in virtualbox libvirt; do
-              CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/$NAME | jq -r ".current_version.version")
-              URL="https://app.vagrantup.com/peru/boxes/$NAME/versions/$CURRENT_VERSION/providers/$VAGRANT_PROVIDER.box"
-              echo "*** $URL"
-              if ! curl -L --fail --silent --head --output /dev/null "$URL"; then
-                echo "* URL \"$URL\" is not accessible !"
+              CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
+              URL="https://app.vagrantup.com/peru/boxes/${NAME}/versions/${CURRENT_VERSION}/providers/${VAGRANT_PROVIDER}.box"
+              echo "*** ${URL}"
+              if ! curl -L --fail --silent --head --output /dev/null "${URL}"; then
+                echo "* URL \"${URL}\" is not accessible !"
                 exit 1
               fi
-              if [ $(curl -s https://app.vagrantup.com/peru/boxes/$NAME | jq '.versions | length') != "1" ]; then
-                echo "* Too many versions for: https://app.vagrantup.com/peru/boxes/$NAME !"
+              if [ $(curl -s https://app.vagrantup.com/peru/boxes/${NAME} | jq '.versions | length') != "1" ]; then
+                echo "* Too many versions for: https://app.vagrantup.com/peru/boxes/${NAME} !"
                 exit 2
               fi
             done
           done
 
   cleanup:
-    needs: check-vagrantcloud
+    needs: clean_check_versions
     name: Cleanup
     runs-on: [self-hosted, linux, x64]
     env:
