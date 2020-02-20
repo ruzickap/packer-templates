@@ -102,6 +102,12 @@
         [
           "modifyvm",
           "{{ .Name }}",
+          "--graphicscontroller",
+          "vboxsvga"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
           "--audiocontroller",
           "hda"
         ]
