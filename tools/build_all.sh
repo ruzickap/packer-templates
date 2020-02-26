@@ -14,6 +14,6 @@ LOGFILE="/tmp/build_all.log"
     done
   done
 
-  ./vagrant_init_destroy_boxes_docker.sh
+  ./vagrant_init_destroy_boxes.sh
 
 ) 2>&1 | tee $LOGFILE
