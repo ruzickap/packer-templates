@@ -118,6 +118,7 @@
         "scripts/ubuntu/disable_apt-daily.sh",
         "scripts/ubuntu/spice-vdagent.sh",
         "scripts/ubuntu/virtualbox-guest-x11.sh",
+        "scripts/ubuntu/disable-netplan-networkd.sh",
         "scripts/linux-common/vagrant.sh",
         "scripts/linux-common/cleanup.sh"
       ]

@@ -50,7 +50,7 @@ jobs:
           - my_ubuntu-18.04-server-amd64-libvirt
           - ubuntu-16.04-server-amd64-libvirt
           - ubuntu-18.04-server-amd64-libvirt
-          # - ubuntu-19.10-desktop-amd64-libvirt
+          - ubuntu-19.10-desktop-amd64-libvirt
           - ubuntu-18.04-desktop-amd64-libvirt
           - my_windows-10-enterprise-x64-eval-libvirt
           - windows-10-enterprise-x64-eval-libvirt
@@ -109,7 +109,7 @@ jobs:
           - my_ubuntu-18.04-server-amd64-virtualbox
           - ubuntu-16.04-server-amd64-virtualbox
           - ubuntu-18.04-server-amd64-virtualbox
-          # - ubuntu-19.10-desktop-amd64-virtualbox
+          - ubuntu-19.10-desktop-amd64-virtualbox
           - ubuntu-18.04-desktop-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
           - windows-10-enterprise-x64-eval-virtualbox
