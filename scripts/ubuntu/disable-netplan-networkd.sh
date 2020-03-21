@@ -7,4 +7,6 @@
 # Some details can be found here: https://github.com/hashicorp/vagrant/issues/11378
 # In short the /etc/netplan/01-netcfg.yaml should not be on the Ubuntu Desktop installation when using Vagrant otherwise `vagrant up` is hanging.
 
-test -s /etc/netplan/01-netcfg.yaml && rm -v /etc/netplan/01-netcfg.yaml
+if [[ -s /etc/netplan/01-netcfg.yaml ]] ; then
+  rm -v /etc/netplan/01-netcfg.yaml
+fi
