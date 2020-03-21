@@ -20,25 +20,21 @@ You need to define the "VAGRANT_CLOUD_TOKEN" variable with proper access token.
 
 Box names with user:
 
-* peru@my_centos-7-x86_64-libvirt.box
-* peru@my_ubuntu-14.04-server-amd64-libvirt.box
-* peru@my_ubuntu-16.04-server-amd64-libvirt.box
-* peru@my_ubuntu-18.04-server-amd64-libvirt.box
-* peru@ubuntu-14.04-server-amd64-libvirt.box
-* peru@ubuntu-16.04-server-amd64-libvirt.box
-* peru@ubuntu-18.04-server-amd64-libvirt.box
-* peru@ubuntu-19.10-desktop-amd64-libvirt.box
-* peru@ubuntu-18.04-desktop-amd64-libvirt.box
-* peru@windows-10-enterprise-x64-eval-libvirt.box
-* peru@windows-10-enterprise-x64-eval-virtualbox.box
-* peru@my_windows-10-enterprise-x64-eval-libvirt.box
-* peru@my_windows-10-enterprise-x64-eval-virtualbox.box
-* peru@windows-server-2012_r2-standard-x64-eval-libvirt.box
-* peru@windows-server-2012_r2-standard-x64-eval-virtualbox.box
-* peru@windows-server-2016-standard-x64-eval-libvirt.box
-* peru@windows-server-2016-standard-x64-eval-virtualbox.box
-* peru@windows-server-2019-standard-x64-eval-libvirt.box
-* peru@windows-server-2019-standard-x64-eval-virtualbox.box
+* peru@my_centos-7-x86_64-{libvirt,virtualbox}.box
+* peru@my_ubuntu-14.04-server-amd64-{libvirt,virtualbox}.box
+* peru@my_ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
+* peru@my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
+* peru@my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
+* peru@ubuntu-14.04-server-amd64-{libvirt,virtualbox}.box
+* peru@ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
+* peru@ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}.box
+* peru@ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
+* peru@ubuntu-19.10-desktop-amd64-{libvirt,virtualbox}.box
+* peru@ubuntu-20.04-desktop-amd64-{libvirt,virtualbox}.box
+* peru@windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
+* peru@windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}.box
+* peru@windows-server-2016-standard-x64-eval-{libvirt,virtualbox}.box
+* peru@windows-server-2019-standard-x64-eval-{libvirt,virtualbox}.box
 
 Examples:
 

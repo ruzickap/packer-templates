@@ -115,6 +115,8 @@ cmdline() {
         CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
         export CENTOS_TAG
         export CENTOS_TYPE="NetInstall"
+        ISO_CHECKSUM=$(curl -s "ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
+        export ISO_CHECKSUM
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
         export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
@@ -126,6 +128,8 @@ cmdline() {
         export UBUNTU_VERSION
         UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
         export UBUNTU_CODENAME
+        ISO_CHECKSUM=$(curl -s "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
+        export ISO_CHECKSUM
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
@@ -182,8 +186,8 @@ cmdline() {
 
 
 packer_build() {
-  set -x
   if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
+    set -x
     if [ "$USE_DOCKERIZED_PACKER" = "true" ]; then
       $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
       $DOCKER_COMMAND run --rm -t -u "$(id -u):$(id -g)" --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" "$DOCKER_ENV_PARAMETERS" \
@@ -197,6 +201,7 @@ packer_build() {
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
+    test -L "${TMPDIR}/${NAME}.iso" || ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
   fi

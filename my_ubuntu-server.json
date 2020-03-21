@@ -20,9 +20,9 @@
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
       "iso_urls": [
-        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso"
+        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso"
       ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
@@ -58,9 +58,9 @@
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
       "iso_urls": [
-        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}-updates/main/installer-amd64/current/images/netboot/mini.iso"
+        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso"
       ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
