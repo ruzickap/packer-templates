@@ -49,7 +49,7 @@ EOF
 cmdline() {
   local USER_BOX=$*
 
-  if [ -z "$USER_BOX" ] || [ -z "$VAGRANT_CLOUD_TOKEN" ]; then
+  if [[ -z "$USER_BOX" ]] || [[ -z "$VAGRANT_CLOUD_TOKEN" ]]; then
     usage
     exit 1;
   fi
@@ -61,7 +61,7 @@ cmdline() {
   VAGRANT_PROVIDER=$(echo "$VAGRANT_CLOUD_BOX_NAME" | awk -F '-' '{ print $NF }')
   export VAGRANT_PROVIDER
 
-  if [ ! -f "$VAGRANT_CLOUD_BOX_FILE" ]; then
+  if [[ ! -f "$VAGRANT_CLOUD_BOX_FILE" ]]; then
     echo -e "*** ERROR: \"$VAGRANT_CLOUD_BOX_FILE\" does not exist!\n"
     exit 1
   fi
@@ -151,7 +151,7 @@ cmdline() {
   CHECKSUM_BOX_FILE=$(sha256sum "${VAGRANT_CLOUD_BOX_FILE}" | cut -d ' ' -f 1)
   CHECKSUM_BOX_VAGRANT_CLOUD=$(curl -s "https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}" | jq -r ".versions[] | select (.version == \"${BOX_VERSION}\") .providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
 
-  if [ "${CHECKSUM_BOX_FILE}" != "${CHECKSUM_BOX_VAGRANT_CLOUD}" ]; then
+  if [[ "${CHECKSUM_BOX_FILE}" != "${CHECKSUM_BOX_VAGRANT_CLOUD}" ]]; then
     vagrant cloud publish --force --description "$LONG_DESCRIPTION" --version-description "$LONG_DESCRIPTION" --release  --short-description "${SHORT_DESCRIPTION}" --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}" "${VAGRANT_PROVIDER}" "${VAGRANT_CLOUD_BOX_FILE}"
   else
     echo "*** Box '${NAME}' with version '${BOX_VERSION}', provider '${VAGRANT_PROVIDER}' and checksum '${CHECKSUM_BOX_FILE}' already exists."

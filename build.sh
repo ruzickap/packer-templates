@@ -78,7 +78,7 @@ EOF
 cmdline() {
   BUILDS=$*
 
-  if [ -z "$BUILDS" ]; then
+  if [[ -z "$BUILDS" ]]; then
     usage
     exit 0;
   fi
@@ -186,9 +186,8 @@ cmdline() {
 
 
 packer_build() {
-  if [ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]; then
-    set -x
-    if [ "$USE_DOCKERIZED_PACKER" = "true" ]; then
+  if [[ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]]; then
+    if [[ "$USE_DOCKERIZED_PACKER" = "true" ]]; then
       $DOCKER_COMMAND pull peru/packer_qemu_virtualbox_ansible
       $DOCKER_COMMAND run --rm -t -u "$(id -u):$(id -g)" --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" "$DOCKER_ENV_PARAMETERS" \
         -v "$PACKER_IMAGES_OUTPUT_DIR:/home/docker/packer_images_output_dir" \
@@ -201,7 +200,12 @@ packer_build() {
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
-    test -L "${TMPDIR}/${NAME}.iso" || ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
+    if [[ ! -L "${TMPDIR}/${NAME}.iso" ]]; then
+      ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
+      if [[ "${NAME}" =~ "windows" ]]; then
+        ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/$(basename ${ISO_URL}).iso"
+      fi
+    fi
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
   fi

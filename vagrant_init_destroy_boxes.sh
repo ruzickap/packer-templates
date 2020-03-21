@@ -18,7 +18,7 @@ vagrant_init_up() {
   vagrant init "$VAGRANT_BOX_NAME"
 
   # Disable VirtualBox GUI
-  if [ "$VAGRANT_BOX_PROVIDER" = "virtualbox" ]; then
+  if [[ "$VAGRANT_BOX_PROVIDER" = "virtualbox" ]]; then
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' "$VAGRANT_CWD/Vagrantfile"
   fi
 
@@ -45,7 +45,7 @@ check_vagrant_vm() {
         id;
       '
       echo "*** vagrant ssh test completed..."
-      if [ "$VAGRANT_BOX_PROVIDER" != "virtualbox" ]; then
+      if [[ "$VAGRANT_BOX_PROVIDER" != "virtualbox" ]]; then
         echo "*** Running: sshpass"
         set -x
         sshpass -pvagrant ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no "vagrant@${VAGRANT_VM_IP}" 'id; sudo id'
@@ -58,7 +58,7 @@ check_vagrant_vm() {
 vagrant_remove_boxes_images() {
   vagrant box remove -f "$VAGRANT_BOX_NAME"
 
-  if echo "$VAGRANT_BOX_NAME" | grep -q -i "libvirt"; then
+  if [[ "$VAGRANT_BOX_NAME" =~ "libvirt" ]]; then
     virsh --connect=qemu:///system vol-delete --pool default --vol "${VAGRANT_BOX_NAME}_vagrant_box_image_0.img"
   fi
 }
@@ -73,7 +73,7 @@ vagrant_destroy() {
 #######
 
 main() {
-  if [ -n "$BOXES_LIST" ]; then
+  if [[ -n "$BOXES_LIST" ]]; then
     test -d "$TMPDIR" || mkdir -p "$TMPDIR"
     test -d "$LOGDIR" || mkdir -p "${LOGDIR}"
 
@@ -86,7 +86,7 @@ main() {
       export VAGRANT_CWD="${TMPDIR}/${VAGRANT_BOX_NAME_SHORT}"
       export LOG_FILE="${LOGDIR}/${VAGRANT_BOX_NAME}-init.log"
 
-      if [ -s "${LOG_FILE}" ]; then
+      if [[ -s "${LOG_FILE}" ]]; then
         echo "*** The logfile \"${LOG_FILE}\" already exists - skipping..."
         continue
       fi
