@@ -8,7 +8,6 @@
 
     packages:
       - curl
-      - docker.io
       - git
       - jq
       - libvirt-bin
@@ -19,7 +18,7 @@
       - virtualbox-6.1
       - wget
 
-    github_actions_runner_url: https://githubassets.azureedge.net/runners/2.161.0/actions-runner-linux-x64-2.161.0.tar.gz
+    grafana_admin_password: grafana_admin_password
     builder_username: builder
 
     vagrant_plugins:
@@ -27,7 +26,7 @@
 
     action_runner_count: 2
 
-  tasks:
+  pre_tasks:
     - name: Install python3-minimal and gnupg2 if needed
       raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
       register: output
@@ -36,6 +35,73 @@
     - name: Gather facts
       setup:
 
+  roles:
+    - role: ansible-role-my_common_defaults
+      become: true
+    - role: cloudalchemy.node-exporter
+      node_exporter_enabled_collectors:
+        - diskstats:
+            ignored-devices: "^(ram|loop|fd)\\d+$"
+        - filesystem:
+            ignored-mount-points: "^/(dev|proc|run|sys)($|/)"
+            ignored-fs-types: "^(sys|proc|auto)fs$"
+        - interrupts
+        - meminfo_numa
+        - mountstats
+        - netstat:
+            fields: "(.*)"
+        - systemd
+        - tcpstat
+        - vmstat:
+            fields: "(.*)"
+
+    - role: cloudalchemy.prometheus
+      prometheus_storage_retention: "40d"
+      prometheus_targets:
+        node:
+          - targets:
+              - localhost:9100
+        grafana:
+          - targets:
+              - "localhost:3000"
+      prometheus_scrape_configs:
+        - job_name: "prometheus"
+          metrics_path: "/metrics"
+          static_configs:
+            - targets:
+                - "localhost:9090"
+        - job_name: "node"
+          file_sd_configs:
+            - files:
+                - "/etc/prometheus/file_sd/node.yml"
+        - job_name: "grafana"
+          file_sd_configs:
+            - files:
+                - "/etc/prometheus/file_sd/grafana.yml"
+
+    - role: cloudalchemy.grafana
+      grafana_security:
+        admin_user: admin
+        admin_password: "{{ grafana_admin_password }}"
+      grafana_auth:
+        anonymous:
+          org_name: "Main Org."
+          org_role: Viewer
+      grafana_datasources:
+        - name: "Prometheus"
+          type: "prometheus"
+          access: "proxy"
+          url: "http://127.0.0.1:9090"
+          isDefault: true
+      grafana_dashboards:
+        - dashboard_id: '1860'
+          revision_id: '12'
+          datasource: 'Prometheus'
+        - dashboard_id: '3662'
+          revision_id: '2'
+          datasource: 'Prometheus'
+
+  tasks:
     - block:
         - name: Update all packages to the latest version
           apt:
@@ -145,9 +211,14 @@
             state: directory
           loop: "{{ range(1, action_runner_count + 1) | list }}"
 
+        - name: Get latest "actions-runner" release
+          uri:
+            url: "https://api.github.com/repos/actions/runner/releases/latest"
+          register: github_api_action_runner
+
         - name: Download and unpack the "actions-runner"
           unarchive:
-            src: "{{ github_actions_runner_url }}"
+            src: https://github.com/actions/runner/releases/download/v{{ github_api_action_runner.json.tag_name[1:] }}/actions-runner-linux-x64-{{ github_api_action_runner.json.tag_name[1:] }}.tar.gz
             dest: /home/{{ builder_username }}/actions-runner-{{ item }}
             remote_src: yes
           loop: "{{ range(1, action_runner_count + 1) | list }}"
