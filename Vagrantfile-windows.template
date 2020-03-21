@@ -20,12 +20,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider :virtualbox do |virtualbox, override|
-    virtualbox.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
-    virtualbox.customize ["modifyvm", :id, "--audiocontroller", "hda"]
-    virtualbox.customize ["modifyvm", :id, "--cpus", 2]
-    virtualbox.customize ["modifyvm", :id, "--memory", 2048]
-    virtualbox.customize ["modifyvm", :id, "--vram", 128]
-    virtualbox.customize ['modifyvm', :id, "--graphicscontroller", "vboxsvga"]
+    virtualbox.customize ["modifyvm", :id, "--vram", "32"]
+    virtualbox.customize ["modifyvm", :id, "--audioout", "on"]
     virtualbox.customize ["modifyvm", :id, "--clipboard-mode", "bidirectional"]
     virtualbox.gui = true
   end

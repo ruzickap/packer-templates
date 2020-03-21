@@ -105,6 +105,18 @@
         [
           "modifyvm",
           "{{ .Name }}",
+          "--vram",
+          "32"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--audio",
+          "pulse"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
           "--audiocontroller",
           "hda"
         ]
