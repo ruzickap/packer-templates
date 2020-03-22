@@ -128,11 +128,16 @@ cmdline() {
         export UBUNTU_VERSION
         UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
         export UBUNTU_CODENAME
-        ISO_CHECKSUM=$(curl -s "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
+        if wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images/SHA256SUMS" ; then
+          export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images
+        else
+          export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images
+        fi
+        ISO_CHECKSUM=$(curl -s "${UBUNTU_IMAGES_URL}/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
         export ISO_CHECKSUM
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
-        echo "* NAME: $NAME, UBUNTU_TYPE: $UBUNTU_TYPE, UBUNTU_CODENAME: $UBUNTU_CODENAME, PACKER_FILE: $PACKER_FILE"
+        echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, UBUNTU_CODENAME: ${UBUNTU_CODENAME}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
@@ -200,12 +205,7 @@ packer_build() {
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
-    if [[ ! -L "${TMPDIR}/${NAME}.iso" ]]; then
-      ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
-      if [[ "${NAME}" =~ "windows" ]]; then
-        ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/$(basename ${ISO_URL}).iso"
-      fi
-    fi
+    [[ -L "${TMPDIR}/${NAME}.iso" ]] || ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
   fi

@@ -125,16 +125,16 @@ for Windows:
 ## How to build images remotely
 
 If you want to build the images yourself you will need password-less ssh access
-to the latest Fedora server and locally installed Ansible. The server should
+to the Ubuntu Server 18.04 and locally installed Ansible. The server should
 not have IPs from this range `192.168.121.0/24` - this is
 used by Vagrant + libvirt by default.
 
 Then you just need to modify the `REMOTE_IP` and `REMOTE_USER`
-in `build_remote_ssh.sh` file.
+in `build_remote_ssh_ubuntu.sh` file.
 
-The `build_remote_ssh.sh` script will connect to your Fedora server, downloads
-necessary packages (initiate reboot if necessary for kernel update) and start
-building the images using Packer.
+The `build_remote_ssh_ubuntu.sh` script will connect to your Ubuntu Server,
+downloads necessary packages (initiate reboot if necessary for kernel update)
+and start building the images using Packer.
 It will also test the newly created images by Vagrant.
 The whole procedure will take several hours.
 You can check the progress by sshing to the server and checking the log files
@@ -149,7 +149,10 @@ with Packer.
 
 ### Build process with the [build.sh](build.sh) script
 
-Real examples can be found here: [https://gitlab.com/ruzickap/packer-templates/pipelines](https://gitlab.com/ruzickap/packer-templates/pipelines)
+```bash
+git clone --recurse-submodules https://github.com/ruzickap/packer-templates.git
+cd packer-templates
+```
 
 * Ubuntu:
 
@@ -233,32 +236,39 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 ```bash
 # Ubuntu Server
 NAME="ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 NAME="ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
 NAME="ubuntu-19.10-desktop-amd64" UBUNTU_CODENAME="eoan" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/eoan/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
 NAME="my_ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
 
 NAME="my_ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
 
 NAME="my_ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
 ```
@@ -325,4 +335,4 @@ packer build -only="qemu" my_windows.json
 * `vagrant_init_destroy_boxes.sh` - tests all `*.box` images in the current
   directory using `vagrant add/up/ssh/winrm/destroy`
 
-GitLab CI configuration can be found here: [GitLab_CI_configuration.md](docs/GitLab_CI_configuration.md)
+GitLab CI configuration (obsolete) can be found here: [GitLab_CI_configuration.md](docs/GitLab_CI_configuration.md)
