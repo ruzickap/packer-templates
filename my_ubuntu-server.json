@@ -1,7 +1,6 @@
 {
   "_comment1": "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
   "_comment2": "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
-  "_comment3": "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",

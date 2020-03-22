@@ -21,7 +21,6 @@ You need to define the "VAGRANT_CLOUD_TOKEN" variable with proper access token.
 Box names with user:
 
 * peru@my_centos-7-x86_64-{libvirt,virtualbox}.box
-* peru@my_ubuntu-14.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box

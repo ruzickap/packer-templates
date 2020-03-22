@@ -53,7 +53,6 @@ List of all supported builds:
  * ubuntu-14.04-server-amd64-{libvirt,virtualbox}
  * my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}
  * my_ubuntu-16.04-server-amd64-{libvirt,virtualbox}
- * my_ubuntu-14.04-server-amd64-{libvirt,virtualbox}
  * my_centos-7-x86_64-{libvirt,virtualbox}
 
 Examples:
@@ -66,11 +65,11 @@ Build Windows 10 Enterprise Evaluation, Windows Server 2019 Standard Evaluation,
     windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
 
-Build Ubuntu Desktop 19.10, 18.04; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04, 14.04; My CentOS 7 for libvirt and Virtualbox:
+Build Ubuntu Desktop 19.10, 18.04; Ubuntu Server 18.04, 16.04, 14.04; My Ubuntu Server 18.04, 16.04; My CentOS 7 for libvirt and Virtualbox:
   $PROGNAME \\
     ubuntu-{19.10,18.04}-desktop-amd64-{libvirt,virtualbox} \\
     ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox} \\
-    my_ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox} \\
+    my_ubuntu-{18.04,16.04}-server-amd64-{libvirt,virtualbox} \\
     my_centos-7-x86_64-{libvirt,virtualbox}
 EOF
 }
