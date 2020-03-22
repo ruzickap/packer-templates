@@ -1,14 +1,14 @@
 {
-  "_comment1": "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
-  "_comment2": "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
-  "_comment3": "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment1": "NAME=my_ubuntu-18.04-server-amd64 UBUNTU_CODENAME=bionic UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment2": "NAME=my_ubuntu-16.04-server-amd64 UBUNTU_CODENAME=xenial UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
+  "_comment3": "NAME=my_ubuntu-14.04-server-amd64 UBUNTU_CODENAME=trusty UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build my_ubuntu-server.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "cpus": "2",
     "memory": "4096",
     "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
-    "ubuntu_mirror": "http://archive.ubuntu.com/ubuntu/dists/",
+    "ubuntu_images_url": "{{ env `UBUNTU_IMAGES_URL` }}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",
     "preseed_file_name": "my-preseed.cfg",
@@ -22,9 +22,9 @@
       "cpus": "{{ user `cpus` }}",
       "memory": "{{ user `memory` }}",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_checksum_url": "{{ user `ubuntu_images_url` }}/SHA256SUMS",
       "iso_urls": [
-        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso"
+        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
       ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
@@ -50,9 +50,9 @@
       "type": "virtualbox-iso",
       "guest_os_type": "Ubuntu_64",
       "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/SHA256SUMS",
+      "iso_checksum_url": "{{ user `ubuntu_images_url` }}/SHA256SUMS",
       "iso_urls": [
-        "{{ user `ubuntu_mirror` }}{{ user `ubuntu_codename` }}/main/installer-amd64/current/images/netboot/mini.iso"
+        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
       ],
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
