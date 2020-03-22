@@ -20,6 +20,8 @@
     {
       "vm_name": "{{ user `name` }}",
       "type": "qemu",
+      "cpus": "{{ user `cpus` }}",
+      "memory": "{{ user `memory` }}",
       "iso_checksum_type": "sha256",
       "iso_checksum_url": "{{ user `ubuntu_images_url` }}/SHA256SUMS",
       "iso_urls": [
@@ -32,16 +34,6 @@
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "accelerator": "kvm",
-      "qemuargs": [
-        [
-          "-m",
-          "{{ user `memory` }}"
-        ],
-        [
-          "-smp",
-          "{{ user `cpus` }}"
-        ]
-      ],
       "boot_wait": "5s",
       "boot_command": [
         "<tab>",
