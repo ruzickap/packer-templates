@@ -136,7 +136,8 @@
       "inline": [
         "$cert = (Get-AuthenticodeSignature 'E:\\VBoxWindowsAdditions.exe').SignerCertificate; [System.IO.File]::WriteAllBytes('C:\\vbox.cer', $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));",
         "certutil.exe -f -addstore TrustedPublisher C:\\vbox.cer",
-        "E:\\VBoxWindowsAdditions.exe /S"
+        "E:\\VBoxWindowsAdditions.exe /S",
+        "del C:\\vbox.cer"
       ]
     },
     {
