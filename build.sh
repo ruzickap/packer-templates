@@ -10,7 +10,7 @@ export HEADLESS=${HEADLESS:-true}
 # Use packer, virtualboc, ansible in docker image
 export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
 # Packer binary (doesn't apply of you are using Dockerized packer)
-export PACKER_BINARY=${PACKER_BINARY:-packerio}
+export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
 # Directory where to store the logs
