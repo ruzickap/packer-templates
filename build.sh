@@ -115,7 +115,6 @@ cmdline() {
         export CENTOS_TAG
         export CENTOS_TYPE="NetInstall"
         ISO_CHECKSUM=$(curl -s "ftp://ftp.cvut.cz/centos/$CENTOS_VERSION/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
-        export ISO_CHECKSUM
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
         export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: $NAME, CENTOS_VERSION: $CENTOS_VERSION, CENTOS_TAG: $CENTOS_TAG, CENTOS_TYPE: $CENTOS_TYPE, PACKER_FILE: $PACKER_FILE "
@@ -133,7 +132,6 @@ cmdline() {
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images
         fi
         ISO_CHECKSUM=$(curl -s "${UBUNTU_IMAGES_URL}/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
-        export ISO_CHECKSUM
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
         export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
         echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, UBUNTU_CODENAME: ${UBUNTU_CODENAME}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
@@ -149,23 +147,19 @@ cmdline() {
         case $NAME in
           *windows-10-enterprise*)
             export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-            export ISO_CHECKSUM="9ef81b6a101afd57b2dbfa44d5c8f7bc94ff45b51b82c5a1f9267ce2e63e9f53"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
-            export ISO_CHECKSUM="549bca46c055157291be6c22a3aaaed8330e78ef4382c99ee82c896426a1cee1"
           ;;
           *windows-server-2016-*)
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
-            export ISO_CHECKSUM="1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f"
           ;;
           *windows-server-2012_r2-*)
             export WINDOWS_RELEASE="r2"
             export WINDOWS_TYPE="server"
             export ISO_URL="http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
-            export ISO_CHECKSUM="6612b5b1f53e845aacdf96e974bb119a3d9b4dcb5b82e65804ab7e534dc7b4d5"
           ;;
           *)
             echo "*** Unsupported Windows build type: \"$NAME\" used from \"$BUILD\""
@@ -174,8 +168,9 @@ cmdline() {
         esac
 
         echo "* NAME: $NAME, WINDOWS_ARCH: $WINDOWS_ARCH, WINDOWS_VERSION: $WINDOWS_VERSION, WINDOWS_EDITION: $WINDOWS_EDITION, PACKER_FILE: $PACKER_FILE"
+        ISO_CHECKSUM=$(awk "/$(basename ${ISO_URL})/ { print \$1 }" win_iso.sha256)
         test -f "$VIRTIO_WIN_ISO" || wget --continue "$VIRTIO_WIN_ISO_URL" -O "$VIRTIO_WIN_ISO"
-        DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e ISO_CHECKSUM -e VIRTIO_WIN_ISO=packer_cache/$(basename "$VIRTIO_WIN_ISO")"
+        DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e VIRTIO_WIN_ISO=packer_cache/$(basename "$VIRTIO_WIN_ISO")"
         export DOCKER_ENV_PARAMETERS
       ;;
       *)
@@ -184,6 +179,7 @@ cmdline() {
       ;;
     esac
 
+    export ISO_CHECKSUM
     packer_build
   done
 }
@@ -204,7 +200,7 @@ packer_build() {
     else
       $PACKER_BINARY build -only="$PACKER_BUILDER_TYPE" -color=false -var "headless=$HEADLESS" "$PACKER_FILE" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     fi
-    [[ -L "${TMPDIR}/${NAME}.iso" ]] || ln -rvs "${TMPDIR}/$(echo -n $ISO_CHECKSUM | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
+    [[ -L "${TMPDIR}/${NAME}.iso" ]] || ln -rvs "${TMPDIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${TMPDIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
   fi
