@@ -148,14 +148,21 @@ cmdline() {
 
   echo -e "*** ${NAME} | ${SHORT_DESCRIPTION}"
   CHECKSUM_BOX_FILE=$(sha256sum "${VAGRANT_CLOUD_BOX_FILE}" | cut -d ' ' -f 1)
-  CHECKSUM_BOX_VAGRANT_CLOUD=$(curl -s "https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}" | jq -r ".versions[] | select (.version == \"${BOX_VERSION}\") .providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
 
-  if [[ "${CHECKSUM_BOX_FILE}" != "${CHECKSUM_BOX_VAGRANT_CLOUD}" ]]; then
-    vagrant cloud publish --force --description "$LONG_DESCRIPTION" --version-description "$LONG_DESCRIPTION" --release  --short-description "${SHORT_DESCRIPTION}" --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}" "${VAGRANT_PROVIDER}" "${VAGRANT_CLOUD_BOX_FILE}"
+  if curl --silent --fail "https://vagrantcloud.com/api/v1/box/$VAGRANT_CLOUD_USER/$NAME" -o /dev/null; then
+    echo "*** Box: ${NAME} - already exists..."
+    CHECKSUM_BOX_VAGRANT_CLOUD=$(curl -s "https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}" | jq -r ".versions[] | select (.version == \"${BOX_VERSION}\") .providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
+
+    if [[ "${CHECKSUM_BOX_FILE}" == "${CHECKSUM_BOX_VAGRANT_CLOUD}" ]]; then
+      echo "*** Box '${NAME}' with version '${BOX_VERSION}', provider '${VAGRANT_PROVIDER}' and checksum '${CHECKSUM_BOX_FILE}' already exists."
+      echo "*** Skipping upload..."
+      exit 0
+    fi
   else
-    echo "*** Box '${NAME}' with version '${BOX_VERSION}', provider '${VAGRANT_PROVIDER}' and checksum '${CHECKSUM_BOX_FILE}' already exists."
-    echo "*** Skipping upload..."
+    echo "*** Box: ${NAME} - doesn't exist..."
   fi
+
+  vagrant cloud publish --force --description "$LONG_DESCRIPTION" --version-description "$LONG_DESCRIPTION" --release  --short-description "${SHORT_DESCRIPTION}" --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}" "${VAGRANT_PROVIDER}" "${VAGRANT_CLOUD_BOX_FILE}"
 }
 
 
