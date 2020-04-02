@@ -168,8 +168,9 @@ jobs:
           for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
             for VAGRANT_PROVIDER in virtualbox libvirt; do
               CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
+              CHECKSUM=$(curl https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
               URL="https://app.vagrantup.com/peru/boxes/${NAME}/versions/${CURRENT_VERSION}/providers/${VAGRANT_PROVIDER}.box"
-              echo "*** ${URL}"
+              echo "*** ${URL} | ${CHECKSUM}"
               if ! curl -L --fail --silent --head --output /dev/null "${URL}"; then
                 echo "* URL \"${URL}\" is not accessible !"
                 exit 1
