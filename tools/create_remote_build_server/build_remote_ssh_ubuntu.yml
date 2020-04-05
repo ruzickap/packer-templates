@@ -14,6 +14,7 @@
       - libvirt-dev
       - python3-pip
       - sshpass
+      - tigervnc-viewer
       - unzip
       - virtualbox-6.1
       - wget
@@ -28,7 +29,7 @@
 
   pre_tasks:
     - name: Install python3-minimal and gnupg2 if needed
-      raw: sudo bash -x -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
+      raw: sudo bash -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
       register: output
       changed_when: output.stdout is search("Unpacking")
 
@@ -96,10 +97,13 @@
       grafana_dashboards:
         - dashboard_id: '1860'
           revision_id: '12'
-          datasource: 'Prometheus'
+          datasource: '{{ grafana_datasources.0.name }}'
         - dashboard_id: '3662'
           revision_id: '2'
-          datasource: 'Prometheus'
+          datasource: '{{ grafana_datasources.0.name }}'
+        - dashboard_id: '9852'
+          revision_id: '1'
+          datasource: '{{ grafana_datasources.0.name }}'
 
   tasks:
     - block:
