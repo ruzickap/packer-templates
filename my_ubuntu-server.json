@@ -102,13 +102,13 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
+      "execute_command": "echo 'vagrant' | sudo -S -E bash '{{ .Path }}'",
       "scripts": [
+        "scripts/linux-common/vagrant.sh",
         "scripts/ubuntu/update.sh",
         "scripts/ubuntu/add_libpam-systemd.sh",
         "scripts/ubuntu/disable_apt-daily.sh",
-        "scripts/ubuntu/virtualbox-guest.sh",
-        "scripts/linux-common/vagrant.sh"
+        "scripts/ubuntu/virtualbox-guest.sh"
       ]
     },
     {
@@ -135,9 +135,15 @@
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
+      "execute_command": "sudo -E bash '{{ .Path }}'",
       "scripts": [
-        "scripts/linux-common/cleanup.sh"
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-dhcp-client-state.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-logfiles.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-machine-id.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-package-manager-cache.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-ssh-hostkeys.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-tmp-files.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-disk-space.sh"
       ]
     }
   ],

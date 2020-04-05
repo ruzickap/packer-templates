@@ -93,7 +93,7 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
+      "execute_command": "echo 'vagrant' | sudo -S -E bash '{{ .Path }}'",
       "scripts": [
         "scripts/linux-common/vagrant.sh"
       ]
@@ -114,9 +114,20 @@
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -S -E bash -x '{{ .Path }}'",
+      "execute_command": "sudo -E bash '{{ .Path }}'",
       "scripts": [
-        "scripts/linux-common/cleanup.sh"
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-dhcp-client-state.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-firewall-rules.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-logfiles.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-machine-id.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-mail-spool.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-network.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-package-manager-cache.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-rpm-db.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-ssh-hostkeys.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-tmp-files.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-yum-uuid.sh",
+        "scripts/linux-common/packer-virt-sysprep/sysprep-op-disk-space.sh"
       ]
     }
   ],
