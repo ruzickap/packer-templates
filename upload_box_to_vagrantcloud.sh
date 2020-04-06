@@ -24,7 +24,6 @@ Box names with user:
 * peru@my_ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
-* peru@ubuntu-14.04-server-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box

@@ -158,7 +158,7 @@ cd packer-templates
 
 ```bash
 # Ubuntu Server
-./build.sh ubuntu-{18.04,16.04,14.04}-server-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-{18.04,16.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
 ./build.sh ubuntu-{19.10,18.04}-desktop-amd64-{libvirt,virtualbox}
@@ -242,11 +242,6 @@ packer build -only="qemu" ubuntu-server.json
 
 NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-server.json
-
-NAME="ubuntu-14.04-server-amd64" UBUNTU_CODENAME="trusty" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
