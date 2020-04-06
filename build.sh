@@ -124,7 +124,6 @@ cmdline() {
         UBUNTU_VERSION=$(echo "$NAME" | awk -F '-' '{ print $2 }')
         export UBUNTU_VERSION
         UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
-        export UBUNTU_CODENAME
         if wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images/SHA256SUMS" ; then
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images
         else
@@ -132,8 +131,8 @@ cmdline() {
         fi
         ISO_CHECKSUM=$(curl -s "${UBUNTU_IMAGES_URL}/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
-        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e UBUNTU_CODENAME -e NAME"
-        echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, UBUNTU_CODENAME: ${UBUNTU_CODENAME}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
+        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e NAME"
+        echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"

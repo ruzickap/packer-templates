@@ -1,13 +1,12 @@
 {
-  "_comment1": "NAME=ubuntu-19.10-desktop-amd64 UBUNTU_CODENAME=eoan   UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/eoan/main/installer-amd64/current/images           PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-  "_comment2": "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_CODENAME=bionic UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-  "_comment3": "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_CODENAME=xenial UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment1": "NAME=ubuntu-19.10-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/eoan/main/installer-amd64/current/images           PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment2": "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
+  "_comment3": "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "variables": {
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "cpus": "2",
     "memory": "4096",
-    "ubuntu_codename": "{{ env `UBUNTU_CODENAME` }}",
     "ubuntu_images_url": "{{ env `UBUNTU_IMAGES_URL` }}",
     "ssh_username": "vagrant",
     "ssh_password": "vagrant",

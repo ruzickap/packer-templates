@@ -235,29 +235,29 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 
 ```bash
 # Ubuntu Server
-NAME="ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+NAME="ubuntu-18.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
-NAME="ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+NAME="ubuntu-16.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
-NAME="ubuntu-19.10-desktop-amd64" UBUNTU_CODENAME="eoan" \
+NAME="ubuntu-19.10-desktop-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/eoan/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
-NAME="my_ubuntu-18.04-server-amd64" UBUNTU_CODENAME="bionic" \
+NAME="my_ubuntu-18.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
 
-NAME="my_ubuntu-16.04-server-amd64" UBUNTU_CODENAME="xenial" \
+NAME="my_ubuntu-16.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
