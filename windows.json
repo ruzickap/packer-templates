@@ -102,12 +102,6 @@
         [
           "modifyvm",
           "{{ .Name }}",
-          "--audio",
-          "alsa"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
           "--audiocontroller",
           "hda"
         ]
