@@ -125,7 +125,7 @@ for Windows:
 ## How to build images remotely
 
 If you want to build the images yourself you will need password-less ssh access
-to the Ubuntu Server 18.04 and locally installed Ansible. The server should
+to the Ubuntu Server and locally installed Ansible. The server should
 not have IPs from this range `192.168.121.0/24` - this is
 used by Vagrant + libvirt by default.
 
@@ -158,13 +158,13 @@ cd packer-templates
 
 ```bash
 # Ubuntu Server
-./build.sh ubuntu-{18.04,16.04}-server-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
 
 # Ubuntu Desktop
-./build.sh ubuntu-{19.10,18.04}-desktop-amd64-{libvirt,virtualbox}
+./build.sh ubuntu-{20.04,18.04}-desktop-amd64-{libvirt,virtualbox}
 
 # Ubuntu Server - customized
-./build.sh my_ubuntu-{18.04,16.04}-server-amd64-{libvirt,virtualbox}
+./build.sh my_ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
 ```
 
 * Windows:
@@ -235,6 +235,11 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 
 ```bash
 # Ubuntu Server
+NAME="ubuntu-20.04-server-amd64" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/images/" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+packer build -only="qemu" ubuntu-server.json
+
 NAME="ubuntu-18.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
@@ -246,12 +251,17 @@ UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
-NAME="ubuntu-19.10-desktop-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/eoan/main/installer-amd64/current/images/" \
+NAME="ubuntu-20.04-desktop-amd64" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
+NAME="my_ubuntu-20.04-server-amd64" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/images/" \
+UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+packer build -only="qemu" my_ubuntu-server.json
+
 NAME="my_ubuntu-18.04-server-amd64" \
 UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \

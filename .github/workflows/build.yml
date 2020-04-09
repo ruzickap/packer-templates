@@ -50,7 +50,8 @@ jobs:
           - my_ubuntu-18.04-server-amd64-libvirt
           - ubuntu-16.04-server-amd64-libvirt
           - ubuntu-18.04-server-amd64-libvirt
-          - ubuntu-19.10-desktop-amd64-libvirt
+          - ubuntu-20.04-server-amd64-libvirt
+          - ubuntu-20.04-desktop-amd64-libvirt
           - ubuntu-18.04-desktop-amd64-libvirt
           - my_windows-10-enterprise-x64-eval-libvirt
           - windows-10-enterprise-x64-eval-libvirt
@@ -68,11 +69,17 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
       - name: Build image - ${{ matrix.stage }}
+        env:
+          PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+          LOGDIR: /var/tmp/packer-templates-images
         run: |
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
+        env:
+          LOGDIR: /var/tmp/packer-templates-images
+          TMPDIR: /var/tmp/packer-templates-images
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
@@ -106,11 +113,12 @@ jobs:
         stage:
           - windows-server-2012_r2-standard-x64-eval-virtualbox
           - my_centos-7-x86_64-virtualbox
-          - my_ubuntu-18.04-server-amd64-virtualbox
+          - my_ubuntu-20.04-server-amd64-virtualbox
           - ubuntu-16.04-server-amd64-virtualbox
           - ubuntu-18.04-server-amd64-virtualbox
-          - ubuntu-19.10-desktop-amd64-virtualbox
+          - ubuntu-20.04-server-amd64-virtualbox
           - ubuntu-18.04-desktop-amd64-virtualbox
+          - ubuntu-20.04-desktop-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
           - windows-10-enterprise-x64-eval-virtualbox
           - windows-server-2016-standard-x64-eval-virtualbox
@@ -128,11 +136,17 @@ jobs:
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
 
       - name: Build image - ${{ matrix.stage }}
+        env:
+          PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+          LOGDIR: /var/tmp/packer-templates-images
         run: |
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
+        env:
+          LOGDIR: /var/tmp/packer-templates-images
+          TMPDIR: /var/tmp/packer-templates-images
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
@@ -164,8 +178,7 @@ jobs:
 
       - name: Verify if the boxes are avaiable on the Vagrant Cloud
         run: |
-          # for NAME in ubuntu-19.10-desktop-amd64 ubuntu-{18.04,16.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
-          for NAME in ubuntu-18.04-desktop-amd64 ubuntu-{18.04,16.04}-server-amd64 my_ubuntu-18.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
+          for NAME in ubuntu-{20.04,18.04}-desktop-amd64 ubuntu-{20.04,18.04,16.04}-server-amd64 my_ubuntu-20.04-server-amd64 my_centos-7-x86_64 my_windows-10-enterprise-x64-eval windows-{server-{{2016,2012_r2}-standard,2019-datacenter},10-enterprise}-x64-eval; do
             for VAGRANT_PROVIDER in virtualbox libvirt; do
               CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
               CHECKSUM=$(curl https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
@@ -189,12 +202,12 @@ jobs:
     env:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       PACKER_CACHE_DIR: /var/tmp/packer_cache
-      LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANT_TMP: /var/tmp/vagrant_init_destroy_boxes
+      LOGDIR: /var/tmp/packer-templates-images
+      VAGRANT_TMP: /var/tmp/packer-templates-images
     steps:
       - name: Cleanup
         run: |
           rm -v "${PACKER_CACHE_DIR}/BOX_VERSION"
           rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
-          rm -v ${LOGDIR}/*
+          rm -v ${LOGDIR}/*.log
           rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" "${VAGRANT_TMP}" || true
