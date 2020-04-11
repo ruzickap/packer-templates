@@ -60,19 +60,9 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "hard_drive_interface": "sata",
       "disk_size": "{{ user `disk_size` }}",
+      "cpus": "{{ user `cpus` }}",
+      "memory": "{{ user `memory` }}",
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--cpus",
-          "{{ user `cpus` }}"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--memory",
-          "{{ user `memory` }}"
-        ],
         [
           "modifyvm",
           "{{ .Name }}",
