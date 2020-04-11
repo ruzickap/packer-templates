@@ -128,6 +128,8 @@ cmdline() {
         UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
         if wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images/SHA256SUMS" ; then
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images
+        elif wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/classic-images/SHA256SUMS" ; then
+          export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/classic-images
         else
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images
         fi

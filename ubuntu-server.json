@@ -1,5 +1,5 @@
 {
-  "_comment0": "NAME=ubuntu-20.04-server-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/images          PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
+  "_comment0": "NAME=ubuntu-20.04-server-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/classic-images  PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
   "_comment1": "NAME=ubuntu-18.04-server-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
   "_comment2": "NAME=ubuntu-16.04-server-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
   "variables": {
