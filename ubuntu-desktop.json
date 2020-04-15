@@ -37,6 +37,7 @@
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
         "auto=true ",
+        "net.ifnames=0 ",
         "hostname=localhost ",
         "<enter>"
       ],
@@ -81,6 +82,7 @@
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
         "auto=true ",
+        "net.ifnames=0 ",
         "hostname=localhost ",
         "<enter>"
       ],
