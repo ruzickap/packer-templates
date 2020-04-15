@@ -236,7 +236,7 @@ Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
 ```bash
 # Ubuntu Server
 NAME="ubuntu-20.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/classic-images/" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-server.json
 
@@ -252,13 +252,13 @@ packer build -only="qemu" ubuntu-server.json
 
 # Ubuntu Desktop
 NAME="ubuntu-20.04-desktop-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/classic-images/" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
 UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
 packer build -only="qemu" ubuntu-desktop.json
 
 # Ubuntu Server - customized
 NAME="my_ubuntu-20.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/classic-images/" \
+UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
 UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
 packer build -only="qemu" my_ubuntu-server.json
 

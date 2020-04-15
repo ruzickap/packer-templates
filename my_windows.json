@@ -130,7 +130,7 @@
     {
       "type": "powershell",
       "inline": [
-        "New-Item -ItemType directory -Path C:\\Users\\vagrant\\.ssh",
+        "New-Item -ItemType directory -Path C:\\Users\\vagrant\\.ssh > $null",
         "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub' -OutFile 'C:\\Users\\vagrant\\.ssh\\authorized_keys'"
       ]
     },
