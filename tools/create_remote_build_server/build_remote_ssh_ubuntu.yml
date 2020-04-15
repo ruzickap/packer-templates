@@ -1,22 +1,20 @@
----
-# This can be used only with latest Ubuntu
 - hosts: all
-  gather_facts: false
+  become: true
 
   vars:
-    build_path: /var/tmp/
-
     packages:
+      - ansible
       - curl
       - git
       - jq
-      - libvirt-bin
+      - libguestfs-tools
+      - libvirt-daemon-system
       - libvirt-dev
-      - python3-pip
+      - python3-winrm
       - sshpass
       - tigervnc-viewer
       - unzip
-      - virtualbox-6.1
+      - virtualbox
       - wget
 
     grafana_admin_password: grafana_admin_password
@@ -27,18 +25,8 @@
 
     action_runner_count: 2
 
-  pre_tasks:
-    - name: Install python3-minimal and gnupg2 if needed
-      raw: sudo bash -c "test -x /usr/bin/python3 || ( apt -qq update && apt install -y gnupg2 python3-minimal )"
-      register: output
-      changed_when: output.stdout is search("Unpacking")
-
-    - name: Gather facts
-      setup:
-
   roles:
     - role: ansible-role-my_common_defaults
-      become: true
     - role: cloudalchemy.node-exporter
       node_exporter_enabled_collectors:
         - diskstats:
@@ -106,97 +94,98 @@
           datasource: '{{ grafana_datasources.0.name }}'
 
   tasks:
+    - name: Set my_ansible_user fact
+      set_fact:
+        my_ansible_user: "{{ ansible_user }}"
+
+    - name: Add {{ my_ansible_user }} to sudoers to become root easily
+      lineinfile:
+        dest: /etc/sudoers.d/01_{{ my_ansible_user }}
+        create: yes
+        regexp: '^{{ my_ansible_user }} ALL='
+        line: '{{ my_ansible_user }} ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Disable suspend when lid is closed
+      ini_file:
+        path: /etc/systemd/logind.conf
+        section: Login
+        option: HandleLidSwitch
+        value: ignore
+      notify: restart systemd-logind
+
+    - name: Update all packages to the latest version
+      apt:
+        upgrade: dist
+        update_cache: yes
+      register: result
+      until: result is succeeded
+
+    - name: Get latest version of Vagrant
+      uri:
+        url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
+        return_content: yes
+      register: vagrant_uri
+
+    - name: Install Vagrant
+      apt:
+        deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
+      register: result
+      until: result is succeeded
+
+    - name: Add an Apt signing key for Virtualbox
+      apt_key:
+        url: "{{ item }}"
+      loop:
+        - https://www.virtualbox.org/download/oracle_vbox_2016.asc
+        - https://www.virtualbox.org/download/oracle_vbox.asc
+
+    - name: Add Virtualbox repository
+      apt_repository:
+        repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
+
+    - name: Install packages
+      apt:
+        pkg: "{{ packages }}"
+      register: result
+      until: result is succeeded
+
+    - name: Add the users to kvm, vboxusers and libvirt group
+      user:
+        name: "{{ item }}"
+        shell: /bin/bash
+        groups: kvm,libvirt,vboxusers
+        append: yes
+      loop:
+        - "{{ builder_username }}"
+        - "{{ my_ansible_user }}"
+
+    - name: Get latest version of Packer
+      uri:
+        url: https://checkpoint-api.hashicorp.com/v1/check/packer
+        return_content: yes
+      register: packer_uri
+
+    - name: Download and unzip packer
+      unarchive:
+        src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
+        dest: /usr/local/bin/
+        remote_src: yes
+        creates: /usr/local/bin/packer
+        validate_certs: false
+
     - block:
-        - name: Update all packages to the latest version
-          apt:
-            upgrade: dist
-            update_cache: yes
-          register: result
-          until: result is succeeded
+        - name: List installed Vagrant Plugins
+          command: vagrant plugin list
+          register: vagrant_plugin_list
+          changed_when: false
 
-        - name: Get latest version of Vagrant
-          uri:
-            url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
-            return_content: yes
-          register: vagrant_uri
+        - name: Install Vagrant Plugins
+          command: vagrant plugin install {{ item }}
+          loop: "{{ vagrant_plugins }}"
+          when: vagrant_plugin_list.stdout is not search(item)
 
-        - name: Install Vagrant
-          apt:
-            deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
-          register: result
-          until: result is succeeded
-
-        - name: Add an Apt signing key for Virtualbox
-          apt_key:
-            url: "{{ item }}"
-          loop:
-            - https://www.virtualbox.org/download/oracle_vbox_2016.asc
-            - https://www.virtualbox.org/download/oracle_vbox.asc
-
-        - name: Add Virtualbox repository
-          apt_repository:
-            repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
-
-        - name: Install packages
-          apt:
-            name: "{{ item }}"
-          loop: "{{ packages }}"
-          register: result
-          until: result is succeeded
-
-        - name: Install latest Ansible and pywinrm
-          pip:
-            name:
-              - ansible
-              - pywinrm
-          register: result
-          until: result is succeeded
-
-        - name: Add the actions-runner user to docker and libvirt group
-          user:
-            name: "{{ builder_username }}"
-            groups: docker,kvm,libvirt,vboxusers
-            append: yes
-
-        # This is not needed for Fedora, because in Fedora it's "crw-rw-rw- 1 root kvm 10, 232 Feb 13 09:58 /dev/kvm"
-        - name: Chnage righs for /dev/kvm
-          blockinfile:
-            path: /etc/udev/rules.d/60-qemu-system-common.rules
-            create: yes
-            block: |
-              # Chnaging rights of /dev/kvm from 0660 to 0666
-              KERNEL=="kvm", GROUP="kvm", MODE="0666"
-          notify: reboot
-
-        - name: Get latest version of Packer
-          uri:
-            url: https://checkpoint-api.hashicorp.com/v1/check/packer
-            return_content: yes
-          register: packer_uri
-
-        - name: Download and unzip packer
-          unarchive:
-            src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
-            dest: /usr/local/bin/
-            remote_src: yes
-            creates: /usr/local/bin/packerio
-            validate_certs: false
-
-        - name: Move packer to packerio
-          command: mv /usr/local/bin/packer /usr/local/bin/packerio
-          args:
-            creates: /usr/local/bin/packerio
-
-        - name: Remove configuration of unix socket for libvirt (/var/run/libvirt/libvirt-sock)
-          replace:
-            path: /etc/libvirt/libvirtd.conf
-            # Commend all lines beginning with "unix_sock_"
-            regexp: '^unix_sock_.*'
-            replace: '#&'
-            backup: yes
-          notify: reboot
-
-      become: true
+      become_user: "{{ my_ansible_user }}"
 
     - block:
         - name: List installed Vagrant Plugins
@@ -234,12 +223,10 @@
             creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
           loop: "{{ range(1, action_runner_count + 1) | list }}"
 
-      become: yes
       become_user: "{{ builder_username }}"
 
     - name: Install actions-runner-x service
       shell: ./svc.sh install && ./svc.sh start
-      become: true
       args:
         chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
         creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.service
@@ -248,6 +235,7 @@
       loop: "{{ range(1, action_runner_count + 1) | list }}"
 
   handlers:
-    - name: reboot
-      become: true
-      reboot:
+    - name: restart systemd-logind
+      systemd:
+        name: systemd-logind
+        state: restarted
