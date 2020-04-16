@@ -26,7 +26,7 @@
     action_runner_count: 2
 
   roles:
-    - role: ansible-role-my_common_defaults
+    - role: my_common_defaults
     - role: cloudalchemy.node-exporter
       node_exporter_enabled_collectors:
         - diskstats:
@@ -222,6 +222,7 @@
             chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
             creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
           loop: "{{ range(1, action_runner_count + 1) | list }}"
+          tags: actions-runner_registration
 
       become_user: "{{ builder_username }}"
 
@@ -233,6 +234,7 @@
       environment:
         SUDO_USER: "{{ builder_username }}"
       loop: "{{ range(1, action_runner_count + 1) | list }}"
+      tags: actions-runner_installation
 
   handlers:
     - name: restart systemd-logind
