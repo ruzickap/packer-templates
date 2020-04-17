@@ -19,6 +19,7 @@
 
     grafana_admin_password: grafana_admin_password
     builder_username: builder
+    public_ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
 
     vagrant_plugins:
       - vagrant-libvirt
@@ -157,6 +158,15 @@
         groups: kvm,libvirt,vboxusers
         append: yes
       loop:
+        - "{{ builder_username }}"
+        - "{{ my_ansible_user }}"
+
+    - name: Set authorized key taken from file for all users
+      authorized_key:
+        user: "{{ item }}"
+        key: "{{ public_ssh_key }}"
+      loop:
+        - root
         - "{{ builder_username }}"
         - "{{ my_ansible_user }}"
 
