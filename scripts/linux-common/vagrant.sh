@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-date > /etc/vagrant_box_build_time
+date > /vagrant_box_build_time
 
 SSH_USER=${SSH_USERNAME:-vagrant}
 SSH_USER_HOME=${SSH_USER_HOME:-/home/${SSH_USER}}
