@@ -122,28 +122,18 @@
       register: result
       until: result is succeeded
 
-    - name: Get latest version of Vagrant
+    # It's necessary to use upstream Vagrant because it contains Ruby WinRM
+    - name: Get latest+upstream version of Vagrant
       uri:
         url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
         return_content: yes
       register: vagrant_uri
 
-    - name: Install Vagrant
+    - name: Install upstream Vagrant
       apt:
         deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
       register: result
       until: result is succeeded
-
-    - name: Add an Apt signing key for Virtualbox
-      apt_key:
-        url: "{{ item }}"
-      loop:
-        - https://www.virtualbox.org/download/oracle_vbox_2016.asc
-        - https://www.virtualbox.org/download/oracle_vbox.asc
-
-    - name: Add Virtualbox repository
-      apt_repository:
-        repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib
 
     - name: Install packages
       apt:
