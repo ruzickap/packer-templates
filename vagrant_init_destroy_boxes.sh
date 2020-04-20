@@ -55,16 +55,24 @@ check_vagrant_vm() {
   esac
 }
 
-vagrant_remove_boxes_images() {
+vagrant_cleanup() {
+  vagrant destroy -f
   vagrant box remove -f "$VAGRANT_BOX_NAME"
 
   if [[ "$VAGRANT_BOX_NAME" =~ "libvirt" ]]; then
     virsh --connect=qemu:///system vol-delete --pool default --vol "${VAGRANT_BOX_NAME}_vagrant_box_image_0.img"
   fi
+
+  rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant}
+  rmdir "${VAGRANT_CWD}"
 }
 
-vagrant_destroy() {
-  vagrant destroy -f
+# trap ctrl-c and call ctrl_c()
+trap ctrl_c INT
+
+ctrl_c() {
+  echo "** Trapped CTRL-C"
+  vagrant_cleanup
 }
 
 
@@ -101,11 +109,8 @@ main() {
 
       check_vagrant_vm 2>&1 | tee -a "${LOG_FILE}"
 
-      vagrant_destroy
-      vagrant_remove_boxes_images
+      vagrant_cleanup
 
-      rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant}
-      rmdir "${VAGRANT_CWD}"
       echo "*** Completed"
     done
 
