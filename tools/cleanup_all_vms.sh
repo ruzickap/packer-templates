@@ -31,7 +31,7 @@ fi
 
 
 echo "*** Remove all packer_cache mess"
-find "$PACKER_CACHE" -mindepth 1 ! \( -type f -regex '.*\(.iso\|BOX_VERSION\)' \) -delete -print
+find "$PACKER_CACHE" -mindepth 1 ! \( -type f -regex '.*\(.iso\|BOX_VERSION\)' \) -user "${USER}" -delete -print
 
 
 echo "*** Remove all Vagrant boxes"
