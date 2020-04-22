@@ -26,7 +26,7 @@ jobs:
           sudo apt update
           sudo apt install -y ansible python-jmespath
 
-      - name: Run ansible
+      - name: Run Ansible
         run: |
           export REMOTE_USER="${USER}"
           export REMOTE_IP="localhost"
