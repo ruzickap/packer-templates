@@ -85,7 +85,7 @@ main() {
     if [[ ! -d "${TMPDIR}" ]]; then
       echo "*** Creating directory: ${TMPDIR}"
       mkdir -p "${TMPDIR}"
-      TMPDIR_CREATED=true
+      TMPDIR_CREATED="defined"
     fi
     test -d "${LOGDIR}" || mkdir -p "${LOGDIR}"
 
@@ -118,7 +118,9 @@ main() {
       echo "*** Completed"
     done
 
-    [[ ${TMPDIR_CREATED} ]] && rmdir "${TMPDIR}"
+    if [[ -v TMPDIR_CREATED ]]; then
+      rmdir "${TMPDIR}"
+    fi
   fi
 }
 
