@@ -6,25 +6,6 @@ on:
     - cron: '0 2 1 * *'
 
 jobs:
-  prebuild:
-    name: Prebuild actions
-    runs-on: [self-hosted, linux, x64]
-    env:
-      PACKER_CACHE_DIR: /var/tmp/packer_cache
-
-    steps:
-      - name: Create Packer cache directory if not already exists
-        run: test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
-
-      - name: Create BOX_VERSION file
-        run: |
-          if [ ! -s "${PACKER_CACHE_DIR}/BOX_VERSION" ]; then
-            BOX_VERSION="$(date +%Y%m%d).01"
-            echo "*** Creating new file: ${PACKER_CACHE_DIR}/BOX_VERSION | ${BOX_VERSION}"
-            echo "${BOX_VERSION}" > "${PACKER_CACHE_DIR}/BOX_VERSION"
-          else
-            echo "*** File [ ${PACKER_CACHE_DIR}/BOX_VERSION | $(cat ${PACKER_CACHE_DIR}/BOX_VERSION) ] already exists - using existing..."
-          fi
 
 ##############
 # libvirt
@@ -33,7 +14,6 @@ jobs:
   build-libvirt:
     name: "*"
     runs-on: [self-hosted, linux, x64]
-    needs: prebuild
     env:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
       PACKER_CACHE_DIR: /var/tmp/packer_cache
@@ -68,6 +48,7 @@ jobs:
           PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
           LOGDIR: /var/tmp/packer-templates-images
         run: |
+          test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
@@ -80,8 +61,6 @@ jobs:
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
         run: |
-          export BOX_VERSION="$(cat ${PACKER_CACHE_DIR}/BOX_VERSION)"
-          echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
           ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
@@ -141,8 +120,6 @@ jobs:
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
         run: |
-          export BOX_VERSION=$(cat "${PACKER_CACHE_DIR}/BOX_VERSION")
-          echo "*** Using BOX_VERSION=${BOX_VERSION} from file: ${PACKER_CACHE_DIR}/BOX_VERSION"
           ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
@@ -196,7 +173,6 @@ jobs:
     steps:
       - name: Cleanup
         run: |
-          rm -v "${PACKER_CACHE_DIR}/BOX_VERSION"
           rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
           rm -v ${LOGDIR}/*.log
           rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" "${VAGRANT_TMP}" || true
