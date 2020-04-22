@@ -50,7 +50,6 @@ jobs:
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
-        env:
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
