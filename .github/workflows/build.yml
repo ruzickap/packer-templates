@@ -54,8 +54,7 @@ jobs:
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
-        run: |
-          ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
         run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
@@ -102,6 +101,7 @@ jobs:
           PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
           LOGDIR: /var/tmp/packer-templates-images
         run: |
+          test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
@@ -113,8 +113,7 @@ jobs:
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
-        run: |
-          ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
         run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
