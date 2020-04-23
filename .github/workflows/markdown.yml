@@ -19,7 +19,7 @@ on:
 
 jobs:
   markdownlint-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -31,7 +31,7 @@ jobs:
           ignore_files: CHANGELOG.md
 
   markdown-spell-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
@@ -47,7 +47,7 @@ jobs:
         run: find . -type f \( -name "*.md" ! -name "CHANGELOG.md" \) -exec mdspell --ignore-numbers --ignore-acronyms --report --en-gb {} \;
 
   markdown-link-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 

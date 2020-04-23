@@ -120,7 +120,7 @@ jobs:
 
   clean_check_versions:
     needs: build-virtualbox
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       VAGRANT_CLOUD_USER: peru
       VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
