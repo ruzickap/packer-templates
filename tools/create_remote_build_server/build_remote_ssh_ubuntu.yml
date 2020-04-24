@@ -217,7 +217,7 @@
           loop: "{{ range(1, action_runner_count + 1) | list }}"
 
         - name: Register actions-runner-x
-          command: ./config.sh --url {{ MY_PACKER_TEMPLATES_GITHUB_REPOSITORY }} --token {{ GITHUB_SELF_HOSTED_RUNNER_TOKEN }} --agent "{{ ansible_hostname }}-{{ item }}" --work "_work"
+          command: ./config.sh --unattended --url {{ MY_PACKER_TEMPLATES_GITHUB_REPOSITORY }} --token {{ GITHUB_SELF_HOSTED_RUNNER_TOKEN }} --name "{{ ansible_hostname }}-{{ item }}" --work "_work"
           args:
             chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
             creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
