@@ -22,7 +22,7 @@ jobs:
     name: "*"
     runs-on: [self-hosted, linux, x64]
     strategy:
-      max-parallel: 2
+      max-parallel: 4
       fail-fast: false
       matrix:
         stage:
@@ -41,25 +41,45 @@ jobs:
           - windows-server-2019-datacenter-x64-eval-libvirt
 
     steps:
+      - name: Check if image is not already built
+        run: |
+          BUILD="${{ matrix.stage }}"
+          PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
+          NAME="${BUILD%-*}"
+          BOX_VERSION="$(date +%Y%m%d).01"
+          if curl -L --fail --silent --head --output /dev/null "https://vagrantcloud.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/versions/${BOX_VERSION}/providers/${PACKER_VAGRANT_PROVIDER}.box"; then
+            echo "*** ${BUILD} exists on Vagrant Cloud"
+            echo "::set-env name=skip::true"
+          fi
+
       - uses: actions/checkout@v2
+        if: env.skip != 'true'
         with:
           submodules: true
 
       - name: Build image - ${{ matrix.stage }}
+        if: env.skip != 'true'
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
+        if: env.skip != 'true'
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
-        if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
-        run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
+        if: env.skip != 'true'
+        run: |
+          rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
+          rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
+          rmdir -v "${LOGDIR}"
+          rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
 
 ##############
 # VirtualBox
@@ -70,7 +90,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     needs: build-libvirt
     strategy:
-      max-parallel: 2
+      max-parallel: 4
       fail-fast: false
       matrix:
         stage:
@@ -88,25 +108,45 @@ jobs:
           - windows-server-2019-datacenter-x64-eval-virtualbox
 
     steps:
+      - name: Check if image is not already built
+        run: |
+          BUILD="${{ matrix.stage }}"
+          PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
+          NAME="${BUILD%-*}"
+          BOX_VERSION="$(date +%Y%m%d).01"
+          if curl -L --fail --silent --head --output /dev/null "https://vagrantcloud.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/versions/${BOX_VERSION}/providers/${PACKER_VAGRANT_PROVIDER}.box"; then
+            echo "*** ${BUILD} exists on Vagrant Cloud"
+            echo "::set-env name=skip::true"
+          fi
+
       - uses: actions/checkout@v2
+        if: env.skip != 'true'
         with:
           submodules: true
 
       - name: Build image - ${{ matrix.stage }}
+        if: env.skip != 'true'
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
+        if: env.skip != 'true'
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
-        if: github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' )
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
-        run: if [ -s "${LOGDIR}/${{ matrix.stage }}-packer.log" ]; then rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"; fi
+        if: env.skip != 'true'
+        run: |
+          rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
+          rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
+          [[ ! "$( ls -A ${LOGDIR} )" ]] && rmdir -v "${LOGDIR}"
+          rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+          [[ ! "$( ls -A ${PACKER_IMAGES_OUTPUT_DIR} )" ]] && rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
 
   clean_check_versions:
     needs: build-virtualbox
@@ -140,14 +180,3 @@ jobs:
               fi
             done
           done
-
-  cleanup:
-    needs: clean_check_versions
-    runs-on: [self-hosted, linux, x64]
-    steps:
-      - name: Cleanup
-        run: |
-          set -x
-          rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
-          rm -v ${LOGDIR}/*.log
-          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" || true
