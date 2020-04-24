@@ -3,7 +3,7 @@
 set -o pipefail
 
 BOXES_LIST=${*:-$(find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " ")}
-TMPDIR=${TMPDIR:-/var/tmp/vagrant_init_destroy_boxes}
+TMPDIR=${TMPDIR:-/tmp}
 LOGDIR=${LOGDIR:-/var/tmp/}
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
@@ -83,9 +83,8 @@ ctrl_c() {
 main() {
   if [[ -n "${BOXES_LIST}" ]]; then
     if [[ ! -d "${TMPDIR}" ]]; then
-      echo "*** Creating directory: ${TMPDIR}"
-      mkdir -p "${TMPDIR}"
-      TMPDIR_CREATED="defined"
+      echo "*** Directory \"${TMPDIR}\" doesn't exist !"
+      exit 1
     fi
     test -d "${LOGDIR}" || mkdir -p "${LOGDIR}"
 
@@ -103,9 +102,13 @@ main() {
         continue
       fi
 
-      echo -e "*** ${VAGRANT_BOX_FILE} [${VAGRANT_BOX_NAME}] (${VAGRANT_BOX_PROVIDER}) (${TMPDIR}/${VAGRANT_BOX_NAME_SHORT})" | tee "${LOG_FILE}"
+      echo -e "*** ${VAGRANT_BOX_FILE} [${VAGRANT_BOX_NAME}] (${VAGRANT_BOX_PROVIDER}) (${VAGRANT_CWD})" | tee "${LOG_FILE}"
 
-      test -d "${VAGRANT_CWD}" && rm -rf "${VAGRANT_CWD}"
+      if [[ -d "${VAGRANT_CWD}" ]]; then
+        echo "*** Directory \"${VAGRANT_CWD}\" already exist !"
+        exit 1
+      fi
+
       mkdir "${VAGRANT_CWD}"
 
       vagrant_box_add
@@ -117,10 +120,6 @@ main() {
 
       echo "*** Completed"
     done
-
-    if [[ -v TMPDIR_CREATED ]]; then
-      rmdir "${TMPDIR}"
-    fi
   fi
 }
 
