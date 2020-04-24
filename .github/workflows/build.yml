@@ -97,18 +97,12 @@ jobs:
           submodules: true
 
       - name: Build image - ${{ matrix.stage }}
-        env:
-          PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
-          LOGDIR: /var/tmp/packer-templates-images
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
-        env:
-          LOGDIR: /var/tmp/packer-templates-images
-          TMPDIR: /var/tmp/packer-templates-images
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
@@ -156,7 +150,6 @@ jobs:
 
   cleanup:
     needs: clean_check_versions
-    name: Cleanup
     runs-on: [self-hosted, linux, x64]
     env:
       PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
