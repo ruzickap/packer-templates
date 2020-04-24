@@ -5,6 +5,13 @@ on:
   schedule:
     - cron: '0 0 1 * *'
 
+env:
+  PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
+  PACKER_CACHE_DIR: /var/tmp/packer_cache
+  LOGDIR: /var/tmp/packer-templates-logs
+  VAGRANT_CLOUD_USER: peru
+  VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
+
 jobs:
 
 ##############
@@ -14,12 +21,6 @@ jobs:
   build-libvirt:
     name: "*"
     runs-on: [self-hosted, linux, x64]
-    env:
-      PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
-      PACKER_CACHE_DIR: /var/tmp/packer_cache
-      LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANT_CLOUD_USER: peru
-      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -68,12 +69,6 @@ jobs:
     name: "*"
     runs-on: [self-hosted, linux, x64]
     needs: build-libvirt
-    env:
-      PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
-      PACKER_CACHE_DIR: /var/tmp/packer_cache
-      LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANT_CLOUD_USER: peru
-      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     strategy:
       max-parallel: 2
       fail-fast: false
@@ -116,9 +111,6 @@ jobs:
   clean_check_versions:
     needs: build-virtualbox
     runs-on: ubuntu-latest
-    env:
-      VAGRANT_CLOUD_USER: peru
-      VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
     steps:
       - name: Remove old versions
         run: |
@@ -152,14 +144,10 @@ jobs:
   cleanup:
     needs: clean_check_versions
     runs-on: [self-hosted, linux, x64]
-    env:
-      PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
-      PACKER_CACHE_DIR: /var/tmp/packer_cache
-      LOGDIR: /var/tmp/packer-templates-logs
-      VAGRANT_TMP: /var/tmp/packer-templates-images
     steps:
       - name: Cleanup
         run: |
+          set -x
           rm -v ${PACKER_IMAGES_OUTPUT_DIR}/*.box
           rm -v ${LOGDIR}/*.log
-          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" "${VAGRANT_TMP}" || true
+          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" || true
