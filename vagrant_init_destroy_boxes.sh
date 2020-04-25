@@ -7,9 +7,6 @@ TMPDIR=${TMPDIR:-/tmp}
 LOGDIR=${LOGDIR:-/var/tmp/}
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
-# Enable vagrant debug log if set to 'info' (default 'warn')
-export VAGRANT_LOG=${VAGRANT_LOG:-warn}
-
 vagrant_box_add() {
   vagrant box add "${VAGRANT_BOX_FILE}" --name="${VAGRANT_BOX_NAME}" --force
 }
@@ -91,10 +88,8 @@ main() {
     for VAGRANT_BOX_FILE in ${BOXES_LIST}; do
       VAGRANT_BOX_NAME=$(basename "${VAGRANT_BOX_FILE%.*}")
       export VAGRANT_BOX_NAME
-      VAGRANT_BOX_NAME_SHORT=$(basename "${VAGRANT_BOX_FILE}" | cut -d - -f 1,2,3)
-      export VAGRANT_BOX_NAME_SHORT
       export VAGRANT_BOX_PROVIDER=${VAGRANT_BOX_NAME##*-}
-      export VAGRANT_CWD="${TMPDIR}/${VAGRANT_BOX_NAME_SHORT}"
+      export VAGRANT_CWD="${TMPDIR}/${VAGRANT_BOX_NAME}"
       export LOG_FILE="${LOGDIR}/${VAGRANT_BOX_NAME}-init.log"
 
       if [[ -s "${LOG_FILE}" ]]; then
