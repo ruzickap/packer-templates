@@ -27,18 +27,17 @@ jobs:
       matrix:
         stage:
           - windows-server-2012_r2-standard-x64-eval-libvirt
-          - my_centos-7-x86_64-libvirt
-          - my_ubuntu-20.04-server-amd64-libvirt
-          - my_ubuntu-18.04-server-amd64-libvirt
-          - ubuntu-16.04-server-amd64-libvirt
-          - ubuntu-18.04-server-amd64-libvirt
-          - ubuntu-20.04-server-amd64-libvirt
-          - ubuntu-20.04-desktop-amd64-libvirt
-          - ubuntu-18.04-desktop-amd64-libvirt
-          - my_windows-10-enterprise-x64-eval-libvirt
-          - windows-10-enterprise-x64-eval-libvirt
           - windows-server-2016-standard-x64-eval-libvirt
           - windows-server-2019-datacenter-x64-eval-libvirt
+          - my_centos-7-x86_64-libvirt
+          - my_ubuntu-20.04-server-amd64-libvirt
+          - my_windows-10-enterprise-x64-eval-libvirt
+          - windows-10-enterprise-x64-eval-libvirt
+          - ubuntu-20.04-server-amd64-libvirt
+          - ubuntu-18.04-server-amd64-libvirt
+          - ubuntu-16.04-server-amd64-libvirt
+          - ubuntu-20.04-desktop-amd64-libvirt
+          - ubuntu-18.04-desktop-amd64-libvirt
 
     steps:
       - name: Check if image is not already built
@@ -47,6 +46,7 @@ jobs:
           PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
           NAME="${BUILD%-*}"
           BOX_VERSION="$(date +%Y%m%d).01"
+          echo "*** $(hostname --short)"
           if curl -L --fail --silent --head --output /dev/null "https://vagrantcloud.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/versions/${BOX_VERSION}/providers/${PACKER_VAGRANT_PROVIDER}.box"; then
             echo "*** ${BUILD} exists on Vagrant Cloud"
             echo "::set-env name=skip::true"
@@ -73,7 +73,7 @@ jobs:
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
-        if: env.skip != 'true'
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
@@ -95,17 +95,17 @@ jobs:
       matrix:
         stage:
           - windows-server-2012_r2-standard-x64-eval-virtualbox
-          - my_centos-7-x86_64-virtualbox
-          - my_ubuntu-20.04-server-amd64-virtualbox
-          - ubuntu-16.04-server-amd64-virtualbox
-          - ubuntu-18.04-server-amd64-virtualbox
-          - ubuntu-20.04-server-amd64-virtualbox
-          - ubuntu-18.04-desktop-amd64-virtualbox
-          - ubuntu-20.04-desktop-amd64-virtualbox
-          - my_windows-10-enterprise-x64-eval-virtualbox
-          - windows-10-enterprise-x64-eval-virtualbox
           - windows-server-2016-standard-x64-eval-virtualbox
           - windows-server-2019-datacenter-x64-eval-virtualbox
+          - my_centos-7-x86_64-virtualbox
+          - my_ubuntu-20.04-server-amd64-virtualbox
+          - my_windows-10-enterprise-x64-eval-virtualbox
+          - windows-10-enterprise-x64-eval-virtualbox
+          - ubuntu-20.04-server-amd64-virtualbox
+          - ubuntu-18.04-server-amd64-virtualbox
+          - ubuntu-16.04-server-amd64-virtualbox
+          - ubuntu-20.04-desktop-amd64-virtualbox
+          - ubuntu-18.04-desktop-amd64-virtualbox
 
     steps:
       - name: Check if image is not already built
@@ -114,6 +114,7 @@ jobs:
           PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
           NAME="${BUILD%-*}"
           BOX_VERSION="$(date +%Y%m%d).01"
+          echo "*** $(hostname --short)"
           if curl -L --fail --silent --head --output /dev/null "https://vagrantcloud.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/versions/${BOX_VERSION}/providers/${PACKER_VAGRANT_PROVIDER}.box"; then
             echo "*** ${BUILD} exists on Vagrant Cloud"
             echo "::set-env name=skip::true"
@@ -140,7 +141,7 @@ jobs:
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
-        if: env.skip != 'true'
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
