@@ -1,4 +1,5 @@
 # Packer cache objects
+packer_cache
 packer_cache/
 
 # Packer built boxes
