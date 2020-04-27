@@ -6,10 +6,6 @@ LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
 
 set -o pipefail
 
-echo -e "\n*** This will remove all libvirt + VirtualBox virtual machines and vagrant boxes !\nPress ENTER to continue"
-read -r
-
-
 echo "*** Delete forgotten vagrant instances from ${TMPDIR}"
 if [[ -d "${TMPDIR}" ]]; then
   while IFS= read -r -d '' DIR; do
