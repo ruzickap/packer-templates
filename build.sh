@@ -7,9 +7,7 @@ export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/
 export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-${PACKER_CACHE_DIR}/$(basename "${VIRTIO_WIN_ISO_URL}")}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
-# Use packer, virtualboc, ansible in docker image
-export USE_DOCKERIZED_PACKER=${USE_DOCKERIZED_PACKER:-false}
-# Packer binary (doesn't apply of you are using Dockerized packer)
+# Packer binary
 export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
@@ -19,13 +17,8 @@ export LOGDIR=${LOGDIR:-${PACKER_IMAGES_OUTPUT_DIR}}
 export PACKER_LOG=${PACKER_LOG:-0}
 # Max amount of time which packer can run (default 5 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
 export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-18000}
-# User docker / podman executable
-if command -v podman &> /dev/null; then
-  DOCKER_COMMAND=${DOCKER_COMMAND:-podman}
-else
-  DOCKER_COMMAND=${DOCKER_COMMAND:-docker}
-fi
-
+# Use /var/tmp as temporary directory for Packer, because export of VM images can consume lot of disk space
+export TMPDIR=${TMPDIR:-/var/tmp}
 
 readonly PROGNAME=$(basename "$0")
 readonly ARGS=$*
@@ -117,7 +110,6 @@ cmdline() {
         export CENTOS_TYPE="NetInstall"
         ISO_CHECKSUM=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
         export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
-        export DOCKER_ENV_PARAMETERS="-e CENTOS_VERSION -e CENTOS_TAG -e CENTOS_TYPE -e NAME"
         echo "* NAME: ${NAME}, CENTOS_VERSION: ${CENTOS_VERSION}, CENTOS_TAG: ${CENTOS_TAG}, CENTOS_TYPE: ${CENTOS_TYPE}, PACKER_FILE: ${PACKER_FILE}"
       ;;
       *ubuntu*)
@@ -126,16 +118,15 @@ cmdline() {
         UBUNTU_VERSION=$(echo "${NAME}" | awk -F '-' '{ print $2 }')
         export UBUNTU_VERSION
         UBUNTU_CODENAME=$(curl -s http://releases.ubuntu.com/ | sed -n "s@.*<a href=\"\([a-z]*\)/\">.*Ubuntu ${UBUNTU_VERSION}.*@\1@p" | head -1)
-        if wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images/SHA256SUMS" ; then
+        if curl --fail --silent --head --output /dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images/SHA256SUMS" ; then
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}-updates/main/installer-amd64/current/images
-        elif wget -q -O/dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/legacy-images/SHA256SUMS" ; then
+        elif curl --fail --silent --head --output /dev/null "http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/legacy-images/SHA256SUMS" ; then
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/legacy-images
         else
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images
         fi
         ISO_CHECKSUM=$(curl -s "${UBUNTU_IMAGES_URL}/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
         export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
-        export DOCKER_ENV_PARAMETERS="-e UBUNTU_TYPE -e UBUNTU_VERSION -e NAME"
         echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
       ;;
       *windows*)
@@ -171,9 +162,7 @@ cmdline() {
 
         echo "* NAME: ${NAME}, WINDOWS_ARCH: ${WINDOWS_ARCH}, WINDOWS_VERSION: ${WINDOWS_VERSION}, WINDOWS_EDITION: ${WINDOWS_EDITION}, PACKER_FILE: ${PACKER_FILE}"
         ISO_CHECKSUM=$(awk "/$(basename ${ISO_URL})/ { print \$1 }" win_iso.sha256)
-        test -f "${VIRTIO_WIN_ISO}" || wget --continue "${VIRTIO_WIN_ISO_URL}" -O "${VIRTIO_WIN_ISO}"
-        DOCKER_ENV_PARAMETERS="-e WINDOWS_VERSION -e NAME -e ISO_URL -e VIRTIO_WIN_ISO=packer_cache/$(basename "${VIRTIO_WIN_ISO}")"
-        export DOCKER_ENV_PARAMETERS
+        test -f "${VIRTIO_WIN_ISO}" || curl -L "${VIRTIO_WIN_ISO_URL}" --output "${VIRTIO_WIN_ISO}"
       ;;
       *)
         echo "*** Unsupported build type: \"${NAME}\" used from \"${BUILD}\""
@@ -189,19 +178,7 @@ cmdline() {
 
 packer_build() {
   if [[ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]]; then
-    if [[ "${USE_DOCKERIZED_PACKER}" = "true" ]]; then
-      ${DOCKER_COMMAND} pull peru/packer_qemu_virtualbox_ansible
-      ${DOCKER_COMMAND} run --rm -t -u "$(id -u):$(id -g)" --privileged --tmpfs /dev/shm:size=67108864 --network host --name "packer_${BUILD}" "${DOCKER_ENV_PARAMETERS}" \
-        -v "${PACKER_IMAGES_OUTPUT_DIR}:/home/docker/packer_images_output_dir" \
-        -v "${PWD}:/home/docker/packer" \
-        -v "${PACKER_CACHE_DIR}:/home/docker/packer/packer_cache" \
-        -e PACKER_RUN_TIMEOUT \
-        -e PACKER_LOG \
-        -e PACKER_IMAGES_OUTPUT_DIR=/home/docker/packer_images_output_dir \
-        peru/packer_qemu_virtualbox_ansible build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
-    else
-      ${PACKER_BINARY} build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
-    fi
+    ${PACKER_BINARY} build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     ln -rfs "${PACKER_CACHE_DIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${PACKER_CACHE_DIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";

@@ -11,7 +11,7 @@
 
 ### GitHub repository for bug reports or feature requests
 
-* [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
+* [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/issues)
 
 ### Vagrant Cloud repository for the images build by these templates
 
@@ -23,14 +23,16 @@
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/) (Version 6.1 or later)
-* [Packer](https://www.packer.io/) (Version 1.5.5 or later)
+* [Packer](https://www.packer.io/) (Version 1.5.6 or later)
 
 ## Login Credentials
 
-(root/Administrator password is "vagrant" or is not set )
+`root` / `Administrator` password is `vagrant` or is not set.
 
-* Username: vagrant
-* Password: vagrant
+Default login credentials:
+
+* Username: `vagrant`
+* Password: `vagrant`
 
 ## VM Specifications
 
@@ -62,11 +64,11 @@ Drivers / Devices added for the VMs for specific providers.
 
 ### Customized Linux installation
 
-Some of the Linux [images](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=peru/my)/templates
-begins with "my_" - they are preconfigured with the following:
+Some of the [images](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=peru/my)/templates
+begins with "my_" - they are preconfigured with [Ansible role](https://github.com/ruzickap/ansible-role-my_common_defaults/):
 
 * there are usually many customization depends on distribution - all are
-  described in Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
+  described in [Ansible playbook](https://github.com/ruzickap/packer-templates/blob/master/ansible/site.yml).
 * added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
   and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
   or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
@@ -122,30 +124,52 @@ for Windows:
 
 * VirtualBox Guest Additions
 
-## How to build images remotely
-
-If you want to build the images yourself you will need password-less ssh access
-to the Ubuntu Server and locally installed Ansible. The server should
-not have IPs from this range `192.168.121.0/24` - this is
-used by Vagrant + libvirt by default.
-
-Then you just need to modify the `REMOTE_IP` and `REMOTE_USER`
-in `build_remote_ssh_ubuntu.sh` file.
-
-The `build_remote_ssh_ubuntu.sh` script will connect to your Ubuntu Server,
-downloads necessary packages (initiate reboot if necessary for kernel update)
-and start building the images using Packer.
-It will also test the newly created images by Vagrant.
-The whole procedure will take several hours.
-You can check the progress by sshing to the server and checking the log files
-in `/tmp/` directory.
-
-## How to build images locally
+## How to build images
 
 If you have necessary software installed+configured on your local machine you
 can use the following commands to build the images.
 You can build the images using the build script [build.sh](build.sh) or directly
 with Packer.
+
+* Ubuntu requirements:
+
+  ```bash
+  sudo apt update
+  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass virtualbox
+
+  PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
+  curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
+  sudo unzip /tmp/packer_linux_amd64.zip -d /usr/local/bin/
+  rm /tmp/packer_linux_amd64.zip
+
+  VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version')
+  curl "https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.deb" --output /tmp/vagrant_x86_64.deb
+  sudo apt install --no-install-recommends -y /tmp/vagrant_x86_64.deb
+  rm /tmp/vagrant_x86_64.deb
+
+  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
+
+  vagrant plugin install vagrant-libvirt
+  ```
+
+* Fedora requirements:
+
+  ```bash
+  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+  sudo dnf install -y ansible curl git jq libvirt libvirt-devel qemu-kvm ruby-devel VirtualBox
+
+  PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
+  curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
+  sudo unzip /tmp/packer_linux_amd64.zip -d /usr/local/bin/
+  rm /tmp/packer_linux_amd64.zip
+
+  VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version')
+  sudo dnf install -y https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm
+  CONFIGURE_ARGS="with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64/libvirt" vagrant plugin install vagrant-libvirt
+
+  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
+  systemctl start libvirtd
+  ```
 
 ### Build process with the [build.sh](build.sh) script
 
@@ -156,170 +180,123 @@ cd packer-templates
 
 * Ubuntu:
 
-```bash
-# Ubuntu Server
-./build.sh ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
+  ```bash
+  # Ubuntu Server
+  ./build.sh ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
 
-# Ubuntu Desktop
-./build.sh ubuntu-{20.04,18.04}-desktop-amd64-{libvirt,virtualbox}
+  # Ubuntu Desktop
+  ./build.sh ubuntu-{20.04,18.04}-desktop-amd64-{libvirt,virtualbox}
 
-# Ubuntu Server - customized
-./build.sh my_ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
-```
+  # Ubuntu Server - customized
+  ./build.sh my_ubuntu-{20.04,18.04,16.04}-server-amd64-{libvirt,virtualbox}
+  ```
 
 * Windows:
 
-```bash
-# Windows Server
-./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
-./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
-./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
+  ```bash
+  # Windows Server
+  ./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
+  ./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
+  ./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
 
-# Windows 10
-./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+  # Windows 10
+  ./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
 
-# Windows 10 - customized
-./build.sh my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
-```
-
-### Build process with the Docker image
-
-If you do not want to install Packer, Vagrant, Vagrant plugins or Ansible,
-then you can use Docker image.
-You can find the Docker image and it's source on these URLs:
-
-* Docker image: [https://hub.docker.com/r/peru/packer_qemu_virtualbox_ansible/](https://hub.docker.com/r/peru/packer_qemu_virtualbox_ansible/)
-* Dockerfile: [https://github.com/ruzickap/docker-packer_qemu_virtualbox_ansible](https://github.com/ruzickap/docker-packer_qemu_virtualbox_ansible)
-
-#### Ubuntu example with Docker image
-
-```bash
-sudo apt update
-sudo apt install -y --no-install-recommends curl git jq docker.io virtualbox
-sudo gpasswd -a ${USER} docker
-# This is mandatory for Ubuntu otherwise docker container will not have
-# access to /dev/kvm - this is default in Fedora (https://bugzilla.redhat.com/show_bug.cgi?id=993491)
-sudo bash -c "echo 'KERNEL==\"kvm\", GROUP=\"kvm\", MODE=\"0666\"' > /etc/udev/rules.d/60-qemu-system-common.rules"
-sudo sed -i 's/^unix_sock_/#&/' /etc/libvirt/libvirtd.conf
-sudo reboot
-```
-
-#### Fedora example with Docker image
-
-```bash
-sudo sed -i 's@^SELINUX=enforcing@SELINUX=disabled@' /etc/selinux/config
-sudo dnf upgrade -y
-# Reboot if necessary (especialy if you upgrade the kernel or related packages)
-
-FEDORA_VESION=$(rpm -E %fedora)
-sudo dnf install -y \
-  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VESION}.noarch.rpm\
-  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VESION}.noarch.rpm
-sudo dnf install -y akmod-VirtualBox curl docker git jq \
-  kernel-devel-$(uname -r) libvirt-daemon-kvm
-sudo akmods
-
-sudo bash -c 'echo "vboxdrv" > /etc/modules-load.d/vboxdrv.conf'
-sudo usermod -a -G libvirt ${USER}
-sudo groupadd docker && sudo gpasswd -a ${USER} docker
-sudo systemctl enable docker
-
-sudo reboot
-```
+  # Windows 10 - customized
+  ./build.sh my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+  ```
 
 ### Build process with the Packer
 
-Use the `USE_DOCKERIZED_PACKER=true` to use Dockerized Packer to build images.
-
 * Ubuntu:
 
-```bash
-# Ubuntu Server
-NAME="ubuntu-20.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-server.json
+  ```bash
+  # Ubuntu Server
+  NAME="ubuntu-20.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  packer build -only="qemu" ubuntu-server.json
 
-NAME="ubuntu-18.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-server.json
+  NAME="ubuntu-18.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  packer build -only="qemu" ubuntu-server.json
 
-NAME="ubuntu-16.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-server.json
+  NAME="ubuntu-16.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  packer build -only="qemu" ubuntu-server.json
 
-# Ubuntu Desktop
-NAME="ubuntu-20.04-desktop-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
-packer build -only="qemu" ubuntu-desktop.json
+  # Ubuntu Desktop
+  NAME="ubuntu-20.04-desktop-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
+  UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  packer build -only="qemu" ubuntu-desktop.json
 
-# Ubuntu Server - customized
-NAME="my_ubuntu-20.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
-packer build -only="qemu" my_ubuntu-server.json
+  # Ubuntu Server - customized
+  NAME="my_ubuntu-20.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  packer build -only="qemu" my_ubuntu-server.json
 
-NAME="my_ubuntu-18.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
-packer build -only="qemu" my_ubuntu-server.json
+  NAME="my_ubuntu-18.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  packer build -only="qemu" my_ubuntu-server.json
 
-NAME="my_ubuntu-16.04-server-amd64" \
-UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
-packer build -only="qemu" my_ubuntu-server.json
-```
+  NAME="my_ubuntu-16.04-server-amd64" \
+  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  packer build -only="qemu" my_ubuntu-server.json
+  ```
 
 * Windows:
 
-```bash
-wget -P /var/tmp/ https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
-export TMPDIR=/var/tmp
+  ```bash
+  curl -L -O /var/tmp/virtio-win.iso https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+  export TMPDIR=/var/tmp
 
-# Windows Server
-## Windows Server 2012
-export NAME="windows-server-2012_r2-standard-x64-eval"
-export WINDOWS_VERSION="2012"
-export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
-export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
-packer build -only="qemu" windows.json
+  # Windows Server
+  ## Windows Server 2012
+  export NAME="windows-server-2012_r2-standard-x64-eval"
+  export WINDOWS_VERSION="2012"
+  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
 
-## Windows Server 2019
-export NAME="windows-server-2019-standard-x64-eval"
-export WINDOWS_VERSION="2019"
-export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
-export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
-packer build -only="qemu" windows.json
+  ## Windows Server 2019
+  export NAME="windows-server-2019-standard-x64-eval"
+  export WINDOWS_VERSION="2019"
+  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
 
-## Windows Server 2016
-export NAME="windows-server-2016-standard-x64-eval"
-export WINDOWS_VERSION="2016"
-export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
-export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
-packer build -only="qemu" windows.json
+  ## Windows Server 2016
+  export NAME="windows-server-2016-standard-x64-eval"
+  export WINDOWS_VERSION="2016"
+  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
 
-# Windows 10
-export NAME="windows-10-enterprise-x64-eval"
-export WINDOWS_VERSION="10"
-export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
-packer build -only="qemu" windows.json
+  # Windows 10
+  export NAME="windows-10-enterprise-x64-eval"
+  export WINDOWS_VERSION="10"
+  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
 
-# Windows 10 - customized
-export NAME="my_windows-10-enterprise-x64-eval"
-export WINDOWS_VERSION="10"
-export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
-export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
-packer build -only="qemu" my_windows.json
-```
+  # Windows 10 - customized
+  export NAME="my_windows-10-enterprise-x64-eval"
+  export WINDOWS_VERSION="10"
+  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" my_windows.json
+  ```
 
 ## Helper scripts
 

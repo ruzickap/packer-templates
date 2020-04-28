@@ -14,8 +14,6 @@ CENTOS_TYPE
 CENTOS_VERSION
 common_windows_packages
 com.redhat.spice.0
-Dockerfile
-Dockerized
 DoNotOpenInitialConfigurationTasksAtLogon
 EnableLUA
 en_US.UTF

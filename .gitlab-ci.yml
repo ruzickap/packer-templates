@@ -4,12 +4,10 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   # BOX_VERSION: "20190608.01"
-  DOCKER_COMMAND: docker
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
   LOGDIR: /var/tmp/packer-templates-logs
   VAGRANTUP_USER: peru
   PACKER_RUN_TIMEOUT: 18000
-  USE_DOCKERIZED_PACKER: "false"
   # PACKER_LOG: 1
   # VAGRANT_LOG: info
 
