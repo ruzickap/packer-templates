@@ -77,9 +77,9 @@ jobs:
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
-          rmdir -v "${LOGDIR}"
+          if [[ ! "$( ls -A "${LOGDIR}" )" ]]; then rmdir -v "${LOGDIR}"; fi
           rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-          rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
+          if [[ ! "$( ls -A "${PACKER_IMAGES_OUTPUT_DIR}" )" ]]; then rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"; fi
 
 ##############
 # VirtualBox
@@ -145,9 +145,9 @@ jobs:
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
-          [[ ! "$( ls -A ${LOGDIR} )" ]] && rmdir -v "${LOGDIR}"
+          if [[ ! "$( ls -A "${LOGDIR}" )" ]]; then rmdir -v "${LOGDIR}"; fi
           rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-          [[ ! "$( ls -A ${PACKER_IMAGES_OUTPUT_DIR} )" ]] && rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
+          if [[ ! "$( ls -A "${PACKER_IMAGES_OUTPUT_DIR}" )" ]]; then rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"; fi
 
   clean_check_versions:
     needs: build-virtualbox
