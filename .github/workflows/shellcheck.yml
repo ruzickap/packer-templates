@@ -1,0 +1,23 @@
+name: shellcheck
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.sh'
+      - .github/workflows/shellcheck.yml
+  push:
+    branches:
+      - master
+    paths:
+      - '**.sh'
+      - .github/workflows/shellcheck.yml
+
+jobs:
+  shellcheck-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Lint check
+        uses: azohra/shell-linter@v0.3.0
