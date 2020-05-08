@@ -3,6 +3,9 @@ update_configs:
   - package_manager: "submodules"
     directory: "/"
     update_schedule: "daily"
+    default_labels:
+      - "dependencies"
+      - "submodules"
     default_assignees:
       - "ruzickap"
     automerged_updates:
