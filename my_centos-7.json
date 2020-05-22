@@ -49,6 +49,7 @@
       "iso_urls": [
         "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso"
       ],
+      "guest_additions_mode": "disable",
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",

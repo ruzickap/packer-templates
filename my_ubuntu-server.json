@@ -53,6 +53,7 @@
       "iso_urls": [
         "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
       ],
+      "guest_additions_mode": "disable",
       "ssh_username": "{{ user `ssh_username` }}",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_wait_timeout": "60m",
