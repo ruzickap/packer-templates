@@ -285,7 +285,7 @@ cd packer-templates
   export NAME="windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
   export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-  export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
 
@@ -293,7 +293,7 @@ cd packer-templates
   export NAME="my_windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
   export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
-  export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" my_windows.json
   ```

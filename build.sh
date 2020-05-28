@@ -139,7 +139,7 @@ cmdline() {
 
         case ${NAME} in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/pr/18363.418.191007-0143.19h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
