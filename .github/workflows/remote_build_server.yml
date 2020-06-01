@@ -23,8 +23,9 @@ jobs:
 
       - name: Install Ansible packages
         run: |
+          sudo rm /etc/apt/sources.list.d/*
           sudo apt update
-          sudo apt install -y ansible python-jmespath
+          sudo apt install -y ansible python-jmespath python3-apt
 
       - name: Run Ansible
         run: |
@@ -32,5 +33,6 @@ jobs:
           export REMOTE_IP="localhost"
           export ANSIBLE_HOST_KEY_CHECKING=False
           export ANSIBLE_SKIP_TAGS="actions-runner_registration,actions-runner_installation"
+          export ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
           cd tools/create_remote_build_server
           ./build_remote_ssh_ubuntu.sh
