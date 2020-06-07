@@ -75,13 +75,7 @@
           "modifyvm",
           "{{ .Name }}",
           "--audiocontroller",
-          "hda"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--audio",
-          "alsa"
+          "ac97"
         ]
       ],
       "boot_wait": "5s",
