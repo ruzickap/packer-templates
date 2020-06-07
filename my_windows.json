@@ -90,13 +90,7 @@
           "modifyvm",
           "{{ .Name }}",
           "--audiocontroller",
-          "hda"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--audio",
-          "alsa"
+          "ac97"
         ]
       ],
       "floppy_files": [
