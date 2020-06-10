@@ -7,7 +7,7 @@
     "memory": "4096",
     "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
     "iso_url": "{{ env `ISO_URL` }}",
-    "iso_checksum_url": "https://raw.githubusercontent.com/ruzickap/packer-templates/master/win_iso.sha256",
+    "iso_checksum": "win_iso.sha256",
     "windows_version": "{{ env `WINDOWS_VERSION` }}",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "winrm_username": "vagrant",
@@ -21,8 +21,7 @@
       "type": "qemu",
       "cpus": "{{ user `cpus` }}",
       "memory": "{{ user `memory` }}",
-      "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `iso_checksum_url` }}",
+      "iso_checksum": "file:{{ user `iso_checksum` }}",
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
@@ -59,8 +58,7 @@
       "vm_name": "{{ user `name` }}",
       "type": "virtualbox-iso",
       "guest_os_type": "Windows{{ user `windows_version` }}_64",
-      "iso_checksum_type": "sha256",
-      "iso_checksum_url": "{{ user `iso_checksum_url` }}",
+      "iso_checksum": "file:{{ user `iso_checksum` }}",
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
