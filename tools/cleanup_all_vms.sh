@@ -40,6 +40,14 @@ while IFS= read -r VM; do
   echo "*** ${VM} | ${VM_ID}"
   VBoxManage unregistervm "${VM_ID}" --delete
 done <   <(VBoxManage list vms)
+
+echo "*** Remove all VirtualBox HDDs"
+while IFS= read -r HDD; do
+  HDD_ID=$(echo "${HDD}" | awk -F ':' '{ print $2 }')
+  echo "*** ${HDD_ID}"
+  VBoxManage closemedium disk "${HDD_ID}" --delete
+done <   <(VBoxManage list hdds | grep '^UUID:')
+
 test -d "${HOME}/VirtualBox VMs" && rm -r -v "${HOME}/VirtualBox VMs"
 
 
