@@ -1,12 +1,12 @@
 version: 2
 updates:
-  - package-ecosystem: "gitsubmodule"
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
     labels:
       - "dependencies"
-    assignees:
-      - "ruzickap"
-    allow:
-      - dependency_type: "all"
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "daily"
