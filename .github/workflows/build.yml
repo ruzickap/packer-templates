@@ -52,7 +52,7 @@ jobs:
             echo "::set-env name=skip::true"
           fi
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.0
         if: env.skip != 'true'
         with:
           submodules: true
@@ -120,7 +120,7 @@ jobs:
             echo "::set-env name=skip::true"
           fi
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.0
         if: env.skip != 'true'
         with:
           submodules: true
