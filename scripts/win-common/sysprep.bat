@@ -1,3 +1,5 @@
+if exist C:\script.bat del C:\script.bat
+
 mkdir %WINDIR%\Setup\Scripts
 
 rem Disable password expiration for vagrant and Administrator users
