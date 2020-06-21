@@ -36,7 +36,7 @@
       "winrm_insecure": "true",
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-qemu",
-      "shutdown_command": "del C:\\script.bat & A:\\sysprep.bat",
+      "shutdown_command": "A:\\sysprep.bat",
       "shutdown_timeout": "15m",
       "accelerator": "kvm",
       "qemuargs": [
@@ -74,7 +74,7 @@
       "headless": "{{ user `headless` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "guest_additions_mode": "attach",
-      "shutdown_command": "del C:\\script.bat & A:\\sysprep.bat",
+      "shutdown_command": "A:\\sysprep.bat",
       "shutdown_timeout": "15m",
       "hard_drive_interface": "sata",
       "disk_size": "{{ user `disk_size` }}",
