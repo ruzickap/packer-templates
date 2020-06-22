@@ -2,36 +2,9 @@
   "_comment1": "NAME=ubuntu-20.04-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images   PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "_comment2": "NAME=ubuntu-18.04-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
   "_comment3": "NAME=ubuntu-16.04-desktop-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-desktop.json",
-  "variables": {
-    "name": "{{ env `NAME` }}",
-    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
-    "cpus": "2",
-    "memory": "4096",
-    "ubuntu_images_url": "{{ env `UBUNTU_IMAGES_URL` }}",
-    "ssh_username": "vagrant",
-    "ssh_password": "vagrant",
-    "preseed_file_name": "preseed.cfg",
-    "disk_size": "51200",
-    "headless": "false"
-  },
   "builders": [
     {
-      "vm_name": "{{ user `name` }}",
-      "type": "qemu",
-      "cpus": "{{ user `cpus` }}",
-      "memory": "{{ user `memory` }}",
-      "iso_checksum": "file:{{ user `ubuntu_images_url` }}/SHA256SUMS",
-      "iso_urls": [
-        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
-      ],
-      "ssh_username": "{{ user `ssh_username` }}",
-      "ssh_password": "{{ user `ssh_password` }}",
-      "ssh_timeout": "60m",
-      "headless": "{{ user `headless` }}",
-      "output_directory": "{{ user `name` }}-qemu",
-      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "accelerator": "kvm",
-      "boot_wait": "5s",
       "boot_command": [
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
@@ -40,28 +13,52 @@
         "hostname=localhost ",
         "<enter>"
       ],
+      "boot_wait": "5s",
+      "cpus": "{{ user `cpus` }}",
       "disk_size": "{{ user `disk_size` }}",
-      "http_directory": "http"
-    },
-    {
-      "vm_name": "{{ user `name` }}",
-      "type": "virtualbox-iso",
-      "guest_os_type": "Ubuntu_64",
+      "headless": "{{ user `headless` }}",
+      "http_directory": "http",
       "iso_checksum": "file:{{ user `ubuntu_images_url` }}/SHA256SUMS",
       "iso_urls": [
         "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
       ],
-      "guest_additions_mode": "disable",
-      "ssh_username": "{{ user `ssh_username` }}",
+      "memory": "{{ user `memory` }}",
+      "output_directory": "{{ user `name` }}-qemu",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_timeout": "60m",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "type": "qemu",
+      "vm_name": "{{ user `name` }}"
+    },
+    {
+      "boot_command": [
+        "<tab>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
+        "auto=true ",
+        "net.ifnames=0 ",
+        "hostname=localhost ",
+        "<enter>"
+      ],
+      "boot_wait": "5s",
+      "cpus": "{{ user `cpus` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "guest_additions_mode": "disable",
+      "guest_os_type": "Ubuntu_64",
+      "hard_drive_interface": "sata",
       "headless": "{{ user `headless` }}",
+      "http_directory": "http",
+      "iso_checksum": "file:{{ user `ubuntu_images_url` }}/SHA256SUMS",
+      "iso_urls": [
+        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
+      ],
+      "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
-      "hard_drive_interface": "sata",
-      "disk_size": "{{ user `disk_size` }}",
-      "cpus": "{{ user `cpus` }}",
-      "memory": "{{ user `memory` }}",
+      "ssh_password": "{{ user `ssh_password` }}",
+      "ssh_timeout": "60m",
+      "ssh_username": "{{ user `ssh_username` }}",
+      "type": "virtualbox-iso",
       "vboxmanage": [
         [
           "modifyvm",
@@ -76,21 +73,21 @@
           "ac97"
         ]
       ],
-      "boot_wait": "5s",
-      "boot_command": [
-        "<tab>",
-        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-desktop/{{ user `preseed_file_name` }} ",
-        "auto=true ",
-        "net.ifnames=0 ",
-        "hostname=localhost ",
-        "<enter>"
-      ],
-      "http_directory": "http"
+      "vm_name": "{{ user `name` }}"
     }
+  ],
+  "post-processors": [
+    [
+      {
+        "compression_level": 9,
+        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "Vagrantfile-linux.template"
+      }
+    ]
   ],
   "provisioners": [
     {
-      "type": "shell",
       "execute_command": "echo 'vagrant' | sudo -S -E bash '{{ .Path }}'",
       "scripts": [
         "scripts/linux-common/vagrant.sh",
@@ -106,17 +103,20 @@
         "scripts/linux-common/packer-virt-sysprep/sysprep-op-ssh-hostkeys.sh",
         "scripts/linux-common/packer-virt-sysprep/sysprep-op-tmp-files.sh",
         "scripts/linux-common/packer-virt-sysprep/sysprep-op-disk-space.sh"
-      ]
+      ],
+      "type": "shell"
     }
   ],
-  "post-processors": [
-    [
-      {
-        "type": "vagrant",
-        "compression_level": 9,
-        "vagrantfile_template": "Vagrantfile-linux.template",
-        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box"
-      }
-    ]
-  ]
+  "variables": {
+    "cpus": "2",
+    "disk_size": "51200",
+    "headless": "false",
+    "memory": "4096",
+    "name": "{{ env `NAME` }}",
+    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
+    "preseed_file_name": "preseed.cfg",
+    "ssh_password": "vagrant",
+    "ssh_username": "vagrant",
+    "ubuntu_images_url": "{{ env `UBUNTU_IMAGES_URL` }}"
+  }
 }
