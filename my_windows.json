@@ -1,41 +1,24 @@
 {
   "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu my_windows.json",
-  "variables": {
-    "name": "{{ env `NAME` }}",
-    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
-    "cpus": "2",
-    "memory": "4096",
-    "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
-    "iso_url": "{{ env `ISO_URL` }}",
-    "iso_checksum": "win_iso.sha256",
-    "windows_version": "{{ env `WINDOWS_VERSION` }}",
-    "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
-    "winrm_username": "vagrant",
-    "winrm_password": "vagrant",
-    "disk_size": "51200",
-    "headless": "false"
-  },
   "builders": [
     {
-      "vm_name": "{{ user `name` }}",
-      "type": "qemu",
+      "accelerator": "kvm",
+      "communicator": "winrm",
       "cpus": "{{ user `cpus` }}",
-      "memory": "{{ user `memory` }}",
+      "disk_size": "{{ user `disk_size` }}",
+      "floppy_files": [
+        "{{ user `autounattend` }}",
+        "scripts/win-common/fixnetwork.ps1",
+        "scripts/win-common/unattend.xml",
+        "scripts/win-common/sysprep.bat"
+      ],
+      "headless": "{{ user `headless` }}",
       "iso_checksum": "file:{{ user `iso_checksum` }}",
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
-      "communicator": "winrm",
-      "winrm_username": "{{ user `winrm_username` }}",
-      "winrm_password": "{{ user `winrm_password` }}",
-      "winrm_timeout": "12h",
-      "winrm_use_ssl": "true",
-      "winrm_insecure": "true",
-      "headless": "{{ user `headless` }}",
+      "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-qemu",
-      "shutdown_command": "A:\\sysprep.bat",
-      "shutdown_timeout": "15m",
-      "accelerator": "kvm",
       "qemuargs": [
         [
           "-drive",
@@ -46,37 +29,39 @@
           "file={{ user `name` }}-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"
         ]
       ],
+      "shutdown_command": "A:\\sysprep.bat",
+      "shutdown_timeout": "15m",
+      "type": "qemu",
+      "vm_name": "{{ user `name` }}",
+      "winrm_insecure": "true",
+      "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "12h",
+      "winrm_use_ssl": "true",
+      "winrm_username": "{{ user `winrm_username` }}"
+    },
+    {
+      "communicator": "winrm",
+      "cpus": "{{ user `cpus` }}",
       "disk_size": "{{ user `disk_size` }}",
       "floppy_files": [
         "{{ user `autounattend` }}",
         "scripts/win-common/fixnetwork.ps1",
         "scripts/win-common/unattend.xml",
         "scripts/win-common/sysprep.bat"
-      ]
-    },
-    {
-      "vm_name": "{{ user `name` }}",
-      "type": "virtualbox-iso",
+      ],
+      "guest_additions_mode": "attach",
       "guest_os_type": "Windows{{ user `windows_version` }}_64",
+      "hard_drive_interface": "sata",
+      "headless": "{{ user `headless` }}",
       "iso_checksum": "file:{{ user `iso_checksum` }}",
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
-      "communicator": "winrm",
-      "winrm_username": "{{ user `winrm_username` }}",
-      "winrm_password": "{{ user `winrm_password` }}",
-      "winrm_timeout": "12h",
-      "winrm_use_ssl": "true",
-      "winrm_insecure": "true",
-      "headless": "{{ user `headless` }}",
+      "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
-      "guest_additions_mode": "attach",
       "shutdown_command": "A:\\sysprep.bat",
       "shutdown_timeout": "15m",
-      "hard_drive_interface": "sata",
-      "disk_size": "{{ user `disk_size` }}",
-      "cpus": "{{ user `cpus` }}",
-      "memory": "{{ user `memory` }}",
+      "type": "virtualbox-iso",
       "vboxmanage": [
         [
           "modifyvm",
@@ -91,66 +76,81 @@
           "ac97"
         ]
       ],
-      "floppy_files": [
-        "{{ user `autounattend` }}",
-        "scripts/win-common/fixnetwork.ps1",
-        "scripts/win-common/unattend.xml",
-        "scripts/win-common/sysprep.bat"
-      ]
-    }
-  ],
-  "provisioners": [
-    {
-      "type": "sleep",
-      "duration": "1m"
-    },
-    {
-      "type": "powershell",
-      "only": [
-        "virtualbox-iso"
-      ],
-      "inline": [
-        "$cert = (Get-AuthenticodeSignature 'E:\\VBoxWindowsAdditions.exe').SignerCertificate; [System.IO.File]::WriteAllBytes('C:\\vbox.cer', $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));",
-        "certutil.exe -f -addstore TrustedPublisher C:\\vbox.cer",
-        "E:\\VBoxWindowsAdditions.exe /S",
-        "del C:\\vbox.cer"
-      ]
-    },
-    {
-      "type": "shell-local",
-      "environment_vars": [
-        "ANSIBLE_CONFIG=ansible/ansible.cfg",
-        "ANSIBLE_REMOTE_PORT={{ build `Port` }}",
-        "ANSIBLE_REMOTE_USER={{ user `winrm_username` }}"
-      ],
-      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_password='{{ user `winrm_password` }}'' -i 127.0.0.1, ansible/site.yml"
-    },
-    {
-      "type": "powershell",
-      "inline": [
-        "New-Item -ItemType directory -Path C:\\Users\\vagrant\\.ssh > $null",
-        "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub' -OutFile 'C:\\Users\\vagrant\\.ssh\\authorized_keys'"
-      ]
-    },
-    {
-      "type": "windows-shell",
-      "pause_before": "5m",
-      "inline": [
-        "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cache internet_explorer.cookies internet_explorer.downloads internet_explorer.forms internet_explorer.history internet_explorer.logs system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.backup windows_defender.history windows_defender.logs windows_defender.quarantine windows_defender.temp windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.shellbags windows_explorer.thumbnails  > NUL",
-        "udefrag --optimize --repeat --suppress-progress-indicator %SystemDrive%",
-        "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean system.free_disk_space"
-      ],
-      "remote_path": "C:\\script.bat"
+      "vm_name": "{{ user `name` }}",
+      "winrm_insecure": "true",
+      "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "12h",
+      "winrm_use_ssl": "true",
+      "winrm_username": "{{ user `winrm_username` }}"
     }
   ],
   "post-processors": [
     [
       {
-        "type": "vagrant",
         "compression_level": 9,
-        "vagrantfile_template": "Vagrantfile-windows.template",
-        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box"
+        "output": "{{ user `packer_images_output_dir` }}/{{ user `name` }}-{{ .Provider }}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "Vagrantfile-windows.template"
       }
     ]
-  ]
+  ],
+  "provisioners": [
+    {
+      "duration": "1m",
+      "type": "sleep"
+    },
+    {
+      "inline": [
+        "$cert = (Get-AuthenticodeSignature 'E:\\VBoxWindowsAdditions.exe').SignerCertificate; [System.IO.File]::WriteAllBytes('C:\\vbox.cer', $cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Cert));",
+        "certutil.exe -f -addstore TrustedPublisher C:\\vbox.cer",
+        "E:\\VBoxWindowsAdditions.exe /S",
+        "del C:\\vbox.cer"
+      ],
+      "only": [
+        "virtualbox-iso"
+      ],
+      "type": "powershell"
+    },
+    {
+      "command": "ansible-playbook --connection=winrm --extra-vars='ansible_winrm_server_cert_validation=ignore packer_build_name={{ user `name` }} ansible_password='{{ user `winrm_password` }}'' -i 127.0.0.1, ansible/site.yml",
+      "environment_vars": [
+        "ANSIBLE_CONFIG=ansible/ansible.cfg",
+        "ANSIBLE_REMOTE_PORT={{ build `Port` }}",
+        "ANSIBLE_REMOTE_USER={{ user `winrm_username` }}"
+      ],
+      "type": "shell-local"
+    },
+    {
+      "inline": [
+        "New-Item -ItemType directory -Path C:\\Users\\vagrant\\.ssh > $null",
+        "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub' -OutFile 'C:\\Users\\vagrant\\.ssh\\authorized_keys'"
+      ],
+      "type": "powershell"
+    },
+    {
+      "inline": [
+        "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean deepscan.backup deepscan.ds_store deepscan.thumbs_db deepscan.tmp internet_explorer.cache internet_explorer.cookies internet_explorer.downloads internet_explorer.forms internet_explorer.history internet_explorer.logs system.clipboard system.custom system.logs system.memory_dump system.muicache system.prefetch system.recycle_bin system.tmp system.updates windows_defender.backup windows_defender.history windows_defender.logs windows_defender.quarantine windows_defender.temp windows_explorer.mru windows_explorer.recent_documents windows_explorer.run windows_explorer.search_history windows_explorer.shellbags windows_explorer.thumbnails  > NUL",
+        "udefrag --optimize --repeat --suppress-progress-indicator %SystemDrive%",
+        "\"%PROGRAMFILES(x86)%\\BleachBit\\bleachbit_console.exe\" --clean system.free_disk_space"
+      ],
+      "pause_before": "5m",
+      "remote_path": "C:\\script.bat",
+      "type": "windows-shell"
+    }
+  ],
+  "variables": {
+    "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
+    "cpus": "2",
+    "disk_size": "51200",
+    "headless": "false",
+    "iso_checksum": "win_iso.sha256",
+    "iso_url": "{{ env `ISO_URL` }}",
+    "memory": "4096",
+    "name": "{{ env `NAME` }}",
+    "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
+    "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
+    "windows_version": "{{ env `WINDOWS_VERSION` }}",
+    "winrm_password": "vagrant",
+    "winrm_username": "vagrant"
+  }
 }
