@@ -4,7 +4,7 @@
   "_comment2": "NAME=ubuntu-16.04-server-amd64 UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu ubuntu-server.json",
   "builders": [
     {
-      "accelerator": "kvm",
+      "accelerator": "{{ user `accelerator` }}",
       "boot_command": [
         "<tab>",
         "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu-server/{{ user `preseed_file_name` }} ",
@@ -101,6 +101,7 @@
     }
   ],
   "variables": {
+    "accelerator": "kvm",
     "cpus": "2",
     "disk_size": "51200",
     "headless": "false",

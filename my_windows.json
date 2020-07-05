@@ -2,7 +2,7 @@
   "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu my_windows.json",
   "builders": [
     {
-      "accelerator": "kvm",
+      "accelerator": "{{ user `accelerator` }}",
       "communicator": "winrm",
       "cpus": "{{ user `cpus` }}",
       "disk_size": "{{ user `disk_size` }}",
@@ -139,6 +139,7 @@
     }
   ],
   "variables": {
+    "accelerator": "kvm",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
     "cpus": "2",
     "disk_size": "51200",
