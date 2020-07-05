@@ -2,7 +2,7 @@
   "_comment1": "NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=2003 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_centos-7.json",
   "builders": [
     {
-      "accelerator": "kvm",
+      "accelerator": "{{ user `accelerator` }}",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
@@ -116,6 +116,7 @@
     }
   ],
   "variables": {
+    "accelerator": "kvm",
     "centos_mirror": "http://ftp.cvut.cz/centos/",
     "centos_tag": "{{ env `CENTOS_TAG` }}",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
