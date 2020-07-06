@@ -7,6 +7,8 @@ export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/
 export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-${PACKER_CACHE_DIR}/$(basename "${VIRTIO_WIN_ISO_URL}")}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
+# Qemu Accelerator - use kvm for Linux and hvf for MacOS
+export ACCELERATOR=${ACCELERATOR:-kvm}
 # Packer binary
 export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
@@ -178,7 +180,7 @@ cmdline() {
 
 packer_build() {
   if [[ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]]; then
-    ${PACKER_BINARY} build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+    ${PACKER_BINARY} build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" -var "accelerator=${ACCELERATOR}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     ln -rfs "${PACKER_CACHE_DIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${PACKER_CACHE_DIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
