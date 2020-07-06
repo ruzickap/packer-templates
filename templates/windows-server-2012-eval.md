@@ -10,6 +10,7 @@ and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
 ## GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
+* Git commit hash: [${GITHUB_SHA}](https://github.com/ruzickap/packer-templates/commit/${GITHUB_SHA})
 
 ## Requirements
 

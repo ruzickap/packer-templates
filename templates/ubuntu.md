@@ -9,6 +9,7 @@ Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} base box for
 ## GitHub repository for bug reports or feature requests
 
 * [https://github.com/ruzickap/packer-templates/](https://github.com/ruzickap/packer-templates/)
+* Git commit hash: [${GITHUB_SHA}](https://github.com/ruzickap/packer-templates/commit/${GITHUB_SHA})
 
 ## Requirements
 
