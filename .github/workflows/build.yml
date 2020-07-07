@@ -40,22 +40,32 @@ jobs:
           - ubuntu-18.04-desktop-amd64-libvirt
 
     steps:
-      - name: Check if image is not already built
+      - name: Skip image build if it already exists in Vagrant Cloud
         run: |
           BUILD="${{ matrix.stage }}"
           PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
           NAME="${BUILD%-*}"
 
-          # Check if the boxes (virtualbox/libvirt) with the same git sha already exists
+          # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
           CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
           if echo "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" | grep -q "${GITHUB_SHA}"; then
+            echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
             # Skip build if the box already exists
             CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
             if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
-              echo "*** ${BUILD} with git sha \"${GITHUB_SHA}\" exists on Vagrant Cloud"
+              echo "*** Found already build image \"${BUILD}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
+              echo "*** This build will be skipped..."
               echo "::set-env name=skip::true"
+            else
+              # Set BOX_VERSION variable from existing provider (if exists) or from "date"
+              BOX_VERSION="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version")"
+              echo "*** Using previously defined box version \"${BOX_VERSION}\", because there is already builded box with git hash \"${GITHUB_SHA}\""
             fi
+          else
+            BOX_VERSION="$(date +%Y%m%d).01"
+            echo "*** Using new box version based on current date: ${BOX_VERSION}"
           fi
+          echo "::set-env name=BOX_VERSION::${BOX_VERSION}"
 
       - uses: actions/checkout@v2
         if: env.skip != 'true'
@@ -74,6 +84,8 @@ jobs:
         run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
+        env:
+          BOX_VERSION: ${{ env.BOX_VERSION }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
@@ -113,25 +125,32 @@ jobs:
           - ubuntu-18.04-desktop-amd64-virtualbox
 
     steps:
-      - name: Check if image is not already built
+      - name: Skip image build if it already exists in Vagrant Cloud
         run: |
           BUILD="${{ matrix.stage }}"
           PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
           NAME="${BUILD%-*}"
 
-          # Check if the boxes (virtualbox/libvirt) with the same git sha already exists
+          # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
           CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
           if echo "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" | grep -q "${GITHUB_SHA}"; then
-            echo "Git hash \"${GITHUB_SHA}\" found in current markdown description"
+            echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
             # Skip build if the box already exists
             CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
             if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
-              echo "Found already build image(s) with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
-            else
-              echo "*** ${BUILD} with git sha \"${GITHUB_SHA}\" exists on Vagrant Cloud"
+              echo "*** Found already build image \"${BUILD}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
+              echo "*** This build will be skipped..."
               echo "::set-env name=skip::true"
+            else
+              # Set BOX_VERSION variable from existing provider (if exists) or from "date"
+              BOX_VERSION="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version")"
+              echo "*** Using previously defined box version \"${BOX_VERSION}\", because there is already builded box with git hash \"${GITHUB_SHA}\""
             fi
+          else
+            BOX_VERSION="$(date +%Y%m%d).01"
+            echo "*** Using new box version based on current date: ${BOX_VERSION}"
           fi
+          echo "::set-env name=BOX_VERSION::${BOX_VERSION}"
 
       - uses: actions/checkout@v2
         if: env.skip != 'true'
@@ -151,6 +170,8 @@ jobs:
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
+        env:
+          BOX_VERSION: ${{ env.BOX_VERSION }}
         run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
 
       - name: Build log cleanup - ${{ matrix.stage }}
