@@ -9,9 +9,10 @@ set -o pipefail
 echo "*** Delete forgotten vagrant instances from ${TMPDIR}"
 if [[ -d "${TMPDIR}" ]]; then
   while IFS= read -r -d '' DIR; do
+    [ ! -f "${DIR}/Vagrantfile" ] && continue
     VAGRANT_BOX_NAME=$(awk -F\" '/config.vm.box =/ { print $2 }' "${DIR}/Vagrantfile")
 
-    echo "*** ${DIR} | ${VAGRANT_BOX_NAME} | ${VAGRANT_BOX_PROVIDER}"
+    echo "*** ${DIR} | ${VAGRANT_BOX_NAME}"
     cd "${DIR}"
     vagrant destroy -f
     if [[ "${VAGRANT_BOX_NAME}" = "-libvirt" ]]; then
