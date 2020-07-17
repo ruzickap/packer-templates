@@ -49,7 +49,7 @@ jobs:
           # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
           CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
           if echo "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" | grep -q "${GITHUB_SHA}"; then
-            echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
+            echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description: https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/"
             # Skip build if the box already exists
             CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
             if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
