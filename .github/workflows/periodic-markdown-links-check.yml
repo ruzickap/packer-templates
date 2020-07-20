@@ -20,6 +20,8 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Link Checker
-        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        uses: ruzickap/action-my-markdown-link-checker@v1
         with:
-          config-file: '.mlc_config.json'
+          config_file: .mlc_config.json
+          exclude: |
+            CHANGELOG.md
