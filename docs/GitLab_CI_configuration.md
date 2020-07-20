@@ -1,7 +1,5 @@
 # GitLab setup
 
-[![Build Status](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)](https://gitlab.com/ruzickap/packer-templates/badges/master/pipeline.svg)
-
 Few notes how to configure GitLab for `packer-templates` to build boxes for
 Vagrant automatically every month.
 
