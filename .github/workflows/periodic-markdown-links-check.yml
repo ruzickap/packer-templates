@@ -22,6 +22,5 @@ jobs:
       - name: Link Checker
         uses: ruzickap/action-my-markdown-link-checker@v1
         with:
-          config_file: .mlc_config.json
           exclude: |
             CHANGELOG.md
