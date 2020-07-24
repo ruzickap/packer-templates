@@ -22,7 +22,7 @@ jobs:
     name: "*"
     runs-on: [self-hosted, linux, x64]
     strategy:
-      max-parallel: 4
+      max-parallel: 2
       fail-fast: false
       matrix:
         stage:
@@ -48,7 +48,7 @@ jobs:
 
           # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
           CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
-          if echo "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" | grep -q "${GITHUB_SHA}"; then
+          if [[ "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" =~ ${GITHUB_SHA} ]]; then
             echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description: https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/"
             # Skip build if the box already exists
             CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
@@ -77,17 +77,19 @@ jobs:
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
-          ./build.sh ${{ matrix.stage }}
+          ./build.sh "${{ matrix.stage }}"
 
       - name: Check the created box image - ${{ matrix.stage }}
         if: env.skip != 'true'
-        run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: |
+          ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
-        run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: |
+          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Build log cleanup - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
@@ -107,7 +109,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     needs: build-libvirt
     strategy:
-      max-parallel: 4
+      max-parallel: 2
       fail-fast: false
       matrix:
         stage:
@@ -133,7 +135,7 @@ jobs:
 
           # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
           CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
-          if echo "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" | grep -q "${GITHUB_SHA}"; then
+          if [[ "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" =~ ${GITHUB_SHA} ]] ; then
             echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
             # Skip build if the box already exists
             CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
@@ -162,17 +164,19 @@ jobs:
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
-          ./build.sh ${{ matrix.stage }}
+          ./build.sh "${{ matrix.stage }}"
 
       - name: Check the created box image - ${{ matrix.stage }}
         if: env.skip != 'true'
-        run: ./vagrant_init_destroy_boxes.sh ${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: |
+          ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
-        run: ./upload_box_to_vagrantcloud.sh ${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box
+        run: |
+          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Build log cleanup - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
