@@ -58,6 +58,8 @@ cmdline() {
   MY_NAME=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $1 }')
   VAGRANT_PROVIDER=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $NF }')
   export VAGRANT_PROVIDER
+  # Workaround for envsubst (https://github.com/ruzickap/packer-templates/issues/153)
+  export VAGRANT_LATEST_VERSION="\${VAGRANT_LATEST_VERSION}"
 
   if [[ ! -f "${VAGRANT_CLOUD_BOX_FILE}" ]]; then
     echo -e "*** ERROR: \"${VAGRANT_CLOUD_BOX_FILE}\" does not exist!\n"
