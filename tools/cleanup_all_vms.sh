@@ -1,10 +1,11 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
 
-TMPDIR=${TMPDIR:-/tmp}
-PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
+PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
+PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
+TMPDIR=${TMPDIR:-/tmp}
 
-set -o pipefail
+set -euo pipefail
 
 echo "*** Delete forgotten vagrant instances from ${TMPDIR}"
 if [[ -d "${TMPDIR}" ]]; then
@@ -63,6 +64,11 @@ done
 
 
 if [[ -d "${LOGDIR}" ]]; then
-  echo "*** Remove drectory: ${LOGDIR}"
+  echo "*** Remove directory: ${LOGDIR}"
   rm -rf "${LOGDIR}"
+fi
+
+if [[ -d "${PACKER_IMAGES_OUTPUT_DIR}" ]]; then
+  echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
+  rm -rf "${PACKER_IMAGES_OUTPUT_DIR}"
 fi
