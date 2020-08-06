@@ -12,11 +12,13 @@ Vagrant.configure("2") do |config|
     libvirt.random  :model => 'random'
 
     # Enable Hyper-V enlightments: https://blog.wikichoon.com/2014/07/enabling-hyper-v-enlightenments-with-kvm.html
-    libvirt.hyperv_feature :name => 'relaxed',  :state => 'on'
-    libvirt.hyperv_feature :name => 'stimer',   :state => 'on'
-    libvirt.hyperv_feature :name => 'synic',    :state => 'on'
-    libvirt.hyperv_feature :name => 'vapic',    :state => 'on'
-    libvirt.hyperv_feature :name => 'vpindex',  :state => 'on'
+    libvirt.hyperv_feature :name => 'relaxed', :state => 'on'
+    # stimer can not be enabled because it needs clock / hypervclock (https://bugzilla.redhat.com/show_bug.cgi?id=1816670) settings which are not supported by vagrant-libvirt
+    # https://github.com/ruzickap/packer-templates/issues/154
+    # libvirt.hyperv_feature :name => 'stimer',  :state => 'on'
+    libvirt.hyperv_feature :name => 'synic',   :state => 'on'
+    libvirt.hyperv_feature :name => 'vapic',   :state => 'on'
+    libvirt.hyperv_feature :name => 'vpindex', :state => 'on'
     libvirt.memory = 2048
   end
 
