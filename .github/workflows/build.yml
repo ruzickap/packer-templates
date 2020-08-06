@@ -26,18 +26,18 @@ jobs:
       fail-fast: false
       matrix:
         stage:
-          - windows-server-2012_r2-standard-x64-eval-libvirt
-          - windows-server-2016-standard-x64-eval-libvirt
-          - windows-server-2019-standard-x64-eval-libvirt
           - my_centos-7-x86_64-libvirt
           - my_ubuntu-20.04-server-amd64-libvirt
           - my_windows-10-enterprise-x64-eval-libvirt
-          - windows-10-enterprise-x64-eval-libvirt
-          - ubuntu-20.04-server-amd64-libvirt
-          - ubuntu-18.04-server-amd64-libvirt
           - ubuntu-16.04-server-amd64-libvirt
-          - ubuntu-20.04-desktop-amd64-libvirt
           - ubuntu-18.04-desktop-amd64-libvirt
+          - ubuntu-18.04-server-amd64-libvirt
+          - ubuntu-20.04-desktop-amd64-libvirt
+          - ubuntu-20.04-server-amd64-libvirt
+          - windows-10-enterprise-x64-eval-libvirt
+          - windows-server-2012_r2-standard-x64-eval-libvirt
+          - windows-server-2016-standard-x64-eval-libvirt
+          - windows-server-2019-standard-x64-eval-libvirt
 
     steps:
       - name: Skip image build if it already exists in Vagrant Cloud
@@ -113,18 +113,18 @@ jobs:
       fail-fast: false
       matrix:
         stage:
-          - windows-server-2012_r2-standard-x64-eval-virtualbox
-          - windows-server-2016-standard-x64-eval-virtualbox
-          - windows-server-2019-standard-x64-eval-virtualbox
           - my_centos-7-x86_64-virtualbox
           - my_ubuntu-20.04-server-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
-          - windows-10-enterprise-x64-eval-virtualbox
-          - ubuntu-20.04-server-amd64-virtualbox
-          - ubuntu-18.04-server-amd64-virtualbox
           - ubuntu-16.04-server-amd64-virtualbox
-          - ubuntu-20.04-desktop-amd64-virtualbox
           - ubuntu-18.04-desktop-amd64-virtualbox
+          - ubuntu-18.04-server-amd64-virtualbox
+          - ubuntu-20.04-desktop-amd64-virtualbox
+          - ubuntu-20.04-server-amd64-virtualbox
+          - windows-10-enterprise-x64-eval-virtualbox
+          - windows-server-2012_r2-standard-x64-eval-virtualbox
+          - windows-server-2016-standard-x64-eval-virtualbox
+          - windows-server-2019-standard-x64-eval-virtualbox
 
     steps:
       - name: Skip image build if it already exists in Vagrant Cloud

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
 PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
+LOGDIR=${LOGDIR:-${PACKER_IMAGES_OUTPUT_DIR}}
 TMPDIR=${TMPDIR:-/tmp}
 
 set -euo pipefail
@@ -24,6 +24,8 @@ if [[ -d "${TMPDIR}" ]]; then
   done <   <(find "${TMPDIR}" -maxdepth 2 ! -readable -prune -o -type f -name Vagrantfile -printf "%h\0")
 fi
 
+echo "*** Remove logs created by vagrant_init_destroy_boxes.sh form \"${LOGDIR}\""
+find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete
 
 echo "*** Remove all PACKER_CACHE_DIR mess (not the iso files)"
 find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
@@ -34,7 +36,6 @@ while IFS= read -r BOX; do
   echo "*** ${BOX}"
   vagrant box remove --force --all "${BOX}"
 done <   <(vagrant box list | awk '{ print $1 }')
-
 
 echo "*** Remove all VirtualBox instances"
 while IFS= read -r VM; do
@@ -50,8 +51,7 @@ while IFS= read -r HDD; do
   VBoxManage closemedium disk "${HDD_ID}" --delete
 done <   <(VBoxManage list hdds | grep '^UUID:')
 
-test -d "${HOME}/VirtualBox VMs" && rm -r -v "${HOME}/VirtualBox VMs"
-
+test -d "${HOME}/VirtualBox VMs" && rm -rvf "${HOME}/VirtualBox VMs"
 
 echo "*** Remove all libvirt instances"
 for VM in $(virsh --connect=qemu:///system list --all --name); do
@@ -62,13 +62,12 @@ for VM in $(virsh --connect=qemu:///system list --all --name); do
   virsh --connect=qemu:///system undefine --remove-all-storage "${VM}"
 done
 
-
 if [[ -d "${LOGDIR}" ]]; then
   echo "*** Remove directory: ${LOGDIR}"
-  rm -rf "${LOGDIR}"
+  rm -rvf "${LOGDIR}"
 fi
 
 if [[ -d "${PACKER_IMAGES_OUTPUT_DIR}" ]]; then
   echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
-  rm -rf "${PACKER_IMAGES_OUTPUT_DIR}"
+  rm -rvf "${PACKER_IMAGES_OUTPUT_DIR}"
 fi
