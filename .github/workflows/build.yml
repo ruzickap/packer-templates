@@ -82,7 +82,7 @@ jobs:
       - name: Check the created box image - ${{ matrix.stage }}
         if: env.skip != 'true'
         run: |
-          ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+          ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
         env:
@@ -96,9 +96,7 @@ jobs:
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
-          if [[ ! "$( ls -A "${LOGDIR}" )" ]]; then rmdir -v "${LOGDIR}"; fi
           rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-          if [[ ! "$( ls -A "${PACKER_IMAGES_OUTPUT_DIR}" )" ]]; then rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"; fi
 
 ##############
 # VirtualBox
@@ -164,7 +162,7 @@ jobs:
         run: |
           test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
           ln -sv "${PACKER_CACHE_DIR}" packer_cache
-          ./build.sh "${{ matrix.stage }}"
+          ./build.sh "${{ matrix.stage }}" || ./build.sh "${{ matrix.stage }}"
 
       - name: Check the created box image - ${{ matrix.stage }}
         if: env.skip != 'true'
@@ -176,16 +174,14 @@ jobs:
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
         run: |
-          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Build log cleanup - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: |
           rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
           rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
-          if [[ ! "$( ls -A "${LOGDIR}" )" ]]; then rmdir -v "${LOGDIR}"; fi
           rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-          if [[ ! "$( ls -A "${PACKER_IMAGES_OUTPUT_DIR}" )" ]]; then rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"; fi
 
   cleanup:
     runs-on: [self-hosted, linux, x64]
