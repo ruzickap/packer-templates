@@ -25,10 +25,10 @@ if [[ -d "${TMPDIR}" ]]; then
 fi
 
 echo "*** Remove logs created by vagrant_init_destroy_boxes.sh form \"${LOGDIR}\""
-find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete
+test -d "${LOGDIR}" && find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete
 
 echo "*** Remove all PACKER_CACHE_DIR mess (not the iso files)"
-find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
+test -d "${PACKER_CACHE_DIR}" &&  find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
 
 echo "*** Remove all Vagrant boxes"
 while IFS= read -r BOX; do
