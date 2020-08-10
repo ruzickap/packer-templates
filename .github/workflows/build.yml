@@ -22,7 +22,7 @@ jobs:
     name: "*"
     runs-on: [self-hosted, linux, x64]
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       fail-fast: false
       matrix:
         stage:
@@ -107,7 +107,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     needs: build-libvirt
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       fail-fast: false
       matrix:
         stage:
