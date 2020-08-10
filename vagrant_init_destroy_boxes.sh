@@ -31,6 +31,8 @@ check_vagrant_vm() {
       vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"'
       echo "*** Running: vagrant winrm --shell powershell --command 'Get-Service ...'"
       vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq
+      echo "*** Running: vagrant winrm --shell powershell --command 'cscript slmgr.vbs...'"
+      vagrant winrm --shell cmd --command 'cscript C:\Windows\System32\slmgr.vbs /dli'
       echo "*** vagrant winrm --shell powershell --command .... finished"
     ;;
     *centos* | *ubuntu* )

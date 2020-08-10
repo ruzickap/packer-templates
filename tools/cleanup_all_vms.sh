@@ -53,14 +53,22 @@ done <   <(VBoxManage list hdds | grep '^UUID:')
 
 test -d "${HOME}/VirtualBox VMs" && rm -rvf "${HOME}/VirtualBox VMs"
 
-echo "*** Remove all libvirt instances"
-for VM in $(virsh --connect=qemu:///system list --all --name); do
-  echo "*** ${VM}"
-  if virsh --connect=qemu:///system dominfo "${VM}" | grep -q running; then
-    virsh --connect=qemu:///system destroy "${VM}"
-  fi
-  virsh --connect=qemu:///system undefine --remove-all-storage "${VM}"
-done
+if command -v virsh &>/dev/null; then
+  echo "*** Remove all libvirt instances"
+  for VM in $(virsh --connect=qemu:///system list --all --name); do
+    echo "*** ${VM}"
+    if virsh --connect=qemu:///system dominfo "${VM}" | grep -q running; then
+      virsh --connect=qemu:///system destroy "${VM}"
+    fi
+    virsh --connect=qemu:///system undefine --remove-all-storage "${VM}"
+  done
+
+  echo "*** Remove all libvirt disks"
+  for VOL in $(virsh vol-list default | awk '/.img/ { print $1 }'); do
+    echo "*** ${VOL}"
+    virsh vol-delete "${VOL}" --pool default
+  done
+fi
 
 if [[ -d "${LOGDIR}" ]]; then
   echo "*** Remove directory: ${LOGDIR}"
