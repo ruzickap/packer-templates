@@ -2,8 +2,8 @@
 
 PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
-LOGDIR=${LOGDIR:-${PACKER_IMAGES_OUTPUT_DIR}}
 TMPDIR=${TMPDIR:-/tmp}
+LOGDIR=${LOGDIR:-${TMPDIR}}
 
 set -euo pipefail
 
@@ -23,9 +23,6 @@ if [[ -d "${TMPDIR}" ]]; then
     rm -rf "${DIR}"
   done <   <(find "${TMPDIR}" -maxdepth 2 ! -readable -prune -o -type f -name Vagrantfile -printf "%h\0")
 fi
-
-echo "*** Remove logs created by vagrant_init_destroy_boxes.sh form \"${LOGDIR}\""
-test -d "${LOGDIR}" && find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete
 
 echo "*** Remove all PACKER_CACHE_DIR mess (not the iso files)"
 test -d "${PACKER_CACHE_DIR}" &&  find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
@@ -71,11 +68,19 @@ if command -v virsh &>/dev/null; then
 fi
 
 if [[ -d "${LOGDIR}" ]]; then
-  echo "*** Remove directory: ${LOGDIR}"
-  rm -rvf "${LOGDIR}"
+  echo "*** Remove logs created by vagrant_init_destroy_boxes.sh form \"${LOGDIR}\""
+  find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete -print
+  if [[ ! "$(ls -A "${LOGDIR}")" ]]; then
+    echo "*** Remove directory: ${LOGDIR}"
+    rmdir -v "${LOGDIR}"
+  fi
 fi
 
 if [[ -d "${PACKER_IMAGES_OUTPUT_DIR}" ]]; then
-  echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
-  rm -rvf "${PACKER_IMAGES_OUTPUT_DIR}"
+  echo "*** Remove boxes and logs created by build.sh form \"${PACKER_IMAGES_OUTPUT_DIR}\""
+  find "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-packer.log" -delete -print
+  if [[ ! "$(ls -A "${PACKER_IMAGES_OUTPUT_DIR}")" ]]; then
+    echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
+     rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
+  fi
 fi

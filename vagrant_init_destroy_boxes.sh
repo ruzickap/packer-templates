@@ -5,21 +5,22 @@ set -o pipefail
 BOXES_LIST=${*:-$(find . -maxdepth 1 \( -name "*ubuntu*.box" -o -name "*centos*.box" -o -name "*windows*.box" \) -printf "%f\n" | sort | tr "\n" " ")}
 TMPDIR=${TMPDIR:-/tmp}
 LOGDIR=${LOGDIR:-${TMPDIR}}
+STDOUT="/dev/null"
 export VAGRANT_IGNORE_WINRM_PLUGIN=true
 
 vagrant_box_add() {
-  vagrant box add "${VAGRANT_BOX_FILE}" --name="${VAGRANT_BOX_NAME}" --force
+  vagrant box add "${VAGRANT_BOX_FILE}" --name="${VAGRANT_BOX_NAME}" --force > ${STDOUT}
 }
 
 vagrant_init_up() {
-  vagrant init "${VAGRANT_BOX_NAME}"
+  vagrant init "${VAGRANT_BOX_NAME}" > ${STDOUT}
 
   # Disable VirtualBox GUI
   if [[ "${VAGRANT_BOX_PROVIDER}" = "virtualbox" ]]; then
     sed -i '/config.vm.box =/a \ \ config.vm.provider "virtualbox" do |v|\n \ \ \ v.gui = false\n\ \ end' "${VAGRANT_CWD}/Vagrantfile"
   fi
 
-  vagrant up --provider "${VAGRANT_BOX_PROVIDER}" | grep -v 'Progress:'
+  vagrant up --provider "${VAGRANT_BOX_PROVIDER}" > ${STDOUT}
 }
 
 check_vagrant_vm() {
@@ -27,13 +28,46 @@ check_vagrant_vm() {
 
   case ${VAGRANT_BOX_FILE} in
     *windows* )
-      echo "*** Getting version: systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\""
-      vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"'
-      echo "*** Running: vagrant winrm --shell powershell --command 'Get-Service ...'"
-      vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher; Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}; Get-WmiObject -Class Win32_Product; Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq
-      echo "*** Running: vagrant winrm --shell powershell --command 'cscript slmgr.vbs...'"
-      vagrant winrm --shell cmd --command 'cscript C:\Windows\System32\slmgr.vbs /dli'
-      echo "*** vagrant winrm --shell powershell --command .... finished"
+      TRUSTED_CERTIFICATES=$(vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher" | uniq)
+      if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
+        echo "${TRUSTED_CERTIFICATES}"
+        echo "*** There are no certificates from 'Red Hat' or 'Oracle' installed !"
+        vagrant_cleanup
+        exit 1
+      fi
+
+      VIRT_SERVICES=$(vagrant winrm --shell powershell --command "Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}" | uniq)
+      if [[ ! ${VIRT_SERVICES} =~ (QEMU|Spice|vdservice|VBoxService) ]]; then
+        echo "${VIRT_SERVICES}"
+        echo "*** There are no 'Virtualization services/addons' running !"
+        vagrant_cleanup
+        exit 2
+      fi
+
+      if [[ ${VAGRANT_BOX_FILE} =~ "libvirt" ]]; then
+        VIRT_DEVICES=$(vagrant winrm --shell powershell --command "Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq)
+        if [[ ! ${VIRT_DEVICES} =~ (Red Hat|VirtIO) ]]; then
+          echo "${VIRT_DEVICES}"
+          echo "*** There are no 'Virtualization services/addons' running !"
+          vagrant_cleanup
+          exit 3
+        fi
+      fi
+
+      LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
+      if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
+        echo "${LICENSE_STATUS}"
+        echo "*** Licensing issue - expiration should be 10 or 180 days !"
+        vagrant_cleanup
+        exit 4
+      fi
+
+      WIN_VERSION=$(vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"')
+      if [[ ! ${VAGRANT_BOX_FILE} =~ $(echo "${WIN_VERSION}" | awk '/^OS Name/ { print tolower($4 "-" $5 "-" $6) }') ]]; then
+        echo "${WIN_VERSION}"
+        echo "*** Windows version mismatch \"$(echo "${WIN_VERSION}" | awk '{ print tolower($4 "-" $5 "-" $6) }')\" vs \"${VAGRANT_BOX_FILE}\" !"
+        exit 5
+      fi
     ;;
     *centos* | *ubuntu* )
       echo "*** Checking if there are some packages to upgrade (there should be none)"
@@ -55,14 +89,15 @@ check_vagrant_vm() {
 }
 
 vagrant_cleanup() {
-  vagrant destroy -f
-  vagrant box remove -f "${VAGRANT_BOX_NAME}"
+  vagrant destroy -f > ${STDOUT}
+  vagrant box remove -f "${VAGRANT_BOX_NAME}" > ${STDOUT}
 
   if [[ "${VAGRANT_BOX_NAME}" =~ "libvirt" ]]; then
-    virsh --connect=qemu:///system vol-delete --pool default --vol "${VAGRANT_BOX_NAME}_vagrant_box_image_0.img"
+    virsh --quiet --connect=qemu:///system vol-delete --pool default --vol "${VAGRANT_BOX_NAME}_vagrant_box_image_0.img"
   fi
 
   rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant}
+  rm "${LOG_FILE}"
   rmdir "${VAGRANT_CWD}"
 }
 
