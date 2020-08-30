@@ -28,6 +28,8 @@ check_vagrant_vm() {
 
   case ${VAGRANT_BOX_FILE} in
     *windows* )
+      sleep 100
+
       TRUSTED_CERTIFICATES=$(vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher" | uniq)
       if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
         echo "${TRUSTED_CERTIFICATES}"
@@ -54,18 +56,18 @@ check_vagrant_vm() {
         fi
       fi
 
-      LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
-      # if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
-        echo "${LICENSE_STATUS}"
-        echo "*** Licensing issue - expiration should be 10 or 180 days !"
-        # vagrant_cleanup
-        # exit 4
-      # fi
-
       WIN_VERSION=$(vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"')
       if [[ ! ${VAGRANT_BOX_FILE} =~ $(echo "${WIN_VERSION}" | awk '/^OS Name/ { print tolower($4 "-" $5 "-" $6) }') ]]; then
         echo "${WIN_VERSION}"
         echo "*** Windows version mismatch \"$(echo "${WIN_VERSION}" | awk '{ print tolower($4 "-" $5 "-" $6) }')\" vs \"${VAGRANT_BOX_FILE}\" !"
+        vagrant_cleanup
+        exit 4
+      fi
+
+      LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
+      if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
+        echo "${LICENSE_STATUS}"
+        echo "*** Licensing issue - expiration should be 10, 90 or 180 days !"
         vagrant_cleanup
         exit 5
       fi
