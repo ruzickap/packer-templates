@@ -100,7 +100,6 @@ vagrant_cleanup() {
   fi
 
   rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant}
-  rm "${LOG_FILE}"
   rmdir "${VAGRANT_CWD}"
 }
 
