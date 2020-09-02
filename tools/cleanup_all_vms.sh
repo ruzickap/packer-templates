@@ -61,9 +61,9 @@ if command -v virsh &>/dev/null; then
   done
 
   echo "*** Remove all libvirt disks"
-  for VOL in $(virsh vol-list default | awk '/.img/ { print $1 }'); do
+  for VOL in $(virsh --connect=qemu:///system vol-list default | awk '/.img/ { print $1 }'); do
     echo "*** ${VOL}"
-    virsh vol-delete "${VOL}" --pool default
+    virsh --connect=qemu:///system vol-delete "${VOL}" --pool default
   done
 fi
 
@@ -78,7 +78,7 @@ fi
 
 if [[ -d "${PACKER_IMAGES_OUTPUT_DIR}" ]]; then
   echo "*** Remove boxes and logs created by build.sh form \"${PACKER_IMAGES_OUTPUT_DIR}\""
-  find "${PACKER_IMAGES_OUTPUT_DIR}" "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-packer.log" -delete -print
+  find "${PACKER_IMAGES_OUTPUT_DIR}" -maxdepth 1 -mindepth 1 -name "*-packer.log" -delete -print
   if [[ ! "$(ls -A "${PACKER_IMAGES_OUTPUT_DIR}")" ]]; then
     echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
      rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
