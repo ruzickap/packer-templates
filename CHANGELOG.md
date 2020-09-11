@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.1.1](https://github.com/ruzickap/packer-templates/compare/v0.1.0...v0.1.1) (2020-09-11)
+
+- Add connect parameter to all virsh commands in cleanup_all_vms.sh [`#172`](https://github.com/ruzickap/packer-templates/pull/172)
+- Keep log file on the disk after vagrant_init_destroy_boxes ends [`#171`](https://github.com/ruzickap/packer-templates/pull/171)
+- Add delay after the Windows boxes is started to wait for license data [`#170`](https://github.com/ruzickap/packer-templates/pull/170)
+- CHANGELOG file update [`#167`](https://github.com/ruzickap/packer-templates/pull/167)
+
 ## [v0.1.0](https://github.com/ruzickap/packer-templates/compare/v0.0.1...v0.1.0) (2020-08-21)
 
 - Disable license check due to issue #158 [`#166`](https://github.com/ruzickap/packer-templates/pull/166)
