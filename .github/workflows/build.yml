@@ -11,6 +11,8 @@ env:
   LOGDIR: /var/tmp/packer-templates-logs
   VAGRANT_CLOUD_USER: peru
   VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
+  # Needed for Packer when calling ansible
+  OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
 
 jobs:
 
@@ -243,7 +245,7 @@ jobs:
       - name: Install packages
         if: env.skip != 'true'
         run: |
-          brew install ansible coreutils gnu-sed packer qemu
+          brew install ansible coreutils gnu-sed qemu
           pip3 install pywinrm
 
       - name: Build image - ${{ matrix.stage }}
