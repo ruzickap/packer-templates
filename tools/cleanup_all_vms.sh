@@ -68,8 +68,8 @@ if command -v virsh &>/dev/null; then
 fi
 
 if [[ -d "${LOGDIR}" ]]; then
-  echo "*** Remove logs created by vagrant_init_destroy_boxes.sh form \"${LOGDIR}\""
-  find "${LOGDIR}" -maxdepth 1 -mindepth 1 -name "*-init.log" -delete -print
+  echo "*** Remove logs created by vagrant_init_destroy_boxes.sh or build.sh form \"${LOGDIR}\""
+  find "${LOGDIR}" -maxdepth 1 -mindepth 1 -regextype egrep -regex ".*-(init|packer)\.log" -delete -print
   if [[ ! "$(ls -A "${LOGDIR}")" ]]; then
     echo "*** Remove directory: ${LOGDIR}"
     rmdir -v "${LOGDIR}"
@@ -77,10 +77,10 @@ if [[ -d "${LOGDIR}" ]]; then
 fi
 
 if [[ -d "${PACKER_IMAGES_OUTPUT_DIR}" ]]; then
-  echo "*** Remove boxes and logs created by build.sh form \"${PACKER_IMAGES_OUTPUT_DIR}\""
-  find "${PACKER_IMAGES_OUTPUT_DIR}" -maxdepth 1 -mindepth 1 -name "*-packer.log" -delete -print
+  echo "*** Remove boxes created by build.sh form \"${PACKER_IMAGES_OUTPUT_DIR}\""
+  find "${PACKER_IMAGES_OUTPUT_DIR}" -maxdepth 1 -mindepth 1 -regextype egrep -regex ".*-(libvirt|virtualbox)\.box" -delete -print
   if [[ ! "$(ls -A "${PACKER_IMAGES_OUTPUT_DIR}")" ]]; then
     echo "*** Remove directory: ${PACKER_IMAGES_OUTPUT_DIR}"
-     rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
+    rmdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
   fi
 fi
