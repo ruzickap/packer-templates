@@ -14,7 +14,7 @@ export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
 export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
 # Directory where to store the logs
-export LOGDIR=${LOGDIR:-${PACKER_IMAGES_OUTPUT_DIR}}
+export LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
 # Max amount of time which packer can run (default 5 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
