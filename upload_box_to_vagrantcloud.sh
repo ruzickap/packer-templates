@@ -1,6 +1,6 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
 
-set -o pipefail
+set -eu -o pipefail
 
 export BOX_VERSION=${BOX_VERSION:-$(date +%Y%m%d).01}
 

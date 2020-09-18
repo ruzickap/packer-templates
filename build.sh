@@ -1,4 +1,6 @@
-#!/bin/bash -eu
+#!/usr/bin/env bash
+
+set -eu -o pipefail
 
 # Packer cache directory (where to store the iso images)
 export PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-${PWD}/packer_cache}
@@ -25,11 +27,8 @@ export TMPDIR=${TMPDIR:-/var/tmp}
 readonly PROGNAME=$(basename "$0")
 readonly ARGS=$*
 
-set -o pipefail
-
 usage() {
   cat <<- EOF
-
 Usage: ${PROGNAME} options
 
 This script can build the various libvirt and virtualbox images.
