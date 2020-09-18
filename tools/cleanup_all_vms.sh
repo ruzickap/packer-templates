@@ -3,7 +3,7 @@
 PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-templates-images}
 TMPDIR=${TMPDIR:-/tmp}
-LOGDIR=${LOGDIR:-${TMPDIR}}
+LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
 
 set -euo pipefail
 
