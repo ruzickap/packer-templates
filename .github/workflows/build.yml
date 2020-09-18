@@ -11,7 +11,7 @@ env:
   LOGDIR: /var/tmp/packer-templates-logs
   VAGRANT_CLOUD_USER: peru
   VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
-  # Needed for Packer when calling ansible
+  # Needed for Packer when calling ansible (https://github.com/ansible/ansible/issues/32499)
   OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
 
 jobs:
@@ -105,90 +105,6 @@ jobs:
 
   build-virtualbox:
     name: "*"
-    runs-on: [self-hosted, linux, x64]
-    needs: build-libvirt
-    strategy:
-      max-parallel: 1
-      fail-fast: false
-      matrix:
-        stage:
-          - my_ubuntu-20.04-server-amd64-virtualbox
-          - my_windows-10-enterprise-x64-eval-virtualbox
-          - ubuntu-16.04-server-amd64-virtualbox
-          - ubuntu-18.04-desktop-amd64-virtualbox
-          - ubuntu-18.04-server-amd64-virtualbox
-          - ubuntu-20.04-desktop-amd64-virtualbox
-          - ubuntu-20.04-server-amd64-virtualbox
-          - windows-10-enterprise-x64-eval-virtualbox
-          - windows-server-2012_r2-standard-x64-eval-virtualbox
-          - windows-server-2016-standard-x64-eval-virtualbox
-          - windows-server-2019-standard-x64-eval-virtualbox
-
-    steps:
-      - name: Skip image build if it already exists in Vagrant Cloud
-        run: |
-          BUILD="${{ matrix.stage }}"
-          PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
-          NAME="${BUILD%-*}"
-
-          # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
-          CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
-          if [[ "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" =~ ${GITHUB_SHA} ]] ; then
-            echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
-            # Skip build if the box already exists
-            CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
-            if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
-              echo "*** Found already build image \"${BUILD}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
-              echo "*** This build will be skipped..."
-              echo "::set-env name=skip::true"
-            else
-              # Set BOX_VERSION variable from existing provider (if exists) or from "date"
-              BOX_VERSION="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version")"
-              echo "*** Using previously defined box version \"${BOX_VERSION}\", because there is already builded box with git hash \"${GITHUB_SHA}\""
-            fi
-          else
-            BOX_VERSION="$(date +%Y%m%d).01"
-            echo "*** Using new box version based on current date: ${BOX_VERSION}"
-          fi
-          echo "::set-env name=BOX_VERSION::${BOX_VERSION}"
-
-      - uses: actions/checkout@v2
-        if: env.skip != 'true'
-        with:
-          submodules: true
-
-      - name: Build image - ${{ matrix.stage }}
-        if: env.skip != 'true'
-        run: |
-          test -d "${PACKER_CACHE_DIR}" || mkdir -v "${PACKER_CACHE_DIR}"
-          ln -sv "${PACKER_CACHE_DIR}" packer_cache
-          ./build.sh "${{ matrix.stage }}" || ./build.sh "${{ matrix.stage }}"
-
-      - name: Check the created box image - ${{ matrix.stage }}
-        if: env.skip != 'true'
-        run: |
-          ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-
-      - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
-        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
-        env:
-          BOX_VERSION: ${{ env.BOX_VERSION }}
-        run: |
-          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-
-      - name: Build log cleanup - ${{ matrix.stage }}
-        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
-        run: |
-          rm -v "${LOGDIR}/${{ matrix.stage }}-packer.log"
-          rm -v "${LOGDIR}/${{ matrix.stage }}-init.log"
-          rm -v "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
-
-################
-# VirtualBox 2
-################
-
-  build-virtualbox2:
-    name: "*"
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -257,9 +173,16 @@ jobs:
           export PATH=/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}
           ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
+      - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
+        env:
+          BOX_VERSION: ${{ env.BOX_VERSION }}
+        run: |
+          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+
   cleanup:
     runs-on: [self-hosted, linux, x64]
-    needs: [build-libvirt, build-virtualbox]
+    needs: build-libvirt
     if: always()
     steps:
       - uses: actions/checkout@v2
@@ -269,7 +192,7 @@ jobs:
           ./tools/cleanup_all_vms.sh
 
   clean_check_versions:
-    needs: build-virtualbox
+    needs: [build-libvirt, build-virtualbox]
     runs-on: ubuntu-latest
     steps:
       - name: Remove old versions
