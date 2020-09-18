@@ -90,7 +90,7 @@ jobs:
           BOX_VERSION: ${{ env.BOX_VERSION }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         run: |
-          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
+          ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Build log cleanup - ${{ matrix.stage }}
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
@@ -158,19 +158,19 @@ jobs:
       - name: Install packages
         if: env.skip != 'true'
         run: |
-          brew install ansible coreutils gnu-sed qemu
+          brew install ansible bash coreutils gnu-sed qemu
           pip3 install pywinrm
 
       - name: Build image - ${{ matrix.stage }}
         if: env.skip != 'true'
         run: |
-          export PATH=/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}
+          export PATH="/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
           ./build.sh ${{ matrix.stage }}
 
       - name: Check the created box image - ${{ matrix.stage }}
         if: env.skip != 'true'
         run: |
-          export PATH=/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}
+          export PATH="/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
           ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
@@ -178,6 +178,7 @@ jobs:
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
         run: |
+          export PATH="/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
           ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box" || ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
   cleanup:
