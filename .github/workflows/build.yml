@@ -103,19 +103,8 @@ jobs:
         run: |
           ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
-  cleanup:
-    runs-on: [self-hosted, linux, x64]
-    needs: build-libvirt
-    if: always()
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Clean all (VMs, disks, boxes, instances)
-        run: |
-          ./tools/cleanup_all_vms.sh
-
   clean_check_versions:
-    needs: [build-libvirt, build-virtualbox]
+    needs: build-boxes
     runs-on: ubuntu-latest
     steps:
       - name: Remove old versions
