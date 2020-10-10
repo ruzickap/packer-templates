@@ -62,7 +62,7 @@ jobs:
             if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
               echo "*** Found already build image \"${BUILD}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
               echo "*** This build will be skipped..."
-              echo "::set-env name=skip::true"
+              echo "skip=true" >> $GITHUB_ENV
             else
               # Set BOX_VERSION variable from existing provider (if exists) or from "date"
               BOX_VERSION="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version")"
@@ -72,7 +72,7 @@ jobs:
             BOX_VERSION="$(date +%Y%m%d).01"
             echo "*** Using new box version based on current date: ${BOX_VERSION}"
           fi
-          echo "::set-env name=BOX_VERSION::${BOX_VERSION}"
+          echo "BOX_VERSION=${BOX_VERSION}" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2
         if: env.skip != 'true'
@@ -84,7 +84,7 @@ jobs:
         run: |
           brew install ansible bash coreutils gnu-sed qemu
           pip3 install pywinrm
-          echo "::add-path::/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+          echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Build image - ${{ matrix.stage }}
         if: env.skip != 'true'
