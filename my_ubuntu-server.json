@@ -26,7 +26,6 @@
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
-      "ssh_timeout": "60m",
       "ssh_username": "{{ user `ssh_username` }}",
       "type": "qemu",
       "vm_name": "{{ user `name` }}"
@@ -56,7 +55,6 @@
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
-      "ssh_timeout": "60m",
       "ssh_username": "{{ user `ssh_username` }}",
       "type": "virtualbox-iso",
       "vboxmanage": [
