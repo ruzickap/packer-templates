@@ -1,5 +1,5 @@
 {
-  "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO=./packer_cache/virtio-win.iso ISO_URL=https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu my_windows.json",
+  "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO_DIR=./packer_cache/virtio-win ISO_URL=https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu my_windows.json",
   "builders": [
     {
       "accelerator": "{{ user `accelerator` }}",
@@ -17,18 +17,11 @@
       "iso_urls": [
         "{{ user `iso_url` }}"
       ],
+      "cd_files": [
+        "{{ user `virtio_win_iso_dir` }}"
+      ],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-qemu",
-      "qemuargs": [
-        [
-          "-drive",
-          "file={{ user `virtio_win_iso` }},media=cdrom,index=3"
-        ],
-        [
-          "-drive",
-          "file={{ user `name` }}-qemu/{{ .Name }},if=virtio,cache=writeback,discard=ignore,format=qcow2,index=1"
-        ]
-      ],
       "shutdown_command": "A:\\sysprep.bat",
       "shutdown_timeout": "15m",
       "type": "qemu",
@@ -139,15 +132,15 @@
   "variables": {
     "accelerator": "kvm",
     "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
-    "cpus": "2",
+    "cpus": "4",
     "disk_size": "51200",
     "headless": "false",
     "iso_checksum": "win_iso.sha256",
     "iso_url": "{{ env `ISO_URL` }}",
-    "memory": "4096",
+    "memory": "8192",
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
-    "virtio_win_iso": "{{ env `VIRTIO_WIN_ISO` }}",
+    "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
     "windows_version": "{{ env `WINDOWS_VERSION` }}",
     "winrm_password": "vagrant",
     "winrm_username": "vagrant"

@@ -80,10 +80,10 @@
         <component xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" language="neutral" name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" versionScope="nonSxS">
             <DriverPaths>
                 <PathAndCredentials wcm:action="add" wcm:keyValue="1">
-                    <Path>E:\NetKVM\w10\amd64\</Path>
+                    <Path>E:\virtio-win\NetKVM\w10\amd64\</Path>
                 </PathAndCredentials>
                 <PathAndCredentials wcm:action="add" wcm:keyValue="3">
-                    <Path>E:\viostor\w10\amd64\</Path>
+                    <Path>E:\virtio-win\viostor\w10\amd64\</Path>
                 </PathAndCredentials>
             </DriverPaths>
         </component>
@@ -144,7 +144,7 @@
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <CommandLine>cmd.exe /c powershell -File a:\fixnetwork.ps1</CommandLine>
+                    <CommandLine>cmd.exe /c powershell -File A:\fixnetwork.ps1</CommandLine>
                     <Description>Fix public network</Description>
                     <Order>2</Order>
                     <RequiresUserInput>true</RequiresUserInput>

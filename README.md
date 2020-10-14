@@ -254,13 +254,14 @@ cd packer-templates
 
   ```bash
   curl -L -O /var/tmp/virtio-win.iso https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
+  xorriso -report_about WARNING -osirrox on -indev /var/tmp/virtio-win.iso -extract / /var/tmp/virtio-win
   export TMPDIR=/var/tmp
 
   # Windows Server
   ## Windows Server 2012
   export NAME="windows-server-2012_r2-standard-x64-eval"
   export WINDOWS_VERSION="2012"
-  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
@@ -268,7 +269,7 @@ cd packer-templates
   ## Windows Server 2019
   export NAME="windows-server-2019-standard-x64-eval"
   export WINDOWS_VERSION="2019"
-  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
@@ -276,7 +277,7 @@ cd packer-templates
   ## Windows Server 2016
   export NAME="windows-server-2016-standard-x64-eval"
   export WINDOWS_VERSION="2016"
-  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
@@ -284,7 +285,7 @@ cd packer-templates
   # Windows 10
   export NAME="windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
-  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
@@ -292,7 +293,7 @@ cd packer-templates
   # Windows 10 - customized
   export NAME="my_windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
-  export VIRTIO_WIN_ISO="/var/tmp/virtio-win.iso"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" my_windows.json

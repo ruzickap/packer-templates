@@ -30,6 +30,7 @@ jobs:
       - name: Validate Packer templates
         run: |
           IFS=$'\n'
+          mkdir -pv packer_cache/virtio-win
           for FILE in *.json; do
             echo "*** $FILE"
             for PACKER_VALIDATE_RUN in $(awk -F\" '/"_comment[0-9]*"/ { gsub("packer build","packer validate",$4); print $4 }' $FILE); do

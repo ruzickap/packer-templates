@@ -4,6 +4,8 @@ set -o pipefail
 
 LOGFILE="/tmp/build_all.log"
 PACKER_IMAGES_OUTPUT_DIR="/var/tmp/packer-templates-images"
+# Needed for MacOS
+export ACCELERATOR=hvf
 
 (
   cd ..
