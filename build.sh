@@ -3,10 +3,11 @@
 set -eu -o pipefail
 
 # Packer cache directory (where to store the iso images)
-export PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-${PWD}/packer_cache}
+export PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 # VirtIO win iso URL (https://www.linux-kvm.org/page/WindowsGuestDrivers/Download_Drivers)
 export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso}
 export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-${PACKER_CACHE_DIR}/$(basename "${VIRTIO_WIN_ISO_URL}")}
+export VIRTIO_WIN_ISO_DIR=${VIRTIO_WIN_ISO_DIR:-${PACKER_CACHE_DIR}/virtio-win}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
 # Qemu Accelerator - use kvm for Linux and hvf for MacOS
@@ -163,7 +164,10 @@ cmdline() {
 
         echo "* NAME: ${NAME}, WINDOWS_ARCH: ${WINDOWS_ARCH}, WINDOWS_VERSION: ${WINDOWS_VERSION}, WINDOWS_EDITION: ${WINDOWS_EDITION}, PACKER_FILE: ${PACKER_FILE}"
         ISO_CHECKSUM=$(awk "/$(basename ${ISO_URL})/ { print \$1 }" win_iso.sha256)
-        test -f "${VIRTIO_WIN_ISO}" || curl -L "${VIRTIO_WIN_ISO_URL}" --output "${VIRTIO_WIN_ISO}"
+        if [[ ${NAME} =~ "virtualbox" ]]; then
+          test -f "${VIRTIO_WIN_ISO}" || curl -L "${VIRTIO_WIN_ISO_URL}" --output "${VIRTIO_WIN_ISO}"
+          test -d "${VIRTIO_WIN_ISO_DIR}" || xorriso -report_about SORRY -osirrox on -indev "${VIRTIO_WIN_ISO}" -extract / "${VIRTIO_WIN_ISO_DIR}"
+        fi
       ;;
       *)
         echo "*** Unsupported build type: \"${NAME}\" used from \"${BUILD}\""

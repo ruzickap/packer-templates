@@ -6,7 +6,7 @@
 
   roles:
     - role: ansible-role-virtio-win
-      virtio_win_iso_path: 'E:\\'
+      virtio_win_iso_path: 'E:\\virtio-win\\'
       when: ansible_system_vendor == "QEMU"
 
   tasks:

@@ -44,6 +44,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_username": "{{ user `ssh_username` }}",
+      "ssh_timeout": "30m",
       "type": "virtualbox-iso",
       "vboxmanage": [
         [
@@ -119,10 +120,10 @@
     "centos_tag": "{{ env `CENTOS_TAG` }}",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
     "centos_version": "{{ env `CENTOS_VERSION` }}",
-    "cpus": "2",
+    "cpus": "4",
     "disk_size": "51200",
     "headless": "false",
-    "memory": "4096",
+    "memory": "8192",
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
     "preseed_file_name": "my-ks.cfg",
