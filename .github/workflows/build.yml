@@ -82,7 +82,7 @@ jobs:
       - name: Install packages
         if: env.skip != 'true'
         run: |
-          brew install ansible bash coreutils gnu-sed qemu
+          brew install ansible bash coreutils gnu-sed packer qemu
           pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
