@@ -90,7 +90,8 @@ jobs:
             brew install qemu
           fi
           if [[ "${{ matrix.stage }}" =~ "virtualbox" ]]; then
-            brew upgrade virtualbox virtualbox-extension-pack
+            brew upgrade virtualbox
+            brew cask install virtualbox-extension-pack
           fi
           pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
