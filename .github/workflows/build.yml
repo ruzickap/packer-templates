@@ -82,7 +82,15 @@ jobs:
       - name: Install packages
         if: env.skip != 'true'
         run: |
-          brew install ansible bash coreutils gnu-sed packer qemu
+          brew update
+          brew install ansible bash coreutils gnu-sed
+          brew upgrade packer
+          if [[ ${BUILD} =~ libvirt ]]; then
+            brew install qemu
+          fi
+          if [[ ${BUILD} =~ virtualbox ]]; then
+            brew upgrade virtualbox virtualbox-extension-pack
+          fi
           pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
