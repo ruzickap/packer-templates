@@ -82,13 +82,14 @@ jobs:
       - name: Install packages
         if: env.skip != 'true'
         run: |
+          set -x
           brew update
           brew install ansible bash coreutils gnu-sed
-          brew upgrade packer
-          if [[ ${BUILD} =~ libvirt ]]; then
+          brew upgrade packer vagrant
+          if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu
           fi
-          if [[ ${BUILD} =~ virtualbox ]]; then
+          if [[ "${{ matrix.stage }}" =~ "virtualbox" ]]; then
             brew upgrade virtualbox virtualbox-extension-pack
           fi
           pip3 install pywinrm
