@@ -236,17 +236,17 @@ cd packer-templates
   # Ubuntu Server - customized
   NAME="my_ubuntu-20.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
   packer build -only="qemu" my_ubuntu-server.json
 
   NAME="my_ubuntu-18.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
   packer build -only="qemu" my_ubuntu-server.json
 
   NAME="my_ubuntu-16.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"    \
+  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
   packer build -only="qemu" my_ubuntu-server.json
   ```
 
