@@ -87,7 +87,7 @@ jobs:
           brew install ansible bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
-            brew install qemu
+            brew install qemu xorriso
           fi
           if [[ "${{ matrix.stage }}" =~ "virtualbox" ]]; then
             brew upgrade virtualbox
