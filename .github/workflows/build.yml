@@ -96,8 +96,8 @@ jobs:
           pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
-      - name: Set environments from payload
-        if: env.skip != 'true' && ( github.event_name == 'repository_dispatch' && github.event.action.client_payload )
+      - name: Set environment variables from payload
+        if: env.skip != 'true' && ( github.event_name == 'repository_dispatch' && github.event.client_payload )
         run: |
           echo '${{ toJson(github.event.client_payload) }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" >> ${GITHUB_ENV}
 
