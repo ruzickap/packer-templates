@@ -83,7 +83,7 @@ jobs:
         if: env.skip != 'true'
         run: |
           set -x
-          brew update
+          brew update > /dev/null
           brew install ansible bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
@@ -96,17 +96,22 @@ jobs:
           pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
-      - name: Build image - ${{ matrix.stage }}
+      - name: Set environments from payload
+        if: env.skip != 'true' && ( github.event_name == 'repository_dispatch' && github.event.action.environment_variables )
+        run: |
+          echo '${{ toJson(github.event.environment_variables) }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" >> ${GITHUB_ENV}
+
+      - name: Build image
         if: env.skip != 'true'
         run: |
           ./build.sh ${{ matrix.stage }}
 
-      - name: Check the created box image - ${{ matrix.stage }}
+      - name: Check the created box image
         if: env.skip != 'true' && contains( matrix.stage, 'virtualbox' )
         run: |
           ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
-      - name: Upload box to Vagrant Cloud - ${{ matrix.stage }}
+      - name: Upload box to Vagrant Cloud
         if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
