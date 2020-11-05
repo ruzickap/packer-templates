@@ -166,7 +166,10 @@ cmdline() {
         ISO_CHECKSUM=$(awk "/$(basename ${ISO_URL})/ { print \$1 }" win_iso.sha256)
         if [[ ${PACKER_VAGRANT_PROVIDER} = "libvirt" ]]; then
           test -f "${VIRTIO_WIN_ISO}" || curl -sL "${VIRTIO_WIN_ISO_URL}" --output "${VIRTIO_WIN_ISO}"
-          test -d "${VIRTIO_WIN_ISO_DIR}" || xorriso -report_about SORRY -osirrox on -indev "${VIRTIO_WIN_ISO}" -find . -type d -exec chmod u+rwx -- -extract / "${VIRTIO_WIN_ISO_DIR}"
+          if [[ ! -d "${VIRTIO_WIN_ISO_DIR}" ]]; then
+            xorriso -report_about SORRY -osirrox on -indev "${VIRTIO_WIN_ISO}" -extract / "${VIRTIO_WIN_ISO_DIR}"
+            find "${VIRTIO_WIN_ISO_DIR}" -type d -exec chmod u+rwx {} \;
+          fi
         fi
       ;;
       *)
