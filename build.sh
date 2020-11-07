@@ -10,8 +10,6 @@ export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-${PACKER_CACHE_DIR}/$(basename "${VIRTIO
 export VIRTIO_WIN_ISO_DIR=${VIRTIO_WIN_ISO_DIR:-${PACKER_CACHE_DIR}/virtio-win}
 # Do not use any GUI X11 windows
 export HEADLESS=${HEADLESS:-true}
-# Qemu Accelerator - use kvm for Linux and hvf for MacOS
-export ACCELERATOR=${ACCELERATOR:-kvm}
 # Packer binary
 export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
@@ -20,8 +18,6 @@ export PACKER_IMAGES_OUTPUT_DIR=${PACKER_IMAGES_OUTPUT_DIR:-/var/tmp/packer-temp
 export LOGDIR=${LOGDIR:-/var/tmp/packer-templates-logs}
 # Enable packer debug log if set to 1 (default 0)
 export PACKER_LOG=${PACKER_LOG:-0}
-# Max amount of time which packer can run (default 5 hours) - this prevent packer form running forever when something goes bad during provisioning/build process
-export PACKER_RUN_TIMEOUT=${PACKER_RUN_TIMEOUT:-18000}
 # Use /var/tmp as temporary directory for Packer, because export of VM images can consume lot of disk space
 export TMPDIR=${TMPDIR:-/var/tmp}
 
@@ -87,6 +83,12 @@ cmdline() {
     case ${PACKER_VAGRANT_PROVIDER} in
       libvirt )
         export PACKER_BUILDER_TYPE="qemu"
+        # Qemu Accelerator - use kvm for Linux and hvf for MacOS
+        if [[ $(uname) = "Darwin" ]]; then
+          export ACCELERATOR=${ACCELERATOR:-hvf}
+        elif [[ $(uname) = "Linux" ]]; then
+          export ACCELERATOR=${ACCELERATOR:-kvm}
+        fi
       ;;
       virtualbox )
         export PACKER_BUILDER_TYPE="virtualbox-iso"
