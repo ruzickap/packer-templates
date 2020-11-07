@@ -125,7 +125,7 @@ jobs:
       - name: Remove old versions
         run: |
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
-            OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | .versions[] | select (.version != $current_version) .version')
+            OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | [ .versions[] | select (.version != $current_version) .version ] | join(" ")')
             for VERSION in ${OLD_VERSIONS}; do
               echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
               curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}" -X DELETE -d "access_token=${VAGRANT_CLOUD_TOKEN}" -o /dev/null
