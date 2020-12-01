@@ -163,9 +163,11 @@ cmdline() {
     echo "*** Box: ${NAME} - doesn't exist..."
   fi
 
-  # Workaround for https://github.com/hashicorp/vagrant/issues/12026
-  #vagrant cloud publish --force --description "${LONG_DESCRIPTION}" --version-description "${LONG_DESCRIPTION}" --release --short-description "${SHORT_DESCRIPTION}" --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}" "${VAGRANT_PROVIDER}" "${VAGRANT_CLOUD_BOX_FILE}"; then
-  vagrant cloud publish --force --description "${LONG_DESCRIPTION}" --version-description "${LONG_DESCRIPTION}" --release --short-description "${SHORT_DESCRIPTION}" --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}" "${VAGRANT_PROVIDER}" "${VAGRANT_CLOUD_BOX_FILE}" || curl -s --output /dev/null "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/release" -X PUT -d "access_token=$VAGRANT_CLOUD_TOKEN"
+  vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+  vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
+  VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
+  curl -X PUT --upload-file "${VAGRANT_CLOUD_BOX_FILE}" "${VAGRANTCLOUD_UPLOAD_PATH}"
+  curl -s --output /dev/null "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/release" -X PUT -d "access_token=$VAGRANT_CLOUD_TOKEN"
 }
 
 

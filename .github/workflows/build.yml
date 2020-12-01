@@ -49,6 +49,7 @@ jobs:
     steps:
       - name: Skip image build if it already exists in Vagrant Cloud
         run: |
+          set -x
           BUILD="${{ matrix.stage }}"
           PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
           NAME="${BUILD%-*}"
