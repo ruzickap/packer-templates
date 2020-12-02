@@ -163,11 +163,21 @@ cmdline() {
     echo "*** Box: ${NAME} - doesn't exist..."
   fi
 
-  vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
-  vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
-  VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
-  curl -X PUT --upload-file "${VAGRANT_CLOUD_BOX_FILE}" "${VAGRANTCLOUD_UPLOAD_PATH}"
-  curl -s --output /dev/null "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/release" -X PUT -d "access_token=$VAGRANT_CLOUD_TOKEN"
+  # Check if the version already exists otherwise create new one
+  if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.success') = "false" ]] ; then
+    echo "*** Create new version: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION}"
+    vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+  fi
+  if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}" | jq -r '.checksum') = "${CHECKSUM_BOX_FILE}" ]] ; then
+    echo "*** Create new provider: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
+    vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
+    VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
+    curl -X PUT --upload-file "${VAGRANT_CLOUD_BOX_FILE}" "${VAGRANTCLOUD_UPLOAD_PATH}" || true
+    curl -s --output /dev/null "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/release" -X PUT -d "access_token=$VAGRANT_CLOUD_TOKEN"
+  else
+    echo "*** Provider with the same checksum already exists: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
+    echo "*** Skipping upload..."
+  fi
 }
 
 
