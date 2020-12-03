@@ -85,7 +85,7 @@ jobs:
         run: |
           set -x
           brew update > /dev/null
-          brew install ansible bash coreutils gnu-sed
+          brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
@@ -94,7 +94,7 @@ jobs:
             brew upgrade virtualbox
             brew cask install virtualbox-extension-pack
           fi
-          pip3 install pywinrm
+          pip3 install ansible==2.9.15 pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
