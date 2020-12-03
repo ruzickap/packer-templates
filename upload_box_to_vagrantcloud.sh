@@ -168,7 +168,7 @@ cmdline() {
     echo "*** Create new version: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION}"
     vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
   fi
-  if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}" | jq -r '.checksum') = "${CHECKSUM_BOX_FILE}" ]] ; then
+  if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}" | jq -r '.checksum') != "${CHECKSUM_BOX_FILE}" ]] ; then
     echo "*** Create new provider: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
     vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
     VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
