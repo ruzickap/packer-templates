@@ -135,7 +135,7 @@ with Packer.
 
   ```bash
   sudo apt update
-  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass unzip virtualbox
+  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip virtualbox
 
   PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
   curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
@@ -156,7 +156,7 @@ with Packer.
 
   ```bash
   sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-  sudo dnf install -y ansible curl git jq libvirt libvirt-devel qemu-kvm ruby-devel unzip VirtualBox
+  sudo dnf install -y ansible curl git jq libvirt libvirt-devel qemu-kvm ruby-devel xorriso unzip VirtualBox
 
   PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
   curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
