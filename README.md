@@ -158,6 +158,14 @@ with Packer.
   figure out a way to install it.
 
   ```bash
+  echo 'deb http://deb.debian.org/debian bullseye main contrib non-free' | sudo tee /etc/apt/sources.list.d/bullseye.list
+  sudo sed --regexp-extended 's/^([^#].+\s+main)$/\1 contrib non-free/;' --in-place /etc/apt/sources.list  ## Ensure required apt components are enabled.
+  cat <<EOF | sudo tee /etc/apt/preferences.d/bullseye.pref
+  Explanation: Just install packages from bullseye if they are not in buster or buster-backports. Do not upgrade. Delete this file when you want to upgrade to bullseye.
+  Package: *
+  Pin: release o=Debian,n=bullseye
+  Pin-Priority: 50
+  EOF
   sudo apt update
   sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip packer/bullseye vagrant vagrant-libvirt
 
