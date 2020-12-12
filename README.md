@@ -154,11 +154,15 @@ with Packer.
 
 * Debian 10+ requirements:
 
+  VirtualBox is not in Debian 10 or later. If you need it, you will need to
+  figure out a way to install it.
+
   ```bash
   sudo apt update
-  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip virtualbox packer/bullseye vagrant vagrant-libvirt
+  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip packer/bullseye vagrant vagrant-libvirt
 
-  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
+  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt
+  sudo gpasswd -a ${USER} vboxusers  ## If you have VirtualBox installed.
   ```
 
 * Fedora requirements:
