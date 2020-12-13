@@ -135,7 +135,7 @@ with Packer.
 
   ```bash
   sudo apt update
-  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass unzip virtualbox
+  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip virtualbox
 
   PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
   curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
@@ -152,11 +152,32 @@ with Packer.
   vagrant plugin install vagrant-libvirt
   ```
 
+* Debian 10+ requirements:
+
+  VirtualBox is not in Debian 10 or later. If you need it, you will need to
+  figure out a way to install it.
+
+  ```bash
+  echo 'deb http://deb.debian.org/debian bullseye main contrib non-free' | sudo tee /etc/apt/sources.list.d/bullseye.list
+  sudo sed --regexp-extended 's/^([^#].+\s+main)$/\1 contrib non-free/;' --in-place /etc/apt/sources.list  ## Ensure required apt components are enabled.
+  cat <<EOF | sudo tee /etc/apt/preferences.d/bullseye.pref
+  Explanation: Just install packages from bullseye if they are not in buster or buster-backports. Do not upgrade. Delete this file when you want to upgrade to bullseye.
+  Package: *
+  Pin: release o=Debian,n=bullseye
+  Pin-Priority: 50
+  EOF
+  sudo apt update
+  sudo apt install -y ansible curl git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm sshpass xorriso unzip packer/bullseye vagrant vagrant-libvirt
+
+  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt
+  sudo gpasswd -a ${USER} vboxusers  ## If you have VirtualBox installed.
+  ```
+
 * Fedora requirements:
 
   ```bash
   sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-  sudo dnf install -y ansible curl git jq libvirt libvirt-devel qemu-kvm ruby-devel unzip VirtualBox
+  sudo dnf install -y ansible curl git jq libvirt libvirt-devel qemu-kvm ruby-devel xorriso unzip VirtualBox
 
   PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
   curl "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
