@@ -84,8 +84,9 @@ jobs:
         if: env.skip != 'true'
         run: |
           set -x
+          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew install bash coreutils gnu-sed
+          brew install ansible bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
@@ -94,7 +95,7 @@ jobs:
             brew upgrade virtualbox
             brew cask install virtualbox-extension-pack
           fi
-          pip3 install ansible==2.9.15 pywinrm
+          pip3 install pywinrm
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
