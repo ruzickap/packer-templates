@@ -168,14 +168,22 @@ cmdline() {
     echo "*** Create new version: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION}"
     vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
   fi
+  # Check if you are not uploading the box with the checksum which is already there
   if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}" | jq -r '.checksum') != "${CHECKSUM_BOX_FILE}" ]] ; then
     echo "*** Create new provider: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
+    # Check if the box version is not already there. If yes - delete it first
+    BOX_CREATED_AT=$(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.created_at')
+    if [[ "${BOX_CREATED_AT}" != "null" ]] ; then
+      echo "*** Vagrant box version \"${BOX_VERSION}\" created at \"${BOX_CREATED_AT}\" already exists!"
+      echo "*** Deleting the box version \"${BOX_VERSION}\""
+      vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+    fi
     vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
     VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
     curl -X PUT --upload-file "${VAGRANT_CLOUD_BOX_FILE}" "${VAGRANTCLOUD_UPLOAD_PATH}" || true
     curl -s --output /dev/null "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/release" -X PUT -d "access_token=$VAGRANT_CLOUD_TOKEN"
   else
-    echo "*** Provider with the same checksum already exists: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
+    echo "*** Provider with the same checksum \"${CHECKSUM_BOX_FILE}\" already exists"
     echo "*** Skipping upload..."
   fi
 }
