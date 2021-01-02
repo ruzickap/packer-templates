@@ -96,6 +96,9 @@ jobs:
             brew install --cask virtualbox-extension-pack
           fi
           pip3 install pywinrm
+          # Update ansible.windows to the latest version to fix the problems in https://github.com/ansible-collections/ansible.windows/issues/142
+          # This should be removed in Ansible version v2.11
+          ansible-galaxy collection install ansible.windows chocolatey.chocolatey
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
