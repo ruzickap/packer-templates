@@ -164,20 +164,22 @@ cmdline() {
   fi
 
   # Check if the version already exists otherwise create new one
-  if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.success') = "false" ]] ; then
+  BOX_CREATED_AT=$(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.created_at')
+  if [[ "${BOX_CREATED_AT}" == "null" ]] ; then
     echo "*** Create new version: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION}"
     vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+  else
+    echo "*** Vagrant box version \"${BOX_VERSION}\" created at \"${BOX_CREATED_AT}\" already exists"
+    # Check if the box version with different GIT_SHA commit already exists - delete the box version
+    # This may happen if you try to upload box images multiple times per day
+    if curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/" | jq '.description_markdown' | grep "${GITHUB_SHA}" ; then
+      echo "*** Deleting the box version \"${BOX_VERSION}\" with old git sha"
+      vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+    fi
   fi
   # Check if you are not uploading the box with the checksum which is already there
   if [[ $(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}" | jq -r '.checksum') != "${CHECKSUM_BOX_FILE}" ]] ; then
     echo "*** Create new provider: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION} | ${VAGRANT_PROVIDER} | ${CHECKSUM_BOX_FILE}"
-    # Check if the box version is not already there. If yes - delete it first
-    BOX_CREATED_AT=$(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.created_at')
-    if [[ "${BOX_CREATED_AT}" != "null" ]] ; then
-      echo "*** Vagrant box version \"${BOX_VERSION}\" created at \"${BOX_CREATED_AT}\" already exists!"
-      echo "*** Deleting the box version \"${BOX_VERSION}\""
-      vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
-    fi
     vagrant cloud provider create --checksum-type sha256 --checksum "${CHECKSUM_BOX_FILE}" "${VAGRANT_CLOUD_USER}/${NAME}" "${VAGRANT_PROVIDER}" "${BOX_VERSION}"
     VAGRANTCLOUD_UPLOAD_PATH=$(curl -sL "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/provider/${VAGRANT_PROVIDER}/upload?access_token=$VAGRANT_CLOUD_TOKEN" | jq -r '.upload_path')
     curl -X PUT --upload-file "${VAGRANT_CLOUD_BOX_FILE}" "${VAGRANTCLOUD_UPLOAD_PATH}" || true
