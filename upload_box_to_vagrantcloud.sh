@@ -163,14 +163,6 @@ cmdline() {
     echo "*** Box: ${NAME} - doesn't exist..."
   fi
 
-  # Check if the box version with different GIT_SHA commit already exists - delete the box version
-  # This may happen if you try to upload box images multiple times per day
-  # GITHUB_SHA is defined during GitGub Action execution
-  if ! curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/" | jq '.description_markdown' | grep -q "${GITHUB_SHA}" ; then
-    echo "*** Deleting the box version \"${BOX_VERSION}\" with old git sha"
-    vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
-  fi
-
   # Check if the version already exists otherwise create new one
   BOX_CREATED_AT=$(curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}" | jq -r '.created_at')
   if [[ "${BOX_CREATED_AT}" == "null" ]] ; then
@@ -178,6 +170,15 @@ cmdline() {
     vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
   else
     echo "*** Vagrant box version \"${BOX_VERSION}\" created at \"${BOX_CREATED_AT}\" already exists"
+    # Check if the box version = ${BOX_VERSION} with different GIT_SHA commit already exists then delete the box version
+    # This may happen if you try to upload box images multiple times per day
+    # GITHUB_SHA is defined during GitGub Action execution
+    if ! curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/" | jq '.description_markdown' | grep -q "${GITHUB_SHA}" ; then
+      echo "*** Delete the box version \"${BOX_VERSION}\" with old git sha"
+      vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+      echo "*** Create new version: ${VAGRANT_CLOUD_USER}/${NAME} | ${BOX_VERSION}"
+      vagrant cloud version create --description "${LONG_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
+    fi
   fi
 
   # Check if you are not uploading the box with the checksum which is already there
