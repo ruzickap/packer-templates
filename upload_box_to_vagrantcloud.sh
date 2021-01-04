@@ -166,7 +166,7 @@ cmdline() {
   # Check if the box version with different GIT_SHA commit already exists - delete the box version
   # This may happen if you try to upload box images multiple times per day
   # GITHUB_SHA is defined during GitGub Action execution
-  if curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/" | jq '.description_markdown' | grep -q "${GITHUB_SHA}" ; then
+  if ! curl -s "https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${BOX_VERSION}/" | jq '.description_markdown' | grep -q "${GITHUB_SHA}" ; then
     echo "*** Deleting the box version \"${BOX_VERSION}\" with old git sha"
     vagrant cloud version delete -f "${VAGRANT_CLOUD_USER}/${NAME}" "${BOX_VERSION}"
   fi
