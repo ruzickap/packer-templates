@@ -18,7 +18,7 @@ env:
 jobs:
   build-boxes:
     name: "*"
-    runs-on: macos-latest
+    runs-on: macos-11.0
     strategy:
       fail-fast: false
       matrix:
@@ -86,7 +86,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew install ansible bash coreutils gnu-sed
+          brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
@@ -95,10 +95,10 @@ jobs:
             brew upgrade virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install pywinrm
+          pip3 install ansible==2.10.6 pywinrm==0.4.1
           # Update ansible.windows to the latest version to fix the problems in https://github.com/ansible-collections/ansible.windows/issues/142
           # This should be removed in Ansible version v2.11
-          ansible-galaxy collection install ansible.windows chocolatey.chocolatey
+          ansible-galaxy collection install ansible.windows:=1.3.0 chocolatey.chocolatey:=1.0.2
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
@@ -125,11 +125,18 @@ jobs:
 
   clean_check_versions:
     needs: build-boxes
-    runs-on: ubuntu-latest
+    if: always()
+    runs-on: ubuntu-20.04
     steps:
       - name: Remove old versions
         run: |
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
+            # Verify if current version of the box has both boxes (virtualbox + libvirt)
+            CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
+            if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
+              echo "*** Current version of ${VAGRANT_CLOUD_USER}/${NAME} does not contain both box versions (virtualbox + libvirt) - Skipping!"
+              continue
+            fi
             OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | [ .versions[] | select (.version != $current_version) .version ] | join(" ")')
             for VERSION in ${OLD_VERSIONS}; do
               echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
