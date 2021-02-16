@@ -28,6 +28,7 @@
       "vm_name": "{{ user `name` }}",
       "winrm_insecure": "true",
       "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "45m",
       "winrm_use_ssl": "true",
       "winrm_username": "{{ user `winrm_username` }}"
     },
@@ -71,6 +72,7 @@
       "vm_name": "{{ user `name` }}",
       "winrm_insecure": "true",
       "winrm_password": "{{ user `winrm_password` }}",
+      "winrm_timeout": "45m",
       "winrm_use_ssl": "true",
       "winrm_username": "{{ user `winrm_username` }}"
     }
