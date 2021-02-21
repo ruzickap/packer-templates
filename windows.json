@@ -92,7 +92,7 @@
   ],
   "provisioners": [
     {
-      "duration": "1m",
+      "duration": "2m",
       "type": "sleep"
     },
     {

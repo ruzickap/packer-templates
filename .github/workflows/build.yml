@@ -86,6 +86,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
+          brew uninstall ant aws-sam-cli aspell azure-cli cmake gcc gcc@8 gcc@9 go gradle helm icu4c maven mongodb-community mongodb-database-tools node@14 openjdk php postgresql python@3.8 selenium-server-standalone
           brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
@@ -132,11 +133,11 @@ jobs:
         run: |
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
             # Verify if current version of the box has both boxes (virtualbox + libvirt)
-            CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
-            if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
-              echo "*** Current version of ${VAGRANT_CLOUD_USER}/${NAME} does not contain both box versions (virtualbox + libvirt) - Skipping!"
-              continue
-            fi
+            # CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
+            # if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
+            #   echo "*** Current version of ${VAGRANT_CLOUD_USER}/${NAME} does not contain both box versions (virtualbox + libvirt) - Skipping!"
+            #   continue
+            # fi
             OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | [ .versions[] | select (.version != $current_version) .version ] | join(" ")')
             for VERSION in ${OLD_VERSIONS}; do
               echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
