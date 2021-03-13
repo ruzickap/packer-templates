@@ -12,6 +12,7 @@
       "floppy_files": [
         "{{ user `autounattend` }}",
         "scripts/win-common/fixnetwork.ps1",
+        "scripts/win-common/ConfigureRemotingForAnsible.ps1",
         "scripts/win-common/unattend.xml",
         "scripts/win-common/sysprep.bat"
       ],
