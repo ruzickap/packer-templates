@@ -86,7 +86,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew uninstall ant aws-sam-cli aspell azure-cli cmake gcc gcc@8 gcc@9 go gradle helm icu4c maven mongodb-community mongodb-database-tools node@14 openjdk php postgresql python@3.8 selenium-server-standalone
+          brew uninstall ant aws-sam-cli aspell azure-cli cmake gcc gcc@8 gcc@9 gradle helm icu4c maven mongodb-community mongodb-database-tools node@14 openjdk php postgresql python@3.8 selenium-server-standalone
           brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
