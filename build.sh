@@ -8,8 +8,6 @@ export PACKER_CACHE_DIR=${PACKER_CACHE_DIR:-/var/tmp/packer_cache}
 export VIRTIO_WIN_ISO_URL=${VIRTIO_WIN_ISO_URL:-https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso}
 export VIRTIO_WIN_ISO=${VIRTIO_WIN_ISO:-${PACKER_CACHE_DIR}/$(basename "${VIRTIO_WIN_ISO_URL}")}
 export VIRTIO_WIN_ISO_DIR=${VIRTIO_WIN_ISO_DIR:-${PACKER_CACHE_DIR}/virtio-win}
-# Do not use any GUI X11 windows
-export HEADLESS=${HEADLESS:-true}
 # Packer binary
 export PACKER_BINARY=${PACKER_BINARY:-packer}
 # Directory where all the images will be stored
@@ -75,6 +73,8 @@ cmdline() {
   fi
 
   for BUILD in ${BUILDS}; do
+    # Packer command line parameters
+    export PACKER_CMD_PARAMS=("build" "-color=false" "-var" "headless=true")
     export PACKER_VAGRANT_PROVIDER="${BUILD##*-}"
     export NAME="${BUILD%-*}"
     MY_NAME=$(echo "${NAME}" | awk -F '-' '{ print $1 }')
@@ -82,16 +82,16 @@ cmdline() {
 
     case ${PACKER_VAGRANT_PROVIDER} in
       libvirt )
-        export PACKER_BUILDER_TYPE="qemu"
         # Qemu Accelerator - use kvm for Linux and hvf for MacOS
         if [[ $(uname) = "Darwin" ]]; then
-          export ACCELERATOR=${ACCELERATOR:-hvf}
+          PACKER_CMD_PARAMS+=("-only=qemu" "-var" "accelerator=hvf")
         elif [[ $(uname) = "Linux" ]]; then
-          export ACCELERATOR=${ACCELERATOR:-kvm}
+          PACKER_CMD_PARAMS+=("-only=qemu" "-var" "accelerator=kvm")
         fi
+
       ;;
       virtualbox )
-        export PACKER_BUILDER_TYPE="virtualbox-iso"
+        PACKER_CMD_PARAMS+=("-only=virtualbox-iso")
       ;;
       *)
         echo -e "\n\n*** Unsupported PACKER_VAGRANT_PROVIDER: \"${PACKER_VAGRANT_PROVIDER}\" used from \"${BUILD}\""
@@ -103,7 +103,7 @@ cmdline() {
     test -d "${PACKER_IMAGES_OUTPUT_DIR}" || mkdir -v "${PACKER_IMAGES_OUTPUT_DIR}"
     test -d "${LOGDIR}"                   || mkdir -v "${LOGDIR}"
 
-    echo -e "\n\n*** ${MY_NAME} | ${NAME} | ${BUILD} - ${PACKER_VAGRANT_PROVIDER}/${PACKER_BUILDER_TYPE}"
+    echo -e "\n\n*** ${MY_NAME} | ${NAME} | ${BUILD} - ${PACKER_VAGRANT_PROVIDER}"
 
     case ${NAME} in
       *centos*)
@@ -113,8 +113,8 @@ cmdline() {
         export CENTOS_TAG
         export CENTOS_TYPE="NetInstall"
         ISO_CHECKSUM=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
-        export PACKER_FILE="${MY_NAME}-${CENTOS_VERSION}.json"
-        echo "* NAME: ${NAME}, CENTOS_VERSION: ${CENTOS_VERSION}, CENTOS_TAG: ${CENTOS_TAG}, CENTOS_TYPE: ${CENTOS_TYPE}, PACKER_FILE: ${PACKER_FILE}"
+        PACKER_CMD_PARAMS+=("${MY_NAME}-${CENTOS_VERSION}.json")
+        echo "* NAME: ${NAME}, CENTOS_VERSION: ${CENTOS_VERSION}, CENTOS_TAG: ${CENTOS_TAG}, CENTOS_TYPE: ${CENTOS_TYPE}"
       ;;
       *ubuntu*)
         UBUNTU_TYPE=$(echo "${NAME}" | awk -F '-' '{ print $3 }')
@@ -130,14 +130,14 @@ cmdline() {
           export UBUNTU_IMAGES_URL=http://archive.ubuntu.com/ubuntu/dists/${UBUNTU_CODENAME}/main/installer-amd64/current/images
         fi
         ISO_CHECKSUM=$(curl -s "${UBUNTU_IMAGES_URL}/SHA256SUMS" | awk '/.\/netboot\/mini.iso/ { print $1 }')
-        export PACKER_FILE="${MY_NAME}-${UBUNTU_TYPE}.json"
-        echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, PACKER_FILE: ${PACKER_FILE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
+        PACKER_CMD_PARAMS+=("${MY_NAME}-${UBUNTU_TYPE}.json")
+        echo "* NAME: ${NAME}, UBUNTU_TYPE: ${UBUNTU_TYPE}, UBUNTU_IMAGES_URL: ${UBUNTU_IMAGES_URL}"
       ;;
       *windows*)
         export WINDOWS_ARCH="x64"
         WINDOWS_VERSION=$(echo "${NAME}" | sed -n -e 's/.*-\([0-9][0-9][0-9][0-9]\)[_-].*/\1/p' -e 's/.*-\([0-9][0-9]\)-.*/\1/p')
         export WINDOWS_VERSION
-        export PACKER_FILE="${MY_NAME}.json"
+        PACKER_CMD_PARAMS+=("${MY_NAME}.json")
         WINDOWS_EDITION=$(echo "${NAME}" | awk -F - '{ print $(NF-2) }')
         export WINDOWS_EDITION
 
@@ -164,7 +164,7 @@ cmdline() {
           ;;
         esac
 
-        echo "* NAME: ${NAME}, WINDOWS_ARCH: ${WINDOWS_ARCH}, WINDOWS_VERSION: ${WINDOWS_VERSION}, WINDOWS_EDITION: ${WINDOWS_EDITION}, PACKER_FILE: ${PACKER_FILE}"
+        echo "* NAME: ${NAME}, WINDOWS_ARCH: ${WINDOWS_ARCH}, WINDOWS_VERSION: ${WINDOWS_VERSION}, WINDOWS_EDITION: ${WINDOWS_EDITION}"
         ISO_CHECKSUM=$(awk "/$(basename ${ISO_URL})/ { print \$1 }" win_iso.sha256)
         if [[ ${PACKER_VAGRANT_PROVIDER} = "libvirt" ]]; then
           test -f "${VIRTIO_WIN_ISO}" || curl -sL "${VIRTIO_WIN_ISO_URL}" --output "${VIRTIO_WIN_ISO}"
@@ -188,7 +188,8 @@ cmdline() {
 
 packer_build() {
   if [[ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]]; then
-    ${PACKER_BINARY} build -only="${PACKER_BUILDER_TYPE}" -color=false -var "headless=${HEADLESS}" -var "accelerator=${ACCELERATOR}" "${PACKER_FILE}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
+    echo "*** Running packer with params: ${PACKER_CMD_PARAMS[*]}"
+    ${PACKER_BINARY} "${PACKER_CMD_PARAMS[@]}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
     ln -rfs "${PACKER_CACHE_DIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${PACKER_CACHE_DIR}/${NAME}.iso"
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n";
