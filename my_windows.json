@@ -8,8 +8,8 @@
       "disk_size": "{{ user `disk_size` }}",
       "floppy_files": [
         "{{ user `autounattend` }}",
-        "scripts/win-common/fixnetwork.ps1",
         "scripts/win-common/ConfigureRemotingForAnsible.ps1",
+        "scripts/win-common/fixnetwork.ps1",
         "scripts/win-common/unattend.xml",
         "scripts/win-common/sysprep.bat"
       ],
@@ -39,6 +39,7 @@
       "disk_size": "{{ user `disk_size` }}",
       "floppy_files": [
         "{{ user `autounattend` }}",
+        "scripts/win-common/ConfigureRemotingForAnsible.ps1",
         "scripts/win-common/fixnetwork.ps1",
         "scripts/win-common/unattend.xml",
         "scripts/win-common/sysprep.bat"
