@@ -79,6 +79,7 @@
         url: "{{ ultradefrag_url }}"
         dest: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
         follow_redirects: all
+      ignore_errors: yes
       register: result
       until: result is succeeded
 
