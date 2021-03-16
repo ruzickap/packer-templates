@@ -73,7 +73,7 @@
     - name: Set UltraDefrag url
       set_fact:
         # ultradefrag_url: "{{ ultradefrag_url_output.content | regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>','\\1') | first }}"
-        ultradefrag_url: "https://downloads.sourceforge.net/project/ultradefrag/stable-release/7.1.4/ultradefrag-portable-7.1.4.bin.amd64.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fultradefrag%2Ffiles%2Fstable-release%2F7.1.4%2Fultradefrag-portable-7.1.4.bin.amd64.zip%2Fdownload%3Fuse_mirror%3Ddeac-fra"
+        ultradefrag_url: "https://altushost-swe.dl.sourceforge.net/project/ultradefrag/stable-release/7.1.4/ultradefrag-portable-7.1.4.bin.amd64.zip"
 
     - name: Download UltraDefrag from {{ ultradefrag_url }}
       win_get_url:
