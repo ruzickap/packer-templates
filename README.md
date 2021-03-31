@@ -222,6 +222,7 @@ cd packer-templates
 
   # Windows 10
   ./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+  ./build.sh windows-10-ltsc-x64-eval-{libvirt,virtualbox}
 
   # Windows 10 - customized
   ./build.sh my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
@@ -308,6 +309,14 @@ cd packer-templates
   export WINDOWS_VERSION="10"
   export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
+
+  # Windows 10 LTSC
+  export NAME="windows-10-ltsc-x64-eval"
+  export WINDOWS_VERSION="10"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
+  export ISO_URL="https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
 

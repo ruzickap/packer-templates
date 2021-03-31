@@ -32,6 +32,7 @@ You should have Packer, Ansible, libvirt and VirtualBox installed.
 List of all supported builds:
  * my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
  * windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-10-ltsc-x64-eval-{libvirt,virtualbox}
  * windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
@@ -51,6 +52,7 @@ Build Windows 10 Enterprise Evaluation, Windows Server 2019 Standard Evaluation,
   ${PROGNAME} \\
     my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-10-ltsc-x64-eval-{libvirt,virtualbox} \\
     windows-server-2019-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
@@ -144,6 +146,10 @@ cmdline() {
         case ${NAME} in
           *windows-10-enterprise*)
             export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+          ;;
+          *windows-10-ltsc*)
+            WINDOWS_VERSION="10-ltsc"
+            export ISO_URL="https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"
