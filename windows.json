@@ -134,7 +134,7 @@
   ],
   "variables": {
     "accelerator": "kvm",
-    "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/Autounattend.xml",
+    "autounattend": "http/windows-{{ env `WINDOWS_VERSION` }}/{{ env `WINDOWS_IMAGE_NAME` }}/Autounattend.xml",
     "cpus": "4",
     "disk_size": "51200",
     "headless": "false",
