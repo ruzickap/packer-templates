@@ -142,13 +142,17 @@ cmdline() {
         PACKER_CMD_PARAMS+=("${MY_NAME}.json")
         WINDOWS_EDITION=$(echo "${NAME}" | awk -F - '{ print $(NF-2) }')
         export WINDOWS_EDITION
+        if [[ -e "http/windows-${WINDOWS_VERSION}/${WINDOWS_EDITION}/Autounattend.xml" ]]; then
+	  			export WINDOWS_IMAGE_NAME="${WINDOWS_EDITION}"
+        else
+     			export WINDOWS_IMAGE_NAME=""
+        fi
 
         case ${NAME} in
           *windows-10-enterprise*)
             export ISO_URL="https://software-download.microsoft.com/download/pr/19041.264.200511-0456.vb_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
           ;;
           *windows-10-ltsc*)
-            WINDOWS_VERSION="10-ltsc"
             export ISO_URL="https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso"
           ;;
           *windows-server-2019-*)
