@@ -8,31 +8,32 @@ on:
 
 jobs:
   remote_build_server-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
 
-      - name: Create ssh key and add it to authorized keys
+      - name: Run tests inside docker container
         run: |
-          chmod 0700 /home/$USER
+          docker run -d --name systemd-ubuntu -v "${PWD}:/mnt" --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro jrei/systemd-ubuntu:20.04
+
+          docker exec -i -w /mnt systemd-ubuntu bash << \EOF
+          set -Eeuxo pipefail
+          apt update &> /dev/null
+          apt install -y -qq ansible openssh-server python3-jmespath python3-apt sudo > /dev/null
+          systemctl start ssh
+
+          # Create ssh key and add it to authorized keys
           install -m 0700 -d $HOME/.ssh && ssh-keygen -t ed25519 -f $HOME/.ssh/id_ed25519 -q -N ""
           cp $HOME/.ssh/id_ed25519.pub $HOME/.ssh/authorized_keys
           chmod 0600 $HOME/.ssh/authorized_keys
 
-      - name: Install Ansible packages
-        run: |
-          sudo rm /etc/apt/sources.list.d/*
-          sudo apt update
-          sudo apt install -y ansible python3-jmespath python3-apt
-
-      - name: Run Ansible
-        run: |
-          export REMOTE_USER="${USER}"
+          # Run Ansible
+          export REMOTE_USER="root"
           export REMOTE_IP="localhost"
           export ANSIBLE_HOST_KEY_CHECKING=False
           export ANSIBLE_SKIP_TAGS="actions-runner_registration,actions-runner_installation"
-          export ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
           cd tools/create_remote_build_server
           ./build_remote_ssh_ubuntu.sh
+          EOF
