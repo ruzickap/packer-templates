@@ -85,7 +85,10 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew uninstall ant aws-sam-cli aspell azure-cli cmake gcc gcc@8 gcc@9 gradle helm icu4c maven mongodb-community mongodb-database-tools node@14 openjdk php postgresql python@3.8 selenium-server-standalone
+          brew uninstall --formula ant aws-sam-cli aspell azure-cli cmake gcc gcc@8 gcc@9 gradle helm icu4c maven mongodb-community mongodb-database-tools node@14 openjdk php postgresql python@3.8 selenium-server-standalone
+          brew uninstall --cask chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge powershell r session-manager-plugin soundflower
+          brew cleanup -s
+          rm -rf "$(brew --cache)"
           brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
@@ -95,10 +98,8 @@ jobs:
             brew upgrade virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==2.10.6 pywinrm==0.4.1
-          # Update ansible.windows to the latest version to fix the problems in https://github.com/ansible-collections/ansible.windows/issues/142
-          # This should be removed in Ansible version v2.11
-          ansible-galaxy collection install ansible.windows:=1.4.0 chocolatey.chocolatey:=1.1.0
+          pip3 install ansible==4.0.0 pywinrm==0.4.2
+          ansible-galaxy collection install ansible.windows:=1.6.0 chocolatey.chocolatey:=1.1.0
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
