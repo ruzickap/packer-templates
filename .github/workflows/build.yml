@@ -89,6 +89,7 @@ jobs:
           brew uninstall --cask chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge powershell r session-manager-plugin soundflower
           brew cleanup -s
           rm -rf "$(brew --cache)"
+          rm -rf /Users/runner/hostedtoolcache
           brew install bash coreutils gnu-sed
           brew upgrade packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
