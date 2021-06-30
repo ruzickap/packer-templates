@@ -99,8 +99,8 @@ jobs:
             brew upgrade virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==4.0.0 pywinrm==0.4.2
-          ansible-galaxy collection install ansible.windows:=1.6.0 chocolatey.chocolatey:=1.1.0
+          pip3 install ansible==4.2.0 pywinrm==0.4.2
+          ansible-galaxy collection install ansible.windows:=1.7.0 chocolatey.chocolatey:=1.1.0
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Set environment variables from payload
