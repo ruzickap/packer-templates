@@ -2,7 +2,7 @@
 - hosts: all
 
   vars:
-    bleachbit_url: https://download.bleachbit.org/BleachBit-4.3.0-portable.zip
+    bleachbit_url: https://download.bleachbit.org/BleachBit-4.4.0-portable.zip
 
   roles:
     - role: ansible-role-virtio-win
