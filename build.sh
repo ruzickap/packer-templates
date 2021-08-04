@@ -19,7 +19,8 @@ export PACKER_LOG=${PACKER_LOG:-0}
 # Use /var/tmp as temporary directory for Packer, because export of VM images can consume lot of disk space
 export TMPDIR=${TMPDIR:-/var/tmp}
 
-readonly PROGNAME=$(basename "$0")
+PROGNAME=$(basename "$0")
+readonly PROGNAME
 readonly ARGS=$*
 
 usage() {
