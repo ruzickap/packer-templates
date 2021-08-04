@@ -4,7 +4,8 @@ set -eu -o pipefail
 
 export BOX_VERSION=${BOX_VERSION:-$(date +%Y%m%d).01}
 
-readonly PROGNAME=$(basename "$0")
+PROGNAME=$(basename "$0")
+readonly PROGNAME
 readonly ARGS=$*
 
 
