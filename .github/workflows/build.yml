@@ -1,7 +1,28 @@
 name: build
 
 on:
-  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      build:
+        description: Build
+        default: all, my_windows-10-enterprise-x64-eval-libvirt
+        required: false
+      PACKER_LOG:
+        description: PACKER_LOG
+        default: "0"
+        required: false
+      ANSIBLE_DEBUG:
+        description: ANSIBLE_DEBUG
+        default: "false"
+        required: false
+      VAGRANT_LOG:
+        description: VAGRANT_LOG
+        default: "warn"
+        required: false
+      build_upload:
+        description: Upload release to Vagrant Cloud
+        default: "false"
+        required: false
   schedule:
     - cron: '0 0 1 * *'
 
@@ -46,7 +67,21 @@ jobs:
           - windows-server-2019-standard-x64-eval-virtualbox
 
     steps:
+      - name: Start only build mentionen in workflow_dispatch
+        if: ${{ matrix.stage != github.event.inputs.build && ! contains(github.event.inputs.build, 'all') && github.event_name != 'schedule' }}
+        run: |
+          echo "skip=true" >> $GITHUB_ENV
+
+      - name: Set PACKER_LOG, ANSIBLE_DEBUG, VAGRANT_LOG variables when using workflow_dispatch
+        if: env.skip != 'true' && github.event_name == 'workflow_dispatch'
+        run: |
+          set -x
+          echo "PACKER_LOG=${{ github.event.inputs.PACKER_LOG }}" >> $GITHUB_ENV
+          echo "ANSIBLE_DEBUG=${{ github.event.inputs.ANSIBLE_DEBUG }}" >> $GITHUB_ENV
+          echo "VAGRANT_LOG=${{ github.event.inputs.VAGRANT_LOG }}" >> $GITHUB_ENV
+
       - name: Skip image build if it already exists in Vagrant Cloud
+        if: env.skip != 'true'
         run: |
           set -x
           BUILD="${{ matrix.stage }}"
@@ -103,11 +138,6 @@ jobs:
           ansible-galaxy collection install ansible.windows:=1.7.0 chocolatey.chocolatey:=1.1.0
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
-      - name: Set environment variables from payload
-        if: env.skip != 'true' && ( github.event_name == 'repository_dispatch' && github.event.client_payload )
-        run: |
-          echo '${{ toJson(github.event.client_payload) }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" >> ${GITHUB_ENV}
-
       - name: Build image
         if: env.skip != 'true'
         run: |
@@ -119,7 +149,7 @@ jobs:
           ./vagrant_init_destroy_boxes.sh "${PACKER_IMAGES_OUTPUT_DIR}/${{ matrix.stage }}.box"
 
       - name: Upload box to Vagrant Cloud
-        if: env.skip != 'true' && ( github.event_name == 'schedule' || ( github.event_name == 'repository_dispatch' && github.event.action == 'build_release_upload' ) )
+        if: env.skip != 'true' && ( github.event_name == 'schedule' || github.event.inputs.build_upload == 'true' )
         env:
           BOX_VERSION: ${{ env.BOX_VERSION }}
         run: |
