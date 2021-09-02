@@ -118,6 +118,7 @@ jobs:
         if: env.skip != 'true'
         run: |
           set -x
+          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew remove --force $(brew list --formula)
           brew remove --force $(brew list --casks)
           brew update > /dev/null
