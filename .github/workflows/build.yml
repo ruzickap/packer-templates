@@ -8,15 +8,15 @@ on:
         default: all, my_windows-10-enterprise-x64-eval-libvirt
         required: false
       PACKER_LOG:
-        description: PACKER_LOG
+        description: PACKER_LOG (0, 1)
         default: "0"
         required: false
       ANSIBLE_DEBUG:
-        description: ANSIBLE_DEBUG
+        description: ANSIBLE_DEBUG (true, false)
         default: "false"
         required: false
       VAGRANT_LOG:
-        description: VAGRANT_LOG
+        description: VAGRANT_LOG (debug, info, warn)
         default: "warn"
         required: false
       build_upload:
@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - name: Start only build mentionen in workflow_dispatch
-        if: ${{ matrix.stage != github.event.inputs.build && ! contains(github.event.inputs.build, 'all') && github.event_name != 'schedule' }}
+        if: ${{ ! contains(github.event.inputs.build, matrix.stage) && ! contains(github.event.inputs.build, 'all') && github.event_name == 'workflow_dispatch' }}
         run: |
           echo "skip=true" >> $GITHUB_ENV
 
@@ -114,28 +114,26 @@ jobs:
         with:
           submodules: true
 
-      - name: Install packages
+      - name: Install and remove packages
         if: env.skip != 'true'
         run: |
           set -x
-          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
+          brew remove --force $(brew list --formula)
+          brew remove --force $(brew list --casks)
           brew update > /dev/null
-          brew uninstall --ignore-dependencies --formula ant aws-sam-cli aspell azure-cli cmake gcc gcc@9 gradle helm icu4c kotlin maven mongodb-community mongodb-database-tools mongosh node@14 openjdk php postgresql python@3.8 selenium-server-standalone
-          brew uninstall --ignore-dependencies --cask chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge powershell r session-manager-plugin soundflower
           brew cleanup -s
           rm -rf "$(brew --cache)"
           rm -rf /Users/runner/hostedtoolcache
-          brew install bash coreutils gnu-sed
-          brew upgrade packer vagrant
+          brew install bash coreutils gnu-sed packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
           fi
           if [[ "${{ matrix.stage }}" =~ "virtualbox" ]]; then
-            brew upgrade virtualbox
+            brew install virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==4.2.0 pywinrm==0.4.2
-          ansible-galaxy collection install ansible.windows:=1.7.0 chocolatey.chocolatey:=1.1.0
+          pip3 install ansible==4.5.0 pywinrm==0.4.2
+          ansible-galaxy collection install ansible.windows:=1.7.2 chocolatey.chocolatey:=1.1.0
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
       - name: Build image
