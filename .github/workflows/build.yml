@@ -180,6 +180,8 @@ jobs:
           set -eux
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
             for VAGRANT_PROVIDER in libvirt virtualbox; do
+              # ubuntu-{20,18}.04-desktop-amd64 libvirt - skip checks for Ubuntu Desktop - They can not be built using GH Actions
+              if [[ "${NAME}" =~ "ubuntu-.*-desktop-amd64" ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then continue ; fi
               CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
               CHECKSUM=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
               URL="https://app.vagrantup.com/peru/boxes/${NAME}/versions/${CURRENT_VERSION}/providers/${VAGRANT_PROVIDER}.box"
