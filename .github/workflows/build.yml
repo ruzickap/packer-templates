@@ -76,9 +76,11 @@ jobs:
         if: ${{ env.skip != 'true' && github.event_name == 'workflow_dispatch' }}
         run: |
           set -x
-          echo "PACKER_LOG=${{ github.event.inputs.PACKER_LOG }}" >> "${GITHUB_ENV}"
-          echo "ANSIBLE_DEBUG=${{ github.event.inputs.ANSIBLE_DEBUG }}" >> "${GITHUB_ENV}"
-          echo "VAGRANT_LOG=${{ github.event.inputs.VAGRANT_LOG }}" >> "${GITHUB_ENV}"
+          cat >> "${GITHUB_ENV}" << EOF
+          PACKER_LOG=${{ github.event.inputs.PACKER_LOG }}"
+          ANSIBLE_DEBUG=${{ github.event.inputs.ANSIBLE_DEBUG }}"
+          VAGRANT_LOG=${{ github.event.inputs.VAGRANT_LOG }}"
+          EOF
 
       - name: Skip image build if it already exists in Vagrant Cloud
         if: ${{ env.skip != 'true' }}
@@ -118,8 +120,13 @@ jobs:
         if: ${{ env.skip != 'true' && contains(github.event.inputs.build, 'windows') }}
         run: |
           set -x
-          brew remove --force $(brew list --formula)
-          brew remove --force $(brew list --casks)
+          brew install bash
+          /usr/local/bin/bash << \EOF
+          readarray -t BREW_FORMULAS < <(brew list --formula) ;
+          brew remove --force "${BREW_FORMULAS[@]}" ;
+          readarray -t BREW_CASKS < <(brew list --casks) ;
+          brew remove --force "${BREW_CASKS[@]}" ;
+          EOF
           brew cleanup -s
           rm -rf "$(brew --cache)"
           rm -rf /Users/runner/hostedtoolcache
@@ -131,10 +138,11 @@ jobs:
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
           brew install bash coreutils gnu-sed packer vagrant
-          if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
+          MATRIX_STAGE="${{ matrix.stage }}"
+          if [[ "${MATRIX_STAGE}" =~ "libvirt" ]]; then
             brew install qemu xorriso
           fi
-          if [[ "${{ matrix.stage }}" =~ "virtualbox" ]]; then
+          if [[ "${MATRIX_STAGE}" =~ "virtualbox" ]]; then
             brew install virtualbox
             brew install --cask virtualbox-extension-pack
           fi
@@ -186,7 +194,7 @@ jobs:
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
             for VAGRANT_PROVIDER in libvirt virtualbox; do
               # ubuntu-{20,18}.04-desktop-amd64 libvirt - skip checks for Ubuntu Desktop - They can not be built using GH Actions
-              if [[ "${NAME}" =~ "ubuntu-.*-desktop-amd64" ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then
+              if [[ "${NAME}" =~ ubuntu-.*-desktop-amd64 ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then
                 continue
               fi
               CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
