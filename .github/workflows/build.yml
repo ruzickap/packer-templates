@@ -65,6 +65,7 @@ jobs:
           - windows-server-2012_r2-standard-x64-eval-virtualbox
           - windows-server-2016-standard-x64-eval-virtualbox
           - windows-server-2019-standard-x64-eval-virtualbox
+          - windows-server-2022-standard-x64-eval-virtualbox
 
     steps:
       - name: Start only build mentionen in workflow_dispatch
@@ -174,7 +175,7 @@ jobs:
     steps:
       - name: Remove old versions
         run: |
-          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
+          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
             # Verify if current version of the box has both boxes (virtualbox + libvirt)
             # CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
             # if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
@@ -191,7 +192,7 @@ jobs:
       - name: Verify if the boxes are avaiable on the Vagrant Cloud
         run: |
           set -eux
-          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2019,2016,2012_r2}-standard-x64-eval; do
+          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
             for VAGRANT_PROVIDER in libvirt virtualbox; do
               # ubuntu-{20,18}.04-desktop-amd64 libvirt - skip checks for Ubuntu Desktop - They can not be built using GH Actions
               if [[ "${NAME}" =~ ubuntu-.*-desktop-amd64 ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then

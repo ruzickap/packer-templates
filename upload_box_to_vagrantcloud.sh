@@ -34,6 +34,7 @@ Box names with user:
 * peru@windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2016-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2019-standard-x64-eval-{libvirt,virtualbox}.box
+* peru@windows-server-2022-standard-x64-eval-{libvirt,virtualbox}.box
 
 Examples:
 
