@@ -130,7 +130,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew install bash coreutils gnu-sed md5sha1sum packer vagrant
+          brew install bash coreutils gnu-sed packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
           fi
