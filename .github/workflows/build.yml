@@ -114,18 +114,23 @@ jobs:
         with:
           submodules: true
 
-      - name: Install and remove packages
+      - name: Remove useless packages to free up space (Windows builds)
         if: ${{ env.skip != 'true' && contains(github.event.inputs.build, 'windows') }}
         run: |
           set -x
-          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
-          brew remove --force "$(brew list --formula)"
-          brew remove --force "$(brew list --casks)"
-          brew update > /dev/null
+          brew remove --force $(brew list --formula)
+          brew remove --force $(brew list --casks)
           brew cleanup -s
           rm -rf "$(brew --cache)"
           rm -rf /Users/runner/hostedtoolcache
-          brew install bash coreutils gnu-sed packer vagrant
+
+      - name: Install packages
+        if: ${{ env.skip != 'true' }}
+        run: |
+          set -x
+          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
+          brew update > /dev/null
+          brew install bash coreutils gnu-sed md5sha1sum packer vagrant
           if [[ "${{ matrix.stage }}" =~ "libvirt" ]]; then
             brew install qemu xorriso
           fi
