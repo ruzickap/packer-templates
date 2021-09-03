@@ -24,7 +24,7 @@ jobs:
       - name: Download Packer
         run: |
           PACKER_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
-          curl -s https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip --output /tmp/packer_linux_amd64.zip
+          curl -s "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
           sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
 
       - name: Validate Packer templates
@@ -32,9 +32,9 @@ jobs:
           IFS=$'\n'
           mkdir -pv packer_cache/virtio-win
           for FILE in *.json; do
-            echo "*** $FILE"
-            for PACKER_VALIDATE_RUN in $(awk -F\" '/"_comment[0-9]*"/ { gsub("packer build","packer validate",$4); print $4 }' $FILE); do
-              echo "* $PACKER_VALIDATE_RUN"
-              eval "$PACKER_VALIDATE_RUN"
+            echo "*** ${FILE}"
+            awk -F\" '/"_comment[0-9]*"/ { gsub("packer build","packer validate",$4); print $4 }' "${FILE}" | while IFS= read -r PACKER_VALIDATE_RUN ; do
+              echo "* ${PACKER_VALIDATE_RUN}"
+              eval "${PACKER_VALIDATE_RUN}"
             done
           done
