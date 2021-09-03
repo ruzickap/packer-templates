@@ -77,9 +77,9 @@ jobs:
         run: |
           set -x
           cat >> "${GITHUB_ENV}" << EOF
-          PACKER_LOG=${{ github.event.inputs.PACKER_LOG }}"
-          ANSIBLE_DEBUG=${{ github.event.inputs.ANSIBLE_DEBUG }}"
-          VAGRANT_LOG=${{ github.event.inputs.VAGRANT_LOG }}"
+          PACKER_LOG="${{ github.event.inputs.PACKER_LOG }}"
+          ANSIBLE_DEBUG="${{ github.event.inputs.ANSIBLE_DEBUG }}"
+          VAGRANT_LOG="${{ github.event.inputs.VAGRANT_LOG }}"
           EOF
 
       - name: Skip image build if it already exists in Vagrant Cloud
