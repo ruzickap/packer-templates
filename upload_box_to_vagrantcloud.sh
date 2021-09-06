@@ -131,7 +131,7 @@ cmdline() {
       LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md")
       export LONG_DESCRIPTION
     ;;
-    *windows-*-201[69]*)
+    *windows-*-201[69]*|*windows-*-2022*)
       WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
       export WINDOWS_VERSION
       WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $5 }')
@@ -146,6 +146,10 @@ cmdline() {
       export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE_UC} ${WINDOWS_VERSION} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
       LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md")
       export LONG_DESCRIPTION
+    ;;
+    *)
+      echo "*** Unsupported type: \"${VAGRANT_CLOUD_BOX_NAME}\""
+      exit 1
     ;;
   esac
 

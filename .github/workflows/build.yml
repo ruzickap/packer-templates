@@ -128,10 +128,10 @@ jobs:
           set -x
           brew install bash
           /usr/local/bin/bash << \EOF
-          readarray -t BREW_FORMULAS < <(brew list --formula | grep -v bash) ;
-          brew remove --force "${BREW_FORMULAS[@]}" ;
-          readarray -t BREW_CASKS < <(brew list --casks | grep -v bash) ;
-          brew remove --force "${BREW_CASKS[@]}" ;
+            readarray -t BREW_FORMULAS < <(brew list --formula | grep -v bash) ;
+            brew remove --force "${BREW_FORMULAS[@]}" ;
+            readarray -t BREW_CASKS < <(brew list --casks | grep -v bash) ;
+            brew remove --force "${BREW_CASKS[@]}" ;
           EOF
           brew cleanup -s
           rm -rf "$(brew --cache)"
@@ -143,7 +143,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew install bash coreutils gnu-sed packer vagrant
+          brew install bash coreutils gnu-sed packer python@3.9 vagrant
           MATRIX_STAGE="${{ matrix.stage }}"
           if [[ "${MATRIX_STAGE}" =~ "libvirt" ]]; then
             brew install qemu xorriso
