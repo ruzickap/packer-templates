@@ -92,7 +92,11 @@ jobs:
           NAME="${BUILD%-*}"
 
           # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
-          CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
+          if curl -s "https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}" | grep -q "Not found" ; then
+            CURRENT_VERSION_DESCRIPTION_MARKDOWN="Box doesn't exist"
+          else
+            CURRENT_VERSION_DESCRIPTION_MARKDOWN="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq '.current_version.version as $current_version | .versions[] | select (.version == $current_version) .description_markdown')"
+          fi
           if [[ "${CURRENT_VERSION_DESCRIPTION_MARKDOWN}" =~ ${GITHUB_SHA} ]] ; then
             echo "*** Git hash \"${GITHUB_SHA}\" found in current markdown description"
             # Skip build if the box already exists
@@ -198,16 +202,16 @@ jobs:
               if [[ "${NAME}" =~ ubuntu-.*-desktop-amd64 ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then
                 continue
               fi
-              CURRENT_VERSION=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.version")
-              CHECKSUM=$(curl -s https://app.vagrantup.com/api/v1/box/peru/${NAME} | jq -r ".current_version.providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
-              URL="https://app.vagrantup.com/peru/boxes/${NAME}/versions/${CURRENT_VERSION}/providers/${VAGRANT_PROVIDER}.box"
+              CURRENT_VERSION=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version")
+              CHECKSUM=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.providers[] | select (.name == \"${VAGRANT_PROVIDER}\") .checksum")
+              URL="https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}/versions/${CURRENT_VERSION}/providers/${VAGRANT_PROVIDER}.box"
               echo "*** ${URL} | ${CHECKSUM}"
               if ! curl -L --fail --silent --head --output /dev/null "${URL}"; then
                 echo "* URL \"${URL}\" is not accessible !"
                 exit 1
               fi
-              if [ "$(curl -s "https://app.vagrantup.com/peru/boxes/${NAME}" | jq '.versions | length')" != "1" ]; then
-                echo "* Too many versions for: https://app.vagrantup.com/peru/boxes/${NAME} !"
+              if [ "$(curl -s "https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME}" | jq '.versions | length')" != "1" ]; then
+                echo "* Too many versions for: https://app.vagrantup.com/${VAGRANT_CLOUD_USER}/boxes/${NAME} !"
                 exit 2
               fi
             done
