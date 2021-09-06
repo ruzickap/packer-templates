@@ -1,14 +1,9 @@
 name: shellcheck
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - '**.sh'
-      - .github/workflows/shellcheck.yml
   push:
-    branches:
-      - master
+    branches-ignore:
+      - 'master'
     paths:
       - '**.sh'
       - .github/workflows/shellcheck.yml

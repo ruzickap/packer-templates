@@ -1,17 +1,9 @@
 name: markdown
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - '**.md'
-      - .github/workflows/markdown.yml
-      - .markdownlint.yml
-      - .spelling
-      - .mlc_config.json
   push:
-    branches:
-      - master
+    branches-ignore:
+      - 'master'
     paths:
       - '**.md'
       - .github/workflows/markdown.yml
