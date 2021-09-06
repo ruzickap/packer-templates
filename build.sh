@@ -33,6 +33,7 @@ You should have Packer, Ansible, libvirt and VirtualBox installed.
 List of all supported builds:
  * my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
  * windows-10-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
@@ -48,10 +49,11 @@ List of all supported builds:
 
 Examples:
 
-Build Windows 10 Enterprise Evaluation, Windows Server 2019 Standard Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
+Build Windows 10 Enterprise Evaluation, Windows Server 2022 Standard Evaluation, Windows Server 2019 Standard Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
   ${PROGNAME} \\
     my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-server-2022-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2019-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
@@ -145,6 +147,10 @@ cmdline() {
         case ${NAME} in
           *windows-10-enterprise*)
             export ISO_URL="https://software-download.microsoft.com/download/sg/19043.928.210409-1212.21h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+          ;;
+          *windows-server-2022-*)
+            export WINDOWS_TYPE="server"
+            export ISO_URL="https://software-download.microsoft.com/download/sg/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
           ;;
           *windows-server-2019-*)
             export WINDOWS_TYPE="server"

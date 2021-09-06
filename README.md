@@ -219,6 +219,7 @@ cd packer-templates
   ./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
+  ./build.sh windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
 
   # Windows 10
   ./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
@@ -279,11 +280,11 @@ cd packer-templates
   export TMPDIR=/var/tmp
 
   # Windows Server
-  ## Windows Server 2012
-  export NAME="windows-server-2012_r2-standard-x64-eval"
-  export WINDOWS_VERSION="2012"
+  ## Windows Server 2022
+  export NAME="windows-server-2022-standard-x64-eval"
+  export WINDOWS_VERSION="2022"
   export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
-  export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
+  export ISO_URL="https://software-download.microsoft.com/download/sg/20348.169.210806-2348.fe_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
 
@@ -300,6 +301,14 @@ cd packer-templates
   export WINDOWS_VERSION="2016"
   export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
+
+  ## Windows Server 2012
+  export NAME="windows-server-2012_r2-standard-x64-eval"
+  export WINDOWS_VERSION="2012"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
+  export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
 
