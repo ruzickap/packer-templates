@@ -54,6 +54,7 @@ jobs:
           - windows-server-2012_r2-standard-x64-eval-libvirt
           - windows-server-2016-standard-x64-eval-libvirt
           - windows-server-2019-standard-x64-eval-libvirt
+          - windows-server-2022-standard-x64-eval-libvirt
           - my_ubuntu-20.04-server-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
           - ubuntu-16.04-server-amd64-virtualbox
@@ -127,9 +128,9 @@ jobs:
           set -x
           brew install bash
           /usr/local/bin/bash << \EOF
-          readarray -t BREW_FORMULAS < <(brew list --formula) ;
+          readarray -t BREW_FORMULAS < <(brew list --formula | grep -v bash) ;
           brew remove --force "${BREW_FORMULAS[@]}" ;
-          readarray -t BREW_CASKS < <(brew list --casks) ;
+          readarray -t BREW_CASKS < <(brew list --casks | grep -v bash) ;
           brew remove --force "${BREW_CASKS[@]}" ;
           EOF
           brew cleanup -s
