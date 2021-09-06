@@ -1,14 +1,9 @@
 name: ansible-lint
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - ansible/**
-      - .github/workflows/ansible-lint.yml
   push:
-    branches:
-      - master
+    branches-ignore:
+      - 'master'
     paths:
       - ansible/**
       - .github/workflows/ansible-lint.yml

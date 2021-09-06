@@ -1,14 +1,9 @@
 name: packer-templates
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - '*.json'
-      - .github/workflows/packer-templates.yml
   push:
-    branches:
-      - master
+    branches-ignore:
+      - 'master'
     paths:
       - '*.json'
       - .github/workflows/packer-templates.yml

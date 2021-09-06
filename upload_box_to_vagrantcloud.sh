@@ -167,6 +167,7 @@ cmdline() {
     fi
   else
     echo "*** Box: ${NAME} - doesn't exist..."
+    vagrant cloud box create --no-private --no-tty --short-description "${SHORT_DESCRIPTION}" "${VAGRANT_CLOUD_USER}/${NAME}"
   fi
 
   # Check if the version already exists otherwise create new one

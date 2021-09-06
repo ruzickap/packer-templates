@@ -1,14 +1,9 @@
 name: yamllint
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    paths:
-      - '**.yml'
-      - '**.yaml'
   push:
-    branches:
-      - master
+    branches-ignore:
+      - 'master'
     paths:
       - '**.yml'
       - '**.yaml'
