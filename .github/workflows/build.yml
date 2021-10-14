@@ -38,7 +38,7 @@ env:
 jobs:
   build-boxes:
     name: "*"
-    runs-on: macos-10.15
+    runs-on: macos-11
     strategy:
       fail-fast: false
       matrix:
@@ -122,28 +122,13 @@ jobs:
         with:
           submodules: true
 
-      - name: Remove useless packages to free up space (Windows builds)
-        if: ${{ env.skip != 'true' && contains(github.event.inputs.build, 'windows') }}
-        run: |
-          set -x
-          brew install bash
-          /usr/local/bin/bash << \EOF
-            readarray -t BREW_FORMULAS < <(brew list --formula | grep -v bash) ;
-            brew remove --force "${BREW_FORMULAS[@]}" ;
-            readarray -t BREW_CASKS < <(brew list --casks | grep -v bash) ;
-            brew remove --force "${BREW_CASKS[@]}" ;
-          EOF
-          brew cleanup -s
-          rm -rf "$(brew --cache)"
-          rm -rf /Users/runner/hostedtoolcache
-
       - name: Install packages
         if: ${{ env.skip != 'true' }}
         run: |
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           brew update > /dev/null
-          brew install bash coreutils gettext gnu-sed jq packer python@3.9 vagrant
+          brew install bash coreutils gettext gnu-sed jq packer python@3.9 hudochenkov/sshpass/sshpass vagrant
           MATRIX_STAGE="${{ matrix.stage }}"
           if [[ "${MATRIX_STAGE}" =~ "libvirt" ]]; then
             brew install qemu xorriso
