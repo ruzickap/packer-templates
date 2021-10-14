@@ -24,7 +24,7 @@ vagrant_init_up() {
 }
 
 check_vagrant_vm() {
-  VAGRANT_VM_IP=$(vagrant ssh-config | awk '/HostName/ { print $2 }')
+  vagrant ssh-config | head -5 > "${VAGRANT_CWD}/ssh-config"
 
   case ${VAGRANT_BOX_FILE} in
     *windows* )
@@ -34,6 +34,13 @@ check_vagrant_vm() {
       if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
         echo "${TRUSTED_CERTIFICATES}"
         echo "*** There are no certificates from 'Red Hat' or 'Oracle' installed !"
+        vagrant_cleanup
+        exit 1
+      fi
+
+      SSH_TEST=$(sshpass -pvagrant ssh -q -F "${VAGRANT_CWD}/ssh-config" -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no default 'dir .vbox_version')
+      if [[ ! ${SSH_TEST} =~ "vbox_version" ]]; then
+        echo "*** There is some SSH error when accessing the box using login/password !"
         vagrant_cleanup
         exit 1
       fi
@@ -84,7 +91,7 @@ check_vagrant_vm() {
       if [[ "${VAGRANT_BOX_PROVIDER}" != "virtualbox" ]]; then
         echo "*** Running: sshpass"
         set -x
-        sshpass -pvagrant ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no "vagrant@${VAGRANT_VM_IP}" 'id; sudo id'
+        sshpass -pvagrant ssh -F "${VAGRANT_CWD}/ssh-config" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no default 'id; sudo id'
         echo "*** sshpass test completed..."
       fi
     ;;
@@ -99,7 +106,7 @@ vagrant_cleanup() {
     virsh --quiet --connect=qemu:///system vol-delete --pool default --vol "${VAGRANT_BOX_NAME}_vagrant_box_image_0.img"
   fi
 
-  rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant}
+  rm -rf "${VAGRANT_CWD}"/{Vagrantfile,.vagrant,ssh-config}
   rmdir "${VAGRANT_CWD}"
 }
 
