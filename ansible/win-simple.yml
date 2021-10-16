@@ -83,6 +83,11 @@
     - name: Enable Firewall for OpenSSH
       win_shell: New-NetFirewallRule -DisplayName "ssh" -Direction Inbound -Action Allow -Protocol "TCP" -LocalPort "22"
 
+    - name: Add Vagrant key
+      win_get_url:
+        url: https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub
+        dest: "%PROGRAMDATA%\\ssh\\administrators_authorized_keys"
+
     - name: Unzip downloaded BleachBit
       win_unzip:
         src: "%HOMEDRIVE%\\BleachBit-portable.zip"
