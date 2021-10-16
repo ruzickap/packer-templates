@@ -30,6 +30,7 @@ check_vagrant_vm() {
     *windows* )
       sleep 100
 
+      echo '*** Running: Certificate "Red Hat" or "Oracle" driver check'
       TRUSTED_CERTIFICATES=$(vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher" | uniq)
       if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
         echo "${TRUSTED_CERTIFICATES}"
@@ -38,13 +39,7 @@ check_vagrant_vm() {
         exit 1
       fi
 
-      SSH_TEST=$(sshpass -pvagrant ssh -q -F "${VAGRANT_CWD}/ssh-config" -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no default 'dir .vbox_version')
-      if [[ ! ${SSH_TEST} =~ "vbox_version" ]]; then
-        echo "*** There is some SSH error when accessing the box using login/password !"
-        vagrant_cleanup
-        exit 1
-      fi
-
+      echo '*** Running: "QEMU" or "Virtualbox" driver check'
       VIRT_SERVICES=$(vagrant winrm --shell powershell --command "Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}" | uniq)
       if [[ ! ${VIRT_SERVICES} =~ (QEMU|Spice|vdservice|VBoxService) ]]; then
         echo "${VIRT_SERVICES}"
@@ -53,6 +48,7 @@ check_vagrant_vm() {
         exit 2
       fi
 
+      echo '*** Running: "Red Hat" and "VirtIO" driver check'
       if [[ ${VAGRANT_BOX_FILE} =~ "libvirt" ]]; then
         VIRT_DEVICES=$(vagrant winrm --shell powershell --command "Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq)
         if [[ ! ${VIRT_DEVICES} =~ (Red Hat|VirtIO) ]]; then
@@ -63,6 +59,7 @@ check_vagrant_vm() {
         fi
       fi
 
+      echo '*** Running: Windows version check'
       WIN_VERSION=$(vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"')
       if [[ ! ${VAGRANT_BOX_FILE} =~ $(echo "${WIN_VERSION}" | awk '/^OS Name/ { print tolower($4 "-" $5 "-" $6) }') ]]; then
         echo "${WIN_VERSION}"
@@ -71,6 +68,7 @@ check_vagrant_vm() {
         exit 4
       fi
 
+      echo '*** Running: Windows license check'
       LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
       if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
         echo "${LICENSE_STATUS}"
@@ -80,22 +78,18 @@ check_vagrant_vm() {
       fi
     ;;
     *centos* | *ubuntu* )
-      echo "*** Checking if there are some packages to upgrade (there should be none)"
+      echo '*** Checking if there are some packages to upgrade (there should be none)'
       vagrant ssh --command '
         grep PRETTY_NAME /etc/os-release;
         sudo sh -c "test -x /usr/bin/apt && apt-get update 2>&1 > /dev/null && echo \"apt list -qq --upgradable\" && apt list -qq --upgradable";
         sudo sh -c "test -x /usr/bin/yum && yum list -q updates";
-        id;
+        id; sudo id
       '
-      echo "*** vagrant ssh test completed..."
-      if [[ "${VAGRANT_BOX_PROVIDER}" != "virtualbox" ]]; then
-        echo "*** Running: sshpass"
-        set -x
-        sshpass -pvagrant ssh -F "${VAGRANT_CWD}/ssh-config" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no default 'id; sudo id'
-        echo "*** sshpass test completed..."
-      fi
     ;;
   esac
+
+  echo '*** Running: sshpass'
+  sshpass -pvagrant ssh -q -F "${VAGRANT_CWD}/ssh-config" -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ControlMaster=no -o PreferredAuthentications=password -o PubkeyAuthentication=no default 'cd'
 }
 
 vagrant_cleanup() {
