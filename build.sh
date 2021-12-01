@@ -31,6 +31,8 @@ This script can build the various libvirt and virtualbox images.
 You should have Packer, Ansible, libvirt and VirtualBox installed.
 
 List of all supported builds:
+ * my_windows-11-enterprise-x64-eval-{libvirt,virtualbox}
+ * windows-11-enterprise-x64-eval-{libvirt,virtualbox}
  * my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}
  * windows-10-enterprise-x64-eval-{libvirt,virtualbox}
  * windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
@@ -49,8 +51,10 @@ List of all supported builds:
 
 Examples:
 
-Build Windows 10 Enterprise Evaluation, Windows Server 2022 Standard Evaluation, Windows Server 2019 Standard Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
+Build Windows 11 Enterprise Evaluation, Windows 10 Enterprise Evaluation, Windows Server 2022 Standard Evaluation, Windows Server 2019 Standard Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
   ${PROGNAME} \\
+    my_windows-11-enterprise-x64-eval-{libvirt,virtualbox} \\
+    windows-11-enterprise-x64-eval-{libvirt,virtualbox} \\
     my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-server-2022-standard-x64-eval-{libvirt,virtualbox} \\
@@ -145,6 +149,9 @@ cmdline() {
         export WINDOWS_EDITION
 
         case ${NAME} in
+          *windows-11-enterprise*)
+            export ISO_URL="https://software-download.microsoft.com/download/sg/22000.194.210913-1444.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+          ;;
           *windows-10-enterprise*)
             export ISO_URL="https://software-download.microsoft.com/download/sg/19043.928.210409-1212.21h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
           ;;

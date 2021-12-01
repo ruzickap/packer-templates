@@ -5,7 +5,7 @@ on:
     inputs:
       build:
         description: Build
-        default: all, my_windows-10-enterprise-x64-eval-libvirt
+        default: all, my_windows-11-enterprise-x64-eval-libvirt
         required: false
       PACKER_LOG:
         description: PACKER_LOG (0, 1)
@@ -45,24 +45,28 @@ jobs:
         stage:
           - my_ubuntu-20.04-server-amd64-libvirt
           - my_windows-10-enterprise-x64-eval-libvirt
+          - my_windows-11-enterprise-x64-eval-libvirt
           - ubuntu-16.04-server-amd64-libvirt
           - ubuntu-18.04-desktop-amd64-libvirt
           - ubuntu-18.04-server-amd64-libvirt
           - ubuntu-20.04-desktop-amd64-libvirt
           - ubuntu-20.04-server-amd64-libvirt
           - windows-10-enterprise-x64-eval-libvirt
+          - windows-11-enterprise-x64-eval-libvirt
           - windows-server-2012_r2-standard-x64-eval-libvirt
           - windows-server-2016-standard-x64-eval-libvirt
           - windows-server-2019-standard-x64-eval-libvirt
           - windows-server-2022-standard-x64-eval-libvirt
           - my_ubuntu-20.04-server-amd64-virtualbox
           - my_windows-10-enterprise-x64-eval-virtualbox
+          - my_windows-11-enterprise-x64-eval-virtualbox
           - ubuntu-16.04-server-amd64-virtualbox
           - ubuntu-18.04-desktop-amd64-virtualbox
           - ubuntu-18.04-server-amd64-virtualbox
           - ubuntu-20.04-desktop-amd64-virtualbox
           - ubuntu-20.04-server-amd64-virtualbox
           - windows-10-enterprise-x64-eval-virtualbox
+          - windows-11-enterprise-x64-eval-virtualbox
           - windows-server-2012_r2-standard-x64-eval-virtualbox
           - windows-server-2016-standard-x64-eval-virtualbox
           - windows-server-2019-standard-x64-eval-virtualbox
@@ -128,8 +132,7 @@ jobs:
           set -x
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
-          brew update > /dev/null
-          brew install bash coreutils gettext gnu-sed jq packer python@3.9 hudochenkov/sshpass/sshpass vagrant
+          brew install ansible bash coreutils gettext gnu-sed jq packer hudochenkov/sshpass/sshpass vagrant
           MATRIX_STAGE="${{ matrix.stage }}"
           if [[ "${MATRIX_STAGE}" =~ "libvirt" ]]; then
             brew install qemu xorriso
@@ -138,7 +141,7 @@ jobs:
             brew install virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==4.5.0 pywinrm==0.4.2
+          pip3 install pywinrm==0.4.2
           ansible-galaxy collection install ansible.windows:=1.7.2 chocolatey.chocolatey:=1.1.0
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
@@ -166,7 +169,7 @@ jobs:
     steps:
       - name: Remove old versions
         run: |
-          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
+          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-1{0,1}-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
             # Verify if current version of the box has both boxes (virtualbox + libvirt)
             # CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
             # if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
@@ -183,7 +186,7 @@ jobs:
       - name: Verify if the boxes are avaiable on the Vagrant Cloud
         run: |
           set -eux
-          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
+          for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-1{0,1}-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
             for VAGRANT_PROVIDER in libvirt virtualbox; do
               # ubuntu-{20,18}.04-desktop-amd64 libvirt - skip checks for Ubuntu Desktop - They can not be built using GH Actions
               if [[ "${NAME}" =~ ubuntu-.*-desktop-amd64 ]] && [[ "${VAGRANT_PROVIDER}" = "libvirt" ]] ; then

@@ -221,6 +221,12 @@ cd packer-templates
   ./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
 
+  # Windows 11
+  ./build.sh windows-11-enterprise-x64-eval-{libvirt,virtualbox}
+
+  # Windows 11 - customized
+  ./build.sh my_windows-11-enterprise-x64-eval-{libvirt,virtualbox}
+
   # Windows 10
   ./build.sh windows-10-enterprise-x64-eval-{libvirt,virtualbox}
 
@@ -311,6 +317,22 @@ cd packer-templates
   export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
+
+  # Windows 11
+  export NAME="windows-11-enterprise-x64-eval"
+  export WINDOWS_VERSION="11"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
+  export ISO_URL="https://software-download.microsoft.com/download/sg/22000.194.210913-1444.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" windows.json
+
+  # Windows 11 - customized
+  export NAME="my_windows-11-enterprise-x64-eval"
+  export WINDOWS_VERSION="11"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
+  export ISO_URL="https://software-download.microsoft.com/download/sg/22000.194.210913-1444.co_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  packer build -only="qemu" my_windows.json
 
   # Windows 10
   export NAME="windows-10-enterprise-x64-eval"

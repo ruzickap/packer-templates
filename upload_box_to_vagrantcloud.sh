@@ -25,12 +25,14 @@ Box names with user:
 * peru@my_ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_ubuntu-20.04-server-amd64-{libvirt,virtualbox}.box
 * peru@my_windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
+* peru@my_windows-11-enterprise-x64-eval-{libvirt,virtualbox}.box
 * peru@ubuntu-16.04-server-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-18.04-server-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-20.04-server-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-20.04-desktop-amd64-{libvirt,virtualbox}.box
 * peru@windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
+* peru@windows-11-enterprise-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2016-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2019-standard-x64-eval-{libvirt,virtualbox}.box
