@@ -3,7 +3,7 @@
 Few notes how to configure GitLab for `packer-templates` to build boxes for
 Vagrant automatically every month.
 
-* New Project -> CI/CD fir external repo -> GitHub
+* New Project -> CI/CD fir external repository -> GitHub
   * `ruzickap/packer-templates` -> Connect
 
 * Settings

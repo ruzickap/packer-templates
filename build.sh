@@ -146,7 +146,7 @@ cmdline() {
 
         case ${NAME} in
           *windows-10-enterprise*)
-            export ISO_URL="https://software-download.microsoft.com/download/sg/19043.928.210409-1212.21h1_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+            export ISO_URL="https://software-download.microsoft.com/download/sg/444969d5-f34g-4e03-ac9d-1f9786c69161/19044.1288.211006-0501.21h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
           ;;
           *windows-server-2022-*)
             export WINDOWS_TYPE="server"
