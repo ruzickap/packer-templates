@@ -82,7 +82,7 @@ jobs:
                 # Skip build if the box already exists
                 CURRENT_VERSION_PROVIDER_URL="$(curl -L --silent "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r ".current_version.version as \$current_version | .versions[] | select (.version == \$current_version) .providers[] | select (.name == \"${PACKER_VAGRANT_PROVIDER}\") .download_url")"
                 if [ -n "${CURRENT_VERSION_PROVIDER_URL}" ]; then
-                  echo "*** Found already build image \"${BUILD}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
+                  echo "*** Found already build image \"${BUILD_BOX}\" with hash \"${GITHUB_SHA}\": ${CURRENT_VERSION_PROVIDER_URL}"
                   echo "*** This build will be skipped..."
                 else
                   # Set BOX_VERSION variable from existing provider (if exists) or from "date"
