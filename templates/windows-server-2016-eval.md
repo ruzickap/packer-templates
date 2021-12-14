@@ -84,7 +84,7 @@ Drivers / Devices added for the VMs for specific providers.
 
 ### Minimal installation
 
-See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/master/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
+See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/main/http/windows-${WINDOWS_VERSION}/Autounattend.xml)
 
 * UTC timezone
 * IEHarden disabled
@@ -97,7 +97,7 @@ See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/ma
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
-* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
+* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/main/scripts/win-common/unattend.xml)
 
 ### Additional Drivers installed for libvirt boxes - [VirtIO](https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers/)
 
@@ -107,7 +107,7 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml):
+Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/main/ansible/win-simple.yml):
 
 * vioscsi: Support for VirtIO SCSI pass-through controller
 * Balloon: VirtIO Memory Balloon driver

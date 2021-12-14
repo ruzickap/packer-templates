@@ -3,7 +3,7 @@ name: yamllint
 on:
   push:
     branches-ignore:
-      - 'master'
+      - main
     paths:
       - '**.yml'
       - '**.yaml'

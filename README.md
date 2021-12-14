@@ -68,7 +68,7 @@ Some of the [images](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=
 begins with "my_" - they are preconfigured with [Ansible role](https://github.com/ruzickap/ansible-role-my_common_defaults/):
 
 * there are usually many customization depends on distribution - all are
-  described in [Ansible playbook](https://github.com/ruzickap/packer-templates/blob/master/ansible/site.yml).
+  described in [Ansible playbook](https://github.com/ruzickap/packer-templates/blob/main/ansible/site.yml).
 * added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
   and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
   or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
@@ -92,7 +92,7 @@ begins with "my_" - they are preconfigured with [Ansible role](https://github.co
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
-* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/master/scripts/win-common/unattend.xml)
+* Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/main/scripts/win-common/unattend.xml)
 
 ### Customized Windows 10 installation
 
@@ -107,7 +107,7 @@ Installed during installation:
 * qxldod: QXL graphics driver
 * viostor: VirtIO Block driver (VirtIO SCSI controller driver)
 
-Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/master/ansible/win-simple.yml)
+Installed components via Ansible playbook [win-simple.yml](https://github.com/ruzickap/packer-templates/blob/main/ansible/win-simple.yml)
 for Windows:
 
 * vioscsi: Support for VirtIO SCSI pass-through controller

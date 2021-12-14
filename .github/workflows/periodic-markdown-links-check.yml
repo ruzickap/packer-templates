@@ -5,7 +5,7 @@ on:
     - cron: '8 8 * * 1'
   push:
     branches-ignore:
-      - 'master'
+      - main
     paths:
       - .github/workflows/periodic-markdown-links-check.yml
 

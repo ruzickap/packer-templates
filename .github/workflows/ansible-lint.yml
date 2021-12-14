@@ -3,7 +3,7 @@ name: ansible-lint
 on:
   push:
     branches-ignore:
-      - 'master'
+      - main
     paths:
       - ansible/**
       - .github/workflows/ansible-lint.yml
