@@ -68,7 +68,7 @@ Drivers / Devices added for the VMs for specific providers.
 
 ### Preconfigured installation
 
-See the [preseed file](https://github.com/ruzickap/packer-templates/blob/master/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg)
+See the [preseed file](https://github.com/ruzickap/packer-templates/blob/main/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg)
 and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/)
 
 * en_US.UTF-8

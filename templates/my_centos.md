@@ -71,7 +71,7 @@ Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.i
 
 ### Preconfigured installation
 
-See the [kickstart file](https://github.com/ruzickap/packer-templates/blob/master/http/centos${CENTOS_VERSION}/my-ks.cfg)
+See the [kickstart file](https://github.com/ruzickap/packer-templates/blob/main/http/centos${CENTOS_VERSION}/my-ks.cfg)
 and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
 
 * en_US.UTF-8

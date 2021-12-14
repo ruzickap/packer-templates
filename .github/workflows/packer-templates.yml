@@ -3,7 +3,7 @@ name: packer-templates
 on:
   push:
     branches-ignore:
-      - 'master'
+      - main
     paths:
       - '*.json'
       - .github/workflows/packer-templates.yml
