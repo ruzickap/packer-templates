@@ -5,7 +5,7 @@ on:
     inputs:
       build:
         description: Build
-        default: all my_windows-10-enterprise-x64-eval-libvirt ubuntu-20.04-server-amd64-libvirt
+        default: all my_windows-10-enterprise-x64-eval-libvirt ubuntu-20.04-desktop-amd64-virtualbox
         required: true
       PACKER_LOG:
         description: PACKER_LOG (0, 1)
@@ -34,7 +34,7 @@ env:
   VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
   # Needed for Packer when calling ansible (https://github.com/ansible/ansible/issues/32499)
   OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
-  BUILDS_LIST: >-
+  BUILDS_LIST: |
     my_windows-10-enterprise-x64-eval-libvirt
     my_windows-10-enterprise-x64-eval-virtualbox
     ubuntu-18.04-server-amd64-libvirt
@@ -66,9 +66,8 @@ jobs:
         run: |
           set -euxo pipefail
           declare -a BUILDS_MATRIX
-          read -r -a BUILDS_ARRAY <<< "${BUILDS_LIST}"
-          for BUILD_BOX in "${BUILDS_ARRAY[@]}" ; do
-            if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" = "all" ]] ; then
+          while IFS= read -r BUILD_BOX ; do
+            if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" =~ ^all ]] ; then
               PACKER_VAGRANT_PROVIDER="${BUILD_BOX##*-}"
               NAME="${BUILD_BOX%-*}"
               # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
@@ -96,7 +95,7 @@ jobs:
                 BUILDS_MATRIX+=("${BUILD_BOX}|${BOX_VERSION}")
               fi
             fi
-          done
+          done <<< "${BUILDS_LIST}"
 
           jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}"
           echo "::set-output name=matrix::$( jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}" )"
@@ -105,6 +104,7 @@ jobs:
     name: "*"
     runs-on: macos-10.15
     needs: generate-cluster-matrix
+    if: ${{ needs.generate-cluster-matrix.outputs.matrix != '[]' && needs.generate-cluster-matrix.outputs.matrix != '' }}
     concurrency:
       group: build-boxes-${{ matrix.stage }}
     strategy:
@@ -188,17 +188,17 @@ jobs:
         run: |
           set -euxo pipefail
           for NAME in ubuntu-{20,18}.04-desktop-amd64 ubuntu-{20,18,16}.04-server-amd64 my_ubuntu-20.04-server-amd64 {my_,}windows-10-enterprise-x64-eval windows-server-{2022,2019,2016,2012_r2}-standard-x64-eval; do
+            while read -r VERSION ; do
+              echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
+              curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}" -X DELETE -d "access_token=${VAGRANT_CLOUD_TOKEN}" -o /dev/null
+            done < <( curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | .versions[] | select (.version != $current_version) .version' )
+
             # Verify if current version of the box has both boxes (virtualbox + libvirt)
             CURRENT_VERSION_PROVIDERS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}"| jq -r ".current_version.providers|length")
             if [[ ${CURRENT_VERSION_PROVIDERS} -ne 2 ]]; then
-              echo "*** Current version of ${VAGRANT_CLOUD_USER}/${NAME} does not contain both box versions (virtualbox + libvirt) - Skipping!"
+              echo "*** Current version of ${VAGRANT_CLOUD_USER}/${NAME} does not contain both box versions (virtualbox + libvirt) !"
               continue
             fi
-            OLD_VERSIONS=$(curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}" | jq -r '.current_version.version as $current_version | [ .versions[] | select (.version != $current_version) .version ] | join(" ")')
-            for VERSION in ${OLD_VERSIONS}; do
-              echo "*** Removing box version: https://vagrantcloud.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}"
-              curl -s "https://app.vagrantup.com/api/v1/box/${VAGRANT_CLOUD_USER}/${NAME}/version/${VERSION}" -X DELETE -d "access_token=${VAGRANT_CLOUD_TOKEN}" -o /dev/null
-            done
           done
 
       - name: Verify if the boxes are avaiable on the Vagrant Cloud
