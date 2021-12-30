@@ -8,20 +8,37 @@ on:
         default: all my_windows-10-enterprise-x64-eval-libvirt ubuntu-20.04-desktop-amd64-virtualbox
         required: true
       PACKER_LOG:
+        type: choice
         description: PACKER_LOG (0, 1)
         default: "0"
+        options:
+          - "0"
+          - "1"
         required: false
       ANSIBLE_DEBUG:
+        type: choice
         description: ANSIBLE_DEBUG (true, false)
         default: "false"
+        options:
+          - "false"
+          - "true"
         required: false
       VAGRANT_LOG:
+        type: choice
         description: VAGRANT_LOG (debug, info, warn)
         default: "warn"
+        options:
+          - "warn"
+          - "info"
+          - "debug"
         required: false
       build_upload:
+        type: choice
         description: Upload release to Vagrant Cloud
         default: "false"
+        options:
+          - "false"
+          - "true"
         required: false
   schedule:
     - cron: '0 0 1 * *'
