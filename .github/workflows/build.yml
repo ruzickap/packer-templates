@@ -41,7 +41,7 @@ on:
           - "true"
         required: false
   schedule:
-    - cron: '0 0 1 * *'
+    - cron: '45 6 1 * *'
 
 env:
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
@@ -84,7 +84,7 @@ jobs:
           set -euxo pipefail
           declare -a BUILDS_MATRIX
           while IFS= read -r BUILD_BOX ; do
-            if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" =~ ^all ]] ; then
+            if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" =~ ^all || "${{ github.event_name }}" == 'schedule' ]] ; then
               PACKER_VAGRANT_PROVIDER="${BUILD_BOX##*-}"
               NAME="${BUILD_BOX%-*}"
               # Check if the boxes (virtualbox/libvirt) with the same git hash already exists
