@@ -41,7 +41,7 @@ on:
           - "true"
         required: false
   schedule:
-    - cron: '45 6 1 * *'
+    - cron: '30 7 1 * *'
 
 env:
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
@@ -52,24 +52,26 @@ env:
   # Needed for Packer when calling ansible (https://github.com/ansible/ansible/issues/32499)
   OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
   BUILDS_LIST: |
-    my_windows-10-enterprise-x64-eval-libvirt
-    my_windows-10-enterprise-x64-eval-virtualbox
-    ubuntu-18.04-server-amd64-libvirt
-    ubuntu-18.04-server-amd64-virtualbox
-    ubuntu-20.04-desktop-amd64-libvirt
-    ubuntu-20.04-desktop-amd64-virtualbox
-    ubuntu-20.04-server-amd64-libvirt
-    ubuntu-20.04-server-amd64-virtualbox
-    windows-10-enterprise-x64-eval-libvirt
-    windows-10-enterprise-x64-eval-virtualbox
-    windows-server-2012_r2-standard-x64-eval-libvirt
-    windows-server-2012_r2-standard-x64-eval-virtualbox
-    windows-server-2016-standard-x64-eval-libvirt
-    windows-server-2016-standard-x64-eval-virtualbox
-    windows-server-2019-standard-x64-eval-libvirt
-    windows-server-2019-standard-x64-eval-virtualbox
-    windows-server-2022-standard-x64-eval-libvirt
-    windows-server-2022-standard-x64-eval-virtualbox
+    (
+      "my_windows-10-enterprise-x64-eval-libvirt"
+      "my_windows-10-enterprise-x64-eval-virtualbox"
+      "ubuntu-18.04-server-amd64-libvirt"
+      "ubuntu-18.04-server-amd64-virtualbox"
+      "ubuntu-20.04-desktop-amd64-libvirt"
+      "ubuntu-20.04-desktop-amd64-virtualbox"
+      "ubuntu-20.04-server-amd64-libvirt"
+      "ubuntu-20.04-server-amd64-virtualbox"
+      "windows-10-enterprise-x64-eval-libvirt"
+      "windows-10-enterprise-x64-eval-virtualbox"
+      "windows-server-2012_r2-standard-x64-eval-libvirt"
+      "windows-server-2012_r2-standard-x64-eval-virtualbox"
+      "windows-server-2016-standard-x64-eval-libvirt"
+      "windows-server-2016-standard-x64-eval-virtualbox"
+      "windows-server-2019-standard-x64-eval-libvirt"
+      "windows-server-2019-standard-x64-eval-virtualbox"
+      "windows-server-2022-standard-x64-eval-libvirt"
+      "windows-server-2022-standard-x64-eval-virtualbox"
+    )
 
 jobs:
   generate-cluster-matrix:
@@ -82,8 +84,8 @@ jobs:
         id: set-matrix
         run: |
           set -euxo pipefail
-          declare -a BUILDS_MATRIX
-          while IFS= read -r BUILD_BOX ; do
+          declare -a BUILDS_MATRIX=${{ env.BUILDS_LIST }}
+          for BUILD_BOX in "${BUILDS_MATRIX[@]}" ; do
             if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" =~ ^all || "${{ github.event_name }}" == 'schedule' ]] ; then
               PACKER_VAGRANT_PROVIDER="${BUILD_BOX##*-}"
               NAME="${BUILD_BOX%-*}"
@@ -112,7 +114,7 @@ jobs:
                 BUILDS_MATRIX+=("${BUILD_BOX}|${BOX_VERSION}")
               fi
             fi
-          done <<< "${BUILDS_LIST}"
+          done
 
           jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}"
           echo "::set-output name=matrix::$( jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}" )"
