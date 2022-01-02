@@ -41,7 +41,7 @@ on:
           - "true"
         required: false
   schedule:
-    - cron: '30 7 1 * *'
+    - cron: '45 6 1 * *'
 
 env:
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
@@ -84,8 +84,8 @@ jobs:
         id: set-matrix
         run: |
           set -euxo pipefail
-          declare -a BUILDS_MATRIX=${{ env.BUILDS_LIST }}
-          for BUILD_BOX in "${BUILDS_MATRIX[@]}" ; do
+          declare -a BUILDS_LIST_ARRAY=${{ env.BUILDS_LIST }}
+          for BUILD_BOX in "${BUILDS_LIST_ARRAY[@]}" ; do
             if [[ "${{ github.event.inputs.build }}" =~ ${BUILD_BOX} || "${{ github.event.inputs.build }}" =~ ^all || "${{ github.event_name }}" == 'schedule' ]] ; then
               PACKER_VAGRANT_PROVIDER="${BUILD_BOX##*-}"
               NAME="${BUILD_BOX%-*}"
