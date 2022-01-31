@@ -74,8 +74,8 @@ env:
     )
 
 jobs:
-  generate-cluster-matrix:
-    name: "Generate cluster matrix"
+  generate-matrix:
+    name: "Generate matrix"
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -122,15 +122,15 @@ jobs:
   build-boxes:
     name: "*"
     runs-on: macos-10.15
-    needs: generate-cluster-matrix
-    if: ${{ needs.generate-cluster-matrix.outputs.matrix != '[]' && needs.generate-cluster-matrix.outputs.matrix != '' }}
+    needs: generate-matrix
+    if: ${{ needs.generate-matrix.outputs.matrix != '[]' && needs.generate-matrix.outputs.matrix != '' }}
     concurrency:
       group: build-boxes-${{ matrix.stage }}
     strategy:
       # Do not cancel matrix jobs if one of them fails
       fail-fast: false
       matrix:
-        stage: ${{ fromJSON(needs.generate-cluster-matrix.outputs.matrix) }}
+        stage: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
 
     steps:
       - name: Set PACKER_LOG, ANSIBLE_DEBUG, VAGRANT_LOG variables when using workflow_dispatch
