@@ -1,4 +1,4 @@
-# GitLab setup
+# GitLab setup (obsolete - not used)
 
 Few notes how to configure GitLab for `packer-templates` to build boxes for
 Vagrant automatically every month.

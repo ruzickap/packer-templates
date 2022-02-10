@@ -3,7 +3,7 @@
 Clean and minimal Windows ${WINDOWS_TYPE_UC} $WINDOWS_VERSION
 ${WINDOWS_RELEASE_UC} ${WINDOWS_EDITION_UC} ($WINDOWS_ARCH) Evaluation base box
 for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+and [VirtualBox](https://www.vagrantup.com/docs/providers/virtualbox) Vagrant providers.
 
 ---
 

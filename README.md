@@ -3,7 +3,7 @@
 ## Customized+Clean/Minimal boxes for [libvirt][libvirt] and [VirtualBox][virtualbox]
 
 [libvirt]: https://github.com/vagrant-libvirt/vagrant-libvirt
-[virtualbox]: https://www.vagrantup.com/docs/virtualbox/
+[virtualbox]: https://www.vagrantup.com/docs/providers/virtualbox
 
 [![Build Status](https://github.com/ruzickap/packer-templates/workflows/build/badge.svg)](https://github.com/ruzickap/packer-templates)
 

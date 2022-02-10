@@ -1,7 +1,7 @@
 # [My Ubuntu ${UBUNTU_VERSION} ${UBUNTU_TYPE_UC}](http://www.ubuntu.com/${UBUNTU_TYPE})
 
 Modified Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} box for [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt)
-and [VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+and [VirtualBox](https://www.vagrantup.com/docs/providers/virtualbox) Vagrant providers.
 
 ---
 
