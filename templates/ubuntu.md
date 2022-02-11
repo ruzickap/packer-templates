@@ -2,7 +2,7 @@
 
 Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} base box for
 [libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) and
-[VirtualBox](https://www.vagrantup.com/docs/virtualbox/) Vagrant providers.
+[VirtualBox](https://www.vagrantup.com/docs/providers/virtualbox) Vagrant providers.
 
 ---
 
