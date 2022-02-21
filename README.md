@@ -325,7 +325,7 @@ cd packer-templates
 
 ## Helper scripts
 
-* `build.sh` - build single image specified on command line
+* `build.sh` - build single image specified on command-line
 * `build_all.sh` - builds all images
 * `build_all_remote_ssh.sh` - connects to remote Ubuntu server, install
   the necessary packages for building images and execute `build_all.sh`

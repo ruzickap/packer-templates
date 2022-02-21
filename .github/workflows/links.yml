@@ -1,0 +1,26 @@
+name: Links
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - .github/workflows/links.yml
+      - "**.md"
+  schedule:
+    - cron: "0 3 * * 1"
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Link Checker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: lycheeverse/lychee-action@v1.5.0
+        with:
+          args: --no-progress --exclude-path CHANGELOG.md --exclude-all-private --exclude 'GITHUB_SHA%7D|_VERSION%7D|_TYPE%7D' -- './**/*.md'
+          fail: true

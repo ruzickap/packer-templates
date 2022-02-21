@@ -1,0 +1,29 @@
+name: markdown-mdspell
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - '**.md'
+      - .github/workflows/markdown-mdspell.yml
+      - .spelling
+
+jobs:
+  markdown-mdspell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install markdown-spellcheck
+        run: npm install -g markdown-spellcheck
+
+      - name: Run mdspell
+        run: |
+          set -euxo pipefail
+          find . -type f \( -name "*.md" ! -name "CHANGELOG.md" \) -print0 | xargs -0 --max-args=1 mdspell --ignore-numbers --ignore-acronyms --report --en-gb {} \;
