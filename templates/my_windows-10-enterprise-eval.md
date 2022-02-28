@@ -14,7 +14,7 @@ and [VirtualBox](https://www.vagrantup.com/docs/providers/virtualbox) Vagrant pr
 ## Requirements
 
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
-* [Vagrant](https://www.vagrantup.com/downloads.html)
+* [Vagrant](https://www.vagrantup.com/downloads)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 
