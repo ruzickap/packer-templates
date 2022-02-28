@@ -14,7 +14,7 @@ Clean + Minimal + Latest Ubuntu ${UBUNTU_TYPE_UC} ${UBUNTU_ARCH} base box for
 ## Requirements
 
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
-* [Vagrant](https://www.vagrantup.com/downloads.html)
+* [Vagrant](https://www.vagrantup.com/downloads)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/)
 

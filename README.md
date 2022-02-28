@@ -20,7 +20,7 @@
 ## Requirements
 
 * [QEMU-KVM](https://en.wikibooks.org/wiki/QEMU/Installing_QEMU)
-* [Vagrant](https://www.vagrantup.com/downloads.html)
+* [Vagrant](https://www.vagrantup.com/downloads)
 * [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 * [VirtualBox](https://www.virtualbox.org/) (Version 6.1 or later)
 * [Packer](https://www.packer.io/) (Version 1.6.0 or later)
