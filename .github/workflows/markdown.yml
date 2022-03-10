@@ -15,7 +15,7 @@ jobs:
   markdownlint-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Markdown Lint
         uses: ruzickap/action-my-markdown-linter@v1
@@ -26,7 +26,7 @@ jobs:
   markdown-spell-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Node.js 12
         uses: actions/setup-node@v3
@@ -42,7 +42,7 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Link Checker
         uses: ruzickap/action-my-markdown-link-checker@v1
