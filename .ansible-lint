@@ -1,0 +1,7 @@
+skip_list:
+  # Role name virtio-win does not match ``^[a-z][a-z0-9_]+$`` pattern
+  - 'role-name'
+  # Lines should be no longer than 160 chars
+  - 'yaml'
+
+verbosity: 1
