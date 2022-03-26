@@ -47,5 +47,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ERROR_ON_MISSING_EXEC_BIT: true
+          VALIDATE_ANSIBLE: false
           VALIDATE_JSCPD: false
           FILTER_REGEX_INCLUDE: .*(\.sh|\.json|\.github|http|tools|docs).*

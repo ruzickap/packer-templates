@@ -64,6 +64,20 @@ VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
 * Username: Administrator, vagrant
 * Password: vagrant
 
+## RDP access
+
+Install [freerdp](https://www.freerdp.com/) to connect to Windows using [RDP](https://en.wikipedia.org/wiki/Remote_Desktop_Protocol)
+protocol:
+
+```bash
+# Fedora
+dnf install freerdp
+# Ubuntu
+apt-get install freerdp2-x11
+
+vagrant rdp -- /cert-ignore
+```
+
 ## VM Specifications
 
 Drivers / Devices added for the VMs for specific providers.
