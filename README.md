@@ -89,6 +89,7 @@ begins with "my_" - they are preconfigured with [Ansible role](https://github.co
 * AutoActivation skipped
 * DoNotOpenInitialConfigurationTasksAtLogon set to true
 * WinRM (SSL) enabled
+* OpenSSH installed and enabled
 * New Network Window turned off
 * Administrator account enabled
 * EnableLUA
