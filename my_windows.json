@@ -1,5 +1,5 @@
 {
-  "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO_DIR=./packer_cache/virtio-win ISO_URL=https://software-download.microsoft.com/download/sg/444969d5-f34g-4e03-ac9d-1f9786c69161/19044.1288.211006-0501.21h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ packer build -only=qemu my_windows.json",
+  "_comment1": "NAME=my_windows-10-enterprise-x64-eval WINDOWS_VERSION=10 VIRTIO_WIN_ISO_DIR=./packer_cache/virtio-win ISO_URL=https://software-download.microsoft.com/download/sg/444969d5-f34g-4e03-ac9d-1f9786c69161/19044.1288.211006-0501.21h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ TMPDIR=/var/tmp/ LOGDIR=/tmp/ packer build -only=qemu my_windows.json",
   "builders": [
     {
       "accelerator": "{{ user `accelerator` }}",
@@ -29,7 +29,7 @@
       "vm_name": "{{ user `name` }}",
       "winrm_insecure": "true",
       "winrm_password": "{{ user `winrm_password` }}",
-      "winrm_timeout": "40m",
+      "winrm_timeout": "1h",
       "winrm_use_ssl": "true",
       "winrm_username": "{{ user `winrm_username` }}"
     },
@@ -44,6 +44,7 @@
         "scripts/win-common/unattend.xml",
         "scripts/win-common/sysprep.bat"
       ],
+      "gfx_vram_size": 48,
       "guest_additions_mode": "attach",
       "guest_os_type": "Windows{{ user `windows_version` }}_64",
       "hard_drive_interface": "sata",
@@ -69,12 +70,36 @@
           "{{ .Name }}",
           "--audiocontroller",
           "ac97"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recordingfile",
+          "{{ user `packer_templates_logs` }}/{{ user `name` }}-virtualbox.webm"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recordingvideofps",
+          "1"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recordingscreens",
+          "0"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recording",
+          "on"
         ]
       ],
       "vm_name": "{{ user `name` }}",
       "winrm_insecure": "true",
       "winrm_password": "{{ user `winrm_password` }}",
-      "winrm_timeout": "40m",
+      "winrm_timeout": "1h",
       "winrm_use_ssl": "true",
       "winrm_username": "{{ user `winrm_username` }}"
     }
@@ -144,6 +169,7 @@
     "memory": "8192",
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
+    "packer_templates_logs": "{{ env `LOGDIR` }}",
     "virtio_win_iso_dir": "{{ env `VIRTIO_WIN_ISO_DIR` }}",
     "windows_version": "{{ env `WINDOWS_VERSION` }}",
     "winrm_password": "vagrant",

@@ -233,42 +233,45 @@ cd packer-templates
 * Ubuntu:
 
   ```bash
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
+  export LOGDIR="/tmp/"
+
   # Ubuntu Server
   NAME="ubuntu-20.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" ubuntu-server.json
 
   NAME="ubuntu-18.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" ubuntu-server.json
 
   NAME="ubuntu-16.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" ubuntu-server.json
 
   # Ubuntu Desktop
   NAME="ubuntu-20.04-desktop-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="desktop" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="desktop" \
   packer build -only="qemu" ubuntu-desktop.json
 
   # Ubuntu Server - customized
   NAME="my_ubuntu-20.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" my_ubuntu-server.json
 
   NAME="my_ubuntu-18.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" my_ubuntu-server.json
 
   NAME="my_ubuntu-16.04-server-amd64" \
   UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" PACKER_IMAGES_OUTPUT_DIR="/var/tmp/" \
+  UBUNTU_TYPE="server" \
   packer build -only="qemu" my_ubuntu-server.json
   ```
 
@@ -277,6 +280,7 @@ cd packer-templates
   ```bash
   export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   export TMPDIR="/var/tmp"
+  export LOGDIR="/tmp/"
   export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
 
   curl -L -o "${TMPDIR}/virtio-win.iso" https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/latest-virtio/virtio-win.iso
