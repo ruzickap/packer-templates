@@ -1,12 +1,12 @@
 {
-  "_comment1": "NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=2009 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ packer build -only=qemu my_centos-7.json",
+  "_comment1": "NAME=my_centos-7-x86_64 CENTOS_VERSION=7 CENTOS_TYPE=NetInstall CENTOS_TAG=2009 PACKER_IMAGES_OUTPUT_DIR=/var/tmp/ LOGDIR=/tmp/ packer build -only=qemu my_centos-7.json",
   "builders": [
     {
       "accelerator": "{{ user `accelerator` }}",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
-      "boot_wait": "5s",
+      "boot_wait": "10s",
       "cpus": "{{ user `cpus` }}",
       "disk_size": "{{ user `disk_size` }}",
       "headless": "{{ user `headless` }}",
@@ -20,7 +20,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_username": "{{ user `ssh_username` }}",
-      "ssh_timeout": "30m",
+      "ssh_timeout": "1h",
       "type": "qemu",
       "vm_name": "{{ user `name` }}"
     },
@@ -28,7 +28,7 @@
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos{{ user `centos_version` }}/my-ks.cfg<enter>"
       ],
-      "boot_wait": "5s",
+      "boot_wait": "10s",
       "cpus": "{{ user `cpus` }}",
       "disk_size": "{{ user `disk_size` }}",
       "guest_additions_mode": "disable",
@@ -45,7 +45,7 @@
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
       "ssh_password": "{{ user `ssh_password` }}",
       "ssh_username": "{{ user `ssh_username` }}",
-      "ssh_timeout": "30m",
+      "ssh_timeout": "1h",
       "type": "virtualbox-iso",
       "vboxmanage": [
         [
@@ -59,6 +59,24 @@
           "{{ .Name }}",
           "--audiocontroller",
           "ac97"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recordingfile",
+          "{{ user `packer_templates_logs` }}/{{ user `name` }}-virtualbox.webm"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recordingscreens",
+          "0"
+        ],
+        [
+          "modifyvm",
+          "{{ .Name }}",
+          "--recording",
+          "on"
         ]
       ],
       "vm_name": "{{ user `name` }}"
@@ -127,6 +145,7 @@
     "memory": "8192",
     "name": "{{ env `NAME` }}",
     "packer_images_output_dir": "{{ env `PACKER_IMAGES_OUTPUT_DIR` }}",
+    "packer_templates_logs": "{{ env `LOGDIR` }}",
     "preseed_file_name": "my-ks.cfg",
     "ssh_password": "vagrant",
     "ssh_username": "vagrant"
