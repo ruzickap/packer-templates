@@ -1,7 +1,7 @@
 {
   "ignorePatterns": [
     {
-      "pattern": "\\$\\{"
+      "pattern": "\\$%7"
     }
   ]
 }

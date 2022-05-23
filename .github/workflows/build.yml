@@ -208,10 +208,10 @@ jobs:
             brew install virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==5.3.0
+          pip3 install ansible==5.7.1
           if [[ "${BUILD}" =~ windows ]]; then
-            pip3 install pywinrm==0.4.2
-            ansible-galaxy collection install ansible.windows:=1.9.0 chocolatey.chocolatey:=1.2.0
+            pip3 install pywinrm==0.4.3
+            ansible-galaxy collection install ansible.windows:=1.10.0 chocolatey.chocolatey:=1.2.0
           fi
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 
