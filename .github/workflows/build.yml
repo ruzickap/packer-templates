@@ -200,7 +200,7 @@ jobs:
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           # Remove unused packages to save some disk space
           rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
-          brew install bash coreutils gettext gnu-sed jq packer python@3.9 hudochenkov/sshpass/sshpass vagrant
+          brew install bash coreutils gettext gnu-sed jq packer python@3.10 hudochenkov/sshpass/sshpass vagrant
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "libvirt" ]]; then
             brew install qemu xorriso
           fi
@@ -208,10 +208,18 @@ jobs:
             brew install virtualbox
             brew install --cask virtualbox-extension-pack
           fi
-          pip3 install ansible==5.7.1
+          # renovate: datasource=pypi depName=ansible
+          ANSIBLE_VERSION="5.7.1"
+          pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
-            pip3 install pywinrm==0.4.3
-            ansible-galaxy collection install ansible.windows:=1.10.0 chocolatey.chocolatey:=1.2.0
+            # renovate: datasource=pypi depName=pywinrm
+            PYWINRM_VERSION="0.4.3"
+            pip3 install pywinrm=="${PYWINRM_VERSION}"
+            # renovate: datasource=galaxy-collection depName=ansible.windows
+            ANSIBLE_WINDOWS_VERSION="1.9.1"
+            # renovate: datasource=galaxy-collection depName=chocolatey.chocolatey
+            ANSIBLE_CHOCOLATEY_VERSION="1.2.0"
+            ansible-galaxy collection install ansible.windows:="${ANSIBLE_WINDOWS_VERSION}" chocolatey.chocolatey:="${ANSIBLE_CHOCOLATEY_VERSION}"
           fi
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
 

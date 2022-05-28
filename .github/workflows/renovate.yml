@@ -1,0 +1,63 @@
+name: Renovate
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        type: choice
+        description: "Dry-Run"
+        default: "false"
+        options:
+          - true
+          - false
+      logLevel:
+        type: choice
+        description: "Log-Level"
+        default: "debug"
+        options:
+          - info
+          - debug
+          - trace
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/renovate.json5"
+  schedule:
+    - cron: "0 * * * *"
+
+env:
+  LOG_LEVEL: info
+  RENOVATE_CONFIG_FILE: .github/renovate.json5
+  RENOVATE_DRY_RUN: false
+  RENOVATE_REPOSITORIES: ${{ github.repository }}
+  RENOVATE_USERNAME: ${{ github.repository_owner }}
+  RENOVATE_GIT_AUTHOR: "Renovate Bot <bot@renovateapp.com>"
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: renovate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate Token
+        uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.MY_RENOVATE_GITHUB_APP_ID }}
+          private_key: "${{ secrets.MY_RENOVATE_GITHUB_PRIVATE_KEY }}"
+
+      - name: Override default config from dispatch variables
+        run: |
+          echo "RENOVATE_DRY_RUN=${{ github.event.inputs.dryRun || env.RENOVATE_DRY_RUN }}" | tee -a "${GITHUB_ENV}"
+          echo "LOG_LEVEL=${{ github.event.inputs.logLevel || env.LOG_LEVEL }}" | tee -a "${GITHUB_ENV}"
+          echo "RENOVATE_BASE_BRANCHES=${GITHUB_REF##*/}" | tee -a "${GITHUB_ENV}"
+
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v32.66.7
+        with:
+          configurationFile: "${{ env.RENOVATE_CONFIG_FILE }}"
+          token: "x-access-token:${{ steps.generate-token.outputs.token }}"
