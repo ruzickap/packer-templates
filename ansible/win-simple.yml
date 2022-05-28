@@ -2,8 +2,10 @@
 - hosts: all
 
   vars:
-    bleachbit_url: https://download.bleachbit.org/BleachBit-4.4.2-portable.zip
-    openssh_url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/V8.6.0.0p1-Beta/OpenSSH-Win64.zip
+    # renovate: datasource=github-tags depName=bleachbit/bleachbit
+    bleachbit_version: 4.4.2
+    # renovate: datasource=github-tags depName=PowerShell/Win32-OpenSSH versioning=loose
+    openssh_version: 8.9.0.0p1-Beta
 
   roles:
     - role: ansible-role-virtio-win
@@ -53,14 +55,14 @@
 
     - name: Download BleachBit
       win_get_url:
-        url: "{{ bleachbit_url }}"
+        url: https://download.bleachbit.org/BleachBit-{{ bleachbit_version }}-portable.zip
         dest: "%HOMEDRIVE%\\BleachBit-portable.zip"
       register: result
       until: result is succeeded
 
     - name: Download OpenSSH
       win_get_url:
-        url: "{{ openssh_url }}"
+        url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/v{{ openssh_version }}/OpenSSH-Win64.zip
         dest: "%HOMEDRIVE%\\OpenSSH-portable.zip"
       register: result
       until: result is succeeded
