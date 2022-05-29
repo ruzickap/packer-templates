@@ -27,8 +27,8 @@
   "regexManagers": [
     {
       "fileMatch": [
+        "^\\.github/workflows/build\\.yml$",
         "^ansible/win-simple\\.yml$",
-        "^entrypoint\\.sh$"
       ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.+?))?( registryUrl=(?<registryUrl>.+?))?\\s.*(=|:\\s+)\"?(?<currentValue>.+?)\"?\\s",
