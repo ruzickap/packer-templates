@@ -1,25 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "branchPrefix": "renovate/",
-  "labels": ["renovate"],
+  "labels": ["renovate", "renovate/{{depName}}", "renovate/{{updateType}}"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["major"],
-      "addLabels": ["renovate/major"],
-    },
-    {
-      "matchUpdateTypes": ["minor"],
-      "addLabels": ["renovate/minor"],
-    },
-    {
       "matchUpdateTypes": ["patch"],
-      "ignoreTests": true,
       "automergeType": "branch",
       "automerge": true,
     },
+
     {
-      "matchDatasources": ["docker"],
-      "commitMessageExtra": "to {{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}",
+      "description": "Ignore frequent renovate updates",
+      "matchPackageNames": ["renovatebot/github-action"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": false
+    },
+
+    {
+      "matchPackageNames": ["renovatebot/github-action"],
+      "matchUpdateTypes": ["minor"],
+      "automergeType": "branch",
+      "automerge": true,
     },
   ],
   "prBodyTemplate": "{{{table}}}{{{notes}}}{{{changelogs}}}",
@@ -31,7 +32,7 @@
         "^ansible/win-simple\\.yml$",
       ],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.+?))?( registryUrl=(?<registryUrl>.+?))?\\s.*(=|:\\s+)\"?(?<currentValue>.+?)\"?\\s",
+        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)( versioning=(?<versioning>.+?))?( extractVersion=(?<extractVersion>.+?))?( registryUrl=(?<registryUrl>.+?))?\\s.*(=|:\\s+)\"?(?<currentValue>.+?)\"?\\s",
       ],
       "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}",
     },
