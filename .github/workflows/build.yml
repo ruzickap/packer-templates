@@ -62,7 +62,7 @@ on:
           - "true"
         required: false
   schedule:
-    - cron: '20 7 2 * *'
+    - cron: '0 1 1 * *'
 
 env:
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
