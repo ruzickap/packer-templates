@@ -36,7 +36,6 @@ List of all supported builds:
  * windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
  * windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
- * windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
  * ubuntu-20.04-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}
  * ubuntu-20.04-server-amd64-{libvirt,virtualbox}
@@ -49,14 +48,13 @@ List of all supported builds:
 
 Examples:
 
-Build Windows 10 Enterprise Evaluation, Windows Server 2022 Standard Evaluation, Windows Server 2019 Standard Evaluation, Windows Server 2016 Standard Evaluation and Windows Server 2012 Standard Evaluation for Virtualbox and libvirt:
+Build Windows 10 Enterprise Evaluation, Windows Server 2022 Standard Evaluation, Windows Server 2019 Standard Evaluation and Windows Server 2016 Standard Evaluation for Virtualbox and libvirt:
   ${PROGNAME} \\
     my_windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-10-enterprise-x64-eval-{libvirt,virtualbox} \\
     windows-server-2022-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2019-standard-x64-eval-{libvirt,virtualbox} \\
     windows-server-2016-standard-x64-eval-{libvirt,virtualbox} \\
-    windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
 
 Build Ubuntu Desktop 20.04, 18.04; Ubuntu Server 20.04, 18.04, 16.04; My Ubuntu Server 20.04, 18.04, 16.04; My CentOS 7 for libvirt and Virtualbox:
   ${PROGNAME} \\
@@ -159,11 +157,6 @@ cmdline() {
           *windows-server-2016-*)
             export WINDOWS_TYPE="server"
             export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
-          ;;
-          *windows-server-2012_r2-*)
-            export WINDOWS_RELEASE="r2"
-            export WINDOWS_TYPE="server"
-            export ISO_URL="http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
           ;;
           *)
             echo "*** Unsupported Windows build type: \"${NAME}\" used from \"${BUILD}\""

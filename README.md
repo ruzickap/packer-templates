@@ -217,7 +217,6 @@ cd packer-templates
 
   ```bash
   # Windows Server
-  ./build.sh windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2016-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2019-standard-x64-eval-{libvirt,virtualbox}
   ./build.sh windows-server-2022-standard-x64-eval-{libvirt,virtualbox}
@@ -307,23 +306,20 @@ cd packer-templates
   export ISO_URL="https://software-download.microsoft.com/download/pr/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO"
   packer build -only="qemu" windows.json
 
-  ## Windows Server 2012
-  export NAME="windows-server-2012_r2-standard-x64-eval"
-  export WINDOWS_VERSION="2012"
-  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
-  export ISO_URL="http://care.dlservice.microsoft.com/dl/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO"
-  packer build -only="qemu" windows.json
-
   # Windows 10
   export NAME="windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/sg/444969d5-f34g-4e03-ac9d-1f9786c69161/19044.1288.211006-0501.21h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" windows.json
 
   # Windows 10 - customized
   export NAME="my_windows-10-enterprise-x64-eval"
   export WINDOWS_VERSION="10"
+  export VIRTIO_WIN_ISO_DIR="/var/tmp/virtio-win"
   export ISO_URL="https://software-download.microsoft.com/download/sg/444969d5-f34g-4e03-ac9d-1f9786c69161/19044.1288.211006-0501.21h2_release_svc_refresh_CLIENTENTERPRISEEVAL_OEMRET_x64FRE_en-us.iso"
+  export PACKER_IMAGES_OUTPUT_DIR="/var/tmp/"
   packer build -only="qemu" my_windows.json
   ```
 

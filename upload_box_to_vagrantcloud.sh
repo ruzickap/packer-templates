@@ -31,18 +31,17 @@ Box names with user:
 * peru@ubuntu-18.04-desktop-amd64-{libvirt,virtualbox}.box
 * peru@ubuntu-20.04-desktop-amd64-{libvirt,virtualbox}.box
 * peru@windows-10-enterprise-x64-eval-{libvirt,virtualbox}.box
-* peru@windows-server-2012_r2-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2016-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2019-standard-x64-eval-{libvirt,virtualbox}.box
 * peru@windows-server-2022-standard-x64-eval-{libvirt,virtualbox}.box
 
 Examples:
 
-Upload the "windows-server-2012_r2-standard-x64-eval-virtualbox.box" to peru/windows-server-2012_r2-standard-x64-eval:
+Upload the "windows-server-2022-standard-x64-eval-virtualbox.box" to peru/windows-server-2022-standard-x64-eval:
   export VAGRANT_CLOUD_TOKEN="123456"
 
   ${PROGNAME} <vagrant_cloud_user>@<box_image>
-  ${PROGNAME} peru@windows-server-2012_r2-standard-x64-eval-virtualbox.box
+  ${PROGNAME} peru@windows-server-2022-standard-x64-eval-virtualbox.box
 EOF
 }
 
