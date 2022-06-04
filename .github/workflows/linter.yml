@@ -15,6 +15,7 @@ name: Lint Code Base
 # Start the job on all push #
 #############################
 on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - main
@@ -45,8 +46,9 @@ jobs:
       - name: Lint Code Base
         uses: docker://ghcr.io/github/super-linter:slim-v4
         env:
+          FILTER_REGEX_EXCLUDE: "(CHANGELOG.md)"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ERROR_ON_MISSING_EXEC_BIT: true
+          LINTER_RULES_PATH: .
+          VALIDATE_ALL_CODEBASE: false
           VALIDATE_ANSIBLE: false
           VALIDATE_JSCPD: false
-          FILTER_REGEX_INCLUDE: .*(\.sh|\.json|\.github|http|tools|docs).*

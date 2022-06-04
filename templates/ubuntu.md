@@ -71,8 +71,6 @@ Drivers / Devices added for the VMs for specific providers.
 
 See the [preseed file](https://github.com/ruzickap/packer-templates/blob/main/http/ubuntu-${UBUNTU_TYPE}/preseed.cfg)
 
-(it's very close to official Ubuntu/Debian [preseed file](https://www.debian.org/releases/stable/example-preseed.txt))
-
 * en_US.UTF-8
 * keymap for standard US keyboard
 * UTC timezone
