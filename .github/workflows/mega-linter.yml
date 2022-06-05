@@ -24,6 +24,7 @@ jobs:
         id: ml
         uses: megalinter/megalinter@v5
         env:
+          BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
           DISABLE_LINTERS: COPYPASTE_JSCPD,MARKDOWN_MARKDOWN_LINK_CHECK,SPELL_CSPELL,YAML_V8R
           FILTER_REGEX_EXCLUDE: '(.*\.ps1)'
           FORMATTERS_DISABLE_ERRORS: false
