@@ -17,8 +17,6 @@ name: Lint Code Base
 on:
   workflow_dispatch:
   push:
-    branches-ignore:
-      - main
 
 ###############
 # Set the Job #
@@ -44,11 +42,11 @@ jobs:
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: docker://ghcr.io/github/super-linter:slim-v4
+        uses: github/super-linter/slim@v4
         env:
           FILTER_REGEX_EXCLUDE: "(CHANGELOG.md)"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: .
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           VALIDATE_ANSIBLE: false
           VALIDATE_JSCPD: false
