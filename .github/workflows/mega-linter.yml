@@ -29,6 +29,8 @@ jobs:
           FILTER_REGEX_EXCLUDE: '(.*\.ps1)'
           FORMATTERS_DISABLE_ERRORS: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: "CHANGELOG.md"
+          SPELL_MISSPELL_FILTER_REGEX_EXCLUDE: "CHANGELOG.md"
           PRINT_ALPACA: false
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 

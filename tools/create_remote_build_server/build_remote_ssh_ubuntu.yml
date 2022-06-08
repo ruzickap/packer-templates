@@ -84,15 +84,15 @@
           url: "http://127.0.0.1:9090"
           isDefault: true
       grafana_dashboards:
-        - dashboard_id: '1860'
-          revision_id: '12'
-          datasource: '{{ grafana_datasources.0.name }}'
-        - dashboard_id: '3662'
-          revision_id: '2'
-          datasource: '{{ grafana_datasources.0.name }}'
-        - dashboard_id: '9852'
-          revision_id: '1'
-          datasource: '{{ grafana_datasources.0.name }}'
+        - dashboard_id: "1860"
+          revision_id: "12"
+          datasource: "{{ grafana_datasources.0.name }}"
+        - dashboard_id: "3662"
+          revision_id: "2"
+          datasource: "{{ grafana_datasources.0.name }}"
+        - dashboard_id: "9852"
+          revision_id: "1"
+          datasource: "{{ grafana_datasources.0.name }}"
 
   tasks:
     - name: Set my_ansible_user fact
@@ -103,9 +103,9 @@
       lineinfile:
         dest: /etc/sudoers.d/01_{{ my_ansible_user }}
         create: yes
-        regexp: '^{{ my_ansible_user }} ALL='
-        line: '{{ my_ansible_user }} ALL=(ALL) NOPASSWD:ALL'
-        validate: 'visudo -cf %s'
+        regexp: "^{{ my_ansible_user }} ALL="
+        line: "{{ my_ansible_user }} ALL=(ALL) NOPASSWD:ALL"
+        validate: "visudo -cf %s"
 
     - name: Disable suspend when lid is closed
       ini_file:
