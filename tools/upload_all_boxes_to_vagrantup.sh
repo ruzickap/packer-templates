@@ -7,7 +7,6 @@ TMPDIR="/tmp"
 LOGFILE="$TMPDIR/vagrant_init_destroy_boxes.log"
 export BOX_VERSION=${BOX_VERSION:-$(date +%Y%m%d).01}
 
-
 (
   for BOX in *.box; do
     echo "*** $BOX"
