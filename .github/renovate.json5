@@ -35,7 +35,7 @@
   "regexManagers": [
     {
       "fileMatch": [
-        "^\\.github/workflows/.*\\.yml$",
+        "^\\.github/workflows/.*\\.ya?ml$",
         "^ansible/win-simple\\.yml$",
       ],
       "matchStrings": [
