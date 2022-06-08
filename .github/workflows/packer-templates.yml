@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - main
     paths:
-      - '*.json'
+      - "*.json"
       - .github/workflows/packer-templates.yml
 
 jobs:

@@ -27,59 +27,59 @@ check_vagrant_vm() {
   vagrant ssh-config | head -5 > "${VAGRANT_CWD}/ssh-config"
 
   case ${VAGRANT_BOX_FILE} in
-    *windows* )
-      sleep 100
+  *windows*)
+    sleep 100
 
-      echo '*** Running: Certificate "Red Hat" or "Oracle" driver check'
-      TRUSTED_CERTIFICATES=$(vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher" | uniq)
-      if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
-        echo "${TRUSTED_CERTIFICATES}"
-        echo "*** There are no certificates from 'Red Hat' or 'Oracle' installed !"
-        vagrant_cleanup
-        exit 1
-      fi
+    echo '*** Running: Certificate "Red Hat" or "Oracle" driver check'
+    TRUSTED_CERTIFICATES=$(vagrant winrm --shell powershell --command "Get-ChildItem -Path Cert:\LocalMachine\TrustedPublisher" | uniq)
+    if [[ ! ${TRUSTED_CERTIFICATES} =~ (Red Hat|Oracle) ]]; then
+      echo "${TRUSTED_CERTIFICATES}"
+      echo "*** There are no certificates from 'Red Hat' or 'Oracle' installed !"
+      vagrant_cleanup
+      exit 1
+    fi
 
-      echo '*** Running: "QEMU" or "Virtualbox" driver check'
-      VIRT_SERVICES=$(vagrant winrm --shell powershell --command "Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}" | uniq)
-      if [[ ! ${VIRT_SERVICES} =~ (QEMU|Spice|vdservice|VBoxService) ]]; then
-        echo "${VIRT_SERVICES}"
+    echo '*** Running: "QEMU" or "Virtualbox" driver check'
+    VIRT_SERVICES=$(vagrant winrm --shell powershell --command "Get-Service | where {\$_.Name -match \".*QEMU.*|.*Spice.*|.*vdservice.*|.*VBoxService.*\"}" | uniq)
+    if [[ ! ${VIRT_SERVICES} =~ (QEMU|Spice|vdservice|VBoxService) ]]; then
+      echo "${VIRT_SERVICES}"
+      echo "*** There are no 'Virtualization services/addons' running !"
+      vagrant_cleanup
+      exit 2
+    fi
+
+    echo '*** Running: "Red Hat" and "VirtIO" driver check'
+    if [[ ${VAGRANT_BOX_FILE} =~ "libvirt" ]]; then
+      VIRT_DEVICES=$(vagrant winrm --shell powershell --command "Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq)
+      if [[ ! ${VIRT_DEVICES} =~ (Red Hat|VirtIO) ]]; then
+        echo "${VIRT_DEVICES}"
         echo "*** There are no 'Virtualization services/addons' running !"
         vagrant_cleanup
-        exit 2
+        exit 3
       fi
+    fi
 
-      echo '*** Running: "Red Hat" and "VirtIO" driver check'
-      if [[ ${VAGRANT_BOX_FILE} =~ "libvirt" ]]; then
-        VIRT_DEVICES=$(vagrant winrm --shell powershell --command "Get-WmiObject Win32_PnPSignedDriver | where {\$_.devicename -match \".*Red Hat.*|.*VirtIO.*\"} | select devicename, driverversion" | uniq)
-        if [[ ! ${VIRT_DEVICES} =~ (Red Hat|VirtIO) ]]; then
-          echo "${VIRT_DEVICES}"
-          echo "*** There are no 'Virtualization services/addons' running !"
-          vagrant_cleanup
-          exit 3
-        fi
-      fi
+    echo '*** Running: Windows version check'
+    WIN_VERSION=$(vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"')
+    if [[ ! ${VAGRANT_BOX_FILE} =~ $(echo "${WIN_VERSION}" | awk '/^OS Name/ { print tolower($4 "-" $5 "-" $6) }') ]]; then
+      echo "${WIN_VERSION}"
+      echo "*** Windows version mismatch \"$(echo "${WIN_VERSION}" | awk '{ print tolower($4 "-" $5 "-" $6) }')\" vs \"${VAGRANT_BOX_FILE}\" !"
+      vagrant_cleanup
+      exit 4
+    fi
 
-      echo '*** Running: Windows version check'
-      WIN_VERSION=$(vagrant winrm --shell cmd --command 'systeminfo | findstr /B /C:"OS Name" /C:"OS Version"')
-      if [[ ! ${VAGRANT_BOX_FILE} =~ $(echo "${WIN_VERSION}" | awk '/^OS Name/ { print tolower($4 "-" $5 "-" $6) }') ]]; then
-        echo "${WIN_VERSION}"
-        echo "*** Windows version mismatch \"$(echo "${WIN_VERSION}" | awk '{ print tolower($4 "-" $5 "-" $6) }')\" vs \"${VAGRANT_BOX_FILE}\" !"
-        vagrant_cleanup
-        exit 4
-      fi
-
-      echo '*** Running: Windows license check'
-      LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
-      if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
-        echo "${LICENSE_STATUS}"
-        echo "*** Licensing issue - expiration should be 10, 90 or 180 days !"
-        vagrant_cleanup
-        exit 5
-      fi
+    echo '*** Running: Windows license check'
+    LICENSE_STATUS=$(vagrant winrm --shell cmd --command "cscript C:\Windows\System32\slmgr.vbs /dli" | uniq)
+    if [[ ! ${LICENSE_STATUS} =~ (10|90|180)\ day ]]; then
+      echo "${LICENSE_STATUS}"
+      echo "*** Licensing issue - expiration should be 10, 90 or 180 days !"
+      vagrant_cleanup
+      exit 5
+    fi
     ;;
-    *centos* | *ubuntu* )
-      echo '*** Checking if there are some packages to upgrade (there should be none)'
-      vagrant ssh --command '
+  *centos* | *ubuntu*)
+    echo '*** Checking if there are some packages to upgrade (there should be none)'
+    vagrant ssh --command '
         grep PRETTY_NAME /etc/os-release;
         sudo sh -c "test -x /usr/bin/apt && apt-get update 2>&1 > /dev/null && echo \"apt list -qq --upgradable\" && apt list -qq --upgradable";
         sudo sh -c "test -x /usr/bin/yum && yum list -q updates";
@@ -111,7 +111,6 @@ ctrl_c() {
   echo "** Trapped CTRL-C"
   vagrant_cleanup
 }
-
 
 #######
 # Main

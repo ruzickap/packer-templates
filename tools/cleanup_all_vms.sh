@@ -21,36 +21,36 @@ if [[ -d "${TMPDIR}" ]]; then
     fi
     cd
     rm -rf "${DIR}"
-  done <   <(find "${TMPDIR}" -maxdepth 2 ! -readable -prune -o -type f -name Vagrantfile -printf "%h\0")
+  done < <(find "${TMPDIR}" -maxdepth 2 ! -readable -prune -o -type f -name Vagrantfile -printf "%h\0")
 fi
 
 echo "*** Remove all PACKER_CACHE_DIR mess (not the iso files)"
-test -d "${PACKER_CACHE_DIR}" &&  find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
+test -d "${PACKER_CACHE_DIR}" && find "${PACKER_CACHE_DIR}" -mindepth 1 ! \( -type f -name "*.iso" \) -user "${USER}" -delete -print
 
 echo "*** Remove all Vagrant boxes"
 while IFS= read -r BOX; do
   [[ "${BOX}" = "There" ]] && continue
   echo "*** ${BOX}"
   vagrant box remove --force --all "${BOX}"
-done <   <(vagrant box list | awk '{ print $1 }')
+done < <(vagrant box list | awk '{ print $1 }')
 
 echo "*** Remove all VirtualBox instances"
 while IFS= read -r VM; do
   VM_ID=$(echo "${VM}" | awk -F '[{}]' '{ print $2 }')
   echo "*** ${VM} | ${VM_ID}"
   VBoxManage unregistervm "${VM_ID}" --delete
-done <   <(VBoxManage list vms)
+done < <(VBoxManage list vms)
 
 echo "*** Remove all VirtualBox HDDs"
 while IFS= read -r HDD; do
   HDD_ID=$(echo "${HDD}" | awk -F ':' '{ print $2 }')
   echo "*** ${HDD_ID}"
   VBoxManage closemedium disk "${HDD_ID}" --delete
-done <   <(VBoxManage list hdds | grep '^UUID:')
+done < <(VBoxManage list hdds | grep '^UUID:')
 
 test -d "${HOME}/VirtualBox VMs" && rm -rvf "${HOME}/VirtualBox VMs"
 
-if command -v virsh &>/dev/null; then
+if command -v virsh &> /dev/null; then
   echo "*** Remove all libvirt instances"
   for VM in $(virsh --connect=qemu:///system list --all --name); do
     echo "*** ${VM}"
