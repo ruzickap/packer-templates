@@ -61,7 +61,7 @@ on:
           - "true"
         required: false
   schedule:
-    - cron: '0 1 1 * *'
+    - cron: "0 1 1 * *"
 
 env:
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
@@ -207,7 +207,7 @@ jobs:
             brew install --cask virtualbox-extension-pack
           fi
           # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="5.8.0"
+          ANSIBLE_VERSION="5.9.0"
           pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
@@ -272,7 +272,7 @@ jobs:
             fi
           done
 
-      - name: Verify if the boxes are avaiable on the Vagrant Cloud
+      - name: Verify if the boxes are available on the Vagrant Cloud
         run: |
           set -euxo pipefail
 
