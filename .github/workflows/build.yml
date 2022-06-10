@@ -247,6 +247,12 @@ jobs:
         run: |
           ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box"
 
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+
   clean_check_versions:
     needs: build-boxes
     if: ${{ always() }}
