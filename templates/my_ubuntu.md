@@ -69,7 +69,7 @@ Drivers / Devices added for the VMs for specific providers.
 ### Preconfigured installation
 
 See the [preseed file](https://github.com/ruzickap/packer-templates/blob/main/http/ubuntu-${UBUNTU_TYPE}/my-preseed.cfg)
-and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible/)
+and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/main/ansible/)
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -82,8 +82,8 @@ and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
-  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/main.yml)
+  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/Debian.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip

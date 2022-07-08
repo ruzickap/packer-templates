@@ -72,7 +72,7 @@ Based on: CentOS-${CENTOS_VERSION}-${CENTOS_ARCH}-${CENTOS_TYPE}-${CENTOS_TAG}.i
 ### Preconfigured installation
 
 See the [kickstart file](https://github.com/ruzickap/packer-templates/blob/main/http/centos${CENTOS_VERSION}/my-ks.cfg)
-and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/ansible).
+and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/main/ansible).
 
 * en_US.UTF-8
 * keymap for standard US keyboard
@@ -85,8 +85,8 @@ and Ansible [playbook](https://github.com/ruzickap/packer-templates/tree/master/
 
 ---
 
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
-  and [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/main.yml)
+  and [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip
