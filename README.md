@@ -69,9 +69,9 @@ begins with "my_" - they are preconfigured with [Ansible role](https://github.co
 
 * there are usually many customization depends on distribution - all are
   described in [Ansible playbook](https://github.com/ruzickap/packer-templates/blob/main/ansible/site.yml).
-* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/main.yml)
-  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Debian.yml)
-  or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/RedHat.yml)
+* added packages: see the [Common list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/main.yml)
+  and [Debian list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/Debian.yml)
+  or [CentOS list](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/RedHat.yml)
 * mouse disabled in Midnight Commander + other MC customizations
 * preconfigured snmpd, vim, screen
 * logrotate using xz instead of gzip
@@ -97,8 +97,8 @@ begins with "my_" - they are preconfigured with [Ansible role](https://github.co
 
 ### Customized Windows 10 installation
 
-* added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/vars/Windows.yml)
-* Additional configuration done via Ansible playbook [Win32NT-common.yml](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/master/tasks/Win32NT-common.yml)
+* added packages: see the [common_windows_packages](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/vars/Windows.yml)
+* Additional configuration done via Ansible playbook [Win32NT-common.yml](https://github.com/ruzickap/ansible-role-my_common_defaults/blob/main/tasks/Win32NT-common.yml)
 
 ### Additional Drivers installed for libvirt boxes - [VirtIO](https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers)
 
