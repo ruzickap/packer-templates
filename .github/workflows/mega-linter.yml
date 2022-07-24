@@ -22,7 +22,7 @@ jobs:
 
       - name: MegaLinter
         id: ml
-        uses: megalinter/megalinter@v5
+        uses: megalinter/megalinter@v6
         env:
           BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
           DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,SPELL_CSPELL,YAML_V8R
