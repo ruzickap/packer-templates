@@ -25,13 +25,11 @@ jobs:
         uses: megalinter/megalinter@v6
         env:
           BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
-          DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_DEVSKIM,REPOSITORY_SEMGREP,SPELL_CSPELL,YAML_V8R
-          FILTER_REGEX_EXCLUDE: '(.*\.ps1)'
+          DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_DEVSKIM,REPOSITORY_SEMGREP,SPELL_CSPELL,SPELL_PROSELINT,YAML_V8R
+          FILTER_REGEX_EXCLUDE: '(.*\.ps1|CHANGELOG.md)'
           FORMATTERS_DISABLE_ERRORS: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: "CHANGELOG.md"
           PRINT_ALPACA: false
-          SPELL_MISSPELL_FILTER_REGEX_EXCLUDE: "CHANGELOG.md"
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
       - name: Create Pull Request with applied fixes
