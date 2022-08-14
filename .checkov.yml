@@ -1,0 +1,5 @@
+skip-check:
+  # Base64 High Entropy String
+  - CKV_SECRET_6
+  # The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty
+  - CKV_GHA_7
