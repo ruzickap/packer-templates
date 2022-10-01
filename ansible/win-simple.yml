@@ -4,8 +4,8 @@
   vars:
     # renovate: datasource=github-tags depName=bleachbit/bleachbit
     bleachbit_version: 4.4.2
-    # renovate: datasource=github-tags depName=PowerShell/Win32-OpenSSH versioning=loose
-    openssh_version: 12_22_2015
+    # renovate: datasource=github-tags depName=PowerShell/Win32-OpenSSH versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(\.(?<prerelease>.+))?$
+    openssh_version: v8.9.1.0p1-Beta
 
   roles:
     - role: ansible-role-virtio-win
@@ -62,7 +62,7 @@
 
     - name: Download OpenSSH
       win_get_url:
-        url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/v{{ openssh_version }}/OpenSSH-Win64.zip
+        url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/{{ openssh_version }}/OpenSSH-Win64.zip
         dest: "%HOMEDRIVE%\\OpenSSH-portable.zip"
       register: result
       until: result is succeeded
