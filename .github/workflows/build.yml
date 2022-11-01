@@ -198,13 +198,13 @@ jobs:
           [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           # Remove unused packages to save some disk space
           rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
-          brew install bash coreutils gettext gnu-sed jq packer python@3.10 hudochenkov/sshpass/sshpass vagrant
+          brew install bash coreutils gettext gnu-sed jq packer python hudochenkov/sshpass/sshpass vagrant
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "libvirt" ]]; then
             brew install qemu xorriso
           fi
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "virtualbox" ]]; then
             brew install virtualbox
-            brew install --cask virtualbox-extension-pack
+            # brew install --cask virtualbox-extension-pack
           fi
           # renovate: datasource=pypi depName=ansible
           ANSIBLE_VERSION="5.10.0"
@@ -247,11 +247,11 @@ jobs:
         run: |
           ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box"
 
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     limit-access-to-actor: true
 
   clean_check_versions:
     needs: build-boxes
