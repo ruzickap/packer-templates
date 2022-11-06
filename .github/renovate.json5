@@ -6,6 +6,8 @@
     {
       "matchUpdateTypes": ["patch"],
       "automergeType": "branch",
+      // Do not wait for tests - this will speed up the whole process - updating many branches + running many tests
+      "ignoreTests": true,
       "automerge": true,
     },
 
