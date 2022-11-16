@@ -24,7 +24,7 @@ Unfortunately you can not use the Vagrant package provided by your Linux
 distribution (at least for CentOS / Fedora / Debian).
 These distributions doesn't support naively [Ruby library for WinRM](https://github.com/WinRb/WinRM)
 needed by Vagrant for talking to Windows.
-Luckily [WinRM communicator](https://github.com/mitchellh/vagrant/tree/master/plugins/communicators/winrm)
+Luckily [WinRM communicator](https://github.com/hashicorp/vagrant/tree/main/plugins/communicators/winrm)
 including the Ruby WinRM library is part of official Vagrant package.
 You will also need the latest version of [Vagrant Libvirt Plugin](https://github.com/pradels/vagrant-libvirt#installation)
 supporting [libvirt channels](https://libvirt.org/formatdomain.html#elementCharChannel).
