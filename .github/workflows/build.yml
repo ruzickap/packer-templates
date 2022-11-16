@@ -93,7 +93,7 @@ jobs:
     name: "Generate matrix"
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      MATRIX: ${{ steps.set-matrix.outputs.MATRIX }}
     steps:
       - name: Get Matrix Builds
         id: set-matrix
@@ -148,20 +148,20 @@ jobs:
           done
 
           jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}"
-          echo "::set-output name=matrix::$( jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}" )"
+          echo "MATRIX=$( jq --compact-output --null-input '$ARGS.positional' --args "${BUILDS_MATRIX[@]}" )" | tee -a "${GITHUB_OUTPUT}"
 
   build-boxes:
     name: "*"
     runs-on: macos-10.15
     needs: generate-matrix
-    if: ${{ needs.generate-matrix.outputs.matrix != '[]' && needs.generate-matrix.outputs.matrix != '' }}
+    if: ${{ needs.generate-matrix.outputs.MATRIX != '[]' && needs.generate-matrix.outputs.MATRIX != '' }}
     concurrency:
       group: build-boxes-${{ matrix.stage }}
     strategy:
       # Do not cancel matrix jobs if one of them fails
       fail-fast: false
       matrix:
-        stage: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+        stage: ${{ fromJSON(needs.generate-matrix.outputs.MATRIX) }}
 
     steps:
       - name: Set PACKER_LOG, ANSIBLE_DEBUG, VAGRANT_LOG variables when using workflow_dispatch
