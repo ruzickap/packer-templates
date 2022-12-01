@@ -186,7 +186,7 @@ with Packer.
   rm /tmp/packer_linux_amd64.zip
 
   VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version')
-  sudo dnf install -y https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm
+  sudo dnf install -y https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant-${VAGRANT_LATEST_VERSION}-1.x86_64.rpm
   CONFIGURE_ARGS="with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64/libvirt" vagrant plugin install vagrant-libvirt
 
   sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
