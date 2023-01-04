@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
   push:
 
-concurrency:
-  group: ${{ github.ref }}-${{ github.workflow }}
-  cancel-in-progress: true
-
 jobs:
   build:
     name: MegaLinter
@@ -15,8 +11,20 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+
+      - name: Extract commands from markdown files
+        run: |
+          set -euxo pipefail
+          echo '#!/usr/bin/env bash' > README.sh
+          find . -name '*.md' -print0 | while IFS= read -r -d '' FILE ; do
+            sed -n "/^\`\`\`\(bash\|shell\).*/,/^\`\`\`$/p" "${FILE}" \
+            | \
+            sed \
+              -e 's/^```\(bash\|shell\).*//' \
+              -e '/^```$/d' \
+            >> README.sh
+          done
+          chmod a+x README.sh
 
       - name: MegaLinter
         uses: megalinter/megalinter@v6.17.0
@@ -29,4 +37,5 @@ jobs:
           GITHUB_STATUS_REPORTER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRINT_ALPACA: false
-          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' }}
+          # Needed for scanning generated README.sh file
+          VALIDATE_ALL_CODEBASE: true

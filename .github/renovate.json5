@@ -10,14 +10,12 @@
       "ignoreTests": true,
       "automerge": true,
     },
-
     {
       "description": "Ignore frequent renovate updates",
       "matchPackageNames": ["renovatebot/github-action"],
       "matchUpdateTypes": ["patch"],
       "enabled": false
     },
-
     {
       "matchPackageNames": ["renovatebot/github-action"],
       "matchUpdateTypes": ["minor"],
@@ -26,7 +24,12 @@
       "ignoreTests": true,
       "schedule": ["on Sunday"],
     },
-
+    {
+      "description": "Update all github-actions by default",
+      "matchManagers": ["github-actions"],
+      "automergeType": "branch",
+      "automerge": true,
+    },
     {
       "matchManagers": ["git-submodules"],
       "matchUpdateTypes": ["digest"],
