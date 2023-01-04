@@ -42,7 +42,7 @@ You can also use the command directly when using already pre-configured server:
 gitlab-runner register \
   --non-interactive \
   --tag-list packer-templates \
-  --registration-token {{ GITLAB_REGISTRATION_TOKEN }} \
+  --registration-token "{{ GITLAB_REGISTRATION_TOKEN }}" \
   --url https://gitlab.com/ \
   --executor shell
 ```

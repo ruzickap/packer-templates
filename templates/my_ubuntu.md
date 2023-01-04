@@ -33,9 +33,8 @@ apt install -y libvirt-bin vagrant-libvirt
 Install and connect to the box:
 
 ```bash
-mkdir ${NAME}
-cd ${NAME}
-vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
+mkdir "${NAME}" && cd "${NAME}" || exit
+vagrant init "${VAGRANT_CLOUD_USER}/${NAME}"
 VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 # or
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up

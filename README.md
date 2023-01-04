@@ -197,7 +197,7 @@ with Packer.
 
 ```bash
 git clone --recurse-submodules https://github.com/ruzickap/packer-templates.git
-cd packer-templates
+cd packer-templates || exit
 ```
 
 * Ubuntu:

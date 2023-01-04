@@ -36,7 +36,7 @@ web pages:
 dnf remove vagrant
 
 VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version')
-dnf install https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm
+dnf install "https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant_${VAGRANT_LATEST_VERSION}_x86_64.rpm"
 
 # virtualbox
 # Details here: https://rpmfusion.org/Howto/VirtualBox
@@ -51,9 +51,8 @@ vagrant plugin install vagrant-libvirt
 Install and connect to the box:
 
 ```bash
-mkdir ${NAME}
-cd ${NAME}
-vagrant init ${VAGRANT_CLOUD_USER}/${NAME}
+mkdir "${NAME}" && cd "${NAME}" || exit
+vagrant init "${VAGRANT_CLOUD_USER}/${NAME}"
 VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 # or
 VAGRANT_DEFAULT_PROVIDER=virtualbox vagrant up
