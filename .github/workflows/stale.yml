@@ -1,0 +1,36 @@
+name: Close stale issues and PRs
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  mark-stale-issues-and-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v7
+        with:
+          close-issue-message: |
+            This issue has not seen any activity since it was marked stale.
+            Closing.
+          close-pr-message: |
+            This pull request has not seen any activity since it was marked stale.
+            Closing.
+          days-before-close: 14
+          days-before-stale: 30
+          exempt-issue-labels: good-first-issue,need-help,no-stale,pinned,security
+          exempt-pr-labels: good-first-issue,need-help,no-stale,pinned,security
+          labels-to-remove-when-unstale: stale
+          stale-issue-label: stale
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not
+            had recent activity. It will be closed if no further activity occurs.
+          stale-pr-label: stale
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it
+            has not had recent activity. It will be closed if no further activity
+            occurs. Thank you for your contributions.
