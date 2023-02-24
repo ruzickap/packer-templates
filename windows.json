@@ -148,9 +148,7 @@
       ],
       "user": "{{ user `winrm_username` }}",
       "ansible_env_vars": [
-        "no_proxy=\"*\"",
-        "ANSIBLE_CONFIG=ansible/ansible.cfg",
-        "ANSIBLE_REMOTE_PORT={{ build `Port` }}"
+        "ANSIBLE_CONFIG=ansible/ansible.cfg"
       ],
       "use_proxy": false,
       "playbook_file": "ansible/win-simple.yml"
