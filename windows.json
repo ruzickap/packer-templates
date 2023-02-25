@@ -135,13 +135,23 @@
       "type": "powershell"
     },
     {
-      "command": "ansible-playbook --connection=winrm --extra-vars='packer_build_name={{ user `name` }} ansible_password='{{ user `winrm_password` }}' ansible_winrm_server_cert_validation=ignore ansible_winrm_connection_timeout=2000' -i 127.0.0.1, ansible/win-simple.yml",
-      "environment_vars": [
-        "ANSIBLE_CONFIG=ansible/ansible.cfg",
-        "ANSIBLE_REMOTE_PORT={{ build `Port` }}",
-        "ANSIBLE_REMOTE_USER={{ user `winrm_username` }}"
+      "type": "ansible",
+      "extra_arguments": [
+        "-e",
+        "packer_build_name={{ user `name` }}",
+        "-e",
+        "ansible_password='{{ user `winrm_password` }}'",
+        "-e",
+        "ansible_winrm_server_cert_validation=ignore",
+        "-e",
+        "ansible_winrm_connection_timeout=2000"
       ],
-      "type": "shell-local"
+      "user": "{{ user `winrm_username` }}",
+      "ansible_env_vars": [
+        "ANSIBLE_CONFIG=ansible/ansible.cfg"
+      ],
+      "use_proxy": false,
+      "playbook_file": "ansible/win-simple.yml"
     },
     {
       "inline": [
