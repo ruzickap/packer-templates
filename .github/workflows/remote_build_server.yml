@@ -16,7 +16,7 @@ jobs:
 
       - name: Run tests inside docker container
         run: |
-          docker run -d --name systemd-ubuntu -v "${PWD}:/mnt" --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro jrei/systemd-ubuntu:20.04
+          docker run -d --name systemd-ubuntu -v "${PWD}:/mnt" --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro jrei/systemd-ubuntu:22.04
 
           docker exec -i -w /mnt systemd-ubuntu bash << \EOF
           set -Eeuxo pipefail

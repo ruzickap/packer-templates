@@ -29,6 +29,7 @@ jobs:
       - name: MegaLinter
         uses: megalinter/megalinter@v6.19.0
         env:
+          ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS: '[{"command":"ansible-galaxy collection install -r ansible/requirements.yml --collections-path ~/.ansible/collections --force","continue_if_failed":false,"cwd":"workspace"}]'
           BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
           DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_DEVSKIM,REPOSITORY_SEMGREP,SPELL_CSPELL,SPELL_PROSELINT,YAML_V8R
           FILTER_REGEX_EXCLUDE: '(.*\.ps1|CHANGELOG.md)'

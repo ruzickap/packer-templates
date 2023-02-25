@@ -14,14 +14,14 @@
 
   tasks:
     - name: Enable Remote Desktop
-      win_regedit:
+      ansible.windows.win_regedit:
         key: 'HKLM:\System\CurrentControlSet\Control\Terminal Server'
         value: fDenyTSConnections
         data: 0
         datatype: dword
 
     - name: Allow connections from computers running any version of Remote Desktop (less secure)
-      win_regedit:
+      ansible.windows.win_regedit:
         key: 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
         value: UserAuthentication
         data: 0
@@ -43,7 +43,7 @@
       when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Remove all current pagefiles
-      win_pagefile:
+      community.windows.win_pagefile:
         remove_all: yes
         automatic: no
         state: absent

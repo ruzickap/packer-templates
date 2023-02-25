@@ -94,6 +94,9 @@
           revision_id: "1"
           datasource: "{{ grafana_datasources.0.name }}"
 
+  collections:
+    - ansible.windows
+
   tasks:
     - name: Set my_ansible_user fact
       set_fact:
@@ -108,7 +111,7 @@
         validate: "visudo -cf %s"
 
     - name: Disable suspend when lid is closed
-      ini_file:
+      community.general.ini_file:
         path: /etc/systemd/logind.conf
         section: Login
         option: HandleLidSwitch
@@ -131,7 +134,7 @@
 
     - name: Install upstream Vagrant
       apt:
-        deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
+        deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}-1_amd64.deb"
       register: result
       until: result is succeeded
 
@@ -152,7 +155,7 @@
         - "{{ my_ansible_user }}"
 
     - name: Set authorized key taken from file for all users
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "{{ item }}"
         key: "{{ public_ssh_key }}"
       loop:
