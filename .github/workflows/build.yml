@@ -207,7 +207,7 @@ jobs:
             # brew install --cask virtualbox-extension-pack
           fi
           # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="7.2.0"
+          ANSIBLE_VERSION="7.3.0"
           pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
