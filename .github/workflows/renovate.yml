@@ -4,12 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       dryRun:
-        type: choice
+        type: boolean
         description: "Dry-Run"
-        default: "false"
-        options:
-          - true
-          - false
+        required: false
+        default: false
       logLevel:
         type: choice
         description: "Log-Level"
@@ -27,7 +25,7 @@ on:
     - cron: "0 0,2,4 * * *"
 
 env:
-  LOG_LEVEL: info
+  LOG_LEVEL: debug
   RENOVATE_CONFIG_FILE: .github/renovate.json5
   RENOVATE_DRY_RUN: false
   RENOVATE_REPOSITORIES: ${{ github.repository }}
