@@ -131,7 +131,7 @@
 
     - name: Install upstream Vagrant
       apt:
-        deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}_{{ ansible_architecture }}.deb"
+        deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}-1_amd64.deb"
       register: result
       until: result is succeeded
 
