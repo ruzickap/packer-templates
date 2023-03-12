@@ -297,7 +297,7 @@ cd packer-templates || exit
   ## Windows Server 2019
   export NAME="windows-server-2019-standard-x64-eval"
   export WINDOWS_VERSION="2019"
-  export ISO_URL="https://software-download.microsoft.com/download/pr/17763.737.190906-2324.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us_1.iso"
+  export ISO_URL="https://software-static.download.prss.microsoft.com/dbazure/988969d5-f34g-4e03-ac9d-1f9786c66749/17763.3650.221105-1748.rs5_release_svc_refresh_SERVER_EVAL_x64FRE_en-us.iso"
   packer build -only="qemu" windows.json
 
   ## Windows Server 2016
