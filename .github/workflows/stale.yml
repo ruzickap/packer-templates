@@ -12,7 +12,7 @@ jobs:
   mark-stale-issues-and-prs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v7
+      - uses: actions/stale@v8
         with:
           close-issue-message: |
             This issue has not seen any activity since it was marked stale.
