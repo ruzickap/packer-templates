@@ -1,6 +1,24 @@
 # Changelog
 
-## [v0.2.1](https://github.com/ruzickap/packer-templates/compare/v0.2.0...v0.2.1)
+## [v0.2.2](https://github.com/ruzickap/packer-templates/compare/v0.2.1...v0.2.2)
+
+- fix(gha): fix megalinter permissions [`#463`](https://github.com/ruzickap/packer-templates/pull/463)
+- chore(deps): update dependency ansible to v7.4.0 [`#462`](https://github.com/ruzickap/packer-templates/pull/462)
+- feat(iso): update windows-10-enterprise-x64-eval iso [`#461`](https://github.com/ruzickap/packer-templates/pull/461)
+- feat(iso): update windows-server-2019-standard-x64-eval iso [`#460`](https://github.com/ruzickap/packer-templates/pull/460)
+- chore(deps): update tools/create_remote_build_server/roles/cloudalchemy.node-exporter digest to 3be7ef0 [`#458`](https://github.com/ruzickap/packer-templates/pull/458)
+- chore(deps): update tools/create_remote_build_server/roles/cloudalchemy.prometheus digest to e439378 [`#459`](https://github.com/ruzickap/packer-templates/pull/459)
+- feat(iso): update windows-server-2022-standard-x64-eval iso [`#457`](https://github.com/ruzickap/packer-templates/pull/457)
+- chore(deps): update dependency ansible to v7.3.0 [`#454`](https://github.com/ruzickap/packer-templates/pull/454)
+- fix(ansible): add no_proxy parameter to use latest ansible [`#453`](https://github.com/ruzickap/packer-templates/pull/453)
+- chore(deps): update actions/stale action to v8 [`0996309`](https://github.com/ruzickap/packer-templates/commit/0996309b49dbfd10ae531809d64829fa0b228f08)
+- chore(deps): update renovatebot/github-action action to v36 [`53d056f`](https://github.com/ruzickap/packer-templates/commit/53d056ff9d9f3e2ec295dca1e3d1652c6d0fe31a)
+- chore(deps): update renovatebot/github-action action to v35 [`c34e6d3`](https://github.com/ruzickap/packer-templates/commit/c34e6d31f7326b86b099e25a219945ea04bdaf4d)
+- chore(deps): update lycheeverse/lychee-action action to v1.6.1 [`5accf57`](https://github.com/ruzickap/packer-templates/commit/5accf578995ac3d6aa271c59f37ee0201aa596c1)
+- chore(deps): update lycheeverse/lychee-action action to v1.6.0 [`c1e8d3a`](https://github.com/ruzickap/packer-templates/commit/c1e8d3a2d19e8e0b0778468d552e68b9aba2a97f)
+- chore(deps): update dependency powershell/win32-openssh to v9.2.0.0p1-beta [`3f16cb7`](https://github.com/ruzickap/packer-templates/commit/3f16cb72d3cf96ca81bcfe36db558031d2ffdfbb)
+
+## [v0.2.1](https://github.com/ruzickap/packer-templates/compare/v0.2.0...v0.2.1) (2023-01-14)
 
 - chore(deps): update megalinter/megalinter action to v6.17.0 [`#441`](https://github.com/ruzickap/packer-templates/pull/441)
 - chore(deps): update dependency ansible.windows to v1.13.0 [`#439`](https://github.com/ruzickap/packer-templates/pull/439)
@@ -26,6 +44,7 @@
 - Fix linting issues [`#418`](https://github.com/ruzickap/packer-templates/pull/418)
 - Update lycheeverse/lychee-action action to v1.5.1 [`#417`](https://github.com/ruzickap/packer-templates/pull/417)
 - Update megalinter/megalinter action to v6 [`#415`](https://github.com/ruzickap/packer-templates/pull/415)
+- docs(changelog): CHANGELOG file update [skip ci] [`361b5e5`](https://github.com/ruzickap/packer-templates/commit/361b5e57b1525953fbb09663c90434cdd08207d7)
 - chore(deps): update ansible/roles/ansible-role-virtio-win digest to 79ce98e [`1e14ce4`](https://github.com/ruzickap/packer-templates/commit/1e14ce43b7b2ce754adf495276d2083def32e875)
 - chore(deps): update ansible/roles/ansible-role-my_common_defaults digest to f75b388 [`c7e9fbe`](https://github.com/ruzickap/packer-templates/commit/c7e9fbeef2e790fc9b7b39fcb3ab33e8507c57f0)
 - feat(gh_actions): replace stale + add commitlint [`bc8ab27`](https://github.com/ruzickap/packer-templates/commit/bc8ab27bb17b99fe578ab9d2933096f97f3a6f8e)
