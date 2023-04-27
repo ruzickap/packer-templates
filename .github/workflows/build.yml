@@ -152,7 +152,7 @@ jobs:
 
   build-boxes:
     name: "*"
-    runs-on: macos-10.15
+    runs-on: ${{ (contains(matrix.stage, 'virtualbox') && 'macos-12') || 'macos-13' }}
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.MATRIX != '[]' && needs.generate-matrix.outputs.MATRIX != '' }}
     concurrency:
@@ -195,19 +195,18 @@ jobs:
       - name: Install packages
         run: |
           set -euxo pipefail
-          [[ -f /usr/local/bin/2to3 ]] && rm /usr/local/bin/2to3
           # Remove unused packages to save some disk space
           rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
-          brew install bash coreutils gettext gnu-sed jq packer python hudochenkov/sshpass/sshpass vagrant
+          brew update
+          brew install bash coreutils gnu-sed jq packer hudochenkov/sshpass/sshpass vagrant
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "libvirt" ]]; then
             brew install qemu xorriso
           fi
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "virtualbox" ]]; then
             brew install virtualbox
-            # brew install --cask virtualbox-extension-pack
           fi
           # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="7.4.0"
+          ANSIBLE_VERSION="7.5.0"
           pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
@@ -220,6 +219,13 @@ jobs:
             ansible-galaxy collection install ansible.windows:="${ANSIBLE_WINDOWS_VERSION}" chocolatey.chocolatey:="${ANSIBLE_CHOCOLATEY_VERSION}"
           fi
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
+          # Used by mxschmitt/action-tmate
+          touch continue
+
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     limit-access-to-actor: true
 
       - name: Build image
         id: build_image
@@ -246,12 +252,6 @@ jobs:
         if: ${{ github.event_name == 'schedule' || github.event.inputs.build_upload == 'true' }}
         run: |
           ./upload_box_to_vagrantcloud.sh "${VAGRANT_CLOUD_USER}@${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box"
-
-      # - name: Setup tmate session
-      #   if: ${{ failure() }}
-      #   uses: mxschmitt/action-tmate@v3
-      #   with:
-      #     limit-access-to-actor: true
 
   clean_check_versions:
     needs: build-boxes
