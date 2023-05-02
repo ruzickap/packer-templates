@@ -152,7 +152,7 @@ jobs:
 
   build-boxes:
     name: "*"
-    runs-on: ${{ (contains(matrix.stage, 'virtualbox') && 'macos-12') || 'macos-13' }}
+    runs-on: macos-12
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.MATRIX != '[]' && needs.generate-matrix.outputs.MATRIX != '' }}
     concurrency:
