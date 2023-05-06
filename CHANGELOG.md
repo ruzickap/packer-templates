@@ -1,6 +1,16 @@
 # Changelog
 
-## [v0.2.2](https://github.com/ruzickap/packer-templates/compare/v0.2.1...v0.2.2)
+## [v0.2.3](https://github.com/ruzickap/packer-templates/compare/v0.2.2...v0.2.3)
+
+- feat(build): disable building windows-server-2016 images [`d8cf08e`](https://github.com/ruzickap/packer-templates/commit/d8cf08e798113f1398188b28d367233df98acc21)
+- chore(deps): update dependency ansible.windows to v1.14.0 [`5219955`](https://github.com/ruzickap/packer-templates/commit/52199557016d996507c4dfebfccc140daa7e7924)
+- fix(build): fix libvirt build [`7cc1e09`](https://github.com/ruzickap/packer-templates/commit/7cc1e09b0b32c62ebba6c23602a9b71c12cbcfaa)
+- chore(deps): update dependency ansible to v7.5.0 [`f91916c`](https://github.com/ruzickap/packer-templates/commit/f91916c569128de1f6e7e4092ef42832ce03f3ea)
+- fix(centos-json): fix missing slash in iso_urls and iso_checksum [`d54fa5d`](https://github.com/ruzickap/packer-templates/commit/d54fa5d3993c9a092ecf6e3e35f7735228c82c96)
+- chore(deps): update lycheeverse/lychee-action action to v1.7.0 [`97e87ac`](https://github.com/ruzickap/packer-templates/commit/97e87ac8e1cb80ba164efaa38b1136d277d6bb64)
+- chore(deps): update dependency powershell/win32-openssh to v9.2.2.0p1-beta [`aaef16f`](https://github.com/ruzickap/packer-templates/commit/aaef16f6b93cf838768021d2e02d5dcc2e7d382f)
+
+## [v0.2.2](https://github.com/ruzickap/packer-templates/compare/v0.2.1...v0.2.2) (2023-04-03)
 
 - fix(gha): fix megalinter permissions [`#463`](https://github.com/ruzickap/packer-templates/pull/463)
 - chore(deps): update dependency ansible to v7.4.0 [`#462`](https://github.com/ruzickap/packer-templates/pull/462)
@@ -11,6 +21,7 @@
 - feat(iso): update windows-server-2022-standard-x64-eval iso [`#457`](https://github.com/ruzickap/packer-templates/pull/457)
 - chore(deps): update dependency ansible to v7.3.0 [`#454`](https://github.com/ruzickap/packer-templates/pull/454)
 - fix(ansible): add no_proxy parameter to use latest ansible [`#453`](https://github.com/ruzickap/packer-templates/pull/453)
+- docs(changelog): CHANGELOG file update [skip ci] [`77e550f`](https://github.com/ruzickap/packer-templates/commit/77e550f0aa7fe5ee76035af20eb12375b3077a4a)
 - chore(deps): update actions/stale action to v8 [`0996309`](https://github.com/ruzickap/packer-templates/commit/0996309b49dbfd10ae531809d64829fa0b228f08)
 - chore(deps): update renovatebot/github-action action to v36 [`53d056f`](https://github.com/ruzickap/packer-templates/commit/53d056ff9d9f3e2ec295dca1e3d1652c6d0fe31a)
 - chore(deps): update renovatebot/github-action action to v35 [`c34e6d3`](https://github.com/ruzickap/packer-templates/commit/c34e6d31f7326b86b099e25a219945ea04bdaf4d)
