@@ -110,25 +110,6 @@ cmdline() {
     LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md")
     export LONG_DESCRIPTION
     ;;
-  *windows-*-2012*)
-    WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '[-_]' '{ print $3 }')
-    export WINDOWS_VERSION
-    WINDOWS_RELEASE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '[-_]' '{ print $4 }')
-    export WINDOWS_RELEASE
-    export WINDOWS_RELEASE_UC=${WINDOWS_RELEASE^}
-    WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $5 }')
-    export WINDOWS_ARCH
-    WINDOWS_TYPE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
-    export WINDOWS_TYPE
-    export WINDOWS_TYPE_UC=${WINDOWS_TYPE^}
-    WINDOWS_EDITION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
-    export WINDOWS_EDITION
-    export WINDOWS_EDITION_UC=${WINDOWS_EDITION^}
-    export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}_${WINDOWS_RELEASE}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
-    export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE_UC} ${WINDOWS_VERSION} ${WINDOWS_RELEASE_UC} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
-    LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md")
-    export LONG_DESCRIPTION
-    ;;
   *windows-*-201[69]* | *windows-*-2022*)
     WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
     export WINDOWS_VERSION

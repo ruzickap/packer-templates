@@ -14,7 +14,6 @@ on:
           - "ubuntu-20.04-desktop-amd64"
           - "ubuntu-20.04-server-amd64"
           - "windows-10-enterprise-x64-eval"
-          - "windows-server-2016-standard-x64-eval"
           - "windows-server-2019-standard-x64-eval"
           - "windows-server-2022-standard-x64-eval"
         required: false
@@ -71,6 +70,7 @@ env:
   VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
   # Needed for Packer when calling ansible (https://github.com/ansible/ansible/issues/32499)
   OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
+  # Note: windows-server-2016-standard-x64-eval was disabled because it take more than 6 hour to build the image - which is above the GH Action limit
   BUILD_BOX_LIST: |
     (
       "my_windows-10-enterprise-x64-eval"
@@ -78,7 +78,6 @@ env:
       "ubuntu-20.04-desktop-amd64"
       "ubuntu-20.04-server-amd64"
       "windows-10-enterprise-x64-eval"
-      "windows-server-2016-standard-x64-eval"
       "windows-server-2019-standard-x64-eval"
       "windows-server-2022-standard-x64-eval"
     )
