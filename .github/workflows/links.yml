@@ -27,7 +27,7 @@ jobs:
       - name: Link Checker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: lycheeverse/lychee-action@v1.7.0
+        uses: lycheeverse/lychee-action@v1.8.0
         with:
           args: ". --no-progress --exclude-path CHANGELOG.md --exclude-all-private --exclude 'GITHUB_SHA%7D|_VERSION%7D|_TYPE%7D'"
           fail: true
