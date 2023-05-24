@@ -205,7 +205,7 @@ jobs:
             brew install virtualbox
           fi
           # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="7.5.0"
+          ANSIBLE_VERSION="7.6.0"
           pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
