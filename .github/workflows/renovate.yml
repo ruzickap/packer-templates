@@ -32,6 +32,8 @@ env:
   RENOVATE_USERNAME: ${{ github.repository_owner }}
   RENOVATE_GIT_AUTHOR: "Renovate Bot <bot@renovateapp.com>"
 
+permissions: read-all
+
 jobs:
   renovate:
     runs-on: ubuntu-latest

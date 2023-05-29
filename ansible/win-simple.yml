@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Configure host
+  hosts: all
 
   vars:
     # renovate: datasource=github-tags depName=bleachbit/bleachbit
@@ -14,102 +15,102 @@
 
   tasks:
     - name: Enable Remote Desktop
-      win_regedit:
-        key: 'HKLM:\System\CurrentControlSet\Control\Terminal Server'
-        value: fDenyTSConnections
+      ansible.windows.win_regedit:
+        path: 'HKLM:\System\CurrentControlSet\Control\Terminal Server'
+        name: fDenyTSConnections
         data: 0
-        datatype: dword
+        type: dword
 
     - name: Allow connections from computers running any version of Remote Desktop (less secure)
-      win_regedit:
-        key: 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
-        value: UserAuthentication
+      ansible.windows.win_regedit:
+        path: 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp'
+        name: UserAuthentication
         data: 0
-        datatype: dword
+        type: dword
 
     - name: Enable Firewall Inbound Rules Group
-      win_shell: Enable-NetFirewallRule -DisplayGroup "{{ item }}"
+      ansible.windows.win_shell: Enable-NetFirewallRule -DisplayGroup "{{ item }}"
       loop:
         - Remote Desktop
         - Windows Remote Management
 
     - name: Use the plaintext WinRM transport and force it to use basic authentication
-      win_shell: winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+      ansible.windows.win_shell: winrm set winrm/config/service '@{AllowUnencrypted="true"}'
 
     - name: Enable Administrator account
-      win_user:
+      ansible.windows.win_user:
         name: Administrator
         account_disabled: no
       when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Remove all current pagefiles
-      win_pagefile:
+      community.windows.win_pagefile:
         remove_all: yes
         automatic: no
         state: absent
 
     - name: Disable Hibernate Mode
-      win_command: powercfg -h off
+      ansible.windows.win_command: powercfg -h off
       changed_when: false
       when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Download BleachBit
-      win_get_url:
+      ansible.windows.win_get_url:
         url: https://download.bleachbit.org/BleachBit-{{ bleachbit_version }}-portable.zip
         dest: "%HOMEDRIVE%\\BleachBit-portable.zip"
       register: result
       until: result is succeeded
 
     - name: Download OpenSSH
-      win_get_url:
+      ansible.windows.win_get_url:
         url: https://github.com/PowerShell/Win32-OpenSSH/releases/download/v{{ openssh_version }}/OpenSSH-Win64.zip
         dest: "%HOMEDRIVE%\\OpenSSH-portable.zip"
       register: result
       until: result is succeeded
 
     - name: Unzip downloaded OpenSSH
-      win_unzip:
+      community.windows.win_unzip:
         src: "%HOMEDRIVE%\\OpenSSH-portable.zip"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
     - name: Install OpenSSH
-      win_shell: "C:\\OpenSSH-Win64\\install-sshd.ps1"
+      ansible.windows.win_shell: "C:\\OpenSSH-Win64\\install-sshd.ps1"
 
     - name: Set OpenSSH Service to automatic startup and ensure it is up
-      win_service:
+      ansible.windows.win_service:
         name: sshd
         start_mode: auto
         state: started
 
     - name: Enable Firewall for OpenSSH
-      win_shell: New-NetFirewallRule -DisplayName "ssh" -Direction Inbound -Action Allow -Protocol "TCP" -LocalPort "22"
+      ansible.windows.win_shell: New-NetFirewallRule -DisplayName "ssh" -Direction Inbound -Action Allow -Protocol "TCP" -LocalPort "22"
 
     - name: Add Vagrant key
-      win_get_url:
+      ansible.windows.win_get_url:
         url: https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub
         dest: "%PROGRAMDATA%\\ssh\\administrators_authorized_keys"
 
     - name: Unzip downloaded BleachBit
-      win_unzip:
+      community.windows.win_unzip:
         src: "%HOMEDRIVE%\\BleachBit-portable.zip"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
     - name: Get latest UltraDefrag url
-      win_uri:
+      ansible.windows.win_uri:
         url: https://sourceforge.net/projects/ultradefrag/rss?path=/stable-release
         return_content: yes
       register: ultradefrag_url_output
       until: ultradefrag_url_output is succeeded
 
     - name: Set UltraDefrag url
-      set_fact:
-        # ultradefrag_url: "{{ ultradefrag_url_output.content | regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>','\\1') | first }}"
-        ultradefrag_url: "https://altushost-swe.dl.sourceforge.net/project/ultradefrag/stable-release/7.1.4/ultradefrag-portable-7.1.4.bin.amd64.zip"
+      ansible.builtin.set_fact:
+        ultradefrag_url: "{{ ultradefrag_url_output.content | regex_search('<link>(.*ultradefrag-portable.*amd64.zip.*)</link>', '\\1') | first }}"
+        # ultradefrag_url: "https://altushost-swe.dl.sourceforge.net/project/ultradefrag/stable-release/7.1.4/ultradefrag-portable-7.1.4.bin.amd64.zip"
 
     - name: Download UltraDefrag from {{ ultradefrag_url }}
-      win_get_url:
+      ansible.windows.win_get_url:
         url: "{{ ultradefrag_url }}"
         dest: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
         follow_redirects: all
@@ -117,13 +118,13 @@
       until: result is succeeded
 
     - name: Unzip downloaded Ultra Defrag
-      win_unzip:
+      community.windows.win_unzip:
         src: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
         dest: "%HOMEDRIVE%\\"
         delete_archive: yes
 
     - name: Install windows updates
-      win_updates:
+      ansible.windows.win_updates:
         category_names:
           - Application
           - Connectors
@@ -142,6 +143,6 @@
       register: windows_updates
 
     - name: Windows reboot
-      win_reboot:
+      ansible.windows.win_reboot:
         reboot_timeout: 10000
       when: windows_updates.reboot_required and allow_windows_reboot_during_win_updates

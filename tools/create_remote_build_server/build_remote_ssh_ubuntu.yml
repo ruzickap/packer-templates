@@ -1,4 +1,5 @@
-- hosts: all
+- name: Configure host
+  hosts: all
   become: true
 
   vars:
@@ -17,7 +18,7 @@
       - virtualbox
       - wget
 
-    grafana_admin_password: grafana_admin_password
+    grafana_admin_passwd: grafana_admin_password
     builder_username: builder
     public_ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
 
@@ -72,7 +73,7 @@
     - role: cloudalchemy.grafana
       grafana_security:
         admin_user: admin
-        admin_password: "{{ grafana_admin_password }}"
+        admin_password: "{{ grafana_admin_passwd }}"
       grafana_auth:
         anonymous:
           org_name: "Main Org."
@@ -96,27 +97,29 @@
 
   tasks:
     - name: Set my_ansible_user fact
-      set_fact:
+      ansible.builtin.set_fact:
         my_ansible_user: "{{ ansible_user }}"
 
-    - name: Add {{ my_ansible_user }} to sudoers to become root easily
-      lineinfile:
+    - name: Add my_ansible_user to sudoers to become root easily
+      ansible.builtin.lineinfile:
         dest: /etc/sudoers.d/01_{{ my_ansible_user }}
         create: yes
         regexp: "^{{ my_ansible_user }} ALL="
         line: "{{ my_ansible_user }} ALL=(ALL) NOPASSWD:ALL"
         validate: "visudo -cf %s"
+        mode: u=rw,g=r,o=r
 
     - name: Disable suspend when lid is closed
-      ini_file:
+      community.general.ini_file:
         path: /etc/systemd/logind.conf
         section: Login
         option: HandleLidSwitch
         value: ignore
-      notify: restart systemd-logind
+        mode: u=rw,g=r,o=r
+      notify: Restart systemd-logind
 
     - name: Update all packages to the latest version
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
         update_cache: yes
       register: result
@@ -124,25 +127,25 @@
 
     # It's necessary to use upstream Vagrant because it contains Ruby WinRM
     - name: Get latest+upstream version of Vagrant
-      uri:
+      ansible.builtin.uri:
         url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
         return_content: yes
       register: vagrant_uri
 
     - name: Install upstream Vagrant
-      apt:
+      ansible.builtin.apt:
         deb: "https://releases.hashicorp.com/vagrant/{{ vagrant_uri.json.current_version }}/vagrant_{{ vagrant_uri.json.current_version }}-1_amd64.deb"
       register: result
       until: result is succeeded
 
     - name: Install packages
-      apt:
+      ansible.builtin.apt:
         pkg: "{{ packages }}"
       register: result
       until: result is succeeded
 
     - name: Add the users to kvm, vboxusers and libvirt group
-      user:
+      ansible.builtin.user:
         name: "{{ item }}"
         shell: /bin/bash
         groups: kvm,libvirt,vboxusers
@@ -152,7 +155,7 @@
         - "{{ my_ansible_user }}"
 
     - name: Set authorized key taken from file for all users
-      authorized_key:
+      ansible.posix.authorized_key:
         user: "{{ item }}"
         key: "{{ public_ssh_key }}"
       loop:
@@ -161,73 +164,85 @@
         - "{{ my_ansible_user }}"
 
     - name: Get latest version of Packer
-      uri:
+      ansible.builtin.uri:
         url: https://checkpoint-api.hashicorp.com/v1/check/packer
         return_content: yes
       register: packer_uri
 
     - name: Download and unzip packer
-      unarchive:
+      ansible.builtin.unarchive:
         src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
         dest: /usr/local/bin/
         remote_src: yes
         creates: /usr/local/bin/packer
         validate_certs: false
 
-    - block:
-        - name: List installed Vagrant Plugins
-          command: vagrant plugin list
-          register: vagrant_plugin_list
-          changed_when: false
-
-        - name: Install Vagrant Plugins
-          command: vagrant plugin install {{ item }}
-          loop: "{{ vagrant_plugins }}"
-          when: vagrant_plugin_list.stdout is not search(item)
-
+    - name: List installed Vagrant Plugins
+      ansible.builtin.command:
+        cmd: vagrant plugin list
+      register: vagrant_plugin_list
       become_user: "{{ my_ansible_user }}"
+      changed_when: false
 
-    - block:
-        - name: List installed Vagrant Plugins
-          command: vagrant plugin list
-          register: vagrant_plugin_list
-          changed_when: false
+    - name: Install Vagrant Plugins
+      ansible.builtin.command:
+        cmd: vagrant plugin install {{ item }}
+      become_user: "{{ my_ansible_user }}"
+      changed_when: false
+      loop: "{{ vagrant_plugins }}"
+      when: vagrant_plugin_list.stdout is not search(item)
 
-        - name: Install Vagrant Plugins
-          command: vagrant plugin install {{ item }}
-          loop: "{{ vagrant_plugins }}"
-          when: vagrant_plugin_list.stdout is not search(item)
-
-        - name: Create a directories for action-runners if they do not exist
-          file:
-            path: /home/{{ builder_username }}/actions-runner-{{ item }}
-            state: directory
-          loop: "{{ range(1, action_runner_count + 1) | list }}"
-
-        - name: Get latest "actions-runner" release
-          uri:
-            url: "https://api.github.com/repos/actions/runner/releases/latest"
-          register: github_api_action_runner
-
-        - name: Download and unpack the "actions-runner"
-          unarchive:
-            src: https://github.com/actions/runner/releases/download/v{{ github_api_action_runner.json.tag_name[1:] }}/actions-runner-linux-x64-{{ github_api_action_runner.json.tag_name[1:] }}.tar.gz
-            dest: /home/{{ builder_username }}/actions-runner-{{ item }}
-            remote_src: yes
-          loop: "{{ range(1, action_runner_count + 1) | list }}"
-
-        - name: Register actions-runner-x
-          command: ./config.sh --unattended --url {{ MY_PACKER_TEMPLATES_GITHUB_REPOSITORY }} --token {{ GITHUB_SELF_HOSTED_RUNNER_TOKEN }} --name "{{ ansible_hostname }}-{{ item }}" --work "_work"
-          args:
-            chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
-            creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
-          loop: "{{ range(1, action_runner_count + 1) | list }}"
-          tags: actions-runner_registration
-
+    - name: List installed Vagrant Plugins
+      ansible.builtin.command:
+        cmd: vagrant plugin list
       become_user: "{{ builder_username }}"
+      register: vagrant_plugin_list
+      changed_when: false
+
+    - name: Install Vagrant Plugins
+      ansible.builtin.command:
+        cmd: vagrant plugin install {{ item }}
+      become_user: "{{ builder_username }}"
+      changed_when: false
+      loop: "{{ vagrant_plugins }}"
+      when: vagrant_plugin_list.stdout is not search(item)
+
+    - name: Create a directories for action-runners if they do not exist
+      ansible.builtin.file:
+        path: /home/{{ builder_username }}/actions-runner-{{ item }}
+        state: directory
+        owner: "{{ builder_username }}"
+        mode: u=rwx,g=rx,o=rx
+      loop: "{{ range(1, action_runner_count + 1) | list }}"
+
+    - name: Get latest "actions-runner" release
+      ansible.builtin.uri:
+        url: "https://api.github.com/repos/actions/runner/releases/latest"
+        user: "{{ lookup('env', 'GH_USER') | default(omit) }}"
+        password: "{{ lookup('env', 'GH_TOKEN') | default(omit) }}"
+      register: github_api_action_runner
+
+    - name: Download and unpack the "actions-runner"
+      ansible.builtin.unarchive:
+        src: https://github.com/actions/runner/releases/download/v{{ github_api_action_runner.json.tag_name[1:] }}/actions-runner-linux-x64-{{ github_api_action_runner.json.tag_name[1:] }}.tar.gz
+        dest: /home/{{ builder_username }}/actions-runner-{{ item }}
+        remote_src: yes
+      become_user: "{{ builder_username }}"
+      loop: "{{ range(1, action_runner_count + 1) | list }}"
+
+    - name: Register actions-runner-x
+      ansible.builtin.command:
+        cmd: ./config.sh --unattended --url {{ MY_PACKER_TEMPLATES_GITHUB_REPOSITORY }} --token {{ GITHUB_SELF_HOSTED_RUNNER_TOKEN }} --name "{{ ansible_hostname }}-{{ item }}" --work "_work"
+      args:
+        chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
+        creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
+      become_user: "{{ builder_username }}"
+      loop: "{{ range(1, action_runner_count + 1) | list }}"
+      tags: actions-runner_registration
 
     - name: Install actions-runner-x service
-      shell: ./svc.sh install && ./svc.sh start
+      ansible.builtin.shell:
+        cmd: ./svc.sh install && ./svc.sh start
       args:
         chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
         creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.service
@@ -237,7 +252,7 @@
       tags: actions-runner_installation
 
   handlers:
-    - name: restart systemd-logind
-      systemd:
+    - name: Restart systemd-logind
+      ansible.builtin.systemd:
         name: systemd-logind
         state: restarted
