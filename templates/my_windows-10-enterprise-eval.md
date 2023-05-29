@@ -98,7 +98,7 @@ See the [Autounattend file](https://github.com/ruzickap/packer-templates/blob/ma
 * EnableLUA
 * Windows image was finalized using `sysprep`: [unattended.xml](https://github.com/ruzickap/packer-templates/blob/main/scripts/win-common/unattend.xml)
 
-### Additional Drivers installed for libvirt boxes - [VirtIO](https://docs.fedoraproject.org/en-US/quick-docs/creating-windows-virtual-machines-using-virtio-drivers/)
+### Additional Drivers installed for libvirt boxes - VirtIO
 
 Installed during installation:
 
