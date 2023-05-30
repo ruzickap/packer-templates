@@ -1,7 +1,17 @@
 # Changelog
 
-## [v0.2.3](https://github.com/ruzickap/packer-templates/compare/v0.2.2...v0.2.3)
+## [v0.2.4](https://github.com/ruzickap/packer-templates/compare/v0.2.3...v0.2.4)
 
+- fix(templates): fix url for VirtIO [`7338196`](https://github.com/ruzickap/packer-templates/commit/73381960e160126109759222a36308b75b6d4fb7)
+- chore(deps): update renovatebot/github-action action to v38 [`c2fb477`](https://github.com/ruzickap/packer-templates/commit/c2fb47784338def93a07c19dd49ec094270e43b0)
+- chore(deps): update dependency ansible to v7.6.0 [`ad49c14`](https://github.com/ruzickap/packer-templates/commit/ad49c143cfadba453bd056c42f87cbab202eadbc)
+- chore(deps): update lycheeverse/lychee-action action to v1.8.0 [`5e12e37`](https://github.com/ruzickap/packer-templates/commit/5e12e3711ddb2d6e26ff8201ef3739db2978b1fb)
+- chore(deps): update renovatebot/github-action action to v37 [`d013aef`](https://github.com/ruzickap/packer-templates/commit/d013aef8da68f36b66365daf12d948fbc142077a)
+- chore(deps): update renovatebot/github-action action to v36.1.1 [`a5d3984`](https://github.com/ruzickap/packer-templates/commit/a5d398486b0690de458ee91130b3c82f035d8103)
+
+## [v0.2.3](https://github.com/ruzickap/packer-templates/compare/v0.2.2...v0.2.3) (2023-05-06)
+
+- docs(changelog): CHANGELOG file update [skip ci] [`4f5eef7`](https://github.com/ruzickap/packer-templates/commit/4f5eef747dbfdcb38a1603ec40126e4343d7ba80)
 - feat(build): disable building windows-server-2016 images [`d8cf08e`](https://github.com/ruzickap/packer-templates/commit/d8cf08e798113f1398188b28d367233df98acc21)
 - chore(deps): update dependency ansible.windows to v1.14.0 [`5219955`](https://github.com/ruzickap/packer-templates/commit/52199557016d996507c4dfebfccc140daa7e7924)
 - fix(build): fix libvirt build [`7cc1e09`](https://github.com/ruzickap/packer-templates/commit/7cc1e09b0b32c62ebba6c23602a9b71c12cbcfaa)
