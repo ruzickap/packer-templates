@@ -87,6 +87,8 @@ env:
       "virtualbox"
     )
 
+permissions: read-all
+
 jobs:
   generate-matrix:
     name: "Generate matrix"
@@ -205,17 +207,13 @@ jobs:
             brew install virtualbox
           fi
           # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="7.6.0"
+          ANSIBLE_VERSION="8.0.0"
           pip3 install ansible=="${ANSIBLE_VERSION}"
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
             PYWINRM_VERSION="0.4.3"
             pip3 install pywinrm=="${PYWINRM_VERSION}"
-            # renovate: datasource=galaxy-collection depName=ansible.windows
-            ANSIBLE_WINDOWS_VERSION="1.14.0"
-            # renovate: datasource=galaxy-collection depName=chocolatey.chocolatey
-            ANSIBLE_CHOCOLATEY_VERSION="1.4.0"
-            ansible-galaxy collection install ansible.windows:="${ANSIBLE_WINDOWS_VERSION}" chocolatey.chocolatey:="${ANSIBLE_CHOCOLATEY_VERSION}"
+            ansible-galaxy collection install -v -r ansible/requirements.yml
           fi
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
           # Used by mxschmitt/action-tmate

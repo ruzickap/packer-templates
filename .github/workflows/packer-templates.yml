@@ -8,6 +8,8 @@ on:
       - "*.json"
       - .github/workflows/packer-templates.yml
 
+permissions: read-all
+
 jobs:
   packer-templates:
     runs-on: ubuntu-latest

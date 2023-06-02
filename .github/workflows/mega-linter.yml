@@ -34,8 +34,10 @@ jobs:
           chmod a+x README.sh
 
       - name: MegaLinter
-        uses: megalinter/megalinter@v6.18.0
+        uses: megalinter/megalinter@v7.0.4
         env:
+          ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS: >-
+            [{"command": "ansible-galaxy collection install -v -r ansible/requirements.yml"}]
           BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
           DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_DEVSKIM,REPOSITORY_SEMGREP,SPELL_CSPELL,SPELL_PROSELINT,YAML_V8R
           FILTER_REGEX_EXCLUDE: '(.*\.ps1|CHANGELOG.md)'
@@ -44,5 +46,6 @@ jobs:
           GITHUB_STATUS_REPORTER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRINT_ALPACA: false
+          REPOSITORY_KICS_ARGUMENTS: --exclude-paths .github/workflows/renovate.yml
           # Needed for scanning generated README.sh file
           VALIDATE_ALL_CODEBASE: true

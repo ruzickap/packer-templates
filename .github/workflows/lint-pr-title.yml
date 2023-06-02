@@ -7,6 +7,8 @@ on:
       - edited
       - synchronize
 
+permissions: read-all
+
 jobs:
   main:
     name: Validate PR title

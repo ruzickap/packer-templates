@@ -9,6 +9,8 @@ on:
       - .github/workflows/markdown-mdspell.yml
       - .spelling
 
+permissions: read-all
+
 jobs:
   markdown-mdspell:
     runs-on: ubuntu-latest

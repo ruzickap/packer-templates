@@ -6,20 +6,20 @@ on:
       - tools/create_remote_build_server/**
       - .github/workflows/remote_build_server.yml
 
+permissions: read-all
+
 jobs:
   remote_build_server-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
 
-      - name: Run tests inside docker container
+      - name: Run tests
         run: |
-          docker run -d --name systemd-ubuntu -v "${PWD}:/mnt" --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro jrei/systemd-ubuntu:20.04
-
-          docker exec -i -w /mnt systemd-ubuntu bash << \EOF
-          set -Eeuxo pipefail
+          sudo -s -- << \EOF
+          set -euxo pipefail
           apt update &> /dev/null
           apt install -y -qq ansible openssh-server python3-jmespath python3-apt sudo > /dev/null
           systemctl start ssh
@@ -35,5 +35,6 @@ jobs:
           export ANSIBLE_HOST_KEY_CHECKING=False
           export ANSIBLE_SKIP_TAGS="actions-runner_registration,actions-runner_installation"
           cd tools/create_remote_build_server
+          ansible-galaxy collection install -v -r requirements.yml
           ./build_remote_ssh_ubuntu.sh
           EOF

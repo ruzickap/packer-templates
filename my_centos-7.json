@@ -11,9 +11,9 @@
       "disk_size": "{{ user `disk_size` }}",
       "headless": "{{ user `headless` }}",
       "http_directory": "http",
-      "iso_checksum": "file:{{ user `centos_mirror` }}/{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
+      "iso_checksum": "file:{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/sha256sum.txt",
       "iso_urls": [
-        "{{ user `centos_mirror` }}/{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso"
+        "{{ user `centos_mirror` }}{{ user `centos_version` }}/isos/x86_64/CentOS-{{ user `centos_version` }}-x86_64-{{ user `centos_type` }}-{{ user `centos_tag` }}.iso"
       ],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-qemu",
