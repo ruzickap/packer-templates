@@ -34,7 +34,7 @@ jobs:
           chmod a+x README.sh
 
       - name: MegaLinter
-        uses: megalinter/megalinter@v7.0.4
+        uses: megalinter/megalinter@v7.1.0
         env:
           ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS: >-
             [{"command": "ansible-galaxy collection install -v -r ansible/requirements.yml"}]
