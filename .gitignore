@@ -11,6 +11,3 @@ packer_cache/
 
 # pre-commit config file
 .pre-commit-config.yaml
-
-# release-it configuration file
-.release-it.yml
