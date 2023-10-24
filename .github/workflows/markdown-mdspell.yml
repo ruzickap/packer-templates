@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           # renovate: datasource=github-tags depName=nodejs/node versioning=node
-          node-version: 18
+          node-version: 20
 
       - name: Install markdown-spellcheck
         run: npm install -g markdown-spellcheck
