@@ -230,7 +230,7 @@ jobs:
           ./build.sh "${BUILD}"
 
       - name: Upload logs to GitHub artifact store in case of VirtualBox failure
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ always() && (steps.build_image.outcome == 'failure') && contains(matrix.stage, 'virtualbox') }}
         with:
           name: ${{ matrix.stage }}
