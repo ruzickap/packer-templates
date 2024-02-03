@@ -37,7 +37,6 @@ on:
       ANSIBLE_DEBUG:
         type: choice
         description: ANSIBLE_DEBUG (true, false)
-        default: "false"
         options:
           - "false"
           - "true"
@@ -54,7 +53,6 @@ on:
       build_upload:
         type: choice
         description: Upload release to Vagrant Cloud
-        default: "false"
         options:
           - "false"
           - "true"
@@ -63,6 +61,7 @@ on:
     - cron: "0 1 1 * *"
 
 env:
+  PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PACKER_IMAGES_OUTPUT_DIR: /var/tmp/packer-templates-images
   PACKER_CACHE_DIR: /var/tmp/packer_cache
   LOGDIR: /var/tmp/packer-templates-logs
@@ -196,26 +195,39 @@ jobs:
       - name: Install packages
         run: |
           set -euxo pipefail
-          # Remove unused packages to save some disk space
-          rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
-          brew update
-          brew install bash coreutils gnu-sed jq packer hudochenkov/sshpass/sshpass vagrant
+          brew install ansible bash coreutils gnu-sed jq packer hudochenkov/sshpass/sshpass hashicorp/tap/hashicorp-vagrant
+
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "libvirt" ]]; then
             brew install qemu xorriso
+            qemu-system-x86_64 --version
           fi
+
           if [[ "${PACKER_VAGRANT_PROVIDER}" = "virtualbox" ]]; then
             brew install virtualbox
+            vboxmanage --version
           fi
-          # renovate: datasource=pypi depName=ansible
-          ANSIBLE_VERSION="9.2.0"
-          pip3 install ansible=="${ANSIBLE_VERSION}"
+
+          packer plugins install github.com/hashicorp/ansible
+          packer plugins install github.com/hashicorp/qemu
+          packer plugins install github.com/hashicorp/vagrant
+          packer plugins install github.com/hashicorp/virtualbox
+
+          vagrant --version
+          packer --version
+          ansible --version
+
           if [[ "${BUILD}" =~ windows ]]; then
             # renovate: datasource=pypi depName=pywinrm
             PYWINRM_VERSION="0.4.3"
             pip3 install pywinrm=="${PYWINRM_VERSION}"
-            ansible-galaxy collection install -v -r ansible/requirements.yml
+            ansible-galaxy collection install --force -r ansible/requirements.yml
           fi
+
           echo "/usr/local/bin:/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin" >> "${GITHUB_PATH}"
+
+          # Remove unused packages to save some disk space
+          rm -rf /Users/runner/Library/Developer /Users/runner/Library/Android /Users/runner/hostedtoolcache /Users/runner/.dotnet
+
           # Used by mxschmitt/action-tmate
           touch continue
 
@@ -230,12 +242,12 @@ jobs:
           ./build.sh "${BUILD}"
 
       - name: Upload logs to GitHub artifact store in case of VirtualBox failure
-        uses: actions/upload-artifact@v4
-        if: ${{ always() && (steps.build_image.outcome == 'failure') && contains(matrix.stage, 'virtualbox') }}
+        uses: actions/upload-artifact@v3
+        if: ${{ always() && contains(matrix.stage, 'virtualbox') }}
         with:
           name: ${{ matrix.stage }}
           path: ${{ env.LOGDIR }}/*
-          retention-days: 1
+          retention-days: 3
 
       - name: Check the created box image
         run: |
