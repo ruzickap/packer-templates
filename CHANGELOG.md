@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/ruzickap/packer-templates/compare/v0.2.4...v0.2.5) (2024-02-03)
+
+
+### Bug Fixes
+
+* **gha:** add release-please ([#481](https://github.com/ruzickap/packer-templates/issues/481)) ([5a1ab3d](https://github.com/ruzickap/packer-templates/commit/5a1ab3d030f0c1706c7b10c7f1e4dae59d8cb9a1))
+
 ## [v0.2.4](https://github.com/ruzickap/packer-templates/compare/v0.2.3...v0.2.4)
 
 - fix(templates): fix url for VirtIO [`7338196`](https://github.com/ruzickap/packer-templates/commit/73381960e160126109759222a36308b75b6d4fb7)
