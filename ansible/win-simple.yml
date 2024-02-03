@@ -6,7 +6,7 @@
     # renovate: datasource=github-tags depName=bleachbit/bleachbit
     bleachbit_version: 4.6.0
     # renovate: datasource=github-tags depName=PowerShell/Win32-OpenSSH versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(\..*)?$
-    openssh_version: 9.2.2.0p1-Beta
+    openssh_version: 9.5.0.0p1-Beta
 
   roles:
     - role: ansible-role-virtio-win
