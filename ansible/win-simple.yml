@@ -40,13 +40,13 @@
     - name: Enable Administrator account
       ansible.windows.win_user:
         name: Administrator
-        account_disabled: no
+        account_disabled: false
       when: ansible_distribution is search("Microsoft Windows 10")
 
     - name: Remove all current pagefiles
       community.windows.win_pagefile:
-        remove_all: yes
-        automatic: no
+        remove_all: true
+        automatic: false
         state: absent
 
     - name: Disable Hibernate Mode
@@ -72,7 +72,7 @@
       community.windows.win_unzip:
         src: "%HOMEDRIVE%\\OpenSSH-portable.zip"
         dest: "%HOMEDRIVE%\\"
-        delete_archive: yes
+        delete_archive: true
 
     - name: Install OpenSSH
       ansible.windows.win_shell: "C:\\OpenSSH-Win64\\install-sshd.ps1"
@@ -95,12 +95,12 @@
       community.windows.win_unzip:
         src: "%HOMEDRIVE%\\BleachBit-portable.zip"
         dest: "%HOMEDRIVE%\\"
-        delete_archive: yes
+        delete_archive: true
 
     - name: Get latest UltraDefrag url
       ansible.windows.win_uri:
         url: https://sourceforge.net/projects/ultradefrag/rss?path=/stable-release
-        return_content: yes
+        return_content: true
       register: ultradefrag_url_output
       until: ultradefrag_url_output is succeeded
 
@@ -121,7 +121,7 @@
       community.windows.win_unzip:
         src: "%HOMEDRIVE%\\ultradefrag-portable.bin.amd64.zip"
         dest: "%HOMEDRIVE%\\"
-        delete_archive: yes
+        delete_archive: true
 
     - name: Install windows updates
       ansible.windows.win_updates:
@@ -138,7 +138,7 @@
           - Tools
           - UpdateRollups
           - Updates
-        reboot: yes
+        reboot: true
         reboot_timeout: 10000
       register: windows_updates
 

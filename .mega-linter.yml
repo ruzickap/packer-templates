@@ -1,0 +1,50 @@
+# Configuration file for MegaLinter
+# See all available variables at https://megalinter.io/latest/configuration/ and in linters documentation
+
+ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS:
+  - command: ansible-galaxy install -r ansible/requirements.yml
+    cwd: "workspace"
+ANSIBLE_ANSIBLE_LINT_CONFIG_FILE: ansible/.ansible-lint
+
+BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
+
+DISABLE_LINTERS:
+  - MARKDOWN_MARKDOWN_LINK_CHECK # Using lychee instead
+  - SPELL_CSPELL
+  - TERRAFORM_TERRASCAN # Hard to configure - no documentation of the config file
+
+# Remove: To receive reports as email, please set variable EMAIL_REPORTER_EMAIL
+EMAIL_REPORTER: false
+
+FAIL_IF_MISSING_LINTER_IN_FLAVOR: true
+
+FILTER_REGEX_EXCLUDE: CHANGELOG.md
+
+FORMATTERS_DISABLE_ERRORS: false
+
+MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yml
+MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: CHANGELOG.md
+
+# Remove initial MegaLinter graphic
+PRINT_ALPACA: false
+
+# Disable creating report directory
+REPORT_OUTPUT_FOLDER: none
+
+# Issue: https://github.com/bridgecrewio/checkov/issues/3839
+# The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty
+REPOSITORY_CHECKOV_ARGUMENTS: --skip-check CKV_GHA_7
+
+# Do not leave debug code in production, Insecure URL
+REPOSITORY_DEVSKIM_ARGUMENTS: --ignore-globs CHANGELOG.md --ignore-rule-ids DS162092,DS137138
+
+REPOSITORY_KICS_ARGUMENTS: --fail-on high
+
+REPOSITORY_TRIVY_ARGUMENTS: --ignorefile .trivyignore.yml --severity HIGH,CRITICAL
+
+TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
+  - GITHUB_TOKEN
+
+TYPESCRIPT_PRETTIER_ARGUMENTS: --html-whitespace-sensitivity=ignore
+
+VALIDATE_ALL_CODEBASE: true

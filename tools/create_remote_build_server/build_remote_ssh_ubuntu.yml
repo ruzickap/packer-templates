@@ -18,6 +18,7 @@
       - virtualbox
       - wget
 
+    # checkov:skip=CKV_SECRET_6:Base64 High Entropy String
     grafana_admin_passwd: grafana_admin_password
     builder_username: builder
     public_ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
@@ -103,7 +104,7 @@
     - name: Add my_ansible_user to sudoers to become root easily
       ansible.builtin.lineinfile:
         dest: /etc/sudoers.d/01_{{ my_ansible_user }}
-        create: yes
+        create: true
         regexp: "^{{ my_ansible_user }} ALL="
         line: "{{ my_ansible_user }} ALL=(ALL) NOPASSWD:ALL"
         validate: "visudo -cf %s"
@@ -121,7 +122,7 @@
     - name: Update all packages to the latest version
       ansible.builtin.apt:
         upgrade: dist
-        update_cache: yes
+        update_cache: true
       register: result
       until: result is succeeded
 
@@ -129,7 +130,7 @@
     - name: Get latest+upstream version of Vagrant
       ansible.builtin.uri:
         url: https://checkpoint-api.hashicorp.com/v1/check/vagrant
-        return_content: yes
+        return_content: true
       register: vagrant_uri
 
     - name: Install upstream Vagrant
@@ -149,7 +150,7 @@
         name: "{{ item }}"
         shell: /bin/bash
         groups: kvm,libvirt,vboxusers
-        append: yes
+        append: true
       loop:
         - "{{ builder_username }}"
         - "{{ my_ansible_user }}"
@@ -166,14 +167,14 @@
     - name: Get latest version of Packer
       ansible.builtin.uri:
         url: https://checkpoint-api.hashicorp.com/v1/check/packer
-        return_content: yes
+        return_content: true
       register: packer_uri
 
     - name: Download and unzip packer
       ansible.builtin.unarchive:
         src: "https://releases.hashicorp.com/packer/{{ packer_uri.json.current_version }}/packer_{{ packer_uri.json.current_version }}_linux_amd64.zip"
         dest: /usr/local/bin/
-        remote_src: yes
+        remote_src: true
         creates: /usr/local/bin/packer
         validate_certs: false
 
@@ -181,12 +182,14 @@
       ansible.builtin.command:
         cmd: vagrant plugin list
       register: vagrant_plugin_list
+      become: true
       become_user: "{{ my_ansible_user }}"
       changed_when: false
 
     - name: Install Vagrant Plugins
       ansible.builtin.command:
         cmd: vagrant plugin install {{ item }}
+      become: true
       become_user: "{{ my_ansible_user }}"
       changed_when: false
       loop: "{{ vagrant_plugins }}"
@@ -195,6 +198,7 @@
     - name: List installed Vagrant Plugins
       ansible.builtin.command:
         cmd: vagrant plugin list
+      become: true
       become_user: "{{ builder_username }}"
       register: vagrant_plugin_list
       changed_when: false
@@ -202,6 +206,7 @@
     - name: Install Vagrant Plugins
       ansible.builtin.command:
         cmd: vagrant plugin install {{ item }}
+      become: true
       become_user: "{{ builder_username }}"
       changed_when: false
       loop: "{{ vagrant_plugins }}"
@@ -226,7 +231,8 @@
       ansible.builtin.unarchive:
         src: https://github.com/actions/runner/releases/download/v{{ github_api_action_runner.json.tag_name[1:] }}/actions-runner-linux-x64-{{ github_api_action_runner.json.tag_name[1:] }}.tar.gz
         dest: /home/{{ builder_username }}/actions-runner-{{ item }}
-        remote_src: yes
+        remote_src: true
+      become: true
       become_user: "{{ builder_username }}"
       loop: "{{ range(1, action_runner_count + 1) | list }}"
 
@@ -236,6 +242,7 @@
       args:
         chdir: /home/{{ builder_username }}/actions-runner-{{ item }}
         creates: /home/{{ builder_username }}/actions-runner-{{ item }}/.runner
+      become: true
       become_user: "{{ builder_username }}"
       loop: "{{ range(1, action_runner_count + 1) | list }}"
       tags: actions-runner_registration

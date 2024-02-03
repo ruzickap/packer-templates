@@ -90,7 +90,7 @@ cmdline() {
     export UBUNTU_MAJOR_VERSION
     UBUNTU_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
     export UBUNTU_ARCH
-    UBUNTU_VERSION=$(curl -s "http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS" | sed -n "s/.*ubuntu-\([^-]*\)-.*-${UBUNTU_ARCH}.iso/\1/p" | head -1)
+    UBUNTU_VERSION=$(curl -s "http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS" | sed -n "s/.*ubuntu-\([^-]*\)-.*-${UBUNTU_ARCH}.iso/\1/p" | head -1) # DevSkim: ignore DS126858
     export UBUNTU_VERSION
     export NAME="${MY_NAME}-${UBUNTU_MAJOR_VERSION}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
     export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_MAJOR_VERSION} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt and virtualbox"
