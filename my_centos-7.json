@@ -48,36 +48,16 @@
       "ssh_timeout": "1h",
       "type": "virtualbox-iso",
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--graphicscontroller",
-          "vmsvga"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--audiocontroller",
-          "ac97"
-        ],
+        ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vmsvga"],
+        ["modifyvm", "{{ .Name }}", "--audiocontroller", "ac97"],
         [
           "modifyvm",
           "{{ .Name }}",
           "--recordingfile",
           "{{ user `packer_templates_logs` }}/{{ user `name` }}-virtualbox.webm"
         ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recordingscreens",
-          "0"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recording",
-          "on"
-        ]
+        ["modifyvm", "{{ .Name }}", "--recordingscreens", "0"],
+        ["modifyvm", "{{ .Name }}", "--recording", "on"]
       ],
       "vm_name": "{{ user `name` }}"
     }
@@ -95,15 +75,11 @@
   "provisioners": [
     {
       "execute_command": "echo 'vagrant' | sudo -S -E bash '{{ .Path }}'",
-      "scripts": [
-        "scripts/linux-common/vagrant.sh"
-      ],
+      "scripts": ["scripts/linux-common/vagrant.sh"],
       "type": "shell"
     },
     {
-      "ansible_env_vars": [
-        "ANSIBLE_CONFIG=ansible/ansible.cfg"
-      ],
+      "ansible_env_vars": ["ANSIBLE_CONFIG=ansible/ansible.cfg"],
       "extra_arguments": [
         "--become",
         "--extra-vars",

@@ -1,59 +1,56 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "branchPrefix": "renovate/",
-  "labels": ["renovate", "renovate/{{replace '.*/' '' depName}}", "renovate/{{updateType}}"],
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["patch"],
-      "automergeType": "branch",
-      // Do not wait for tests - this will speed up the whole process - updating many branches + running many tests
-      "ignoreTests": true,
-      "automerge": true,
-    },
-    {
-      "description": "Ignore frequent renovate updates",
-      "matchPackageNames": ["renovatebot/github-action"],
-      "matchUpdateTypes": ["patch"],
-      "enabled": false
-    },
-    {
-      "matchPackageNames": ["renovatebot/github-action"],
-      "matchUpdateTypes": ["minor"],
-      "automergeType": "branch",
-      "automerge": true,
-      "ignoreTests": true,
-      "schedule": ["* 0,2,4 1-7 * 0"],
-    },
-    {
-      "description": "Update all github-actions by default",
-      "matchManagers": ["github-actions"],
-      "automergeType": "branch",
-      "automerge": true,
-    },
-    {
-      "matchManagers": ["git-submodules"],
-      "matchUpdateTypes": ["digest"],
-      "automerge": true,
-      "automergeType": "branch",
-    },
-  ],
-  "prBodyTemplate": "{{{table}}}{{{notes}}}{{{changelogs}}}",
-  "rebaseWhen": "behind-base-branch",
-  "regexManagers": [
-    {
-      "fileMatch": [
-        "^\\.github/workflows/.*\\.ya?ml$",
-        "^ansible/win-simple\\.yml$",
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)( versioning=(?<versioning>.+?))?( extractVersion=(?<extractVersion>.+?))?( registryUrl=(?<registryUrl>.+?))?\\s.*[=:]\\s*\"?(?<currentValue>.+?)\"?\\s",
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-      "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}",
-    },
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    ":disableDependencyDashboard",
+    ":docker",
+    ":disableRateLimiting",
+    ":enableVulnerabilityAlertsWithLabel(security)",
+    "config:recommended",
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigestsToSemver",
+    "security:openssf-scorecard",
   ],
   "git-submodules": {
-    "enabled": true
+    enabled: true,
   },
-  "separateMinorPatch": true,
+  labels: [
+    "renovate",
+    "renovate/{{replace '.*/' '' depName}}",
+    "renovate/{{updateType}}",
+  ],
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 6am on Sunday"],
+  },
+  packageRules: [
+    {
+      matchUpdateTypes: ["major"],
+      automerge: false,
+    },
+    {
+      description: "Ignore frequent renovate updates",
+      enabled: false,
+      matchPackageNames: ["renovatebot/github-action"],
+      matchUpdateTypes: ["patch"],
+    },
+    {
+      description: "Update renovatebot/github-action minor updates on Sundays",
+      matchPackageNames: ["renovatebot/github-action"],
+      matchUpdateTypes: ["minor"],
+      schedule: ["* * * * 0"],
+    },
+  ],
+  prBodyTemplate: "{{{table}}}{{{notes}}}{{{changelogs}}}",
+  rebaseWhen: "behind-base-branch",
+  regexManagers: [
+    {
+      extractVersionTemplate: "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}",
+      fileMatch: ["\\.ya?ml$", "\\.md$", "^Dockerfile$", "^entrypoint\\.sh$"],
+      matchStrings: [
+        '# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)( versioning=(?<versioning>.+?))?( extractVersion=(?<extractVersion>.+?))?( registryUrl=(?<registryUrl>.+?))?\\s.*[=:]\\s*"?(?<currentValue>.+?)"?\\s',
+      ],
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+    },
+  ],
+  separateMinorPatch: true,
 }

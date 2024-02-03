@@ -1,3 +1,4 @@
+---
 name: MegaLinter
 
 on:
@@ -12,40 +13,32 @@ jobs:
   build:
     name: MegaLinter
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      statuses: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Restore lychee cache
+        uses: actions/cache@13aacd865c20de90d75de3b17ebe84f7a17d57d2 # v4.0.0
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
 
       - name: Extract commands from markdown files
         run: |
           set -euxo pipefail
           echo '#!/usr/bin/env bash' > README.sh
           find . -name '*.md' -print0 | while IFS= read -r -d '' FILE ; do
-            sed -n "/^\`\`\`\(bash\|shell\).*/,/^\`\`\`$/p" "${FILE}" \
-            | \
-            sed \
-              -e 's/^```\(bash\|shell\).*//' \
-              -e '/^```$/d' \
-            >> README.sh
+            # Extract: ```bash ... ```
+            sed -n "/^\`\`\`\(bash\|shell\)$/,/^\`\`\`$/p" "${FILE}" | sed '/^```*/d' >> README.sh
+            # Extract:   ```bash ... ```
+            sed -n "/^  \`\`\`\(bash\|shell\)$/,/^  \`\`\`$/p" "${FILE}" | sed '/^  ```*/d; s/^  //' >> README.sh
           done
           chmod a+x README.sh
 
-      - name: MegaLinter
-        uses: megalinter/megalinter@v7.1.0
+      - name: 💡 MegaLinter
+        uses: oxsecurity/megalinter@688bc7466d7ab4faa83d614c2e6f9acf42b674dc # v7.8.0
         env:
-          ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS: >-
-            [{"command": "ansible-galaxy collection install -v -r ansible/requirements.yml"}]
-          BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
-          DISABLE_LINTERS: COPYPASTE_JSCPD,JSON_PRETTIER,MARKDOWN_MARKDOWN_LINK_CHECK,REPOSITORY_DEVSKIM,REPOSITORY_SEMGREP,SPELL_CSPELL,SPELL_PROSELINT,YAML_V8R
-          FILTER_REGEX_EXCLUDE: '(.*\.ps1|CHANGELOG.md)'
-          FORMATTERS_DISABLE_ERRORS: false
           GITHUB_COMMENT_REPORTER: false
           GITHUB_STATUS_REPORTER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRINT_ALPACA: false
-          REPOSITORY_KICS_ARGUMENTS: --exclude-paths .github/workflows/renovate.yml
-          # Needed for scanning generated README.sh file
-          VALIDATE_ALL_CODEBASE: true

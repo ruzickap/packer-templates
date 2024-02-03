@@ -189,7 +189,7 @@ packer_build() {
   if [[ ! -f "${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box" ]]; then
     echo "*** Running packer with params: ${PACKER_CMD_PARAMS[*]}"
     ${PACKER_BINARY} "${PACKER_CMD_PARAMS[@]}" 2>&1 | tee "${LOGDIR}/${BUILD}-packer.log"
-    ln -rfs "${PACKER_CACHE_DIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${PACKER_CACHE_DIR}/${NAME}.iso"
+    ln -rfs "${PACKER_CACHE_DIR}/$(echo -n "${ISO_CHECKSUM}" | sha1sum | awk '{ print $1 }').iso" "${PACKER_CACHE_DIR}/${NAME}.iso" # DevSkim: ignore DS126858
   else
     echo -e "\n* File ${PACKER_IMAGES_OUTPUT_DIR}/${BUILD}.box already exists. Skipping....\n"
   fi

@@ -19,9 +19,7 @@
       "headless": "{{ user `headless` }}",
       "http_directory": "http",
       "iso_checksum": "file:{{ user `ubuntu_images_url` }}/SHA256SUMS",
-      "iso_urls": [
-        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
-      ],
+      "iso_urls": ["{{ user `ubuntu_images_url` }}/netboot/mini.iso"],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
@@ -49,9 +47,7 @@
       "headless": "{{ user `headless` }}",
       "http_directory": "http",
       "iso_checksum": "file:{{ user `ubuntu_images_url` }}/SHA256SUMS",
-      "iso_urls": [
-        "{{ user `ubuntu_images_url` }}/netboot/mini.iso"
-      ],
+      "iso_urls": ["{{ user `ubuntu_images_url` }}/netboot/mini.iso"],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
@@ -60,30 +56,15 @@
       "ssh_timeout": "1h",
       "type": "virtualbox-iso",
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--graphicscontroller",
-          "vmsvga"
-        ],
+        ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vmsvga"],
         [
           "modifyvm",
           "{{ .Name }}",
           "--recordingfile",
           "{{ user `packer_templates_logs` }}/{{ user `name` }}-virtualbox.webm"
         ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recordingscreens",
-          "0"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recording",
-          "on"
-        ]
+        ["modifyvm", "{{ .Name }}", "--recordingscreens", "0"],
+        ["modifyvm", "{{ .Name }}", "--recording", "on"]
       ],
       "vm_name": "{{ user `name` }}"
     }

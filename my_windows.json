@@ -15,12 +15,8 @@
       ],
       "headless": "{{ user `headless` }}",
       "iso_checksum": "file:{{ user `iso_checksum` }}",
-      "iso_urls": [
-        "{{ user `iso_url` }}"
-      ],
-      "cd_files": [
-        "{{ user `virtio_win_iso_dir` }}"
-      ],
+      "iso_urls": ["{{ user `iso_url` }}"],
+      "cd_files": ["{{ user `virtio_win_iso_dir` }}"],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-qemu",
       "shutdown_command": "A:\\sysprep.bat",
@@ -50,51 +46,24 @@
       "hard_drive_interface": "sata",
       "headless": "{{ user `headless` }}",
       "iso_checksum": "file:{{ user `iso_checksum` }}",
-      "iso_urls": [
-        "{{ user `iso_url` }}"
-      ],
+      "iso_urls": ["{{ user `iso_url` }}"],
       "memory": "{{ user `memory` }}",
       "output_directory": "{{ user `name` }}-virtualbox-iso",
       "shutdown_command": "A:\\sysprep.bat",
       "shutdown_timeout": "15m",
       "type": "virtualbox-iso",
       "vboxmanage": [
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--graphicscontroller",
-          "vboxsvga"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--audiocontroller",
-          "ac97"
-        ],
+        ["modifyvm", "{{ .Name }}", "--graphicscontroller", "vboxsvga"],
+        ["modifyvm", "{{ .Name }}", "--audiocontroller", "ac97"],
         [
           "modifyvm",
           "{{ .Name }}",
           "--recordingfile",
           "{{ user `packer_templates_logs` }}/{{ user `name` }}-virtualbox.webm"
         ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recordingvideofps",
-          "1"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recordingscreens",
-          "0"
-        ],
-        [
-          "modifyvm",
-          "{{ .Name }}",
-          "--recording",
-          "on"
-        ]
+        ["modifyvm", "{{ .Name }}", "--recordingvideofps", "1"],
+        ["modifyvm", "{{ .Name }}", "--recordingscreens", "0"],
+        ["modifyvm", "{{ .Name }}", "--recording", "on"]
       ],
       "vm_name": "{{ user `name` }}",
       "winrm_insecure": "true",
@@ -126,9 +95,7 @@
         "E:\\VBoxWindowsAdditions.exe /S",
         "del C:\\vbox.cer"
       ],
-      "only": [
-        "virtualbox-iso"
-      ],
+      "only": ["virtualbox-iso"],
       "type": "powershell"
     },
     {
@@ -144,9 +111,7 @@
         "ansible_winrm_connection_timeout=2000"
       ],
       "user": "{{ user `winrm_username` }}",
-      "ansible_env_vars": [
-        "ANSIBLE_CONFIG=ansible/ansible.cfg"
-      ],
+      "ansible_env_vars": ["ANSIBLE_CONFIG=ansible/ansible.cfg"],
       "use_proxy": false,
       "playbook_file": "ansible/site.yml"
     },

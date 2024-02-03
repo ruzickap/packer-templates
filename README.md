@@ -148,7 +148,9 @@ with Packer.
   sudo apt install --no-install-recommends -y /tmp/vagrant_x86_64.deb
   rm /tmp/vagrant_x86_64.deb
 
-  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
+  sudo gpasswd -a "${USER}" kvm
+  sudo gpasswd -a "${USER}" libvirt
+  sudo gpasswd -a "${USER}" vboxusers
 
   vagrant plugin install vagrant-libvirt
   ```
@@ -160,8 +162,8 @@ with Packer.
 
   ```bash
   echo 'deb http://deb.debian.org/debian bullseye main contrib non-free' | sudo tee /etc/apt/sources.list.d/bullseye.list
-  sudo sed --regexp-extended 's/^([^#].+\s+main)$/\1 contrib non-free/;' --in-place /etc/apt/sources.list  ## Ensure required apt components are enabled.
-  cat <<EOF | sudo tee /etc/apt/preferences.d/bullseye.pref
+  sudo sed --regexp-extended 's/^([^#].+\s+main)$/\1 contrib non-free/;' --in-place /etc/apt/sources.list ## Ensure required apt components are enabled.
+  cat << EOF | sudo tee /etc/apt/preferences.d/bullseye.pref
   Explanation: Just install packages from bullseye if they are not in buster or buster-backports. Do not upgrade. Delete this file when you want to upgrade to bullseye.
   Package: *
   Pin: release o=Debian,n=bullseye
@@ -170,14 +172,15 @@ with Packer.
   sudo apt update
   sudo apt install -y ansible curl dnsmasq freerdp2-x11 git jq libc6-dev libvirt-daemon-system libvirt-dev python3-winrm qemu-kvm qemu-utils sshpass xorriso unzip packer/bullseye vagrant vagrant-libvirt
 
-  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt
-  sudo gpasswd -a ${USER} vboxusers  ## If you have VirtualBox installed.
+  sudo gpasswd -a "${USER}" kvm
+  sudo gpasswd -a "${USER}" libvirt
+  sudo gpasswd -a "${USER}" vboxusers ## If you have VirtualBox installed.
   ```
 
 * Fedora requirements:
 
   ```bash
-  sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+  sudo dnf install "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
   sudo dnf install -y ansible curl freerdp git jq libvirt libvirt-devel qemu-kvm ruby-devel xorriso unzip VirtualBox
 
   PACKER_LATEST_VERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')"
@@ -186,10 +189,12 @@ with Packer.
   rm /tmp/packer_linux_amd64.zip
 
   VAGRANT_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/vagrant | jq -r -M '.current_version')
-  sudo dnf install -y https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant-${VAGRANT_LATEST_VERSION}-1.x86_64.rpm
+  sudo dnf install -y "https://releases.hashicorp.com/vagrant/${VAGRANT_LATEST_VERSION}/vagrant-${VAGRANT_LATEST_VERSION}-1.x86_64.rpm"
   CONFIGURE_ARGS="with-ldflags=-L/opt/vagrant/embedded/lib with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64/libvirt" vagrant plugin install vagrant-libvirt
 
-  sudo gpasswd -a ${USER} kvm ; sudo gpasswd -a ${USER} libvirt ; sudo gpasswd -a ${USER} vboxusers
+  sudo gpasswd -a "${USER}" kvm
+  sudo gpasswd -a "${USER}" libvirt
+  sudo gpasswd -a "${USER}" vboxusers
   systemctl start libvirtd
   ```
 
@@ -237,41 +242,41 @@ cd packer-templates || exit
   export LOGDIR="/tmp/"
 
   # Ubuntu Server
-  NAME="ubuntu-20.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="ubuntu-20.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" ubuntu-server.json
 
-  NAME="ubuntu-18.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="ubuntu-18.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" ubuntu-server.json
 
-  NAME="ubuntu-16.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="ubuntu-16.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" ubuntu-server.json
 
   # Ubuntu Desktop
-  NAME="ubuntu-20.04-desktop-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="desktop" \
+  export NAME="ubuntu-20.04-desktop-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/"
+  export UBUNTU_TYPE="desktop"
   packer build -only="qemu" ubuntu-desktop.json
 
   # Ubuntu Server - customized
-  NAME="my_ubuntu-20.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="my_ubuntu-20.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" my_ubuntu-server.json
 
-  NAME="my_ubuntu-18.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="my_ubuntu-18.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/bionic-updates/main/installer-amd64/current/images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" my_ubuntu-server.json
 
-  NAME="my_ubuntu-16.04-server-amd64" \
-  UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/" \
-  UBUNTU_TYPE="server" \
+  export NAME="my_ubuntu-16.04-server-amd64"
+  export UBUNTU_IMAGES_URL="http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/"
+  export UBUNTU_TYPE="server"
   packer build -only="qemu" my_ubuntu-server.json
   ```
 
