@@ -152,7 +152,7 @@ jobs:
 
   build-boxes:
     name: "*"
-    runs-on: macos-12
+    runs-on: macos-13
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.MATRIX != '[]' && needs.generate-matrix.outputs.MATRIX != '' }}
     concurrency:
