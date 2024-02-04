@@ -1,14 +1,14 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    ":disableDependencyDashboard",
-    ":docker",
-    ":disableRateLimiting",
-    ":enableVulnerabilityAlertsWithLabel(security)",
     "config:recommended",
     "docker:pinDigests",
     "helpers:pinGitHubActionDigestsToSemver",
     "security:openssf-scorecard",
+    ":disableDependencyDashboard",
+    ":docker",
+    ":disableRateLimiting",
+    ":enableVulnerabilityAlertsWithLabel(security)",
   ],
   "git-submodules": {
     enabled: true,
