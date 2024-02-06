@@ -1,5 +1,5 @@
 ---
-name: MegaLinter
+name: mega-linter
 
 on:
   workflow_dispatch:
@@ -10,8 +10,7 @@ on:
 permissions: read-all
 
 jobs:
-  build:
-    name: MegaLinter
+  mega-linter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
