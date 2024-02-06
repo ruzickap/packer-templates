@@ -1,5 +1,5 @@
 ---
-name: Renovate
+name: renovate
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ on:
       - main
       - "!renovate/*"
   schedule:
-    - cron: "0 0,2,4 * * *"
+    - cron: "0 0,2,4 * * 0"
 
 env:
   # https://docs.renovatebot.com/troubleshooting/#log-debug-levels
@@ -44,7 +44,7 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     concurrency:
-      group: renovate
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
