@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: 'Bug: This is a sample issue title'
+title: "Bug: This is a sample issue title"
 labels: bug
 assignees: ruzickap
-
 ---
 
 **Describe the bug**

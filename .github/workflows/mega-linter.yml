@@ -12,6 +12,7 @@ permissions: read-all
 jobs:
   mega-linter:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout Code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -27,16 +28,17 @@ jobs:
         run: |
           set -euxo pipefail
           echo '#!/usr/bin/env bash' > README.sh
-          find . -name '*.md' -print0 | while IFS= read -r -d '' FILE ; do
+          find . -name '*.md' -print0 | while IFS= read -r -d '' FILE; do
             # Extract: ```bash ... ```
             sed -n "/^\`\`\`\(bash\|shell\)$/,/^\`\`\`$/p" "${FILE}" | sed '/^```*/d' >> README.sh
             # Extract:   ```bash ... ```
             sed -n "/^  \`\`\`\(bash\|shell\)$/,/^  \`\`\`$/p" "${FILE}" | sed '/^  ```*/d; s/^  //' >> README.sh
           done
+          ls -la README.sh
           chmod a+x README.sh
 
       - name: 💡 MegaLinter
-        uses: oxsecurity/megalinter@688bc7466d7ab4faa83d614c2e6f9acf42b674dc # v7.8.0
+        uses: oxsecurity/megalinter@190cd0dad6dc52b2de5b810e3b290c3d6bdcc0f2 # v7.9.0
         env:
           GITHUB_COMMENT_REPORTER: false
           GITHUB_STATUS_REPORTER: true

@@ -6,7 +6,7 @@ ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS:
     cwd: "workspace"
 ANSIBLE_ANSIBLE_LINT_CONFIG_FILE: ansible/.ansible-lint
 
-BASH_SHFMT_ARGUMENTS: --indent 2 --space-redirects
+BASH_SHFMT_ARGUMENTS: --case-indent --indent 2 --space-redirects
 
 DISABLE_LINTERS:
   - MARKDOWN_MARKDOWN_LINK_CHECK # Using lychee instead
@@ -31,9 +31,7 @@ PRINT_ALPACA: false
 # Disable creating report directory
 REPORT_OUTPUT_FOLDER: none
 
-# Issue: https://github.com/bridgecrewio/checkov/issues/3839
-# The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty
-REPOSITORY_CHECKOV_ARGUMENTS: --skip-check CKV_GHA_7
+REPOSITORY_CHECKOV_ARGUMENTS: --quiet
 
 # Do not leave debug code in production, Insecure URL
 REPOSITORY_DEVSKIM_ARGUMENTS: --ignore-globs CHANGELOG.md --ignore-rule-ids DS162092,DS137138
