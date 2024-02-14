@@ -69,67 +69,67 @@ cmdline() {
   echo "*** My Name: ${MY_NAME} | User: ${VAGRANT_CLOUD_USER}  | Provider: ${VAGRANT_PROVIDER} | Box file: ${VAGRANT_CLOUD_BOX_FILE} | Box name: ${VAGRANT_CLOUD_BOX_NAME}"
 
   case ${VAGRANT_CLOUD_BOX_NAME} in
-  *centos*)
-    CENTOS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
-    export CENTOS_VERSION
-    CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
-    export CENTOS_TAG
-    CENTOS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
-    export CENTOS_ARCH
-    export CENTOS_TYPE="NetInstall"
-    export NAME="${MY_NAME}-${CENTOS_VERSION}-${CENTOS_ARCH}"
-    export SHORT_DESCRIPTION="My CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} for libvirt and virtualbox"
-    LONG_DESCRIPTION=$(envsubst < templates/my_centos.md)
-    export LONG_DESCRIPTION
-    ;;
-  *ubuntu*)
-    UBUNTU_TYPE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
-    export UBUNTU_TYPE
-    export UBUNTU_TYPE_UC=${UBUNTU_TYPE^}
-    UBUNTU_MAJOR_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
-    export UBUNTU_MAJOR_VERSION
-    UBUNTU_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
-    export UBUNTU_ARCH
-    UBUNTU_VERSION=$(curl -s "http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS" | sed -n "s/.*ubuntu-\([^-]*\)-.*-${UBUNTU_ARCH}.iso/\1/p" | head -1) # DevSkim: ignore DS126858
-    export UBUNTU_VERSION
-    export NAME="${MY_NAME}-${UBUNTU_MAJOR_VERSION}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
-    export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_MAJOR_VERSION} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt and virtualbox"
-    LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}.md")
-    export LONG_DESCRIPTION
-    ;;
-  *windows-10*)
-    WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
-    export WINDOWS_VERSION
-    WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
-    export WINDOWS_ARCH
-    WINDOWS_EDITION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
-    export WINDOWS_EDITION
-    export WINDOWS_EDITION_UC=${WINDOWS_EDITION^}
-    export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
-    export SHORT_DESCRIPTION="Windows ${WINDOWS_VERSION} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
-    LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md")
-    export LONG_DESCRIPTION
-    ;;
-  *windows-*-201[69]* | *windows-*-2022*)
-    WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
-    export WINDOWS_VERSION
-    WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $5 }')
-    export WINDOWS_ARCH
-    WINDOWS_TYPE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
-    export WINDOWS_TYPE
-    export WINDOWS_TYPE_UC=${WINDOWS_TYPE^}
-    WINDOWS_EDITION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
-    export WINDOWS_EDITION
-    export WINDOWS_EDITION_UC=${WINDOWS_EDITION^}
-    export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
-    export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE_UC} ${WINDOWS_VERSION} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
-    LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md")
-    export LONG_DESCRIPTION
-    ;;
-  *)
-    echo "*** Unsupported type: \"${VAGRANT_CLOUD_BOX_NAME}\""
-    exit 1
-    ;;
+    *centos*)
+      CENTOS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
+      export CENTOS_VERSION
+      CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
+      export CENTOS_TAG
+      CENTOS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
+      export CENTOS_ARCH
+      export CENTOS_TYPE="NetInstall"
+      export NAME="${MY_NAME}-${CENTOS_VERSION}-${CENTOS_ARCH}"
+      export SHORT_DESCRIPTION="My CentOS ${CENTOS_VERSION} ${CENTOS_ARCH} for libvirt and virtualbox"
+      LONG_DESCRIPTION=$(envsubst < templates/my_centos.md)
+      export LONG_DESCRIPTION
+      ;;
+    *ubuntu*)
+      UBUNTU_TYPE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
+      export UBUNTU_TYPE
+      export UBUNTU_TYPE_UC=${UBUNTU_TYPE^}
+      UBUNTU_MAJOR_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
+      export UBUNTU_MAJOR_VERSION
+      UBUNTU_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
+      export UBUNTU_ARCH
+      UBUNTU_VERSION=$(curl -s "http://releases.ubuntu.com/${UBUNTU_MAJOR_VERSION}/SHA1SUMS" | sed -n "s/.*ubuntu-\([^-]*\)-.*-${UBUNTU_ARCH}.iso/\1/p" | head -1) # DevSkim: ignore DS126858
+      export UBUNTU_VERSION
+      export NAME="${MY_NAME}-${UBUNTU_MAJOR_VERSION}-${UBUNTU_TYPE}-${UBUNTU_ARCH}"
+      export SHORT_DESCRIPTION="Ubuntu ${UBUNTU_MAJOR_VERSION} ${UBUNTU_TYPE} (${UBUNTU_ARCH}) for libvirt and virtualbox"
+      LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}.md")
+      export LONG_DESCRIPTION
+      ;;
+    *windows-10*)
+      WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
+      export WINDOWS_VERSION
+      WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
+      export WINDOWS_ARCH
+      WINDOWS_EDITION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
+      export WINDOWS_EDITION
+      export WINDOWS_EDITION_UC=${WINDOWS_EDITION^}
+      export NAME="${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+      export SHORT_DESCRIPTION="Windows ${WINDOWS_VERSION} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
+      LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-eval.md")
+      export LONG_DESCRIPTION
+      ;;
+    *windows-*-201[69]* | *windows-*-2022*)
+      WINDOWS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
+      export WINDOWS_VERSION
+      WINDOWS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $5 }')
+      export WINDOWS_ARCH
+      WINDOWS_TYPE=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
+      export WINDOWS_TYPE
+      export WINDOWS_TYPE_UC=${WINDOWS_TYPE^}
+      WINDOWS_EDITION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $4 }')
+      export WINDOWS_EDITION
+      export WINDOWS_EDITION_UC=${WINDOWS_EDITION^}
+      export NAME="${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-${WINDOWS_EDITION}-${WINDOWS_ARCH}-eval"
+      export SHORT_DESCRIPTION="Windows ${WINDOWS_TYPE_UC} ${WINDOWS_VERSION} ${WINDOWS_EDITION_UC} (${WINDOWS_ARCH}) Evaluation for libvirt and virtualbox"
+      LONG_DESCRIPTION=$(envsubst < "templates/${MY_NAME}-${WINDOWS_TYPE}-${WINDOWS_VERSION}-eval.md")
+      export LONG_DESCRIPTION
+      ;;
+    *)
+      echo "*** Unsupported type: \"${VAGRANT_CLOUD_BOX_NAME}\""
+      exit 1
+      ;;
   esac
 
   echo -e "*** ${NAME} | ${SHORT_DESCRIPTION}"

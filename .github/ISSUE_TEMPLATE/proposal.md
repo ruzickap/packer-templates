@@ -1,10 +1,9 @@
 ---
 name: Proposal
 about: Suggest an idea for this project
-title: 'Proposal: This is a sample title'
+title: "Proposal: This is a sample title"
 labels: proposal
 assignees: ruzickap
-
 ---
 
 **Is your feature request related to a problem? Please describe**
