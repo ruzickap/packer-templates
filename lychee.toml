@@ -23,6 +23,9 @@ accept = [999]
 
 # Exclude URLs and mail addresses from checking (supports regex)
 exclude = [
+  # returns 403 when accessed from GitHub Action
+  'stackoverflow\.com',
+  'stackexchange\.com',
   # Ignore all URLs with '$' - BASH variable in URL
   '\$',
   # Ignore all URLs with '{ ... }' - BASH / Ansible variable in URL
