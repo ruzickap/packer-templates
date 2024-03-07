@@ -1,4 +1,4 @@
-name: Links
+name: links
 
 on:
   workflow_dispatch:
@@ -7,17 +7,19 @@ on:
       - main
     paths:
       - .github/workflows/links.yml
+      - lychee.toml
       - "**.md"
   schedule:
-    - cron: "0 3 * * 1"
+    - cron: "0 0 * * 2"
 
 permissions: read-all
 
 jobs:
-  linkChecker:
+  links:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Restore lychee cache
         uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4.0.1

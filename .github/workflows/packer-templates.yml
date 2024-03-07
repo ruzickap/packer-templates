@@ -2,12 +2,12 @@ name: packer-templates
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches-ignore:
-  #     - main
-  #   paths:
-  #     - "*.json"
-  #     - .github/workflows/packer-templates.yml
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - "*.json"
+      - .github/workflows/packer-templates.yml
 
 permissions: read-all
 
@@ -26,8 +26,10 @@ jobs:
           PACKER_LATEST_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
           curl -s "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" --output /tmp/packer_linux_amd64.zip
           sudo unzip -o /tmp/packer_linux_amd64.zip -d /usr/local/bin/
-          packer plugins install github.com/hashicorp/qemu
           packer plugins install github.com/hashicorp/ansible
+          packer plugins install github.com/hashicorp/qemu
+          packer plugins install github.com/hashicorp/vagrant
+          packer plugins install github.com/hashicorp/virtualbox
 
       - name: Validate Packer templates
         run: |
