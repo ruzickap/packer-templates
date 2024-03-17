@@ -1,5 +1,21 @@
 # Packer Templates mainly for the Vagrant [libvirt][libvirt] and [VirtualBox][virtualbox]
 
+> ⚠️ **Outdated repository**
+>
+> This GitHub repository is outdated and no longer actively maintained.
+> Feel free to fork it if needed.
+>
+> Things which may still be handy:
+>
+> * The packer template build process is using [Ansible](https://github.com/ruzickap/packer-templates/tree/main/ansible)
+>   to configure the Linux/Windows VMs.
+> * Packer build process is using GitHub Action + [MacOS runners](https://github.com/ruzickap/packer-templates/blob/c7ee52ca72c4295c982fa952b5e5f235ad9ffd92/.github/workflows/build.yml#L155)
+>   to build the images which are uploaded to [Vagrant Cloud](https://app.vagrantup.com/boxes/search?utf8=%E2%9C%93&sort=downloads&provider=&q=peru).
+>
+> Anyway - I recommend to use some other alternatives...
+
+---
+
 ## Customized+Clean/Minimal boxes for [libvirt][libvirt] and [VirtualBox][virtualbox]
 
 [libvirt]: https://github.com/vagrant-libvirt/vagrant-libvirt
