@@ -242,7 +242,7 @@ jobs:
           ./build.sh "${BUILD}"
 
       - name: Upload logs to GitHub artifact store in case of VirtualBox failure
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4.3.2
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: ${{ always() && contains(matrix.stage, 'virtualbox') }}
         with:
           name: ${{ matrix.stage }}
