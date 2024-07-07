@@ -34,12 +34,12 @@ jobs:
             # Extract:   ```bash ... ```
             sed -n "/^  \`\`\`\(bash\|shell\)$/,/^  \`\`\`$/p" "${FILE}" | sed '/^  ```*/d; s/^  //' >> README.sh
           done
-          ls -la README.sh
           chmod a+x README.sh
 
       - name: 💡 MegaLinter
-        uses: oxsecurity/megalinter@5199c6377b4cb7faff749a1971636f3343db9fe6 # v7.12.0
+        uses: oxsecurity/megalinter@bacb5f8674e3730b904ca4d20c8bd477bc51b1a7 # v7.13.0
         env:
           GITHUB_COMMENT_REPORTER: false
-          GITHUB_STATUS_REPORTER: true
+          # Disabled due to error: [GitHub Status Reporter] Error posting Status for REPOSITORY with ...: 403
+          GITHUB_STATUS_REPORTER: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

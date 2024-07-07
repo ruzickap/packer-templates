@@ -2,6 +2,7 @@
 name: stale
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "9 9 * * *"
 
