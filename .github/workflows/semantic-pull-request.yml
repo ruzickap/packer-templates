@@ -2,6 +2,7 @@
 name: semantic-pull-request
 
 on:
+  workflow_dispatch:
   pull_request_target:
     types:
       - opened
@@ -15,6 +16,12 @@ jobs:
   semantic-pull-request:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1.10.3
+        id: app-token
+        with:
+          app-id: ${{ secrets.MY_RENOVATE_GITHUB_APP_ID }}
+          private-key: ${{ secrets.MY_RENOVATE_GITHUB_PRIVATE_KEY }}
+
       - uses: amannn/action-semantic-pull-request@0723387faaf9b38adef4775cd42cfd5155ed6017 # v5.5.3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}

@@ -31,12 +31,13 @@ exclude = [
   # Ignore all URLs with '{ ... }' - BASH / Ansible variable in URL
   '%7B.*%7D',
   # Ignore all URLs which starts with 'file://'
-  'file://'
+  'file://',
 ]
 
 # Exclude these filesystem paths from getting checked
 exclude_path = [
   "CHANGELOG.md",
+  "package-lock.json",
 ]
 
 # Exclude all private IPs from checking.

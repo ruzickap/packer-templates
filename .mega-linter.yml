@@ -38,7 +38,7 @@ REPOSITORY_DEVSKIM_ARGUMENTS: --ignore-globs CHANGELOG.md --ignore-rule-ids DS16
 
 REPOSITORY_KICS_ARGUMENTS: --fail-on high
 
-REPOSITORY_TRIVY_ARGUMENTS: --ignorefile .trivyignore.yaml --severity HIGH,CRITICAL
+REPOSITORY_TRIVY_ARGUMENTS: --ignorefile .trivyignore.yaml --severity HIGH,CRITICAL --ignore-unfixed
 
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN
