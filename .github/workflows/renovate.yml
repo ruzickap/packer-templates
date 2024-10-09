@@ -6,10 +6,10 @@ on:
     inputs:
       dryRun:
         type: boolean
-        description: "Dry-Run"
+        description: Dry-Run
       logLevel:
         type: choice
-        description: "Log-Level"
+        description: Log-Level
         default: debug
         options:
           - info
@@ -20,11 +20,11 @@ on:
       - main
       - "!renovate/*"
   schedule:
-    - cron: "0 0-3 * * 0"
+    - cron: 0 0-3 * * 0
 
 env:
   # https://docs.renovatebot.com/troubleshooting/#log-debug-levels
-  LOG_LEVEL: "${{ inputs.logLevel || 'debug' }}"
+  LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
   # https://docs.renovatebot.com/self-hosted-configuration/#repositories
   RENOVATE_REPOSITORIES: ${{ github.repository }}
   # https://docs.renovatebot.com/self-hosted-configuration/#username
@@ -33,9 +33,9 @@ env:
   RENOVATE_PLATFORM_COMMIT: "true"
   # https://docs.renovatebot.com/self-hosted-configuration/#dryrun
   # Run renovate in dry-run mode if executed in branches other than main - prevents versions in PRs/branches from being updated
-  RENOVATE_DRY_RUN: "${{ inputs.dryRun || ( github.head_ref || github.ref_name ) != 'main' || false }}"
+  RENOVATE_DRY_RUN: ${{ inputs.dryRun || ( github.head_ref || github.ref_name ) != 'main' || false }}
   # Renovate Automerge
-  RENOVATE_AUTOMERGE_TYPE: "branch"
+  RENOVATE_AUTOMERGE_TYPE: branch
   RENOVATE_AUTOMERGE: "true"
 
 permissions: read-all
@@ -48,7 +48,7 @@ jobs:
     permissions: write-all
     steps:
       - name: Checkout
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
 
       - uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         id: app-token
@@ -57,6 +57,6 @@ jobs:
           private-key: ${{ secrets.MY_RENOVATE_GITHUB_PRIVATE_KEY }}
 
       - name: 💡 Self-hosted Renovate
-        uses: renovatebot/github-action@259200be4d976a76196ec8985b0dddcaf1733b47 # v40.2.0
+        uses: renovatebot/github-action@a1ed1d0adddfdf138192d1fbe3150a80094dee6a # v40.3.1
         with:
           token: ${{ steps.app-token.outputs.token }}

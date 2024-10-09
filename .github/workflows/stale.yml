@@ -4,7 +4,7 @@ name: stale
 on:
   workflow_dispatch:
   schedule:
-    - cron: "9 9 * * *"
+    - cron: 9 9 * * *
 
 permissions:
   issues: write
