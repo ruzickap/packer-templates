@@ -1,10 +1,12 @@
 # Configuration file for MegaLinter
 # See all available variables at https://megalinter.io/latest/configuration/ and in linters documentation
 
+# keep-sorted start newline_separated=yes
+ANSIBLE_ANSIBLE_LINT_CONFIG_FILE: ansible/.ansible-lint
+
 ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS:
   - command: ansible-galaxy install -r ansible/requirements.yml
     cwd: "workspace"
-ANSIBLE_ANSIBLE_LINT_CONFIG_FILE: ansible/.ansible-lint
 
 BASH_SHFMT_ARGUMENTS: --case-indent --indent 2 --space-redirects
 
@@ -23,6 +25,7 @@ FILTER_REGEX_EXCLUDE: CHANGELOG.md
 FORMATTERS_DISABLE_ERRORS: false
 
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yml
+
 MARKDOWN_MARKDOWNLINT_FILTER_REGEX_EXCLUDE: CHANGELOG.md
 
 # Remove initial MegaLinter graphic
@@ -38,7 +41,7 @@ REPOSITORY_DEVSKIM_ARGUMENTS: --ignore-globs CHANGELOG.md --ignore-rule-ids DS16
 
 REPOSITORY_KICS_ARGUMENTS: --fail-on high
 
-REPOSITORY_TRIVY_ARGUMENTS: --ignorefile .trivyignore.yaml --severity HIGH,CRITICAL --ignore-unfixed
+REPOSITORY_TRIVY_ARGUMENTS: --severity HIGH,CRITICAL --ignore-unfixed
 
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN
@@ -46,3 +49,4 @@ TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
 TYPESCRIPT_PRETTIER_ARGUMENTS: --html-whitespace-sensitivity=ignore
 
 VALIDATE_ALL_CODEBASE: true
+# keep-sorted end

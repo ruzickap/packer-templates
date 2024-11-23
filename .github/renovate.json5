@@ -1,5 +1,9 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  // # keep-sorted start block=yes
+  "git-submodules": {
+    enabled: true,
+  },
   // Keep the extends started with ":" at the end of the list to allow overriding
   extends: [
     "config:recommended",
@@ -12,9 +16,6 @@
     ":enableVulnerabilityAlertsWithLabel(security)",
     ":pinSkipCi",
   ],
-  "git-submodules": {
-    enabled: true,
-  },
   labels: [
     "renovate",
     "renovate/{{replace '.*/' '' depName}}",
@@ -55,4 +56,5 @@
     },
   ],
   separateMinorPatch: true,
+  // # keep-sorted end
 }

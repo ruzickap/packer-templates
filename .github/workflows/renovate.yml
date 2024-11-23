@@ -23,20 +23,22 @@ on:
     - cron: 0 0-3 * * 0
 
 env:
+  # keep-sorted start
   # https://docs.renovatebot.com/troubleshooting/#log-debug-levels
   LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
+  RENOVATE_AUTOMERGE: "true"
+  # Renovate Automerge
+  RENOVATE_AUTOMERGE_TYPE: branch
+  # https://docs.renovatebot.com/self-hosted-configuration/#dryrun
+  # Run renovate in dry-run mode if executed in branches other than main - prevents versions in PRs/branches from being updated
+  RENOVATE_DRY_RUN: ${{ inputs.dryRun || ( github.head_ref || github.ref_name ) != 'main' || false }}
+  # https://docs.renovatebot.com/configuration-options/#platformcommit
+  RENOVATE_PLATFORM_COMMIT: "true"
   # https://docs.renovatebot.com/self-hosted-configuration/#repositories
   RENOVATE_REPOSITORIES: ${{ github.repository }}
   # https://docs.renovatebot.com/self-hosted-configuration/#username
   RENOVATE_USERNAME: ${{ github.repository_owner }}
-  # https://docs.renovatebot.com/configuration-options/#platformcommit
-  RENOVATE_PLATFORM_COMMIT: "true"
-  # https://docs.renovatebot.com/self-hosted-configuration/#dryrun
-  # Run renovate in dry-run mode if executed in branches other than main - prevents versions in PRs/branches from being updated
-  RENOVATE_DRY_RUN: ${{ inputs.dryRun || ( github.head_ref || github.ref_name ) != 'main' || false }}
-  # Renovate Automerge
-  RENOVATE_AUTOMERGE_TYPE: branch
-  RENOVATE_AUTOMERGE: "true"
+  # keep-sorted end
 
 permissions: read-all
 
@@ -48,7 +50,7 @@ jobs:
     permissions: write-all
     steps:
       - name: Checkout
-        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - uses: actions/create-github-app-token@5d869da34e18e7287c1daad50e0b8ea0f506ce69 # v1.11.0
         id: app-token
