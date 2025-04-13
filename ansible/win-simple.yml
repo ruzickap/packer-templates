@@ -4,7 +4,7 @@
 
   vars:
     # renovate: datasource=github-tags depName=bleachbit/bleachbit
-    bleachbit_version: 4.9.1
+    bleachbit_version: 4.9.2
     # renovate: datasource=github-tags depName=PowerShell/Win32-OpenSSH versioning=regex:^v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(\..*)?$
     openssh_version: 9.8.1.0p1-Preview
 
