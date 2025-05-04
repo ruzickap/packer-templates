@@ -43,6 +43,15 @@ env:
 permissions: read-all
 
 jobs:
+  github-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${GITHUB_CONTEXT}"
+
   renovate:
     runs-on: ubuntu-latest
     concurrency:
@@ -52,13 +61,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5 # v2.0.2
+      - uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         id: app-token
         with:
           app-id: ${{ secrets.MY_RENOVATE_GITHUB_APP_ID }}
           private-key: ${{ secrets.MY_RENOVATE_GITHUB_PRIVATE_KEY }}
 
       - name: 💡 Self-hosted Renovate
-        uses: renovatebot/github-action@67a664fc9b4481b33a3eff6ee9edfb7a7b9dfa1e # v41.0.2
+        uses: renovatebot/github-action@19ba43e1bc58ed95c0ba205dee8b1bc0f27b630d # v42.0.0
         with:
           token: ${{ steps.app-token.outputs.token }}

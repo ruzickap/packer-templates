@@ -1,3 +1,4 @@
+# Configuration for lychee link checker
 # https://lychee.cli.rs/#/usage/config
 
 #############################  Cache  ###############################
@@ -23,15 +24,18 @@ accept = [999]
 
 # Exclude URLs and mail addresses from checking (supports regex)
 exclude = [
-  # returns 403 when accessed from GitHub Action
-  'stackoverflow\.com',
-  'stackexchange\.com',
-  # Ignore all URLs with '$' - BASH variable in URL
-  '\$',
+  # keep-sorted start
   # Ignore all URLs with '{ ... }' - BASH / Ansible variable in URL
   '%7B.*%7D',
+  # Ignore all URLs with '$' - BASH variable in URL
+  '\$',
   # Ignore all URLs which starts with 'file://'
   'file://',
+  # returns 403 when accessed from GitHub Action
+  'stackoverflow\.com',
+  # returns 403 when accessed from GitHub Action
+  'stackexchange\.com',
+  # keep-sorted end
 ]
 
 # Exclude these filesystem paths from getting checked
@@ -40,7 +44,7 @@ exclude_path = [
   "package-lock.json",
 ]
 
-# Exclude all private IPs from checking.
+# Exclude all private IPs from checking
 # Equivalent to setting `exclude_private`, `exclude_link_local`, and
 # `exclude_loopback` to true
 exclude_all_private = true

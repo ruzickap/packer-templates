@@ -1,6 +1,14 @@
-# Users referenced in this file will automatically be requested as reviewers for
-# PRs that modify the given paths
-# See https://help.github.com/articles/about-code-owners/, https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# GitHub CODEOWNERS file
+# Documentation:
+# - https://help.github.com/articles/about-code-owners/
+# - https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-# All code
+# Syntax:
+# pattern    @user-or-team
+# The last matching pattern takes precedence.
+
+###############################
+# Repository Default Owners
+###############################
+# These owners will be the default owners for everything in the repo
 * @ruzickap
