@@ -25,8 +25,10 @@
     enabled: true,
     schedule: ["before 6am on Sunday"],
   },
+  // Package update rules
   packageRules: [
     {
+      description: "Disable auto-merge for major updates",
       matchUpdateTypes: ["major"],
       automerge: false,
     },
@@ -45,6 +47,7 @@
   ],
   prBodyTemplate: "{{{table}}}{{{notes}}}{{{changelogs}}}",
   rebaseWhen: "behind-base-branch",
+  // Custom version extraction
   regexManagers: [
     {
       extractVersionTemplate: "{{#if extractVersion}}{{{extractVersion}}}{{else}}^v?(?<version>.+)${{/if}}",

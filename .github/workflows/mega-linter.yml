@@ -10,34 +10,35 @@ on:
 permissions: read-all
 
 jobs:
+  github-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${GITHUB_CONTEXT}"
+
   mega-linter:
     runs-on: ubuntu-latest
+    if: ${{ (!startsWith(github.ref_name, 'renovate/') && !startsWith(github.ref_name, 'release-please--')) || github.event_name == 'workflow_dispatch' }}
     timeout-minutes: 30
     steps:
       - name: Checkout Code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Restore lychee cache
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        with:
-          path: .lycheecache
-          key: cache-lychee-${{ github.sha }}
-          restore-keys: cache-lychee-
-
       - name: Extract commands from markdown files
         run: |
           set -euxo pipefail
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install mdq
           echo '#!/usr/bin/env bash' > README.sh
-          find . -name '*.md' -print0 | while IFS= read -r -d '' FILE; do
-            # Extract: ```bash ... ```
-            sed -n "/^\`\`\`\(bash\|shell\)$/,/^\`\`\`$/p" "${FILE}" | sed '/^```*/d' >> README.sh
-            # Extract:   ```bash ... ```
-            sed -n "/^  \`\`\`\(bash\|shell\)$/,/^  \`\`\`$/p" "${FILE}" | sed '/^  ```*/d; s/^  //' >> README.sh
-          done
+          readarray -d '' MD_FILES < <(find . -type f -name "*.md" -print0)
+          mdq '```/^bash$|^shell$|^sh$/' --br -o plain "${MD_FILES[@]}" >> README.sh || true
           chmod a+x README.sh
 
       - name: 💡 MegaLinter
-        uses: oxsecurity/megalinter@146333030da68e2e58c6ff826633824fabe01eaf # v8.5.0
+        uses: oxsecurity/megalinter@04cf22b980c2e9c2121553417ed651c944afc8e1 # v8.6.0
         env:
           GITHUB_COMMENT_REPORTER: false
           # Disabled due to error: [GitHub Status Reporter] Error posting Status for REPOSITORY with ...: 403

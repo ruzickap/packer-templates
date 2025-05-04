@@ -1,0 +1,163 @@
+name: pr-slack-notification
+
+# Based on: https://github.com/slackapi/slack-github-action/issues/269
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - review_requested
+      - closed
+  issue_comment:
+    types:
+      - created
+  pull_request_review:
+    types:
+      - submitted
+
+permissions: read-all
+
+defaults:
+  run:
+    shell: bash -euxo pipefail {0}
+
+jobs:
+  github-context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "${GITHUB_CONTEXT}"
+
+  pr-slack-notification:
+    runs-on: ubuntu-latest
+    name: Sends a message to Slack when a PR is opened
+    if: (github.event.action == 'opened' && github.event.pull_request.draft == false) || github.event.action == 'ready_for_review'
+    steps:
+      - name: Post PR summary message to slack
+        id: message
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.MY_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.MY_SLACK_CHANNEL_ID }}
+            text: "💡 *${{ github.event.pull_request.user.login }}*: <${{ github.event.repository.html_url }}|${{ github.repository }}> - <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}> (+${{ github.event.pull_request.additions }}, -${{ github.event.pull_request.deletions }})"
+
+      - name: Create file with slack message timestamp
+        env:
+          TS: ${{ steps.message.outputs.ts }}
+        run: |
+          echo "${TS}" > slack-message-timestamp.txt
+
+      - name: Cache slack message timestamp
+        uses: actions/cache/save@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: slack-message-timestamp.txt
+          key: slack-message-timestamp-${{ github.event.pull_request.html_url }}-${{ steps.message.outputs.ts }}
+
+  slack-emoji-react:
+    runs-on: ubuntu-latest
+    name: Adds emoji reaction to slack message when a PR is closed or reviewed
+    if: ${{ startsWith(github.event.pull_request.html_url, 'https') || startsWith(github.event.issue.pull_request.html_url, 'https') }}
+    steps:
+      # gh commands needs to be executed in the repository
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # https://stackoverflow.com/questions/74640750/github-actions-not-finding-cache
+      # I can not use the cache action in this job because the cache is not shared between runs
+      - name: Save slack timestamp as an environment variable
+        id: slack-timestamp
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_PULL_REQUEST_HTML_URL: ${{ github.event.pull_request.html_url || github.event.issue.pull_request.html_url }}
+        run: |
+          SLACK_TIMESTAMP=$(gh cache list --json key --jq "[.[].key|capture(\"${GITHUB_PULL_REQUEST_HTML_URL}-(?<x>.+)\").x][0]")
+          echo "SLACK_TIMESTAMP=${SLACK_TIMESTAMP}" | tee -a "${GITHUB_ENV}"
+          if [[ "${SLACK_TIMESTAMP}" != '' ]]; then
+            echo "github_event_pull_request_html_url=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Decide which emoji to add
+        if: ${{ steps.slack-timestamp.outputs.github_event_pull_request_html_url == 'true' }}
+        env:
+          GITHUB_EVENT_ACTION: ${{ github.event.action }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_EVENT_REVIEW_STATE: ${{ github.event.review.state }}
+        run: |
+          case "${GITHUB_EVENT_ACTION}" in
+            created)
+              if [[ "${GITHUB_EVENT_NAME}" == 'issue_comment' ]]; then
+                echo "EMOJI=speech_balloon" >> "${GITHUB_ENV}" # 💬
+              fi
+              ;;
+            submitted)
+              case "${GITHUB_EVENT_REVIEW_STATE}" in
+                changes_requested)
+                  echo "EMOJI=repeat" >> "${GITHUB_ENV}" # 🔁
+                  ;;
+                approved)
+                  echo "EMOJI=ok" >> "${GITHUB_ENV}" # 🆗
+                  ;;
+                commented)
+                  echo "EMOJI=speech_balloon" >> "${GITHUB_ENV}" # 💬
+                  ;;
+              esac
+              ;;
+            review_requested)
+              echo "EMOJI=eyes" >> "${GITHUB_ENV}" # 👀
+              ;;
+            *)
+              echo "EMOJI=false" >> "${GITHUB_ENV}"
+              ;;
+          esac
+
+      - name: React to PR summary message in slack with emoji
+        if: ${{ steps.slack-timestamp.outputs.github_event_pull_request_html_url == 'true' && env.EMOJI != 'false' }}
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
+        with:
+          method: reactions.add
+          token: ${{ secrets.MY_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.MY_SLACK_CHANNEL_ID }}
+            timestamp: "${{ env.SLACK_TIMESTAMP }}"
+            name: ${{ env.EMOJI }}
+
+      - name: Update the original message with status Merged ✅
+        if: ${{ github.event.pull_request.merged && steps.slack-timestamp.outputs.github_event_pull_request_html_url == 'true' }}
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
+        with:
+          method: chat.update
+          token: ${{ secrets.MY_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.MY_SLACK_CHANNEL_ID }}
+            ts: "${{ env.SLACK_TIMESTAMP }}"
+            text: "✅ *${{ github.event.pull_request.user.login }}*: <${{ github.event.repository.html_url }}|${{ github.repository }}> - <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}> (+${{ github.event.pull_request.additions }}, -${{ github.event.pull_request.deletions }})"
+            attachments:
+              - color: "28a745"
+                fields:
+                  - title: "Status"
+                    short: true
+                    value: "Merged ✅"
+
+      - name: Update the original message with status Closed ❎
+        if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == false && steps.slack-timestamp.outputs.github_event_pull_request_html_url == 'true' }}
+        uses: slackapi/slack-github-action@485a9d42d3a73031f12ec201c457e2162c45d02d # v2.0.0
+        with:
+          method: chat.update
+          token: ${{ secrets.MY_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.MY_SLACK_CHANNEL_ID }}
+            ts: "${{ env.SLACK_TIMESTAMP }}"
+            text: "❎ *${{ github.event.pull_request.user.login }}*: <${{ github.event.repository.html_url }}|${{ github.repository }}> - <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}> (+${{ github.event.pull_request.additions }}, -${{ github.event.pull_request.deletions }})"
+            attachments:
+              - color: "fa7015"
+                fields:
+                  - title: "Status"
+                    short: true
+                    value: "Closed ❎"

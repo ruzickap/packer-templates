@@ -8,6 +8,8 @@ ANSIBLE_ANSIBLE_LINT_PRE_COMMANDS:
   - command: ansible-galaxy install -r ansible/requirements.yml
     cwd: "workspace"
 
+BASH_SHELLCHECK_ARGUMENTS: --exclude=SC2317
+
 BASH_SHFMT_ARGUMENTS: --case-indent --indent 2 --space-redirects
 
 DISABLE_LINTERS:
@@ -23,6 +25,10 @@ FAIL_IF_MISSING_LINTER_IN_FLAVOR: true
 FILTER_REGEX_EXCLUDE: CHANGELOG.md
 
 FORMATTERS_DISABLE_ERRORS: false
+
+JSON_JSONLINT_ARGUMENTS: --comments
+
+JSON_JSONLINT_FILTER_REGEX_EXCLUDE: .devcontainer/devcontainer.json
 
 MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.yml
 
@@ -42,6 +48,13 @@ REPOSITORY_DEVSKIM_ARGUMENTS: --ignore-globs CHANGELOG.md --ignore-rule-ids DS16
 REPOSITORY_KICS_ARGUMENTS: --fail-on high
 
 REPOSITORY_TRIVY_ARGUMENTS: --severity HIGH,CRITICAL --ignore-unfixed
+
+SPELL_LYCHEE_ARGUMENTS:
+  - --accept
+  - "429"
+
+SPELL_LYCHEE_UNSECURED_ENV_VARIABLES:
+  - GITHUB_TOKEN
 
 TERRAFORM_TFLINT_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN
