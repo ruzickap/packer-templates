@@ -72,7 +72,7 @@ cmdline() {
     *centos*)
       CENTOS_VERSION=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $2 }')
       export CENTOS_VERSION
-      CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
+      CENTOS_TAG=$(curl -s "https://mirror.fcix.net/centos-vault/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
       export CENTOS_TAG
       CENTOS_ARCH=$(echo "${VAGRANT_CLOUD_BOX_NAME}" | awk -F '-' '{ print $3 }')
       export CENTOS_ARCH
