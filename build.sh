@@ -110,10 +110,10 @@ cmdline() {
       *centos*)
         CENTOS_VERSION=$(echo "${NAME}" | awk -F '-' '{ print $2 }')
         export CENTOS_VERSION
-        CENTOS_TAG=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
+        CENTOS_TAG=$(curl -s "https://mirror.fcix.net/centos-vault/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | sed -n 's/.*-\(..\)\(..\)\.iso/\1\2/p' | head -1)
         export CENTOS_TAG
         export CENTOS_TYPE="NetInstall"
-        ISO_CHECKSUM=$(curl -s "ftp://ftp.cvut.cz/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
+        ISO_CHECKSUM=$(curl -s "https://mirror.fcix.net/centos-vault/centos/${CENTOS_VERSION}/isos/x86_64/sha256sum.txt" | awk "/CentOS-${CENTOS_VERSION}-x86_64-${CENTOS_TYPE}-${CENTOS_TAG}.iso/ { print \$1 }")
         PACKER_CMD_PARAMS+=("${MY_NAME}-${CENTOS_VERSION}.json")
         echo "* NAME: ${NAME}, CENTOS_VERSION: ${CENTOS_VERSION}, CENTOS_TAG: ${CENTOS_TAG}, CENTOS_TYPE: ${CENTOS_TYPE}"
         ;;
