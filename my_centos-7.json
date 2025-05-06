@@ -111,7 +111,7 @@
   ],
   "variables": {
     "accelerator": "kvm",
-    "centos_mirror": "http://ftp.cvut.cz/centos/",
+    "centos_mirror": "https://mirror.fcix.net/centos-vault/centos/",
     "centos_tag": "{{ env `CENTOS_TAG` }}",
     "centos_type": "{{ env `CENTOS_TYPE` }}",
     "centos_version": "{{ env `CENTOS_VERSION` }}",
