@@ -18,7 +18,7 @@ max_concurrency = 128
 #############################  Requests  ############################
 
 # Comma-separated list of accepted status codes for valid links.
-accept = [999]
+accept = [429, 999]
 
 #############################  Exclusions  ##########################
 
@@ -32,9 +32,9 @@ exclude = [
   # Ignore all URLs which starts with 'file://'
   'file://',
   # returns 403 when accessed from GitHub Action
-  'stackoverflow\.com',
-  # returns 403 when accessed from GitHub Action
   'stackexchange\.com',
+  # returns 403 when accessed from GitHub Action
+  'stackoverflow\.com',
   # keep-sorted end
 ]
 
