@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.0](https://github.com/ruzickap/packer-templates/compare/v0.2.5...v0.3.0) (2025-05-06)
+
+
+### Features
+
+* add default github repo files ([#562](https://github.com/ruzickap/packer-templates/issues/562)) ([cf9ea52](https://github.com/ruzickap/packer-templates/commit/cf9ea527fb5f9cc1dc720ffb12ab2ca2e1ffa6a5))
+* add github defaults ([#538](https://github.com/ruzickap/packer-templates/issues/538)) ([3b0c363](https://github.com/ruzickap/packer-templates/commit/3b0c36306fea3a1c9c2f503f492eed9f8d7d6236))
+* gha templates update, git submodules update ([#563](https://github.com/ruzickap/packer-templates/issues/563)) ([6469009](https://github.com/ruzickap/packer-templates/commit/6469009935afe532e5be1e6162c247ffc098641b))
+* **gh:** add default GitHub repo files ([#517](https://github.com/ruzickap/packer-templates/issues/517)) ([8e3c70d](https://github.com/ruzickap/packer-templates/commit/8e3c70d10bca7df45a27ea5fa9d05cde940396fb))
+* **gh:** add default GitHub repo files ([#519](https://github.com/ruzickap/packer-templates/issues/519)) ([d2f6827](https://github.com/ruzickap/packer-templates/commit/d2f6827c855cb661f32bfbe33f820dd74bc8232f))
+* **gh:** add default GitHub repo files ([#520](https://github.com/ruzickap/packer-templates/issues/520)) ([66ee28f](https://github.com/ruzickap/packer-templates/commit/66ee28fe2daa6a767779c17c7239df6c722d080d))
+* **gh:** add default github repo files ([#549](https://github.com/ruzickap/packer-templates/issues/549)) ([91efe2c](https://github.com/ruzickap/packer-templates/commit/91efe2c0a8d20a253dd40b0894b9448003f7c0b7))
+* **gha:** unify GHA - renovate, megalinter, markdown, and others ([#493](https://github.com/ruzickap/packer-templates/issues/493)) ([c5d87d3](https://github.com/ruzickap/packer-templates/commit/c5d87d3a53a3a7149733e2a2dd35d1a6e7f7ea39))
+* remove lychee "fail: true" parameter ([#545](https://github.com/ruzickap/packer-templates/issues/545)) ([084b6d3](https://github.com/ruzickap/packer-templates/commit/084b6d3e8140c7fa1613e0b8a78733d00a6cd99d))
+* update github action files ([#544](https://github.com/ruzickap/packer-templates/issues/544)) ([a0eee02](https://github.com/ruzickap/packer-templates/commit/a0eee0265bedc5f28ee99245b06522fffafcdec0))
+
+
+### Bug Fixes
+
+* **gha:** add vagrant plugin to packer-templates gha ([#523](https://github.com/ruzickap/packer-templates/issues/523)) ([0cf5c20](https://github.com/ruzickap/packer-templates/commit/0cf5c20df649d179d2a743aaa807dca374f98ddf))
+* **renovate:** disable dashboard ([#516](https://github.com/ruzickap/packer-templates/issues/516)) ([c733afa](https://github.com/ruzickap/packer-templates/commit/c733afa4555ed5da4e9785ff0ec294fa78408f02))
+
 ## [0.2.5](https://github.com/ruzickap/packer-templates/compare/v0.2.4...v0.2.5) (2024-02-03)
 
 
